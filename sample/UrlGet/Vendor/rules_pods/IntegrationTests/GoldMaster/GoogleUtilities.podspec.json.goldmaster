@@ -1,0 +1,107 @@
+load('//:pod_support_buildable/extensions.bzl', 'pch_with_name_hint')
+load('//:pod_support_buildable/extensions.bzl', 'acknowledged_target')
+load('//:pod_support_buildable/extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "GoogleUtilities_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "GoogleUtilities",
+  "GoogleUtilities_module_map",
+  "GoogleUtilities",
+  [
+    "GoogleUtilities_hdrs"
+  ]
+  )
+objc_library(
+  name = "GoogleUtilities",
+  enable_modules = 0,
+  hdrs = [
+    ":GoogleUtilities_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "GoogleUtilities",
+    [
+
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "GoogleUtilities_module_map"
+  ],
+  sdk_frameworks = [
+    "AddressBook",
+    "CoreGraphics"
+  ],
+  sdk_dylibs = [
+    "z"
+  ],
+  deps = [
+    ":GoogleUtilities_VendoredFrameworks",
+    "//Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/GoogleUtilities/pod_support/Headers/Public/GoogleUtilities/"
+  ] + [
+    "-fmodule-name=GoogleUtilities_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "GoogleUtilities_acknowledgement",
+  deps = [
+    ":GoogleUtilities_VendoredFrameworks_acknowledgement",
+    "//Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities_acknowledgement"
+  ]
+  )
+objc_framework(
+  name = "GoogleUtilities_VendoredFrameworks",
+  framework_imports = glob(
+    [
+      "Frameworks/frameworks/GoogleUtilities.framework/**"
+    ],
+    exclude_directories = 1
+    ),
+  is_dynamic = 0,
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "GoogleUtilities_VendoredFrameworks_acknowledgement",
+  deps = [
+
+  ]
+  )

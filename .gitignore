@@ -1,0 +1,10 @@
+.build/
+XCHammer.xcodeproj/
+ios-building
+compile_commands.json
+tmp_build_dir
+sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/HammerLog.txt
+sample/UrlGet/IntegrationTests.xcodeproj/
+depsHash
+tulsigen-*
+sample/UrlGet/tools/XCHammer

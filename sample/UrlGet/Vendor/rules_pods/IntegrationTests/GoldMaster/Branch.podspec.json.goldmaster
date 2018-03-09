@@ -1,0 +1,232 @@
+load('//:pod_support_buildable/extensions.bzl', 'pch_with_name_hint')
+load('//:pod_support_buildable/extensions.bzl', 'acknowledged_target')
+load('//:pod_support_buildable/extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "Branch_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "Branch",
+  "Branch_module_map",
+  "Branch",
+  [
+    "Branch_hdrs"
+  ]
+  )
+objc_library(
+  name = "Branch",
+  enable_modules = 0,
+  hdrs = [
+    ":Branch_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Branch",
+    [
+
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Branch_module_map"
+  ],
+  deps = [
+    ":Core",
+    ":without-IDFA"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Branch/pod_support/Headers/Public/Branch/"
+  ] + [
+    "-fmodule-name=Branch_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Branch_acknowledgement",
+  deps = [
+    ":Core_acknowledgement",
+    ":without-IDFA_acknowledgement"
+  ]
+  )
+filegroup(
+  name = "Core_hdrs",
+  srcs = glob(
+    [
+      "Branch-SDK/Branch-SDK/*.h",
+      "Branch-SDK/Branch-SDK/Requests/*.h",
+      "Branch-SDK/Fabric/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+objc_library(
+  name = "Core",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "Branch-SDK/Branch-SDK/*.m",
+      "Branch-SDK/Branch-SDK/Requests/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "Branch-SDK/Branch-SDK/*.h",
+      "Branch-SDK/Branch-SDK/Requests/*.h",
+      "Branch-SDK/Fabric/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Branch_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Branch",
+    [
+      "Branch-SDK/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Branch_module_map"
+  ],
+  sdk_frameworks = [
+    "AdSupport",
+    "CoreTelephony",
+    "MobileCoreServices"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Branch/pod_support/Headers/Public/Branch/"
+  ] + [
+    "-fmodule-name=Branch_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Core_acknowledgement",
+  deps = [
+
+  ]
+  )
+filegroup(
+  name = "without-IDFA_hdrs",
+  srcs = glob(
+    [
+      "Branch-SDK/Branch-SDK/*.h",
+      "Branch-SDK/Branch-SDK/Requests/*.h",
+      "Branch-SDK/Fabric/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+objc_library(
+  name = "without-IDFA",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "Branch-SDK/Branch-SDK/*.m",
+      "Branch-SDK/Branch-SDK/Requests/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "Branch-SDK/Branch-SDK/*.h",
+      "Branch-SDK/Branch-SDK/Requests/*.h",
+      "Branch-SDK/Fabric/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Branch_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Branch",
+    [
+      "Branch-SDK/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Branch_module_map"
+  ],
+  sdk_frameworks = [
+    "CoreTelephony",
+    "MobileCoreServices"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Branch/pod_support/Headers/Public/Branch/"
+  ] + [
+    "-fmodule-name=Branch_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "without-IDFA_acknowledgement",
+  deps = [
+
+  ]
+  )

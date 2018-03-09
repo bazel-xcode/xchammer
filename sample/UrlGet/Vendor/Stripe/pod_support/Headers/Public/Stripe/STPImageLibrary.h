@@ -1,0 +1,1 @@
+../../../../Stripe/PublicHeaders/STPImageLibrary.h

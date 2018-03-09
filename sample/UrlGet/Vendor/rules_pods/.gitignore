@@ -1,0 +1,7 @@
+tmp_build_dir
+bazel-*
+bin/WorkspaceTools
+bin/PodSpecToBUILD
+project.xcworkspace
+!BazelExtensions
+xcuserdata

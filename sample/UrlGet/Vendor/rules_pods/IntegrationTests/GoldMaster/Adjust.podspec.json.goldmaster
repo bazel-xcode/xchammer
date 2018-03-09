@@ -1,0 +1,442 @@
+load('//:pod_support_buildable/extensions.bzl', 'pch_with_name_hint')
+load('//:pod_support_buildable/extensions.bzl', 'acknowledged_target')
+load('//:pod_support_buildable/extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+config_setting(
+  name = "iosCase",
+  values = {
+    "cpu": "powerpc1"
+  }
+  )
+config_setting(
+  name = "tvosCase",
+  values = {
+    "cpu": "powerpc3"
+  }
+  )
+filegroup(
+  name = "Adjust_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "Adjust",
+  "Adjust_module_map",
+  "Adjust",
+  [
+    "Adjust_hdrs"
+  ]
+  )
+objc_library(
+  name = "Adjust",
+  enable_modules = 0,
+  hdrs = [
+    ":Adjust_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Adjust",
+    [
+
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Adjust_module_map"
+  ],
+  sdk_frameworks = [
+    "SystemConfiguration"
+  ],
+  weak_sdk_frameworks = select(
+    {
+      "//conditions:default": [
+        "AdSupport",
+        "iAd"
+      ],
+      ":tvosCase": [
+        "AdSupport"
+      ]
+    }
+    ),
+  deps = [
+    ":Core"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Adjust/pod_support/Headers/Public/Adjust/"
+  ] + [
+    "-fmodule-name=Adjust_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Adjust_acknowledgement",
+  deps = [
+    ":Core_acknowledgement"
+  ]
+  )
+filegroup(
+  name = "Core_hdrs",
+  srcs = glob(
+    [
+      "Adjust/*.h",
+      "Adjust/ADJAdditions/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+objc_library(
+  name = "Core",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "Adjust/*.m",
+      "Adjust/ADJAdditions/*.m"
+    ],
+    exclude = [
+      "plugin/Criteo/*.m",
+      "plugin/Sociomantic/*.m",
+      "plugin/Trademob/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "Adjust/*.h",
+      "Adjust/ADJAdditions/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Adjust_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Adjust",
+    [
+      "Adjust/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Adjust_module_map"
+  ],
+  sdk_frameworks = [
+    "SystemConfiguration"
+  ],
+  weak_sdk_frameworks = select(
+    {
+      "//conditions:default": [
+        "AdSupport",
+        "iAd"
+      ],
+      ":tvosCase": [
+        "AdSupport"
+      ]
+    }
+    ),
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Adjust/pod_support/Headers/Public/Adjust/"
+  ] + [
+    "-fmodule-name=Adjust_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Core_acknowledgement",
+  deps = [
+
+  ]
+  )
+filegroup(
+  name = "Sociomantic_hdrs",
+  srcs = glob(
+    [
+      "plugin/Sociomantic/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+objc_library(
+  name = "Sociomantic",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "plugin/Sociomantic/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "plugin/Sociomantic/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Adjust_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Adjust",
+    [
+      "plugin/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Adjust_module_map"
+  ],
+  sdk_frameworks = [
+    "SystemConfiguration"
+  ],
+  weak_sdk_frameworks = select(
+    {
+      "//conditions:default": [
+        "AdSupport",
+        "iAd"
+      ],
+      ":tvosCase": [
+        "AdSupport"
+      ]
+    }
+    ),
+  deps = [
+    ":Core"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Adjust/pod_support/Headers/Public/Adjust/"
+  ] + [
+    "-fmodule-name=Adjust_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Sociomantic_acknowledgement",
+  deps = [
+    ":Core_acknowledgement"
+  ]
+  )
+filegroup(
+  name = "Criteo_hdrs",
+  srcs = glob(
+    [
+      "plugin/Criteo/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+objc_library(
+  name = "Criteo",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "plugin/Criteo/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "plugin/Criteo/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Adjust_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Adjust",
+    [
+      "plugin/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Adjust_module_map"
+  ],
+  sdk_frameworks = [
+    "SystemConfiguration"
+  ],
+  weak_sdk_frameworks = select(
+    {
+      "//conditions:default": [
+        "AdSupport",
+        "iAd"
+      ],
+      ":tvosCase": [
+        "AdSupport"
+      ]
+    }
+    ),
+  deps = [
+    ":Core"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Adjust/pod_support/Headers/Public/Adjust/"
+  ] + [
+    "-fmodule-name=Adjust_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Criteo_acknowledgement",
+  deps = [
+    ":Core_acknowledgement"
+  ]
+  )
+filegroup(
+  name = "Trademob_hdrs",
+  srcs = glob(
+    [
+      "plugin/Trademob/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+objc_library(
+  name = "Trademob",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "plugin/Trademob/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "plugin/Trademob/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Adjust_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Adjust",
+    [
+      "plugin/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Adjust_module_map"
+  ],
+  sdk_frameworks = [
+    "SystemConfiguration"
+  ],
+  weak_sdk_frameworks = select(
+    {
+      "//conditions:default": [
+        "AdSupport",
+        "iAd"
+      ],
+      ":tvosCase": [
+        "AdSupport"
+      ]
+    }
+    ),
+  deps = [
+    ":Core"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/Adjust/pod_support/Headers/Public/Adjust/"
+  ] + [
+    "-fmodule-name=Adjust_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Trademob_acknowledgement",
+  deps = [
+    ":Core_acknowledgement"
+  ]
+  )

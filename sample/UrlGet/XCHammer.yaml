@@ -1,0 +1,12 @@
+targets:
+    - "//ios-app:UITests"
+    - "//ios-app:UnitTests"
+    - "//ios-app:UnitTestsWithHost"
+    - "//ios-app:ios-app"
+
+projects:
+    "UrlGet":
+        paths:
+            - "Vendor/**"
+            - "ios-app/**"
+

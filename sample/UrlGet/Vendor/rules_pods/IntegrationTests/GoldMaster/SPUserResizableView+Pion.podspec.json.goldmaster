@@ -1,0 +1,87 @@
+load('//:pod_support_buildable/extensions.bzl', 'pch_with_name_hint')
+load('//:pod_support_buildable/extensions.bzl', 'acknowledged_target')
+load('//:pod_support_buildable/extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "SPUserResizableView+Pion_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "SPUserResizableView+Pion",
+  "SPUserResizableView+Pion_module_map",
+  "SPUserResizableView+Pion",
+  [
+    "SPUserResizableView+Pion_hdrs"
+  ]
+  )
+objc_library(
+  name = "SPUserResizableView+Pion",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "SPUserResizableView/SPUserResizableView.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "SPUserResizableView/SPUserResizableView.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":SPUserResizableView+Pion_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "SPUserResizableView+Pion",
+    [
+      "SPUserResizableView/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "SPUserResizableView+Pion_module_map"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/SPUserResizableView+Pion/pod_support/Headers/Public/SPUserResizableView+Pion/"
+  ] + [
+    "-fmodule-name=SPUserResizableView+Pion_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "SPUserResizableView_Pion_acknowledgement",
+  deps = [
+
+  ]
+  )

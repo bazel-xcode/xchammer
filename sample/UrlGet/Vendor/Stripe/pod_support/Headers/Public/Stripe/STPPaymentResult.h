@@ -1,0 +1,1 @@
+../../../../Stripe/PublicHeaders/STPPaymentResult.h

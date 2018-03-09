@@ -1,0 +1,87 @@
+load('//:pod_support_buildable/extensions.bzl', 'pch_with_name_hint')
+load('//:pod_support_buildable/extensions.bzl', 'acknowledged_target')
+load('//:pod_support_buildable/extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "FBSDKMessengerShareKit_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "FBSDKMessengerShareKit",
+  "FBSDKMessengerShareKit_module_map",
+  "FBSDKMessengerShareKit",
+  [
+    "FBSDKMessengerShareKit_hdrs"
+  ]
+  )
+objc_library(
+  name = "FBSDKMessengerShareKit",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "FBSDKMessengerShareKit/FBSDKMessengerShareKit/**/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "FBSDKMessengerShareKit/FBSDKMessengerShareKit/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":FBSDKMessengerShareKit_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "FBSDKMessengerShareKit",
+    [
+      "FBSDKMessengerShareKit/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "FBSDKMessengerShareKit_module_map"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/FBSDKMessengerShareKit/pod_support/Headers/Public/FBSDKMessengerShareKit/"
+  ] + [
+    "-fmodule-name=FBSDKMessengerShareKit_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "FBSDKMessengerShareKit_acknowledgement",
+  deps = [
+
+  ]
+  )
