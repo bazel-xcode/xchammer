@@ -366,14 +366,18 @@ enum Generator {
                 toPath: genOptions.outputProjectPath.string)
     }
 
-    // Skip hashing children of Xcode directory like files
-    private static let xcodeDirExtensions = ["app", "appex", "bundle", "framework", "octest",
-            "xcassets", "xcodeproj", "xcdatamodel", "xcdatamodeld",
-            "xcmappingmodel", "xctest", "xcstickers", "xpc", "scnassets" ]
+    /// Skip hashing children of Xcode directory like files
     private static func skipXcodeDirChild(parent: URL, url: URL) -> Bool {
-        let firstMatch = xcodeDirExtensions.lazy.first { 
-            ext in 
-            if parent.pathExtension != ext && url.absoluteString.contains(ext) {
+	// These file types are treated like directories
+	let xcodeDirLikeFileTypesAndPathComponents = ["app", "appex", "bundle",
+	    "framework", "octest", "xcassets", "xcodeproj", "xcdatamodel",
+	    "xcdatamodeld", "xcmappingmodel", "xctest", "xcstickers", "xpc",
+	    "scnassets" ].map { ($0, "." + $0 ) }
+
+        let firstMatch = xcodeDirLikeFileTypesAndPathComponents.lazy.first {
+            (ext, dotExt) in
+            if parent.pathExtension != ext &&
+		url.absoluteString.contains(dotExt) {
                 return true
             }
             return false
@@ -414,7 +418,7 @@ enum Generator {
                 result.append(url)
             }
         })
-        
+
         let dirHashEntries = hashCandidates.flatMap { url -> String? in 
             // We need a different hash when these files change.
             // Use a timestamp for efficiency

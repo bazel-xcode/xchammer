@@ -32,15 +32,15 @@ function assertExitCode() {
 
 function testBuild() {
     echo "Testing generate and build with Xcode"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet $SANDBOX/UrlGet/XCHammer.yaml $BAZEL
-    xcodebuild -scheme ios-app -project $TEST_PROJ
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml
+    xcodebuild -scheme ios-app -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built successfully"
 }
 
 function testNooping() {
     echo "Testing noop generation"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet $SANDBOX/UrlGet/XCHammer.yaml $BAZEL
-    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet $SANDBOX/UrlGet/XCHammer.yaml $BAZEL`
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml
+    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml`
 
     # We print Skipping update when we noop
     echo $RESULT | grep "Skipping"
@@ -49,18 +49,24 @@ function testNooping() {
 
 # Create a new file, and make sure Xcode is doing a build with that file
 function testGenerateWhileBuilding() {
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml
+
     touch $TEST_NEW_IMPL_FILE
 
+    echo "Test file info `file $TEST_NEW_IMPL_FILE`"
+
+    xcodebuild clean -project $TEST_PROJ
     # We intentionally fail xcodebuild here
     set +e
-    RESULT=`xcodebuild -scheme ios-app -project $TEST_PROJ`
+    RESULT=`xcodebuild -scheme ios-app -project $TEST_PROJ -sdk iphonesimulator`
     set -e
 
     # Search for Xcode's failure of `UpdateXcodeProject`
     echo $RESULT | grep "ExternalBuildToolExecution UpdateXcodeProject"
     assertExitCode "Xcode build should fail the first time"
 
-    RESULT=`xcodebuild -scheme ios-app -project $TEST_PROJ`
+    # Make sure the app was compiled with the new file
+    RESULT=`xcodebuild -scheme ios-app -project $TEST_PROJ -sdk iphonesimulator`
     echo $RESULT | grep $(basename $TEST_NEW_IMPL_FILE)
     assertExitCode "Xcode build with new file"
 }
@@ -73,7 +79,8 @@ function preflightEnv() {
     # program to prevent polluting the sample
     mkdir -p $SANDBOX
     ditto $ROOT_DIR/sample/UrlGet $SANDBOX/UrlGet
-    
+    rm -rf $SANDBOX/UrlGet/UrlGet.xcodeproj
+
     cd $SANDBOX/UrlGet;  
 
     echo "Checking bazel"
