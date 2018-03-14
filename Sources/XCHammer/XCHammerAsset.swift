@@ -27,9 +27,6 @@ enum XCHammerAsset: String {
 
     case updateScript = "updateXcodeProj.sh"
 
-    // Store a hash of all the deps
-    case depsHash = "depsHash"
-
     /// Bazel extensions file. Contains rules to export entitlements from
     /// `rules_apple`
     case bazelExtensions = "Hammer.bzl"
