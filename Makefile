@@ -60,6 +60,7 @@ build-impl:
 	ditto $(ASSETDIR) .build/$(CONFIG)/$(ASSETDIR)
 
 build: build-debug
+	@ln -sf $(PWD)/.build/debug sample/UrlGet/tools/XCHammer
 
 test:
 	$(ROOT_DIR)/IntegrationTests/run_tests.sh
@@ -73,11 +74,10 @@ debug: build
 	lldb $(ROOT_DIR)/.build/debug/XCHammer
 
 # Run a debug build of XCHammer
+# Development hack: don't actually install, just symlink the debug build
 run: build
-	ln -sf $PWD/.build/debug sample/UrlGet/tools/XCHammer
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml --workspace_root $(ROOT_DIR)/sample/UrlGet
 
 run_force: build
-	ln -sf $PWD/.build/debug sample/UrlGet/tools/XCHammer
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml --workspace_root $(ROOT_DIR)/sample/UrlGet --force
 
