@@ -33,7 +33,10 @@ enum Generator {
     /// The current version of the generator
     /// @note any non forward or backward compatible changes to the CLI
     /// arguments or UpdateXcodeProject infra MUST bump this
-    public static let BinaryVersion = "0.1.1"
+    public static let BinaryVersion = "0.1.2"
+
+    /// Used to store the `depsHash` into the project
+    static let DepsHashSettingName = "XCHAMMER_DEPS_HASH"
 
     private static func makeTargets(targetMap: XcodeTargetMap, genOptions: XCHammerGenerateOptions) -> [String: XcodeGenTarget] {
         let profiler = XCHammerProfiler("convert_targets")
@@ -80,47 +83,31 @@ enum Generator {
         return target
     }
 
-    /// Write the deps hash
-    /// Warning: This needs to be done after the project is written
-    /// Since we predicate regenration on it. Killing the process should not
-    /// result in this being updated.
-    private static func updateDepsHash(genOptions: XCHammerGenerateOptions, projectPath: Path) {
-        let depsHashPath = XCHammerAsset.depsHash.getPath(underProj: projectPath)
-        let hash = getHash(workspaceRootPath:
-                genOptions.workspaceRootPath, genOptions: genOptions)
-        guard FileManager.default.createFile(atPath: depsHashPath,
-                contents: hash.data(using: .utf8), attributes:
-                nil) else {
-             fatalError("Can't write deps hash")
-        }
-    }
-
     private static func makeUpdateXcodeProjectTarget(genOptions:
-            XCHammerGenerateOptions, projectPath: Path) -> XCGTarget {
+            XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> XCGTarget {
         let generateCommand = CommandLine.arguments.filter { $0 != "--force" }
 
-        // Updating logic:
-        // - Check the cached hash.
-        // - If it doesn't match, rerun the command again.
-        //   Fail the build, to ensure consistency.
-        let depsHashPath = XCHammerAsset.depsHash.getPath(underProj: genOptions.outputProjectPath)
+        // Exit with a non 0 status to ensure Xcode reloads the project ( by
+        // forcing another build in the future )
+        // Determine state by comparing timestamps of the script.
         let updateScript = """
+        # This file is governed by XCHammer
         if [[ $ACTION == "clean" ]]; then
             exit 0
         fi
 
-        CACHED_HASH=`cat "\(depsHashPath)"`
+        PREV_STAT=`stat -f %c "$0"`
         \(generateCommand.joined(separator: " "))
-        HASH=`cat "\(depsHashPath)"`
-        if [[ "$HASH" != "$CACHED_HASH" ]]; then
+        STAT=`stat -f %c "$0"`
+        if [[ "$PREV_STAT" != "$STAT" ]]; then
             echo "error: Xcode project was out-of-date so we updated it for you! Please build again."
             exit 1
         fi
         """
+        // Write to the temp path, reference the actual path
+        // 555 means readable and executable
         let scriptAttrs: [String: Any] =
-        [FileAttributeKey.posixPermissions.rawValue: 0o777]
-
-        // Write to the temp file path, reference the actual path
+        [FileAttributeKey.posixPermissions.rawValue: 0o555]
         let updateScriptTempPath = XCHammerAsset.updateScript.getPath(underProj:
                 projectPath)
         guard FileManager.default.createFile(atPath: updateScriptTempPath,
@@ -238,8 +225,8 @@ enum Generator {
     }
     
     private static func writeProject(targetMap: XcodeTargetMap, name: String,
-            genOptions: XCHammerGenerateOptions, genfileLabels: [BuildLabel]) throws {
-
+            genOptions: XCHammerGenerateOptions, genfileLabels: [BuildLabel],
+            depsHash: String) throws {
         // Setup project asset dir
         let tempDirPath = genOptions.outputProjectPath.string + "-tmp"
         let tempProjectPath = Path(tempDirPath)
@@ -314,9 +301,6 @@ enum Generator {
              fatalError("Can't write BUILD file")
         }
 
-        // TODO: reuse the hash from the invalidation phase
-        updateDepsHash(genOptions: genOptions, projectPath: tempProjectPath)
-
         // Add the entitilement rules to the queried rules
         let targetsToBuild = genfileLabels + entitlementRules
                 .map { BuildLabel("/" + relativeProjDir + "/XCHammerAssets:" + $0.name) }
@@ -324,7 +308,7 @@ enum Generator {
                 genOptions: genOptions)
 
         let updateXcodeProjectTarget = makeUpdateXcodeProjectTarget(genOptions:
-                genOptions, projectPath: tempProjectPath)
+                genOptions, projectPath: tempProjectPath, depsHash: depsHash)
         
         let options = ProjectSpec.Options(
                 carthageBuildPath: nil,
@@ -333,6 +317,13 @@ enum Generator {
                 tabWidth: 4,
                 usesTabs: false
             )
+
+        // Write `depsHash` 1 time into the project. DEBUG is irrelevant - this
+        // is a workaround since XcodeGen is writing settings 2x for debug and
+        // release
+        let debugSettingsDict: [String: Any] = [DepsHashSettingName: depsHash]
+        let settings = Settings(configSettings: ["DEBUG": Settings(dictionary:
+                    debugSettingsDict)])
         let project = XCGProject(
             basePath: genOptions.workspaceRootPath,
             name: name,
@@ -340,7 +331,7 @@ enum Generator {
                 updateXcodeProjectTarget,
                 bazelPreBuildTarget
             ].sorted { $0.name < $1.name },
-            settings: Settings(dictionary: [String: Any]()),
+            settings: settings,
             settingGroups: [:],
             options: options
         )
@@ -377,7 +368,7 @@ enum Generator {
         let firstMatch = xcodeDirLikeFileTypesAndPathComponents.lazy.first {
             (ext, dotExt) in
             if parent.pathExtension != ext &&
-		url.absoluteString.contains(dotExt) {
+                url.absoluteString.contains(dotExt) {
                 return true
             }
             return false
@@ -442,6 +433,11 @@ enum Generator {
     /// and aspects for speed and parallelism.
     private static func getHash(workspaceRootPath: Path, genOptions:
             XCHammerGenerateOptions) -> String {
+        let profiler = XCHammerProfiler("compute_deps_hash")
+        defer {
+            profiler.logEnd(true)
+        }
+
         // Compute hash entries from the path filters
         let explicitHashEntries: [String] = genOptions.pathsSet
             .sorted()
@@ -497,7 +493,8 @@ enum Generator {
     }
 
     private static func generateProject(genOptions: XCHammerGenerateOptions,
-        ruleEntryMap: RuleEntryMap, genfileLabels: [BuildLabel]) ->
+            ruleEntryMap: RuleEntryMap, genfileLabels: [BuildLabel], depsHash:
+            String) ->
     Result<(), GenerateError> {
         do {
             let logger = XCHammerLogger.shared()
@@ -506,7 +503,8 @@ enum Generator {
             let projectName = genOptions.outputProjectPath.lastComponentWithoutExtension
             logger.logInfo("Converting to XcodeGen specification")
             try writeProject(targetMap: targetMap, name: projectName,
-                genOptions: genOptions, genfileLabels: genfileLabels)
+                    genOptions: genOptions, genfileLabels: genfileLabels,
+                    depsHash: depsHash)
             return .success()
         } catch {
             return .failure(.some(error))
@@ -529,6 +527,28 @@ enum Generator {
         return assetBase
     }
 
+    private static func getDepsHashSettingValue(projectPath: Path) throws ->
+        String? {
+        // Read this directly from the env, which happens during a build
+        let env = ProcessInfo.processInfo.environment
+        if let depsHash = env[DepsHashSettingName] {
+            return depsHash
+        }
+        let pbxProjPath = projectPath + Path("project.pbxproj")
+        let proj = try String(contentsOf: pbxProjPath.url)
+        // Avoid a semantic parse of the file.
+        // Extract DepsHashSettingName = "";\n from the proj
+        guard let hashRange = proj.range(of: DepsHashSettingName + ".*",
+                options: .regularExpression) else {
+            return nil
+        }
+        let beginning = proj.index(hashRange.lowerBound, offsetBy:
+                DepsHashSettingName.utf8.count + 4)
+        let end = proj.index(hashRange.upperBound, offsetBy: -3)
+        guard beginning < end else { return nil } 
+        return proj[beginning...end]
+    }
+
     // Mark - Public
 
     /// Main entry point of generation.
@@ -546,29 +566,25 @@ enum Generator {
 
         // Determine the hash state of each project
         let projectStates = Dictionary.from(config.projects.map { $0.key }.parallelMap({
-            projectName -> (String, Bool) in
+            projectName -> (String, (Bool, String?)) in
             let outputProjectPath = workspaceRootPath + Path(projectName + ".xcodeproj")
             let genOptions = XCHammerGenerateOptions(workspaceRootPath:
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath: xcworkspacePath)
-            func isUpdated() -> Bool {
-                let depsHashPath = XCHammerAsset.depsHash.getPath(underProj: genOptions.outputProjectPath)
-                guard let existingHash = try? String(contentsOf:
-                        Path(depsHashPath).url) else {
-                    return false
-                }
-                let hash = getHash(workspaceRootPath:
-                genOptions.workspaceRootPath, genOptions: genOptions)
-                return existingHash == hash
+            guard let existingHash = try? getDepsHashSettingValue(projectPath:
+                    genOptions.outputProjectPath) else {
+                return (projectName, (false, nil))
             }
-            return (projectName, isUpdated())
-         }))
+            let hash = getHash(workspaceRootPath: genOptions.workspaceRootPath,
+                    genOptions: genOptions)
+            return (projectName, (existingHash == hash, hash))
+        }))
 
         // We don't want to query Tulsi unless one of the projects need to be
         // updated, since it is slow as hell.
         let logger = XCHammerLogger.shared()
-        let states = projectStates.values.filter { !$0 }
+        let states = projectStates.values.filter { !$0.0 }
         guard states.count > 0 else {
             logger.logInfo("Skipping update for now")
             return .success()
@@ -612,13 +628,19 @@ enum Generator {
                     configPath: configPath, config: config, xcworkspacePath: xcworkspacePath)
 
 
+            let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees
-            if projectStates[projectName] == true {
+            if existingState?.0 == true {
                 logger.logInfo("Skipping update for now")
                 return .success()
             }
+
+            // Attempt to get the depsHash from the project state or recompute
+            let depsHash = existingState?.1 ?? getHash(workspaceRootPath:
+                    genOptions.workspaceRootPath, genOptions: genOptions)
             return generateProject(genOptions: genOptions,
-                    ruleEntryMap: ruleEntryMap, genfileLabels: genfileLabels)
+                    ruleEntryMap: ruleEntryMap, genfileLabels: genfileLabels,
+                    depsHash: depsHash)
         })
 
         return results.first ?? .success()
