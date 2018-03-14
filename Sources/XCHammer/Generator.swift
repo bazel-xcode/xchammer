@@ -33,6 +33,9 @@ enum Generator {
     /// The current version of the generator
     /// @note any non forward or backward compatible changes to the CLI
     /// arguments or UpdateXcodeProject infra MUST bump this
+    /// @note this version is written into the `XCHAMMER_DEPS_HASH` build setting
+    /// the version can be extracted with a simple search: i.e.
+    /// grep -m 1 XCHAMMER_DEPS_HASH $PROJ | sed 's,.*version:\(.*\):.*,\1,g'
     public static let BinaryVersion = "0.1.2"
 
     /// Used to store the `depsHash` into the project
@@ -470,7 +473,7 @@ enum Generator {
             }
 
         // Hash entries include the Binary version and config file
-        let hashEntries = [BinaryVersion] +
+        let hashEntries = ["version:\(BinaryVersion):"] +
             [hashEntryIncludingTimestamp(for: genOptions.configPath.url)] +
             explicitHashEntries
         let hashContent = hashEntries.joined(separator: "")
@@ -529,11 +532,6 @@ enum Generator {
 
     private static func getDepsHashSettingValue(projectPath: Path) throws ->
         String? {
-        // Read this directly from the env, which happens during a build
-        let env = ProcessInfo.processInfo.environment
-        if let depsHash = env[DepsHashSettingName] {
-            return depsHash
-        }
         let pbxProjPath = projectPath + Path("project.pbxproj")
         let proj = try String(contentsOf: pbxProjPath.url)
         // Avoid a semantic parse of the file.
