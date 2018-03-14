@@ -366,7 +366,7 @@ enum Generator {
                 toPath: genOptions.outputProjectPath.string)
     }
 
-    /// Skip hashing children of Xcode directory like files
+    // Skip hashing children of Xcode directory like files
     private static func skipXcodeDirChild(parent: URL, url: URL) -> Bool {
 	// These file types are treated like directories
 	let xcodeDirLikeFileTypesAndPathComponents = ["app", "appex", "bundle",
@@ -374,7 +374,7 @@ enum Generator {
 	    "xcdatamodeld", "xcmappingmodel", "xctest", "xcstickers", "xpc",
 	    "scnassets" ].map { ($0, "." + $0 ) }
 
-        let firstMatch = xcodeDirLikeFileTypesAndPathComponents.lazy.first {
+        let firstMatch = xcodeDirLikeFileTypesAndPathComponents.lazy.first { 
             (ext, dotExt) in
             if parent.pathExtension != ext &&
 		url.absoluteString.contains(dotExt) {
