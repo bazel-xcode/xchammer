@@ -128,10 +128,22 @@ struct ProcessIpaCommand: CommandProtocol {
     }
 }
 
+struct VersionCommand: CommandProtocol {
+    let verb = "version"
+    let function = "Print the current version"
+
+    typealias Options = NoOptions<CommandError>
+    func run(_: Options) -> Result<(), CommandError> {
+        print(Generator.BinaryVersion)
+        return .success()
+    }
+}
+
 func main() {
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
     commands.register(ProcessIpaCommand())
+    commands.register(VersionCommand())
     commands.register(HelpCommand(registry: commands))
 
     var arguments = CommandLine.arguments

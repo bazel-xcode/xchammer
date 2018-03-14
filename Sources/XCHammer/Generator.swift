@@ -30,10 +30,10 @@ enum Generator {
     static let BazelPreBuildTargetName = "GeneratedFiles"
     static let UpdateXcodeProjectTargetName = "UpdateXcodeProject"
 
-    /// Used for `depsHash` etc.
-    /// TODO: we should consider using the modification date of the binary. For
-    /// now, we will avoid this to prevent triggering unneeded project updates.
-    private static let BinaryVersion = "0.1.1"
+    /// The current version of the generator
+    /// @note any non forward or backward compatible changes to the CLI
+    /// arguments or UpdateXcodeProject infra MUST bump this
+    public static let BinaryVersion = "0.1.1"
 
     private static func makeTargets(targetMap: XcodeTargetMap, genOptions: XCHammerGenerateOptions) -> [String: XcodeGenTarget] {
         let profiler = XCHammerProfiler("convert_targets")
