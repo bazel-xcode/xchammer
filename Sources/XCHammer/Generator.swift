@@ -88,6 +88,7 @@ enum Generator {
 
     private static func makeUpdateXcodeProjectTarget(genOptions:
             XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> XCGTarget {
+        // Use whatever command and XCHammer this project was built with
         let generateCommand = CommandLine.arguments.filter { $0 != "--force" }
 
         // Exit with a non 0 status to ensure Xcode reloads the project ( by

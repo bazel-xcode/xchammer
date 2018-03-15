@@ -906,8 +906,8 @@ func shouldFlatten(xcodeTarget: XcodeTarget) -> Bool {
 
 private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGenerateOptions, targetMap: XcodeTargetMap) -> ([XCGBuildScript], [XCGBuildScript]) {
     func getProcessScript() -> XCGBuildScript {
-        // Assume that XCHammer is a binary installed to tools/
-        let processContent = "$SRCROOT/tools/XCHammer/XCHammer process-ipa"
+        // Use whatever XCHammer this project was built with
+        let processContent = "\(CommandLine.arguments[0]) process-ipa"
         return  XCGBuildScript(path: nil, script: processContent, name: "Process IPA")
     }
 
