@@ -106,6 +106,11 @@ enum Generator {
         let updateScript = """
         # This file is governed by XCHammer
         set -e
+
+        if [[ "\(BinaryVersion)" != "\(CommandLine.arguments[0]) --version" ]]; then 
+            echo "warning: XCHammer version mismatch"
+        fi
+
         if [[ $ACTION == "clean" ]]; then
             exit 0
         fi

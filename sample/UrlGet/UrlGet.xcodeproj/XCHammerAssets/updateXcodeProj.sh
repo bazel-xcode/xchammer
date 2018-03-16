@@ -1,5 +1,10 @@
 # This file is governed by XCHammer
 set -e
+
+if [[ "0.1.3" != "/Users/jerry/Projects/xchammer-github/.build/debug/XCHammer --version" ]]; then 
+    echo "warning: XCHammer version mismatch"
+fi
+
 if [[ $ACTION == "clean" ]]; then
     exit 0
 fi
