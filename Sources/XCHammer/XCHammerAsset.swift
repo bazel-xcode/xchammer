@@ -33,6 +33,11 @@ enum XCHammerAsset: String {
 
     case genLog = "HammerLog.txt"
 
+    /// This file is used to track the status of XCHammer and is updated when we
+    /// successfully run. Do not use this for anything else, as it is not part
+    /// the Xcode project and is unstable.
+    case genStatus = "genStatus"
+
     func getPath() -> String {
         return "XCHammerAssets/" + self.rawValue
     }
