@@ -36,7 +36,7 @@ enum Generator {
     /// @note this version is written into the `XCHAMMER_DEPS_HASH` build setting
     /// the version can be extracted with a simple search: i.e.
     /// grep -m 1 XCHAMMER_DEPS_HASH $PROJ | sed 's,.*version:\(.*\):.*,\1,g'
-    public static let BinaryVersion = "0.1.2"
+    public static let BinaryVersion = "0.1.3"
 
     /// Used to store the `depsHash` into the project
     static let DepsHashSettingName = "XCHAMMER_DEPS_HASH"
@@ -91,18 +91,28 @@ enum Generator {
         // Use whatever command and XCHammer this project was built with
         let generateCommand = CommandLine.arguments.filter { $0 != "--force" }
 
+        let genStatusPath: String
+        if let xcworkspacePath = genOptions.xcworkspacePath {
+            genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                    xcworkspacePath)
+        } else {
+            genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                    genOptions.outputProjectPath)
+        }
+
         // Exit with a non 0 status to ensure Xcode reloads the project ( by
         // forcing another build in the future )
         // Determine state by comparing timestamps of the script.
         let updateScript = """
         # This file is governed by XCHammer
+        set -e
         if [[ $ACTION == "clean" ]]; then
             exit 0
         fi
 
-        PREV_STAT=`stat -f %c "$0"`
+        PREV_STAT=`stat -f %c "\(genStatusPath)"`
         \(generateCommand.joined(separator: " "))
-        STAT=`stat -f %c "$0"`
+        STAT=`stat -f %c "\(genStatusPath)"`
         if [[ "$PREV_STAT" != "$STAT" ]]; then
             echo "error: Xcode project was out-of-date so we updated it for you! Please build again."
             exit 1
@@ -303,6 +313,13 @@ enum Generator {
         guard FileManager.default.createFile(atPath: buildFilePath,
                 contents: buildFile.data(using: .utf8), attributes: nil) else {
              fatalError("Can't write BUILD file")
+        }
+
+        let genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                tempProjectPath)
+        guard FileManager.default.createFile(atPath: genStatusPath,
+                contents: "".data(using: .utf8), attributes: nil) else {
+             fatalError("Can't write genStatus")
         }
 
         // Add the entitilement rules to the queried rules
@@ -642,6 +659,19 @@ enum Generator {
                     depsHash: depsHash)
         })
 
+        // Write the genStatus into the workspace
+        if let xcworkspacePath = xcworkspacePath {
+            try? FileManager.default.createDirectory(atPath:
+                    (xcworkspacePath + Path("XCHammerAssets")).string,
+                    withIntermediateDirectories: true,
+                    attributes: [:])
+            let genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                    xcworkspacePath)
+            guard FileManager.default.createFile(atPath: genStatusPath,
+                    contents: "".data(using: .utf8), attributes: nil) else {
+                 fatalError("Can't write genStatus")
+            }
+        }
         return results.first ?? .success()
     }
 }
