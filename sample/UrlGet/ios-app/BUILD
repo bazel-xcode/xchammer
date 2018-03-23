@@ -1,12 +1,29 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_extension")
 
 # This is needed for implicit entitlement rules created for
 # files.
 package(default_visibility = ["//visibility:public"])
 
+
+ios_extension(
+    name = "share-extension",
+    deps = ["ios-ext-bin"],
+    infoplists = ["ShareExtension/ShareExtension-Info.plist"],
+    bundle_id = "Google.UrlGet.ShareExtension",
+    families = ["iphone"],
+    visibility = ["//visibility:public"],
+)
+
+objc_library(
+    name = "ios-ext-bin",
+    srcs = ["empty-main.m"]
+)
+
 ios_application(
     name = "ios-app",
     deps = ["ios-app-bin"],
+    extensions = [":share-extension"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     bundle_id = "Google.UrlGet",

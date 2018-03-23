@@ -843,6 +843,14 @@ public class XcodeTarget: Hashable, Equatable {
         return self.extractAttributeArray(attr: .weak_sdk_frameworks, map: self.targetMap)
     }()
 
+    fileprivate var xcExtensionDeps: [XCGDependency] {
+        // Assume extensions are contained in the same workspace
+        return extensions
+            .flatMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
+            .map { XCGDependency(type: .target, reference: $0.xcTargetName,
+                    embed: $0.isExtension) }
+    }
+
     func extractModuleMap() -> String? {
         guard let file = (self.sourceFiles + self.nonARCSourceFiles).first(where: { $0.subPath.hasSuffix(".modulemap") }) else {
             return nil
@@ -970,7 +978,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
         if shouldPropagateDeps(forTarget: xcodeTarget) {
             // Extract and depend on deps of the flat flattended deps
             deps = unwrapedFlatFlattendDeps
-                .flatMap { $0.transitiveDeps }
+                .flatMap { $0.transitiveDeps } + xcodeTarget.xcExtensionDeps
         } else {
             deps = []
         }
@@ -979,7 +987,8 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
         settings = xcodeTarget.settings
 
         if shouldPropagateDeps(forTarget: xcodeTarget) {
-            deps = Array(xcodeTarget.transitiveDeps)
+            deps = Array(xcodeTarget.transitiveDeps) +
+                xcodeTarget.xcExtensionDeps
         } else {
             deps = []
         }
