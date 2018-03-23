@@ -40,7 +40,13 @@ func makePathFiltersPredicate(_ paths: Set<String>) -> (String) -> Bool {
         if paths.contains(dir) { 
             return true
         }
+
+        // We don't normalize paths, so check for both terminated and non
+        // terminated
         let terminatedDir = dir + "/"
+        if paths.contains(terminatedDir) {
+            return true
+        }
         for filter in recursiveFilters {
             if terminatedDir.hasPrefix(filter) {
                 return true

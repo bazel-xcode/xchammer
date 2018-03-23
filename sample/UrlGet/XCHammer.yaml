@@ -3,6 +3,7 @@ targets:
     - "//ios-app:UnitTests"
     - "//ios-app:UnitTestsWithHost"
     - "//ios-app:ios-app"
+    - "//ios-app:share-extension"
 
 projects:
     "UrlGet":
