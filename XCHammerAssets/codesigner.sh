@@ -29,6 +29,8 @@ fi
 
 echo "Signing.."
 
+ditto $PROFILE $WORK_DIR/embedded.mobileprovision
+
 ls $WORK_DIR/Frameworks/* >& /dev/null && /usr/bin/codesign --force --sign $VERIFIED_ID --entitlements $ENTITLEMENTS $WORK_DIR/Frameworks/*
 
 /usr/bin/codesign --force --sign $VERIFIED_ID --entitlements $ENTITLEMENTS $WORK_DIR

@@ -36,7 +36,7 @@ enum Generator {
     /// @note this version is written into the `XCHAMMER_DEPS_HASH` build setting
     /// the version can be extracted with a simple search: i.e.
     /// grep -m 1 XCHAMMER_DEPS_HASH $PROJ | sed 's,.*version:\(.*\):.*,\1,g'
-    public static let BinaryVersion = "0.1.3"
+    public static let BinaryVersion = "0.1.4"
 
     /// Used to store the `depsHash` into the project
     static let DepsHashSettingName = "XCHAMMER_DEPS_HASH"
