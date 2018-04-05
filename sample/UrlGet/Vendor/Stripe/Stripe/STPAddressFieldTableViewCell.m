@@ -13,19 +13,21 @@
 #import "STPLocalizationUtils.h"
 #import "STPPhoneNumberValidator.h"
 #import "STPPostalCodeValidator.h"
+#import "UIView+Stripe_SafeAreaBounds.h"
 
-@interface STPAddressFieldTableViewCell() <STPFormTextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface STPAddressFieldTableViewCell() <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property(nonatomic, weak) STPFormTextField *textField;
-@property(nonatomic) UIToolbar *inputAccessoryToolbar;
-@property(nonatomic) UIPickerView *countryPickerView;
-@property(nonatomic, strong) NSArray *countryCodes;
-@property(nonatomic, weak)id<STPAddressFieldTableViewCellDelegate>delegate;
-@property(nonatomic, strong) NSString *ourCountryCode;
-@property(nonatomic, assign) STPPostalCodeType postalCodeType;
+@property (nonatomic, weak) STPValidatedTextField *textField;
+@property (nonatomic) UIToolbar *inputAccessoryToolbar;
+@property (nonatomic) UIPickerView *countryPickerView;
+@property (nonatomic, strong) NSArray *countryCodes;
+@property (nonatomic, weak) id<STPAddressFieldTableViewCellDelegate>delegate;
+@property (nonatomic, strong) NSString *ourCountryCode;
 @end
 
 @implementation STPAddressFieldTableViewCell
+
+@synthesize contents = _contents;
 
 - (instancetype)initWithType:(STPAddressFieldType)type
                     contents:(NSString *)contents
@@ -36,12 +38,22 @@
         _delegate = delegate;
         _theme = [STPTheme new];
         _contents = contents;
-        
-        STPFormTextField *textField = [[STPFormTextField alloc] init];
-        textField.formDelegate = self;
-        textField.autoFormattingBehavior = STPFormTextFieldAutoFormattingBehaviorNone;
-        textField.selectionEnabled = YES;
-        textField.preservesContentsOnPaste = YES;
+
+        STPValidatedTextField *textField;
+        if (type == STPAddressFieldTypePhone) {
+            // We have very specific US-based phone formatting that's built into STPFormTextField
+            STPFormTextField *formTextField = [[STPFormTextField alloc] init];
+            formTextField.preservesContentsOnPaste = NO;
+            formTextField.selectionEnabled = NO;
+            textField = formTextField;
+        }
+        else {
+            textField = [[STPValidatedTextField alloc] init];
+        }
+        textField.delegate = self;
+        [textField addTarget:self
+                      action:@selector(textFieldTextDidChange:)
+            forControlEvents:UIControlEventEditingChanged];
         _textField = textField;
         [self.contentView addSubview:textField];
         
@@ -117,18 +129,33 @@
     switch (self.type) {
         case STPAddressFieldTypeName: 
             self.textField.keyboardType = UIKeyboardTypeDefault;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeName;
+            }
             break;
         case STPAddressFieldTypeLine1: 
             self.textField.keyboardType = UIKeyboardTypeDefault;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeStreetAddressLine1;
+            }
             break;
         case STPAddressFieldTypeLine2: 
             self.textField.keyboardType = UIKeyboardTypeDefault;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeStreetAddressLine2;
+            }
             break;
         case STPAddressFieldTypeCity:
             self.textField.keyboardType = UIKeyboardTypeDefault;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeAddressCity;
+            }
             break;
         case STPAddressFieldTypeState:
             self.textField.keyboardType = UIKeyboardTypeDefault;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeAddressState;
+            }
             break;
         case STPAddressFieldTypeZip:
             if ([self countryCodeIsUnitedStates]) { 
@@ -136,9 +163,11 @@
             } else {
                 self.textField.keyboardType = UIKeyboardTypeASCIICapable;
             }
-            
-            self.textField.preservesContentsOnPaste = NO;
-            self.textField.selectionEnabled = NO;
+
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypePostalCode;
+            }
+
             if (!self.lastInList) {
                 self.textField.inputAccessoryView = self.inputAccessoryToolbar;
             }
@@ -148,6 +177,7 @@
             break;
         case STPAddressFieldTypeCountry:
             self.textField.keyboardType = UIKeyboardTypeDefault;
+            // Don't set textContentType for Country, because we don't want iOS to skip the UIPickerView for input
             self.textField.inputView = self.countryPickerView;
             NSInteger index = [self.countryCodes indexOfObject:self.contents];
             if (index == NSNotFound) {
@@ -161,13 +191,13 @@
             break;
         case STPAddressFieldTypePhone:
             self.textField.keyboardType = UIKeyboardTypePhonePad;
-            if ([self countryCodeIsUnitedStates]) {
-                self.textField.autoFormattingBehavior = STPFormTextFieldAutoFormattingBehaviorPhoneNumbers;
-            } else {
-                self.textField.autoFormattingBehavior = STPFormTextFieldAutoFormattingBehaviorNone;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeTelephoneNumber;
             }
-            self.textField.preservesContentsOnPaste = NO;
-            self.textField.selectionEnabled = NO;
+            STPFormTextFieldAutoFormattingBehavior behavior = ([self countryCodeIsUnitedStates] ?
+                                                               STPFormTextFieldAutoFormattingBehaviorPhoneNumbers :
+                                                               STPFormTextFieldAutoFormattingBehaviorNone);
+            ((STPFormTextField *)self.textField).autoFormattingBehavior = behavior;
             if (!self.lastInList) {
                 self.textField.inputAccessoryView = self.inputAccessoryToolbar;
             }
@@ -175,10 +205,13 @@
                 self.textField.inputAccessoryView = nil;
             }
             break;
-        case STPAddressFieldTypeEmail: 
+        case STPAddressFieldTypeEmail:
             self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
             self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
             self.textField.keyboardType = UIKeyboardTypeEmailAddress;
+            if (@available(iOS 10.0, *)) {
+                self.textField.textContentType = UITextContentTypeEmailAddress;
+            }
             break;
             
     }
@@ -231,14 +264,13 @@
     }
     
     self.ourCountryCode = countryCode;
-    _postalCodeType = [STPPostalCodeValidator postalCodeTypeForCountryCode:self.ourCountryCode];
     [self updateTextFieldsAndCaptions];
     [self setNeedsLayout];
 }
 
 - (void)updateAppearance {
-    self.contentView.backgroundColor = self.theme.secondaryBackgroundColor;
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = self.theme.secondaryBackgroundColor;
+    self.contentView.backgroundColor = [UIColor clearColor];
     self.textField.placeholderColor = self.theme.tertiaryForegroundColor;
     self.textField.defaultColor = self.theme.primaryForegroundColor;
     self.textField.errorColor = self.theme.errorColor;
@@ -252,9 +284,10 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    CGRect bounds = [self stp_boundsWithHorizontalSafeAreaInsets];
     CGFloat textFieldX = 15;
-    self.textField.frame = CGRectMake(textFieldX, 1, self.bounds.size.width - textFieldX, self.bounds.size.height - 1);
-    self.inputAccessoryToolbar.frame = CGRectMake(0, 0, self.bounds.size.width, 44);
+    self.textField.frame = CGRectMake(textFieldX, 1, bounds.size.width - textFieldX, bounds.size.height - 1);
+    self.inputAccessoryToolbar.frame = CGRectMake(0, 0, bounds.size.width, 44);
 }
 
 - (BOOL)becomeFirstResponder {
@@ -267,9 +300,9 @@
     }
 }
 
-#pragma mark - STPFormTextFieldDelegate
+#pragma mark - UITextFieldDelegate
 
-- (void)formTextFieldTextDidChange:(STPFormTextField *)textField {
+- (void)textFieldTextDidChange:(STPValidatedTextField *)textField {
     if (self.type != STPAddressFieldTypeCountry) {
         _contents = textField.text;
         if ([textField isFirstResponder]) {
@@ -290,10 +323,9 @@
 
 - (void)textFieldDidEndEditing:(STPFormTextField *)textField {
     textField.validText = [self validContents];
-}
-
-- (void)formTextFieldDidBackspaceOnEmpty:(__unused STPFormTextField *)formTextField {
-    [self.delegate addressFieldTableViewCellDidBackspaceOnEmpty:self];
+    if ([self.delegate respondsToSelector:@selector(addressFieldTableViewCellDidEndEditing:)]) {
+        [self.delegate addressFieldTableViewCellDidEndEditing:self];
+    }
 }
 
 - (void)setCaption:(NSString *)caption {
@@ -302,6 +334,13 @@
 
 - (NSString *)caption {
     return self.textField.placeholder;
+}
+
+- (NSString *)contents {
+    // iOS 11 QuickType completions from textContentType have a space at the end.
+    // This *keeps* that space in the `textField`, but removes leading/trailing spaces from
+    // the logical contents of this field, so they're ignored for validation and persisting
+    return [_contents stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
 - (void)setContents:(NSString *)contents {
@@ -316,6 +355,7 @@
     } else {
         self.textField.validText = [self validContents];
     }
+    [self.delegate addressFieldTableViewCellDidUpdateText:self];
 }
 
 - (BOOL)validContents {
@@ -329,8 +369,8 @@
         case STPAddressFieldTypeLine2:
             return YES;
         case STPAddressFieldTypeZip:
-            return [STPPostalCodeValidator stringIsValidPostalCode:self.contents
-                                                              type:self.postalCodeType];
+            return ([STPPostalCodeValidator validationStateForPostalCode:self.contents
+                                                             countryCode:self.ourCountryCode] == STPCardValidationStateValid);
         case STPAddressFieldTypeEmail:
             return [STPEmailAddressValidator stringIsValidEmailAddress:self.contents];
         case STPAddressFieldTypePhone:
@@ -349,12 +389,10 @@
         case STPAddressFieldTypeLine2:
             return YES;
         case STPAddressFieldTypeZip: {
-            if (self.postalCodeType == STPCountryPostalCodeTypeNumericOnly) {
-                return [STPCardValidator stringIsNumeric:self.contents];
-            }
-            else {
-                return YES;
-            }
+            STPCardValidationState validationState = [STPPostalCodeValidator validationStateForPostalCode:self.contents
+                                                                                              countryCode:self.ourCountryCode];
+            return (validationState == STPCardValidationStateValid
+                    || validationState == STPCardValidationStateIncomplete);
         }
         case STPAddressFieldTypeEmail:
             return [STPEmailAddressValidator stringIsValidPartialEmailAddress:self.contents];
@@ -370,6 +408,7 @@
     self.ourCountryCode = self.countryCodes[row];
     self.contents = self.ourCountryCode;
     self.textField.text = [self pickerView:pickerView titleForRow:row forComponent:component];
+    [self textFieldTextDidChange:self.textField]; // UIControlEvent not fired for programmatic changes
     if ([self.delegate respondsToSelector:@selector(addressFieldTableViewCountryCode)]) {
         self.delegate.addressFieldTableViewCountryCode = self.ourCountryCode;
     }

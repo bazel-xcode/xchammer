@@ -9,14 +9,47 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  The various card brands to which a payment card can belong.
+ The various card brands to which a payment card can belong.
  */
 typedef NS_ENUM(NSInteger, STPCardBrand) {
+
+    /**
+     Visa card
+     */
     STPCardBrandVisa,
+
+    /**
+     American Express card
+     */
     STPCardBrandAmex,
+
+    /**
+     MasterCard card
+     */
     STPCardBrandMasterCard,
+
+    /**
+     Discover card
+     */
     STPCardBrandDiscover,
+
+    /**
+     JCB card
+     */
     STPCardBrandJCB,
+
+    /**
+     Diners Club card
+     */
     STPCardBrandDinersClub,
+
+    /**
+     UnionPay card
+     */
+    STPCardBrandUnionPay,
+
+    /**
+     An unknown card brand type
+     */
     STPCardBrandUnknown,
 };

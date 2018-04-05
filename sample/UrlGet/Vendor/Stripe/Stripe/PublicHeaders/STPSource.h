@@ -7,173 +7,125 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "STPAPIResponseDecodable.h"
 #import "STPSourceCardDetails.h"
-#import "STPSourceProtocol.h"
+#import "STPSourceEnums.h"
 #import "STPSourceOwner.h"
+#import "STPSourceProtocol.h"
 #import "STPSourceReceiver.h"
 #import "STPSourceRedirect.h"
 #import "STPSourceSEPADebitDetails.h"
 #import "STPSourceVerification.h"
 
-/**
- *  Authentication flows for a Source
- */
-typedef NS_ENUM(NSInteger, STPSourceFlow) {
-    // No action is required from your customer.
-    STPSourceFlowNone,
-    // Your customer must be redirected to their online banking service (either a website or mobile banking app) to approve the payment.
-    STPSourceFlowRedirect,
-    // Your customer must verify ownership of their account by providing a code that you post to the Stripe API for authentication.
-    STPSourceFlowCodeVerification,
-    // Your customer must push funds to the account information provided.
-    STPSourceFlowReceiver,
-    // The source's flow is unknown. You shouldn't encounter this value.
-    STPSourceFlowUnknown
-};
-
-/**
- *  Usage types for a Source
- */
-typedef NS_ENUM(NSInteger, STPSourceUsage) {
-    // The source can be reused.
-    STPSourceUsageReusable,
-    // The source can only be used once.
-    STPSourceUsageSingleUse,
-    // The source's usage is unknown. You shouldn't encounter this value.
-    STPSourceUsageUnknown
-};
-
-/**
- *  Status types for a Source
- */
-typedef NS_ENUM(NSInteger, STPSourceStatus) {
-    // The source has been created and is awaiting customer action.
-    STPSourceStatusPending,
-    // The source is ready to use. The customer action has been completed or the payment method requires no customer action.
-    STPSourceStatusChargeable,
-    // The source has been used. This status only applies to single-use sources.
-    STPSourceStatusConsumed,
-    // The source, which was chargeable, has expired because it was not used to make a charge request within a specified amount of time.
-    STPSourceStatusCanceled,
-    // Your customer has not taken the required action or revoked your access (e.g., did not authorize the payment with their bank or canceled their mandate acceptance for SEPA direct debits).
-    STPSourceStatusFailed,
-    // The source status is unknown. You shouldn't encounter this value.
-    STPSourceStatusUnknown,
-};
-
-/**
- *  Types for a Source
- */
-typedef NS_ENUM(NSInteger, STPSourceType) {
-    STPSourceTypeBancontact,
-    STPSourceTypeBitcoin,
-    STPSourceTypeCard,
-    STPSourceTypeGiropay,
-    STPSourceTypeIDEAL,
-    STPSourceTypeSEPADebit,
-    STPSourceTypeSofort,
-    STPSourceTypeThreeDSecure,
-    STPSourceTypeUnknown,
-};
+NS_ASSUME_NONNULL_BEGIN
 
 @class STPSourceOwner, STPSourceReceiver, STPSourceRedirect, STPSourceVerification;
 
 /**
- *  Representation of a customer's payment instrument created with the Stripe API. @see https://stripe.com/docs/api#sources
+ Representation of a customer's payment instrument created with the Stripe API. @see https://stripe.com/docs/api#sources
  */
 @interface STPSource : NSObject<STPAPIResponseDecodable, STPSourceProtocol>
 
 /**
- *  You cannot directly instantiate an `STPSource`. You should only use one that has been returned from an `STPAPIClient` callback.
+ You cannot directly instantiate an `STPSource`. You should only use one that 
+ has been returned from an `STPAPIClient` callback.
  */
-- (nonnull instancetype) init __attribute__((unavailable("You cannot directly instantiate an STPSource. You should only use one that has been returned from an STPAPIClient callback.")));
+- (instancetype)init __attribute__((unavailable("You cannot directly instantiate an STPSource. You should only use one that has been returned from an STPAPIClient callback.")));
 
 /**
- *  The amount associated with the source.
+ The amount associated with the source.
  */
-@property (nonatomic, readonly, nullable) NSNumber *amount;
+@property (nonatomic, nullable, readonly) NSNumber *amount;
 
 /**
- *  The client secret of the source. Used for client-side polling using a publishable key.
+ The client secret of the source. Used for client-side fetching of a source
+ using a publishable key.
  */
-@property (nonatomic, readonly, nullable) NSString *clientSecret;
+@property (nonatomic, nullable, readonly) NSString *clientSecret;
 
 /**
- *  When the source was created.
+ When the source was created.
  */
-@property (nonatomic, readonly, nullable) NSDate *created;
+@property (nonatomic, nullable, readonly) NSDate *created;
 
 /**
- *  The currency associated with the source.
+ The currency associated with the source.
  */
-@property (nonatomic, readonly, nullable) NSString *currency;
+@property (nonatomic, nullable, readonly) NSString *currency;
 
 /**
- *  The authentication flow of the source.
+ The authentication flow of the source.
  */
 @property (nonatomic, readonly) STPSourceFlow flow;
 
 /**
- *  Whether or not this source was created in livemode.
+ Whether or not this source was created in livemode.
  */
 @property (nonatomic, readonly) BOOL livemode;
 
 /**
- *  A set of key/value pairs associated with the source object.
+ A set of key/value pairs associated with the source object.
+
+ @see https://stripe.com/docs/api#metadata
  */
-@property (nonatomic, readonly, nullable) NSDictionary *metadata;
+@property (nonatomic, copy, nullable, readonly) NSDictionary<NSString *, NSString *> *metadata;
 
 /**
- *  Information about the owner of the payment instrument.
+ Information about the owner of the payment instrument.
  */
-@property (nonatomic, readonly, nullable) STPSourceOwner *owner;
+@property (nonatomic, nullable, readonly) STPSourceOwner *owner;
 
 /**
- *  Information related to the receiver flow. Present if the source is a receiver.
+ Information related to the receiver flow. Present if the source's flow 
+ is receiver.
  */
-@property (nonatomic, readonly, nullable) STPSourceReceiver *receiver;
+@property (nonatomic, nullable, readonly) STPSourceReceiver *receiver;
 
 /**
- *  Information related to the redirect flow. Present if the source is authenticated by a redirect.
+ Information related to the redirect flow. Present if the source's flow 
+ is redirect.
  */
-@property (nonatomic, readonly, nullable) STPSourceRedirect *redirect;
+@property (nonatomic, nullable, readonly) STPSourceRedirect *redirect;
 
 /**
- *  The status of the source.
+ The status of the source.
  */
 @property (nonatomic, readonly) STPSourceStatus status;
 
 /**
- *  The type of the source.
+ The type of the source.
  */
 @property (nonatomic, readonly) STPSourceType type;
 
 /**
- *   Whether this source should be reusable or not.
+  Whether this source should be reusable or not.
  */
 @property (nonatomic, readonly) STPSourceUsage usage;
 
 /**
- *  Information related to the verification flow. Present if the source is authenticated by a verification.
+ Information related to the verification flow. Present if the source's flow
+ is verification.
  */
-@property (nonatomic, readonly, nullable) STPSourceVerification *verification;
+@property (nonatomic, nullable, readonly) STPSourceVerification *verification;
 
 /**
- *  Information about the source specific to its type
+ Information about the source specific to its type
  */
-@property (nonatomic, readonly, nullable) NSDictionary *details;
+@property (nonatomic, nullable, readonly) NSDictionary *details;
 
 /**
- *  If this is a card source, this property provides typed access to the
- *  contents of the `details` dictionary.
+ If this is a card source, this property provides typed access to the
+ contents of the `details` dictionary.
  */
-@property (nonatomic, readonly, nullable) STPSourceCardDetails *cardDetails;
+@property (nonatomic, nullable, readonly) STPSourceCardDetails *cardDetails;
 
 /**
- *  If this is a SEPA Debit source, this property provides typed access to the
- *  contents of the `details` dictionary.
+ If this is a SEPA Debit source, this property provides typed access to the
+ contents of the `details` dictionary.
  */
-@property (nonatomic, readonly, nullable) STPSourceSEPADebitDetails *sepaDebitDetails;
+@property (nonatomic, nullable, readonly) STPSourceSEPADebitDetails *sepaDebitDetails;
 
 @end
+
+NS_ASSUME_NONNULL_END

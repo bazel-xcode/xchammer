@@ -9,52 +9,41 @@
 #import <FBSnapshotTestCase/FBSnapshotTestCase.h>
 #import <Stripe/Stripe.h>
 
-#import "TestSTPBackendAPIAdapter.h"
+#import "FBSnapshotTestCase+STPViewControllerLoading.h"
+#import "STPFixtures.h"
+#import "STPMocks.h"
 #import "STPLocalizationUtils+STPTestAdditions.h"
 
-@interface STPPaymentMethodsViewControllerLocalizationTests : FBSnapshotTestCase <STPPaymentMethodsViewControllerDelegate>
-
+@interface STPPaymentMethodsViewControllerLocalizationTests : FBSnapshotTestCase
 @end
 
 @implementation STPPaymentMethodsViewControllerLocalizationTests
 
 //- (void)setUp {
 //    [super setUp];
-//    
+//
 //    self.recordMode = YES;
 //}
 
-
 - (void)performSnapshotTestForLanguage:(NSString *)language {
-    
-    STPPaymentConfiguration *config = [STPPaymentConfiguration new];
-    config.publishableKey = @"test";
+    STPPaymentConfiguration *config = [STPFixtures paymentConfiguration];
     config.companyName = @"Test Company";
     config.requiredBillingAddressFields = STPBillingAddressFieldsFull;
     config.additionalPaymentMethods = STPPaymentMethodTypeAll;
-    config.smsAutofillDisabled = NO;
-    
+    STPTheme *theme = [STPTheme defaultTheme];
+    id customerContext = [STPMocks staticCustomerContextWithCustomer:[STPFixtures customerWithCardTokenAndSourceSources]];
+    id delegate = OCMProtocolMock(@protocol(STPPaymentMethodsViewControllerDelegate));
     [STPLocalizationUtils overrideLanguageTo:language];
-    
     STPPaymentMethodsViewController *paymentMethodsVC = [[STPPaymentMethodsViewController alloc] initWithConfiguration:config
-                                                                                                                 theme:[STPTheme defaultTheme]
-                                                                                                            apiAdapter:[TestSTPBackendAPIAdapter new] 
-                                                                                                              delegate:self];
+                                                                                                                 theme:theme
+                                                                                                       customerContext:customerContext
+                                                                                                              delegate:delegate];
 
-    UIViewController *rootVC = [UIViewController new];
 
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:paymentMethodsVC];
+    UIView *viewToTest = [self stp_preparedAndSizedViewForSnapshotTestFromViewController:paymentMethodsVC];
 
-    UIWindow *testWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
-
-    testWindow.rootViewController = rootVC;
-    [rootVC presentViewController:navController animated:NO completion:^{
-
-        FBSnapshotVerifyView(testWindow, nil)
-
-        [STPLocalizationUtils overrideLanguageTo:nil];
-    }];
-
+    FBSnapshotVerifyView(viewToTest, nil);
+    [STPLocalizationUtils overrideLanguageTo:nil];
 }
 
 - (void)testGerman {
@@ -88,24 +77,5 @@
 - (void)testChinese {
     [self performSnapshotTestForLanguage:@"zh-Hans"];
 }
-
-#pragma mark - Delegate Methods -
-
-- (void)paymentMethodsViewController:(__unused STPPaymentMethodsViewController *)paymentMethodsViewController
-              didSelectPaymentMethod:(__unused id<STPPaymentMethod>)paymentMethod {
-    
-}
-
-
-- (void)paymentMethodsViewController:(__unused STPPaymentMethodsViewController *)paymentMethodsViewController
-              didFailToLoadWithError:(__unused NSError *)error {
-    
-}
-
-
-- (void)paymentMethodsViewControllerDidFinish:(__unused STPPaymentMethodsViewController *)paymentMethodsViewController {
-    
-}
-
 
 @end

@@ -5,79 +5,86 @@
 //  Created by Jack Flintermann on 12/19/14.
 //
 
-#import <AddressBook/AddressBook.h>
-
-#import "PKPayment+Stripe.h"
 #import "STPAPIClient+ApplePay.h"
+
+#import "NSError+Stripe.h"
+#import "PKPayment+Stripe.h"
 #import "STPAPIClient+Private.h"
 #import "STPAnalyticsClient.h"
-
-FAUXPAS_IGNORED_IN_FILE(APIAvailability)
+#import "STPSourceParams.h"
+#import "STPTelemetryClient.h"
+#import "STPToken.h"
 
 @implementation STPAPIClient (ApplePay)
 
 - (void)createTokenWithPayment:(PKPayment *)payment completion:(STPTokenCompletionBlock)completion {
-    NSDictionary *parameters = [[self class] parametersForPayment:payment];
-    [self createTokenWithParameters:parameters
+    NSMutableDictionary *params = [[[self class] parametersForPayment:payment] mutableCopy];
+    [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:params];
+    [self createTokenWithParameters:params
                          completion:completion];
+    [[STPTelemetryClient sharedInstance] sendTelemetryData];
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated"
-+ (NSDictionary *)parametersForPayment:(PKPayment *)payment {
-    NSCAssert(payment != nil, @"Cannot create a token with a nil payment.");
-    NSString *paymentString =
-    [[NSString alloc] initWithData:payment.token.paymentData encoding:NSUTF8StringEncoding];
-    NSMutableDictionary *payload = [NSMutableDictionary new];
-    payload[@"pk_token"] = paymentString;
+- (void)createSourceWithPayment:(PKPayment *)payment completion:(STPSourceCompletionBlock)completion {
+    NSCAssert(payment != nil, @"'payment' is required to create an apple pay source");
+    NSCAssert(completion != nil, @"'completion' is required to use the source that is created");
+    [self createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
+        if (token.tokenId == nil
+            || error != nil) {
+            completion(nil, error ?: [NSError stp_genericConnectionError]);
+        }
+        else {
+            STPSourceParams *params = [STPSourceParams new];
+            params.type = STPSourceTypeCard;
+            params.token = token.tokenId;
+            [self createSourceWithParams:params completion:completion];
+        }
+    }];
+}
 
-    ABRecordRef billingAddress = payment.billingAddress;
-    if (billingAddress) {
++ (NSDictionary *)addressParamsFromPKContact:(PKContact *)billingContact {
+    if (billingContact) {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
-        NSString *firstName = (__bridge_transfer NSString*)ABRecordCopyValue(billingAddress, kABPersonFirstNameProperty);
-        NSString *lastName = (__bridge_transfer NSString*)ABRecordCopyValue(billingAddress, kABPersonLastNameProperty);
-        if (firstName.length && lastName.length) {
-            params[@"name"] = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+        NSPersonNameComponents *nameComponents = billingContact.name;
+        if (nameComponents) {
+            params[@"name"] = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents
+                                                                                       style:NSPersonNameComponentsFormatterStyleDefault
+                                                                                     options:(NSPersonNameComponentsFormatterOptions)0];
         }
 
-        ABMultiValueRef addressValues = ABRecordCopyValue(billingAddress, kABPersonAddressProperty);
-        if (addressValues != NULL) {
-            if (ABMultiValueGetCount(addressValues) > 0) {
-                CFDictionaryRef dict = ABMultiValueCopyValueAtIndex(addressValues, 0);
-                NSString *line1 = CFDictionaryGetValue(dict, kABPersonAddressStreetKey);
-                if (line1) {
-                    params[@"address_line1"] = line1;
-                }
-                NSString *city = CFDictionaryGetValue(dict, kABPersonAddressCityKey);
-                if (city) {
-                    params[@"address_city"] = city;
-                }
-                NSString *state = CFDictionaryGetValue(dict, kABPersonAddressStateKey);
-                if (state) {
-                    params[@"address_state"] = state;
-                }
-                NSString *zip = CFDictionaryGetValue(dict, kABPersonAddressZIPKey);
-                if (zip) {
-                    params[@"address_zip"] = zip;
-                }
-                NSString *country = CFDictionaryGetValue(dict, kABPersonAddressCountryKey);
-                if (country) {
-                    params[@"address_country"] = country;
-                }
-                CFRelease(dict);
-                payload[@"card"] = params;
-            }
-            CFRelease(addressValues);
+        CNPostalAddress *address = billingContact.postalAddress;
+        if (address) {
+            params[@"address_line1"] = address.street;
+            params[@"address_city"] = address.city;
+            params[@"address_state"] = address.state;
+            params[@"address_zip"] = address.postalCode;
+            params[@"address_country"] = address.ISOCountryCode;
         }
+
+        return params;
     }
+    else {
+        return nil;
+    }
+}
 
-    NSString *paymentInstrumentName = payment.token.paymentInstrumentName;
++ (NSDictionary *)parametersForPayment:(PKPayment *)payment {
+    NSCAssert(payment != nil, @"Cannot create a token with a nil payment.");
+
+    NSString *paymentString = [[NSString alloc] initWithData:payment.token.paymentData encoding:NSUTF8StringEncoding];
+    NSMutableDictionary *payload = [NSMutableDictionary new];
+    payload[@"pk_token"] = paymentString;
+    payload[@"card"] = [self addressParamsFromPKContact:payment.billingContact];
+
+    NSCAssert(!(paymentString.length == 0 && [[Stripe defaultPublishableKey] hasPrefix:@"pk_live"]), @"The pk_token is empty. Using Apple Pay with an iOS Simulator while not in Stripe Test Mode will always fail.");
+
+    NSString *paymentInstrumentName = payment.token.paymentMethod.displayName;
     if (paymentInstrumentName) {
         payload[@"pk_token_instrument_name"] = paymentInstrumentName;
     }
 
-    NSString *paymentNetwork = payment.token.paymentNetwork;
+    NSString *paymentNetwork = payment.token.paymentMethod.network;
     if (paymentNetwork) {
         payload[@"pk_token_payment_network"] = paymentNetwork;
     }
@@ -93,7 +100,6 @@ FAUXPAS_IGNORED_IN_FILE(APIAvailability)
     return payload;
 }
 
-#pragma clang diagnostic pop
 
 @end
 

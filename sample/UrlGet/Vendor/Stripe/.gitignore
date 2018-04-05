@@ -1,4 +1,6 @@
 build/*
+Example/Carthage/*
+Example/Cartfile.resolved
 Carthage/*
 Tests/build/*
 Tests/installation_tests/cocoapods/**/Podfile.lock
@@ -28,3 +30,4 @@ xcuserdata/
 
 jazzy
 jazzy/*
+docs/docs/undocumented.json

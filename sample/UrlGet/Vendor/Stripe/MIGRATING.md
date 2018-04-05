@@ -1,5 +1,52 @@
 ## Migration Guides
 
+### Migrating from versions < 12.0.0
+* The SDK now requires iOS 9+ and Xcode version 9+. If you need to support iOS 8 or Xcode 8, the last supported version is [11.5.0](https://github.com/stripe/stripe-ios/releases/tag/v11.5.0)
+* `STPPaymentConfiguration.requiredShippingAddress` now is a set of `STPContactField` objects instead of a `PKAddressField` bitmask.
+  * Most of the previous `PKAddressField` constants have matching `STPContactField` constants. To convert your code, switch to passing in a set of the matching constants
+    * Example: `(PKAddressField)(PKAddressFieldName|PKAddressFieldPostalAddress)` becomes `[NSSet setwithArray:@[STPContactFieldName, STPContactFieldPostalAddress]]`)
+  * Anywhere you were using `PKAddressFieldNone` you can now simply pass in `nil`
+  * If you were using `PKAddressFieldAll`, you must switch to manually listing all the fields that you want.
+* `AddressBook` framework support has been removed. If you were using AddressBook related functionality, you must switch over to using the `Contacts` framework.
+* `STPRedirectContext` will no longer retain itself for the duration of the redirect. If you were relying on this functionality, you must change your code to explicitly maintain a reference to it.
+  * The new constants also correspond to and work similarly to Apple's new `PKContactField` values.
+
+### Migrating from versions < 11.4.0
+* The `STPBackendAPIAdapter` protocol and all associated methods are no longer deprecated. We still recommend using `STPCustomerContext` to update a Stripe customer object on your behalf, rather than using your own implementation of `STPBackendAPIAdapter`.
+
+### Migrating from versions < 11.3.0
+* Changes to  `STPCard`, `STPCardParams`, `STPBankAccount`, and `STPBankAccountParams`
+  * `STPCard` no longer subclasses from `STPCardParams`. You must now specifically create `STPCardParams` objects to create new tokens.
+  * `STPBankAccount` no longer subclasses from `STPBankAccountParams`.
+  * You can no longer directly create `STPCard` objects, you should only use ones that have been decoded from Stripe API responses via `STPAPIClient`.
+  * All `STPCard` and `STPBankAccount` properties have been made readonly.
+  * Broken out individual address properties on `STPCard` and `STPCardParams` have been deprecated in favor of the grouped `address` property.
+* The value of `[STPAPIResponseDecodable allResponseFields]` is now completely (deeply) filtered to not contain any instances of `[NSNull null]`. Previously, only `[NSNull null]` one level deep (shallow) were removed.
+
+### Migrating from versions < 11.2.0
+* `STPCustomer`'s `shippingAddress` property is now correctly annotated as nullable. Its type is an optional (`STPAddress?`) in Swift.
+
+### Migrating from versions < 11.0.0
+- We've greatly simplified the integration for `STPPaymentContext`. In order to migrate to the new `STPPaymentContext` integration using ephemeral keys, you'll need to:
+  1. On your backend, add a new endpoint that creates an ephemeral key for the Stripe customer associated with your user, and returns its raw JSON. Note that you should _not_ remove the 3 endpoints you added for your initial PaymentContext integration until you're ready to drop support for previous versions of your app.
+  2. In your app, make your API client class conform to `STPEphemeralKeyProvider` by adding a method that requests an ephemeral key from the endpoint you added in (1).
+  3. In your app, remove any references to `STPBackendAPIAdapter`. Your API client class will no longer need to conform to `STPBackendAPIAdapter`, and you can delete the `retrieveCustomer`, `attachSourceToCustomer`, and `selectDefaultCustomerSource` methods.
+  4. Instead of using the initializers for `STPPaymentContext` or `STPPaymentMethodsViewController` that take an `STPBackendAPIAdapter` parameter, you should use the new initializers that take an `STPCustomerContext` parameter. You'll need to set up your instance of `STPCustomerContext` using the key provider you set up in (2).
+- For a more detailed overview of the new integration, you can refer to our tutorial at https://stripe.com/docs/mobile/ios/standard
+- `[STPFile stringFromPurpose:]` now returns `nil` for `STPFilePurposeUnknown`. Will return a non-nil value for all other `STPFilePurpose`.
+- We've removed the `email` and `phone` properties in `STPUserInformation`. You can pre-fill this information in the shipping form using the new `shippingAddress` property.
+- The SMS card fill feature has been removed from `STPPaymentContext`, as well as the associated `smsAutofillDisabled` configuration option (ie it will now always behave as if it is disabled).
+
+### Migrating from versions < 10.2.0
+- `paymentRequestWithMerchantIdentifier:` has been deprecated. You should instead use `paymentRequestWithMerchantIdentifier:country:currency:`. Apple Pay is now available in many countries and currencies, and you should use the appropriate values for your business.
+- We've added a `paymentCountry` property to `STPPaymentContext`. This affects the countryCode of Apple Pay payments, and defaults to "US". You should set this to the country your Stripe account is in.
+- Polling for source object updates is deprecated. Check https://stripe.com/docs for the latest best practices on how to integrate with the sources API using webhooks.
+- `paymentMethodsViewController:didSelectPaymentMethod:` is now optional. If you have an empty implementation of this method, you can remove it.
+
+### Migrating from versions < 10.1.0
+
+- STPPaymentMethodsViewControllerDelegate now has a separate `paymentMethodsViewControllerDidCancel:` callback, differentiating from successful method selections. You should make sure to also dismiss the view controller in that callback.
+
 ### Migrating from versions < 10.0
 
 - Methods deprecated in Version 6.0 have now been removed.

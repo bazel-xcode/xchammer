@@ -6,12 +6,18 @@
 //  Copyright © 2017 Stripe, Inc. All rights reserved.
 //
 
-#import "NSDictionary+Stripe.h"
+
 #import "STPSource.h"
+#import "STPSource+Private.h"
+
+#import "STPImageLibrary.h"
+#import "STPLocalizationUtils.h"
 #import "STPSourceOwner.h"
 #import "STPSourceReceiver.h"
 #import "STPSourceRedirect.h"
 #import "STPSourceVerification.h"
+
+#import "NSDictionary+Stripe.h"
 
 @interface STPSource ()
 
@@ -22,7 +28,7 @@
 @property (nonatomic, nullable) NSString *currency;
 @property (nonatomic) STPSourceFlow flow;
 @property (nonatomic) BOOL livemode;
-@property (nonatomic, nullable) NSDictionary *metadata;
+@property (nonatomic, copy, nullable, readwrite) NSDictionary<NSString *, NSString *> *metadata;
 @property (nonatomic, nullable) STPSourceOwner *owner;
 @property (nonatomic, nullable) STPSourceReceiver *receiver;
 @property (nonatomic, nullable) STPSourceRedirect *redirect;
@@ -35,11 +41,15 @@
 @property (nonatomic, nullable) STPSourceSEPADebitDetails *sepaDebitDetails;
 @property (nonatomic, readwrite, nonnull, copy) NSDictionary *allResponseFields;
 
+// See STPSource+Private.h
+
 @end
 
 @implementation STPSource
 
-+ (NSDictionary<NSString *,NSNumber *>*)stringToType {
+#pragma mark - STPSourceType
+
++ (NSDictionary<NSString *,NSNumber *> *)stringToTypeMapping {
     return @{
              @"bancontact": @(STPSourceTypeBancontact),
              @"bitcoin": @(STPSourceTypeBitcoin),
@@ -48,83 +58,102 @@
              @"ideal": @(STPSourceTypeIDEAL),
              @"sepa_debit": @(STPSourceTypeSEPADebit),
              @"sofort": @(STPSourceTypeSofort),
-             @"three_d_secure": @(STPSourceTypeThreeDSecure)
+             @"three_d_secure": @(STPSourceTypeThreeDSecure),
+             @"alipay": @(STPSourceTypeAlipay),
+             @"p24": @(STPSourceTypeP24),
              };
 }
 
 + (STPSourceType)typeFromString:(NSString *)string {
     NSString *key = [string lowercaseString];
-    NSNumber *value = [self stringToType][key];
-    if (value) {
-        return (STPSourceType)[value integerValue];
-    } else {
-        return STPSourceTypeUnknown;
+    NSNumber *typeNumber = [self stringToTypeMapping][key];
+
+    if (typeNumber != nil) {
+        return (STPSourceType)[typeNumber integerValue];
     }
+
+    return STPSourceTypeUnknown;
 }
 
-+ (NSString *)stringFromType:(STPSourceType)type {
-    return [[[self stringToType] allKeysForObject:@(type)] firstObject];
++ (nullable NSString *)stringFromType:(STPSourceType)type {
+    return [[[self stringToTypeMapping] allKeysForObject:@(type)] firstObject];
 }
 
-+ (NSDictionary<NSString *,NSNumber *>*)stringToFlow {
+#pragma mark - STPSourceFlow
+
++ (NSDictionary<NSString *,NSNumber *> *)stringToFlowMapping {
     return @{
              @"redirect": @(STPSourceFlowRedirect),
              @"receiver": @(STPSourceFlowReceiver),
              @"code_verification": @(STPSourceFlowCodeVerification),
-             @"none": @(STPSourceFlowNone)
+             @"none": @(STPSourceFlowNone),
              };
 }
 
 + (STPSourceFlow)flowFromString:(NSString *)string {
     NSString *key = [string lowercaseString];
-    NSNumber *value = [self stringToFlow][key];
-    if (value) {
-        return (STPSourceFlow)[value integerValue];
-    } else {
-        return STPSourceFlowUnknown;
+    NSNumber *flowNumber = [self stringToFlowMapping][key];
+
+    if (flowNumber != nil) {
+        return (STPSourceFlow)[flowNumber integerValue];
     }
+
+    return STPSourceFlowUnknown;
 }
 
-+ (NSString *)stringFromFlow:(STPSourceFlow)flow {
-    return [[[self stringToFlow] allKeysForObject:@(flow)] firstObject];
++ (nullable NSString *)stringFromFlow:(STPSourceFlow)flow {
+    return [[[self stringToFlowMapping] allKeysForObject:@(flow)] firstObject];
+}
+
+#pragma mark - STPSourceStatus
+
++ (NSDictionary <NSString *, NSNumber *> *)stringToStatusMapping {
+    return @{
+             @"pending": @(STPSourceStatusPending),
+             @"chargeable": @(STPSourceStatusChargeable),
+             @"consumed": @(STPSourceStatusConsumed),
+             @"canceled": @(STPSourceStatusCanceled),
+             @"failed": @(STPSourceStatusFailed),
+             };
 }
 
 + (STPSourceStatus)statusFromString:(NSString *)string {
-    NSString *status = [string lowercaseString];
-    if ([status isEqualToString:@"pending"]) {
-        return STPSourceStatusPending;
-    } else if ([status isEqualToString:@"chargeable"]) {
-        return STPSourceStatusChargeable;
-    } else if ([status isEqualToString:@"consumed"]) {
-        return STPSourceStatusConsumed;
-    } else if ([status isEqualToString:@"canceled"]) {
-        return STPSourceStatusCanceled;
-    } else if ([status isEqualToString:@"failed"]) {
-        return STPSourceStatusFailed;
-    } else {
-        return STPSourceStatusUnknown;
+    NSString *key = [string lowercaseString];
+    NSNumber *statusNumber = [self stringToStatusMapping][key];
+
+    if (statusNumber != nil) {
+        return (STPSourceStatus)[statusNumber integerValue];
     }
+
+    return STPSourceStatusUnknown;
 }
 
-+ (NSDictionary<NSString *,NSNumber *>*)stringToUsage {
++ (nullable NSString *)stringFromStatus:(STPSourceStatus)status {
+    return [[[self stringToStatusMapping] allKeysForObject:@(status)] firstObject];
+}
+
+#pragma mark - STPSourceUsage
+
++ (NSDictionary<NSString *,NSNumber *> *)stringToUsageMapping {
     return @{
              @"reusable": @(STPSourceUsageReusable),
-             @"single_use": @(STPSourceUsageSingleUse)
+             @"single_use": @(STPSourceUsageSingleUse),
              };
 }
 
 + (STPSourceUsage)usageFromString:(NSString *)string {
     NSString *key = [string lowercaseString];
-    NSNumber *value = [self stringToUsage][key];
-    if (value) {
-        return (STPSourceUsage)[value integerValue];
-    } else {
-        return STPSourceUsageUnknown;
+    NSNumber *usageNumber = [self stringToUsageMapping][key];
+
+    if (usageNumber != nil) {
+        return (STPSourceUsage)[usageNumber integerValue];
     }
+
+    return STPSourceUsageUnknown;
 }
 
-+ (NSString *)stringFromUsage:(STPSourceUsage)usage {
-    return [[[self stringToUsage] allKeysForObject:@(usage)] firstObject];
++ (nullable NSString *)stringFromUsage:(STPSourceUsage)usage {
+    return [[[self stringToUsageMapping] allKeysForObject:@(usage)] firstObject];
 }
 
 #pragma mark - Equality
@@ -149,36 +178,81 @@
     return [self.stripeID isEqualToString:source.stripeID];
 }
 
-#pragma mark STPAPIResponseDecodable
+#pragma mark - Description
 
-+ (NSArray *)requiredFields {
-    return @[@"id", @"livemode", @"status", @"type"];
+- (NSString *)description {
+    NSArray *props = @[
+                       // Object
+                       [NSString stringWithFormat:@"%@: %p", NSStringFromClass([self class]), self],
+
+                       // Identifier
+                       [NSString stringWithFormat:@"stripeID = %@", self.stripeID],
+
+                       // Source details (alphabetical)
+                       [NSString stringWithFormat:@"amount = %@", self.amount],
+                       [NSString stringWithFormat:@"clientSecret = %@", (self.clientSecret) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"created = %@", self.created],
+                       [NSString stringWithFormat:@"currency = %@", self.currency],
+                       [NSString stringWithFormat:@"flow = %@", ([self.class stringFromFlow:self.flow]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"livemode = %@", (self.livemode) ? @"YES" : @"NO"],
+                       [NSString stringWithFormat:@"metadata = %@", (self.metadata) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"owner = %@", (self.owner) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"receiver = %@", self.receiver],
+                       [NSString stringWithFormat:@"redirect = %@", self.redirect],
+                       [NSString stringWithFormat:@"status = %@", ([self.class stringFromStatus:self.status]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"type = %@", ([self.class stringFromType:self.type]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"usage = %@", ([self.class stringFromUsage:self.usage]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"verification = %@", self.verification],
+                       ];
+
+    return [NSString stringWithFormat:@"<%@>", [props componentsJoinedByString:@"; "]];
+}
+
+#pragma mark - STPAPIResponseDecodable
+
+- (NSString *)stripeObject {
+    return @"source";
 }
 
 + (instancetype)decodedObjectFromAPIResponse:(NSDictionary *)response {
-    NSDictionary *dict = [response stp_dictionaryByRemovingNullsValidatingRequiredFields:[self requiredFields]];
+    NSDictionary *dict = [response stp_dictionaryByRemovingNulls];
     if (!dict) {
         return nil;
     }
 
+    // required fields
+    NSString *stripeId = [dict stp_stringForKey:@"id"];
+    NSString *rawStatus = [dict stp_stringForKey:@"status"];
+    NSString *rawType = [dict stp_stringForKey:@"type"];
+    if (!stripeId || !rawStatus || !rawType || !dict[@"livemode"]) {
+        return nil;
+    }
+
     STPSource *source = [self new];
-    source.stripeID = dict[@"id"];
-    source.amount = dict[@"amount"];
-    source.clientSecret = dict[@"client_secret"];
-    source.created = [NSDate dateWithTimeIntervalSince1970:[dict[@"created"] doubleValue]];
-    source.currency = dict[@"currency"];
-    source.flow = [[self class] flowFromString:dict[@"flow"]];
-    source.livemode = [dict[@"livemode"] boolValue];
-    source.metadata = dict[@"metadata"];
-    source.owner = [STPSourceOwner decodedObjectFromAPIResponse:dict[@"owner"]];
-    source.receiver = [STPSourceReceiver decodedObjectFromAPIResponse:dict[@"receiver"]];
-    source.redirect = [STPSourceRedirect decodedObjectFromAPIResponse:dict[@"redirect"]];
-    source.status = [[self class] statusFromString:dict[@"status"]];
-    NSString *typeString = dict[@"type"];
-    source.type = [[self class] typeFromString:typeString];
-    source.usage = [[self class] usageFromString:dict[@"usage"]];
-    source.verification = [STPSourceVerification decodedObjectFromAPIResponse:dict[@"verification"]];
-    source.details = dict[typeString];
+    source.stripeID = stripeId;
+    source.amount = [dict stp_numberForKey:@"amount"];
+    source.clientSecret = [dict stp_stringForKey:@"client_secret"];
+    source.created = [dict stp_dateForKey:@"created"];
+    source.currency = [dict stp_stringForKey:@"currency"];
+    NSString *rawFlow = [dict stp_stringForKey:@"flow"];
+    source.flow = [[self class] flowFromString:rawFlow];
+    source.livemode = [dict stp_boolForKey:@"livemode" or:YES];
+    source.metadata = [[dict stp_dictionaryForKey:@"metadata"] stp_dictionaryByRemovingNonStrings];
+    NSDictionary *rawOwner = [dict stp_dictionaryForKey:@"owner"];
+    source.owner = [STPSourceOwner decodedObjectFromAPIResponse:rawOwner];
+    NSDictionary *rawReceiver = [dict stp_dictionaryForKey:@"receiver"];
+    source.receiver = [STPSourceReceiver decodedObjectFromAPIResponse:rawReceiver];
+    NSDictionary *rawRedirect = [dict stp_dictionaryForKey:@"redirect"];
+    source.redirect = [STPSourceRedirect decodedObjectFromAPIResponse:rawRedirect];
+    source.status = [[self class] statusFromString:rawStatus];
+    source.type = [[self class] typeFromString:rawType];
+    NSString *rawUsage = [dict stp_stringForKey:@"usage"];
+    source.usage = [[self class] usageFromString:rawUsage];
+    NSDictionary *rawVerification = [dict stp_dictionaryForKey:@"verification"];
+    if (rawVerification) {
+        source.verification = [STPSourceVerification decodedObjectFromAPIResponse:rawVerification];
+    }
+    source.details = [dict stp_dictionaryForKey:rawType];
     source.allResponseFields = dict;
 
     if (source.type == STPSourceTypeCard) {
@@ -190,5 +264,39 @@
 
     return source;
 }
+
+#pragma mark - STPPaymentMethod
+
+- (UIImage *)image {
+    if (self.type == STPSourceTypeCard
+        && self.cardDetails != nil) {
+        return [STPImageLibrary brandImageForCardBrand:self.cardDetails.brand];
+    }
+    else {
+        return [STPImageLibrary brandImageForCardBrand:STPCardBrandUnknown];
+    }
+}
+
+- (UIImage *)templateImage {
+    if (self.type == STPSourceTypeCard
+        && self.cardDetails != nil) {
+        return [STPImageLibrary templatedBrandImageForCardBrand:self.cardDetails.brand];
+    }
+    else {
+        return [STPImageLibrary templatedBrandImageForCardBrand:STPCardBrandUnknown];
+    }
+}
+
+- (NSString *)label {
+    if (self.type == STPSourceTypeCard
+        && self.cardDetails != nil) {
+        NSString *brand = [STPCard stringFromBrand:self.cardDetails.brand];
+        return [NSString stringWithFormat:@"%@ %@", brand, self.cardDetails.last4];;
+    }
+    else {
+        return [STPCard stringFromBrand:STPCardBrandUnknown];
+    }
+}
+
 
 @end

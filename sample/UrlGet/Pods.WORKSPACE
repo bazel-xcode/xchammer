@@ -32,19 +32,11 @@ new_pod_repository(
 
 new_pod_repository(
   name = "Stripe",
-  url = "https://github.com/stripe/stripe-ios/archive/v10.0.1.zip",
+  url = "https://github.com/stripe/stripe-ios/archive/v12.1.2.zip",
   owner = "@ios-action",
   inhibit_warnings = True,
 
   # Duplicate interface definition issue
   generate_module_map = False,
-
-  install_script = """
-    # XcodeGen workaround
-    # https://github.com/yonaskolb/XcodeGen/issues/143
-    mkdir Stripe/Resources/Localizations/Base.lproj/
-    touch Stripe/Resources/Localizations/Base.lproj/Localizable.strings
-    __INIT_REPO__
-  """
 )
 

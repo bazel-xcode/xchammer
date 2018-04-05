@@ -70,7 +70,8 @@ objc_library(
     "Security",
     "WebKit",
     "PassKit",
-    "AddressBook"
+    "Contacts",
+    "CoreLocation"
   ],
   deps = [
     ":Stripe_Bundle_Stripe"

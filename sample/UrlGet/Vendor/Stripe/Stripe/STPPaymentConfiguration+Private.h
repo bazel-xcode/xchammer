@@ -10,8 +10,7 @@
 
 @interface STPPaymentConfiguration ()
 
-@property(nonatomic, readonly)BOOL applePayEnabled;
-@property(nonatomic, readwrite) BOOL ineligibleForSmsAutofill;
+@property (nonatomic, assign, readonly) BOOL applePayEnabled;
 
 @end
 

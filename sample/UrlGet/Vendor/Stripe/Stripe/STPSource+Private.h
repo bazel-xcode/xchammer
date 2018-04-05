@@ -7,11 +7,19 @@
 //
 
 #import "STPSource.h"
+#import "STPInternalAPIResponseDecodable.h"
 
-@interface STPSource (Private)
-+ (NSString *)stringFromType:(STPSourceType)type;
-+ (NSString *)stringFromFlow:(STPSourceFlow)flow;
-+ (NSString *)stringFromUsage:(STPSourceUsage)usage;
+NS_ASSUME_NONNULL_BEGIN
+
+@interface STPSource () <STPInternalAPIResponseDecodable, STPPaymentMethod>
+
++ (STPSourceType)typeFromString:(NSString *)string;
++ (nullable NSString *)stringFromType:(STPSourceType)type;
+
++ (nullable NSString *)stringFromFlow:(STPSourceFlow)flow;
+
++ (nullable NSString *)stringFromUsage:(STPSourceUsage)usage;
+
 @end
 
-
+NS_ASSUME_NONNULL_END

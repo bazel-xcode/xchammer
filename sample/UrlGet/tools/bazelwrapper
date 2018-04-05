@@ -7,10 +7,9 @@ SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 pushd "$SCRIPTPATH/.." > /dev/null
 trap popd > /dev/null ERR EXIT
 
-BAZEL_VERSION="0.7.0"
-BAZEL_VERSION_SHA="ea9a568c5357d3f6911701f4e3814c9800e5edfc618cf403602ed5bd8ad96f96"
-BAZEL_VERSION_URL="https://github.com/bazelbuild/bazel/releases/download/0.7.0/bazel-0.7.0-installer-darwin-x86_64.sh"
-
+BAZEL_VERSION="0.12.0rc1"
+BAZEL_VERSION_SHA="fe9bf6e4d920c668f28a37d5d2ea11cee38871e90ccf5c2a52c7a327dd6de9a9"
+BAZEL_VERSION_URL="https://releases.bazel.build/0.12.0/rc1/bazel-0.12.0rc1-installer-darwin-x86_64.sh"
 
 BAZEL_ROOT="$HOME/.bazelenv/versions/$BAZEL_VERSION"
 BAZEL_PATH="$BAZEL_ROOT/bin/bazel"

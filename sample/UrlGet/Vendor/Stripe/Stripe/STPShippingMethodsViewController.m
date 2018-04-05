@@ -8,11 +8,12 @@
 
 #import "STPShippingMethodsViewController.h"
 
-#import "NSArray+Stripe_BoundSafe.h"
+#import "NSArray+Stripe.h"
 #import "STPColorUtils.h"
 #import "STPCoreTableViewController+Private.h"
 #import "STPImageLibrary+Private.h"
 #import "STPLocalizationUtils.h"
+#import "STPSectionHeaderView.h"
 #import "STPShippingMethodTableViewCell.h"
 #import "UIBarButtonItem+Stripe.h"
 #import "UINavigationBar+Stripe_Theme.h"
@@ -22,11 +23,12 @@
 static NSString *const STPShippingMethodCellReuseIdentifier = @"STPShippingMethodCellReuseIdentifier";
 
 @interface STPShippingMethodsViewController () <UITableViewDataSource, UITableViewDelegate>
-@property(nonatomic)NSArray<PKShippingMethod *>*shippingMethods;
-@property(nonatomic)PKShippingMethod *selectedShippingMethod;
-@property(nonatomic)NSString *currency;
-@property(nonatomic, weak)UIImageView *imageView;
-@property(nonatomic)UIBarButtonItem *doneItem;
+@property (nonatomic) NSArray<PKShippingMethod *>*shippingMethods;
+@property (nonatomic) PKShippingMethod *selectedShippingMethod;
+@property (nonatomic) NSString *currency;
+@property (nonatomic, weak) UIImageView *imageView;
+@property (nonatomic) UIBarButtonItem *doneItem;
+@property (nonatomic) STPSectionHeaderView *headerView;
 @end
 
 @implementation STPShippingMethodsViewController
@@ -68,6 +70,13 @@ static NSString *const STPShippingMethodCellReuseIdentifier = @"STPShippingMetho
     self.tableView.tableHeaderView = imageView;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+
+    STPSectionHeaderView *headerView = [STPSectionHeaderView new];
+    headerView.theme = self.theme;
+    headerView.buttonHidden = YES;
+    headerView.title = STPLocalizedString(@"Shipping Method", @"Label for shipping method form");
+    [headerView setNeedsLayout];
+    self.headerView = headerView;
 }
 
 - (void)updateAppearance {
@@ -86,6 +95,10 @@ static NSString *const STPShippingMethodCellReuseIdentifier = @"STPShippingMetho
 
 - (void)done:(__unused id)sender {
     [self.delegate shippingMethodsViewController:self didFinishWithShippingMethod:self.selectedShippingMethod];
+}
+
+- (BOOL)useSystemBackButton {
+    return YES;
 }
 
 #pragma mark - UITableView
@@ -126,19 +139,13 @@ static NSString *const STPShippingMethodCellReuseIdentifier = @"STPShippingMetho
     return 27.0f;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(__unused NSInteger)section {
-    return tableView.sectionHeaderHeight;
+- (CGFloat)tableView:(__unused UITableView *)tableView heightForHeaderInSection:(__unused NSInteger)section {
+    CGSize size = [self.headerView sizeThatFits:CGSizeMake(self.view.bounds.size.width, CGFLOAT_MAX)];
+    return size.height;
 }
 
 - (UIView *)tableView:(__unused UITableView *)tableView viewForHeaderInSection:(__unused NSInteger)section {
-    UILabel *label = [UILabel new];
-    label.font = self.theme.smallFont;
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.firstLineHeadIndent = 15;
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
-    label.textColor = self.theme.secondaryForegroundColor;
-    label.attributedText = [[NSAttributedString alloc] initWithString:STPLocalizedString(@"Shipping Method", @"Label for shipping method form") attributes:attributes];
-    return label;
+    return self.headerView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

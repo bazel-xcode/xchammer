@@ -7,10 +7,18 @@
 //
 
 #import "STPSourceParams.h"
+#import "STPSourceParams+Private.h"
 
+#import "NSBundle+Stripe_AppName.h"
 #import "STPCardParams.h"
 #import "STPFormEncoder.h"
 #import "STPSource+Private.h"
+
+@interface STPSourceParams ()
+
+// See STPSourceParams+Private.h
+
+@end
 
 @implementation STPSourceParams
 
@@ -19,7 +27,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _type = STPSourceTypeUnknown;
+        _rawTypeString = @"";
         _flow = STPSourceFlowUnknown;
         _usage = STPSourceUsageUnknown;
         _additionalAPIParameters = @{};
@@ -27,8 +35,15 @@
     return self;
 }
 
-- (NSString *)typeString {
-    return [STPSource stringFromType:self.type];
+- (STPSourceType)type {
+    return [STPSource typeFromString:self.rawTypeString];
+}
+
+- (void)setType:(STPSourceType)type {
+    // If setting unknown and we're already unknown, don't want to override raw value
+    if (type != self.type) {
+        self.rawTypeString = [STPSource stringFromType:type];
+    }
 }
 
 - (NSString *)flowString {
@@ -38,6 +53,33 @@
 - (NSString *)usageString {
     return [STPSource stringFromUsage:self.usage];
 }
+
+#pragma mark - Description
+
+- (NSString *)description {
+    NSArray *props = @[
+                       // Object
+                       [NSString stringWithFormat:@"%@: %p", NSStringFromClass([self class]), self],
+
+                       // Basic source details
+                       [NSString stringWithFormat:@"type = %@", ([STPSource stringFromType:self.type]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"rawTypeString = %@", self.rawTypeString],
+
+                       // Additional source details (alphabetical)
+                       [NSString stringWithFormat:@"amount = %@", self.amount],
+                       [NSString stringWithFormat:@"currency = %@", self.currency],
+                       [NSString stringWithFormat:@"flow = %@", ([STPSource stringFromFlow:self.flow]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"metadata = %@", (self.metadata) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"owner = %@", (self.owner) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"redirect = %@", self.redirect],
+                       [NSString stringWithFormat:@"token = %@", self.token],
+                       [NSString stringWithFormat:@"usage = %@", ([STPSource stringFromUsage:self.usage]) ?: @"unknown"],
+                       ];
+
+    return [NSString stringWithFormat:@"<%@>", [props componentsJoinedByString:@"; "]];
+}
+
+#pragma mark - Constructors
 
 + (STPSourceParams *)bancontactParamsWithAmount:(NSUInteger)amount
                                            name:(NSString *)name
@@ -150,18 +192,20 @@
     params.type = STPSourceTypeSEPADebit;
     params.currency = @"eur"; // SEPA Debit must always use eur
 
-    NSDictionary<NSString *,NSString *> *address =
-    @{
-      @"line1": addressLine1,
-      @"city": city,
-      @"postal_code": postalCode,
-      @"country": country
-      };
+    NSMutableDictionary *owner = [NSMutableDictionary new];
+    owner[@"name"] = name;
 
-    params.owner = @{
-                     @"name": name,
-                     @"address": address
-                     };
+    NSMutableDictionary<NSString *,NSString *> *address = [NSMutableDictionary new];
+    address[@"city"] = city;
+    address[@"postal_code"] = postalCode;
+    address[@"country"] = country;
+    address[@"line1"] = addressLine1;
+
+    if (address.count > 0) {
+        owner[@"address"] = address;
+    }
+
+    params.owner = owner;
     params.additionalAPIParameters = @{
                                        @"sepa_debit": @{
                                                @"iban": iban
@@ -205,6 +249,115 @@
     return params;
 }
 
++ (STPSourceParams *)alipayParamsWithAmount:(NSUInteger)amount
+                                   currency:(NSString *)currency
+                                  returnURL:(NSString *)returnURL {
+    STPSourceParams *params = [self new];
+    params.type = STPSourceTypeAlipay;
+    params.amount = @(amount);
+    params.currency = currency;
+    params.redirect = @{ @"return_url": returnURL };
+
+    NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+    NSString *versionKey = [NSBundle stp_applicationVersion];
+    if (bundleID && versionKey) {
+        params.additionalAPIParameters = @{
+                                           @"alipay": @{
+                                                   @"app_bundle_id": bundleID,
+                                                   @"app_version_key": versionKey,
+                                                   },
+                                           };
+    }
+    return params;
+}
+
++ (STPSourceParams *)alipayReusableParamsWithCurrency:(NSString *)currency
+                                            returnURL:(NSString *)returnURL {
+    STPSourceParams *params = [self new];
+    params.type = STPSourceTypeAlipay;
+    params.currency = currency;
+    params.redirect = @{ @"return_url": returnURL };
+    params.usage = STPSourceUsageReusable;
+
+    return params;
+}
+
++ (STPSourceParams *)p24ParamsWithAmount:(NSUInteger)amount
+                                currency:(NSString *)currency
+                                   email:(NSString *)email
+                                    name:(nullable NSString *)name
+                               returnURL:(NSString *)returnURL {
+    STPSourceParams *params = [self new];
+    params.type = STPSourceTypeP24;
+    params.amount = @(amount);
+    params.currency = currency;
+
+    NSMutableDictionary *ownerDict = @{ @"email" : email }.mutableCopy;
+    if (name) {
+        ownerDict[@"name"] = name;
+    }
+    params.owner = ownerDict.copy;
+    params.redirect = @{ @"return_url": returnURL };
+    return params;
+}
+
++ (STPSourceParams *)visaCheckoutParamsWithCallId:(NSString *)callId {
+    STPSourceParams *params = [self new];
+    params.type = STPSourceTypeCard;
+    params.additionalAPIParameters = @{ @"card": @{ @"visa_checkout": @{ @"callid": callId } } };
+    return params;
+}
+
+#pragma mark - Redirect Dictionary
+
+/**
+ Private setter allows for setting the name of the app in the returnURL so
+ that it can be displayed on hooks.stripe.com if the automatic redirect back
+ to the app fails.
+ 
+ We intercept the reading of redirect dictionary from STPFormEncoder and replace
+ the value of return_url if necessary
+ */
+- (NSDictionary *)redirectDictionaryWithMerchantNameIfNecessary {
+    if (self.redirectMerchantName
+        && self.redirect[@"return_url"]) {
+
+        NSURL *url = [NSURL URLWithString:self.redirect[@"return_url"]];
+        if (url) {
+            NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url
+                                                        resolvingAgainstBaseURL:NO];
+
+            if (urlComponents) {
+
+                for (NSURLQueryItem *item in urlComponents.queryItems) {
+                    if ([item.name isEqualToString:@"redirect_merchant_name"]) {
+                        // Just return, don't replace their value
+                        return self.redirect;
+                    }
+                }
+
+                // If we get here, there was no existing redirect name
+
+                NSMutableArray<NSURLQueryItem *> *queryItems = (urlComponents.queryItems ?: @[]).mutableCopy;
+
+                [queryItems addObject:[NSURLQueryItem queryItemWithName:@"redirect_merchant_name"
+                                                                  value:self.redirectMerchantName]];
+                urlComponents.queryItems = queryItems;
+
+
+                NSMutableDictionary *redirectCopy = self.redirect.mutableCopy;
+                redirectCopy[@"return_url"] = urlComponents.URL.absoluteString;
+                
+                return redirectCopy.copy;
+            }
+        }
+
+    }
+
+    return self.redirect;
+
+}
+
 #pragma mark - STPFormEncodable
 
 + (NSString *)rootObjectName {
@@ -213,13 +366,13 @@
 
 + (NSDictionary *)propertyNamesToFormFieldNamesMapping {
     return @{
-             NSStringFromSelector(@selector(typeString)): @"type",
+             NSStringFromSelector(@selector(rawTypeString)): @"type",
              NSStringFromSelector(@selector(amount)): @"amount",
              NSStringFromSelector(@selector(currency)): @"currency",
              NSStringFromSelector(@selector(flowString)): @"flow",
              NSStringFromSelector(@selector(metadata)): @"metadata",
              NSStringFromSelector(@selector(owner)): @"owner",
-             NSStringFromSelector(@selector(redirect)): @"redirect",
+             NSStringFromSelector(@selector(redirectDictionaryWithMerchantNameIfNecessary)): @"redirect",
              NSStringFromSelector(@selector(token)): @"token",
              NSStringFromSelector(@selector(usageString)): @"usage",
              };

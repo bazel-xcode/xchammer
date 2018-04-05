@@ -32,15 +32,15 @@ function assertExitCode() {
 
 function testBuild() {
     echo "Testing generate and build with Xcode"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
     xcodebuild -scheme ios-app -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built successfully"
 }
 
 function testNooping() {
     echo "Testing noop generation"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml
-    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml`
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
+    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL`
 
     # We print Skipping update when we noop
     echo $RESULT | grep "Skipping"
@@ -49,7 +49,7 @@ function testNooping() {
 
 # Create a new file, and make sure Xcode is doing a build with that file
 function testGenerateWhileBuilding() {
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
 
     touch $TEST_NEW_IMPL_FILE
 
