@@ -78,12 +78,12 @@ static NSString *const apiKey = @"pk_test_vOo1umqsYxSrP5UXfOeL3ecm";
     card.expYear = 2018;
     card.currency = @"usd";
     card.name = @"Jenny Rosen";
-    card.addressLine1 = @"123 Fake Street";
-    card.addressLine2 = @"Apartment 4";
-    card.addressCity = @"New York";
-    card.addressState = @"NY";
-    card.addressCountry = @"USA";
-    card.addressZip = @"10002";
+    card.address.line1 = @"123 Fake Street";
+    card.address.line2 = @"Apartment 4";
+    card.address.city = @"New York";
+    card.address.state = @"NY";
+    card.address.country = @"USA";
+    card.address.postalCode = @"10002";
     STPSourceParams *params = [STPSourceParams cardParamsWithCard:card];
     params.metadata = @{@"foo": @"bar"};
 
@@ -98,12 +98,12 @@ static NSString *const apiKey = @"pk_test_vOo1umqsYxSrP5UXfOeL3ecm";
         XCTAssertEqual(source.cardDetails.expYear, card.expYear);
         XCTAssertEqualObjects(source.owner.name, card.name);
         STPAddress *address = source.owner.address;
-        XCTAssertEqualObjects(address.line1, card.addressLine1);
-        XCTAssertEqualObjects(address.line2, card.addressLine2);
-        XCTAssertEqualObjects(address.city, card.addressCity);
-        XCTAssertEqualObjects(address.state, card.addressState);
-        XCTAssertEqualObjects(address.country, card.addressCountry);
-        XCTAssertEqualObjects(address.postalCode, card.addressZip);
+        XCTAssertEqualObjects(address.line1, card.address.line1);
+        XCTAssertEqualObjects(address.line2, card.address.line2);
+        XCTAssertEqualObjects(address.city, card.address.city);
+        XCTAssertEqualObjects(address.state, card.address.state);
+        XCTAssertEqualObjects(address.country, card.address.country);
+        XCTAssertEqualObjects(address.postalCode, card.address.postalCode);
         XCTAssertEqualObjects(source.metadata, params.metadata);
 
         [expectation fulfill];
@@ -184,7 +184,39 @@ static NSString *const apiKey = @"pk_test_vOo1umqsYxSrP5UXfOeL3ecm";
         XCTAssertEqualObjects(source.currency, params.currency);
         XCTAssertEqualObjects(source.owner.name, params.owner[@"name"]);
         XCTAssertEqualObjects(source.owner.address.city, @"Berlin");
+        XCTAssertEqualObjects(source.owner.address.line1, @"Nollendorfstraße 27");
+        XCTAssertEqualObjects(source.owner.address.country, @"DE");
         XCTAssertEqualObjects(source.sepaDebitDetails.country, @"DE");
+        XCTAssertEqualObjects(source.sepaDebitDetails.last4, @"3000");
+        XCTAssertEqualObjects(source.metadata, params.metadata);
+
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:5.0f handler:nil];
+}
+
+- (void)testCreateSource_sepaDebit_NoAddress {
+    STPSourceParams *params = [STPSourceParams sepaDebitParamsWithName:@"Jenny Rosen"
+                                                                  iban:@"DE89370400440532013000"
+                                                          addressLine1:nil
+                                                                  city:nil
+                                                            postalCode:nil
+                                                               country:nil];
+    params.metadata = @{@"foo": @"bar"};
+
+    STPAPIClient *client = [[STPAPIClient alloc] initWithPublishableKey:apiKey];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Source creation"];
+    [client createSourceWithParams:params completion:^(STPSource *source, NSError * error) {
+        XCTAssertNil(error);
+        XCTAssertNotNil(source);
+        XCTAssertEqual(source.type, STPSourceTypeSEPADebit);
+        XCTAssertNil(source.amount);
+        XCTAssertEqualObjects(source.currency, params.currency);
+        XCTAssertEqualObjects(source.owner.name, params.owner[@"name"]);
+        XCTAssertNil(source.owner.address.city);
+        XCTAssertNil(source.owner.address.line1);
+        XCTAssertNil(source.owner.address.country);
+        XCTAssertEqualObjects(source.sepaDebitDetails.country, @"DE"); // German IBAN so sepa tells us country here even though we didnt pass it up as owner info
         XCTAssertEqualObjects(source.sepaDebitDetails.last4, @"3000");
         XCTAssertEqualObjects(source.metadata, params.metadata);
 
@@ -225,12 +257,12 @@ static NSString *const apiKey = @"pk_test_vOo1umqsYxSrP5UXfOeL3ecm";
     card.expMonth = 6;
     card.expYear = 2018;
     card.currency = @"usd";
-    card.addressLine1 = @"123 Fake Street";
-    card.addressLine2 = @"Apartment 4";
-    card.addressCity = @"New York";
-    card.addressState = @"NY";
-    card.addressCountry = @"USA";
-    card.addressZip = @"10002";
+    card.address.line1 = @"123 Fake Street";
+    card.address.line2 = @"Apartment 4";
+    card.address.city = @"New York";
+    card.address.state = @"NY";
+    card.address.country = @"USA";
+    card.address.postalCode = @"10002";
     STPSourceParams *cardParams = [STPSourceParams cardParamsWithCard:card];
 
     STPAPIClient *client = [[STPAPIClient alloc] initWithPublishableKey:apiKey];
@@ -258,6 +290,60 @@ static NSString *const apiKey = @"pk_test_vOo1umqsYxSrP5UXfOeL3ecm";
             XCTAssertEqualObjects(source2.metadata, params.metadata);
             [threeDSExp fulfill];
         }];
+    }];
+
+    [self waitForExpectationsWithTimeout:5.0f handler:nil];
+}
+
+- (void)testCreateSource_alipay {
+    STPSourceParams *params = [STPSourceParams alipayParamsWithAmount:1099
+                                                             currency:@"usd"
+                                                            returnURL:@"https://shop.example.com/crtABC"];
+
+    STPAPIClient *client = [[STPAPIClient alloc] initWithPublishableKey:apiKey];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Alipay Source creation"];
+
+    params.metadata = @{ @"foo": @"bar" };
+    [client createSourceWithParams:params completion:^(STPSource *source, NSError *error2) {
+        XCTAssertNil(error2);
+        XCTAssertNotNil(source);
+        XCTAssertEqual(source.type, STPSourceTypeAlipay);
+        XCTAssertEqualObjects(source.amount, params.amount);
+        XCTAssertEqualObjects(source.currency, params.currency);
+        XCTAssertEqual(source.redirect.status, STPSourceRedirectStatusPending);
+        XCTAssertEqualObjects(source.redirect.returnURL, [NSURL URLWithString:@"https://shop.example.com/crtABC"]);
+        XCTAssertNotNil(source.redirect.url);
+        XCTAssertEqualObjects(source.metadata, params.metadata);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5.0f handler:nil];
+}
+
+- (void)testCreateSource_p24 {
+    STPSourceParams *params = [STPSourceParams p24ParamsWithAmount:1099
+                                                          currency:@"eur"
+                                                             email:@"user@example.com"
+                                                              name:@"Jenny Rosen"
+                                                         returnURL:@"https://shop.example.com/crtABC"];
+
+    STPAPIClient *client = [[STPAPIClient alloc] initWithPublishableKey:apiKey];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"P24 Source creation"];
+
+    params.metadata = @{ @"foo": @"bar" };
+    [client createSourceWithParams:params completion:^(STPSource *source, NSError *error2) {
+        XCTAssertNil(error2);
+        XCTAssertNotNil(source);
+        XCTAssertEqual(source.type, STPSourceTypeP24);
+        XCTAssertEqualObjects(source.amount, params.amount);
+        XCTAssertEqualObjects(source.currency, params.currency);
+        XCTAssertEqualObjects(source.owner.email, params.owner[@"email"]);
+        XCTAssertEqualObjects(source.owner.name, params.owner[@"name"]);
+        XCTAssertEqual(source.redirect.status, STPSourceRedirectStatusPending);
+        XCTAssertEqualObjects(source.redirect.returnURL, [NSURL URLWithString:@"https://shop.example.com/crtABC"]);
+        XCTAssertNotNil(source.redirect.url);
+        XCTAssertEqualObjects(source.metadata, params.metadata);
+        [expectation fulfill];
     }];
 
     [self waitForExpectationsWithTimeout:5.0f handler:nil];

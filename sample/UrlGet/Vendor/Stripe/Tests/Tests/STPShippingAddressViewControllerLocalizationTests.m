@@ -9,15 +9,18 @@
 #import <XCTest/XCTest.h>
 #import <FBSnapshotTestCase/FBSnapshotTestCase.h>
 #import <Stripe/Stripe.h>
+
+#import "FBSnapshotTestCase+STPViewControllerLoading.h"
 #import "STPAddressViewModel.h"
 #import "STPAddressFieldTableViewCell.h"
-#import "STPLocalizationUtils.h"
 #import "STPBundleLocator.h"
+#import "STPFixtures.h"
+#import "STPLocalizationUtils.h"
 #import "STPLocalizationUtils+STPTestAdditions.h"
 
 @interface STPShippingAddressViewController (TestsPrivate)
-@property(nonatomic) UITableView *tableView;
-@property(nonatomic) STPAddressViewModel<STPAddressFieldTableViewCellDelegate> *addressViewModel;
+@property (nonatomic) UITableView *tableView;
+@property (nonatomic) STPAddressViewModel<STPAddressFieldTableViewCellDelegate> *addressViewModel;
 @end
 
 @interface STPShippingAddressViewControllerLocalizationTests : FBSnapshotTestCase
@@ -33,14 +36,15 @@
 //}
 
 - (void)performSnapshotTestForLanguage:(NSString *)language shippingType:(STPShippingType)shippingType contact:(BOOL)contact {
-
     NSString *identifier = (shippingType == STPShippingTypeShipping) ? @"shipping" : @"delivery";
-    STPPaymentConfiguration *config = [STPPaymentConfiguration new];
-    config.publishableKey = @"test";
+    STPPaymentConfiguration *config = [STPFixtures paymentConfiguration];
     config.companyName = @"Test Company";
-    config.requiredShippingAddressFields = PKAddressFieldAll;
+    config.requiredShippingAddressFields = [NSSet setWithArray:@[STPContactFieldPostalAddress,
+                                                                 STPContactFieldEmailAddress,
+                                                                 STPContactFieldPhoneNumber,
+                                                                 STPContactFieldName]];
     if (contact) {
-        config.requiredShippingAddressFields = PKAddressFieldEmail;
+        config.requiredShippingAddressFields = [NSSet setWithArray:@[STPContactFieldEmailAddress]];
         identifier = @"contact";
     }
     config.shippingType = shippingType;
@@ -48,6 +52,7 @@
     [STPLocalizationUtils overrideLanguageTo:language];
     STPUserInformation *info = [STPUserInformation new];
     info.billingAddress = [STPAddress new];
+    info.billingAddress.email = @"@"; // trigger "use billing address" button
 
     STPShippingAddressViewController *shippingVC = [[STPShippingAddressViewController alloc] initWithConfiguration:config
                                                                                                              theme:[STPTheme defaultTheme]
@@ -56,19 +61,16 @@
                                                                                             selectedShippingMethod:nil
                                                                                               prefilledInformation:info];
 
-    UINavigationController *navController = [UINavigationController new];
-    navController.view.frame = CGRectMake(0, 0, 320, 750);
-    [navController pushViewController:shippingVC animated:NO];
-    [navController.view layoutIfNeeded];
-    navController.view.frame = CGRectMake(0, 0, 320, shippingVC.tableView.contentSize.height);
-
     /**
      This method rejects nil or empty country codes to stop strange looking behavior
      when scrolling to the top "unset" position in the picker, so put in
      an invalid country code instead to test seeing the "Country" placeholder
      */
     shippingVC.addressViewModel.addressFieldTableViewCountryCode = @"INVALID";
-    FBSnapshotVerifyView(navController.view, identifier);
+
+    UIView *viewToTest = [self stp_preparedAndSizedViewForSnapshotTestFromViewController:shippingVC];
+
+    FBSnapshotVerifyView(viewToTest, identifier);
 
     [STPLocalizationUtils overrideLanguageTo:nil];
 }

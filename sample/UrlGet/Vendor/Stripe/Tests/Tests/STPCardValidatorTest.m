@@ -12,6 +12,19 @@
 #import "STPCardValidationState.h"
 #import "STPCardValidator.h"
 
+@interface STPCardValidator (Testing)
+
++ (STPCardValidationState)validationStateForExpirationYear:(NSString *)expirationYear
+                                                   inMonth:(NSString *)expirationMonth
+                                             inCurrentYear:(NSInteger)currentYear
+                                              currentMonth:(NSInteger)currentMonth;
+
++ (STPCardValidationState)validationStateForCard:(STPCardParams *)card
+                                   inCurrentYear:(NSInteger)currentYear
+                                    currentMonth:(NSInteger)currentMonth;
+
+@end
+
 @interface STPCardValidatorTest : XCTestCase
 @end
 
@@ -26,6 +39,7 @@
              @[@(STPCardBrandMasterCard), @"5555555555554444", @(STPCardValidationStateValid)],
              @[@(STPCardBrandMasterCard), @"5200828282828210", @(STPCardValidationStateValid)],
              @[@(STPCardBrandMasterCard), @"5105105105105100", @(STPCardValidationStateValid)],
+             @[@(STPCardBrandMasterCard), @"2223000010089800", @(STPCardValidationStateValid)],
              @[@(STPCardBrandAmex), @"378282246310005", @(STPCardValidationStateValid)],
              @[@(STPCardBrandAmex), @"371449635398431", @(STPCardValidationStateValid)],
              @[@(STPCardBrandDiscover), @"6011111111111117", @(STPCardValidationStateValid)],
@@ -103,6 +117,7 @@
     XCTAssertEqual(STPCardValidationStateValid, [STPCardValidator validationStateForNumber:@"0000000000000000" validatingCardBrand:NO]);
     XCTAssertEqual(STPCardValidationStateValid, [STPCardValidator validationStateForNumber:@"9999999999999995" validatingCardBrand:NO]);
     XCTAssertEqual(STPCardValidationStateIncomplete, [STPCardValidator validationStateForNumber:@"4242424242424" validatingCardBrand:YES]);
+    XCTAssertEqual(STPCardValidationStateIncomplete, [STPCardValidator validationStateForNumber:nil validatingCardBrand:YES]);
 }
 
 - (void)testBrand {
@@ -119,6 +134,7 @@
                        @[@(STPCardBrandDiscover), @[@16]],
                        @[@(STPCardBrandDinersClub), @[@14]],
                        @[@(STPCardBrandJCB), @[@16]],
+                       @[@(STPCardBrandUnionPay), @[@16]],
                        @[@(STPCardBrandUnknown), @[@16]],
                        ];
     for (NSArray *test in tests) {
@@ -138,6 +154,7 @@
                        @[@(STPCardBrandDiscover), @4],
                        @[@(STPCardBrandDinersClub), @2],
                        @[@(STPCardBrandJCB), @4],
+                       @[@(STPCardBrandUnionPay), @4],
                        @[@(STPCardBrandUnknown), @4],
                        ];
     for (NSArray *test in tests) {
@@ -199,6 +216,7 @@
                        @[@(STPCardBrandDiscover), @3],
                        @[@(STPCardBrandDinersClub), @3],
                        @[@(STPCardBrandJCB), @3],
+                       @[@(STPCardBrandUnionPay), @3],
                        @[@(STPCardBrandUnknown), @4],
                        ];
     for (NSArray *test in tests) {

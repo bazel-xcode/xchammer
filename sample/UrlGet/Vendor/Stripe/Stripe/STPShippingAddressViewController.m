@@ -8,7 +8,7 @@
 
 #import "STPShippingAddressViewController.h"
 
-#import "NSArray+Stripe_BoundSafe.h"
+#import "NSArray+Stripe.h"
 #import "STPAddress.h"
 #import "STPAddressViewModel.h"
 #import "STPColorUtils.h"
@@ -28,17 +28,17 @@
 #import "UIViewController+Stripe_ParentViewController.h"
 
 @interface STPShippingAddressViewController ()<STPAddressViewModelDelegate, UITableViewDelegate, UITableViewDataSource, STPShippingMethodsViewControllerDelegate>
-@property(nonatomic)STPPaymentConfiguration *configuration;
-@property(nonatomic)NSString *currency;
-@property(nonatomic)PKShippingMethod *selectedShippingMethod;
-@property(nonatomic, weak)UIImageView *imageView;
-@property(nonatomic)UIBarButtonItem *nextItem;
-@property(nonatomic)BOOL loading;
-@property(nonatomic)STPPaymentActivityIndicatorView *activityIndicator;
-@property(nonatomic)STPAddressViewModel *addressViewModel;
-@property(nonatomic)STPAddress *billingAddress;
-@property(nonatomic)BOOL hasUsedBillingAddress;
-@property(nonatomic)STPSectionHeaderView *addressHeaderView;
+@property (nonatomic) STPPaymentConfiguration *configuration;
+@property (nonatomic) NSString *currency;
+@property (nonatomic) PKShippingMethod *selectedShippingMethod;
+@property (nonatomic, weak) UIImageView *imageView;
+@property (nonatomic) UIBarButtonItem *nextItem;
+@property (nonatomic) BOOL loading;
+@property (nonatomic) STPPaymentActivityIndicatorView *activityIndicator;
+@property (nonatomic) STPAddressViewModel *addressViewModel;
+@property (nonatomic) STPAddress *billingAddress;
+@property (nonatomic) BOOL hasUsedBillingAddress;
+@property (nonatomic) STPSectionHeaderView *addressHeaderView;
 @end
 
 @implementation STPShippingAddressViewController
@@ -89,16 +89,8 @@
         if (shippingAddress != nil) {
             _addressViewModel.address = shippingAddress;
         }
-        else if (prefilledInformation != nil) {
-            STPAddress *prefilledAddress = [STPAddress new];
-            prefilledAddress.country = _addressViewModel.address.country;
-            if (self.configuration.requiredShippingAddressFields & PKAddressFieldEmail) {
-                prefilledAddress.email = prefilledInformation.email;
-            }
-            if (self.configuration.requiredShippingAddressFields & PKAddressFieldPhone) {
-                prefilledAddress.phone = prefilledInformation.phone;
-            }
-            _addressViewModel.address = prefilledAddress;
+        else if (prefilledInformation.shippingAddress != nil) {
+            _addressViewModel.address = prefilledInformation.shippingAddress;
         }
         self.title = [self titleForShippingType:self.configuration.shippingType];
     }
@@ -145,8 +137,11 @@
                        forState:UIControlStateNormal];
     [headerView.button addTarget:self action:@selector(useBillingAddress:)
                 forControlEvents:UIControlEventTouchUpInside];
-    BOOL needsAddress = self.configuration.requiredShippingAddressFields & PKAddressFieldPostalAddress && !self.addressViewModel.isValid;
-    BOOL buttonVisible = (needsAddress && self.billingAddress != nil && !self.hasUsedBillingAddress);
+    NSSet<STPContactField> *requiredFields = self.configuration.requiredShippingAddressFields;
+    BOOL needsAddress = [requiredFields containsObject:STPContactFieldPostalAddress] && !self.addressViewModel.isValid;
+    BOOL buttonVisible = (needsAddress
+                          && [self.billingAddress containsContentForShippingAddressFields:requiredFields]
+                          && !self.hasUsedBillingAddress);
     headerView.button.alpha = buttonVisible ? 1 : 0;
     [headerView setNeedsLayout];
     _addressHeaderView = headerView;
@@ -212,7 +207,7 @@
     }
 }
 
-- (void)handleBackOrCancelTapped:(__unused id)sender {
+- (void)handleCancelTapped:(__unused id)sender {
     [self.delegate shippingAddressViewControllerDidCancel:self];
 }
 
@@ -318,8 +313,8 @@
 - (UITableViewCell *)tableView:(__unused UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.addressViewModel.addressCells stp_boundSafeObjectAtIndex:indexPath.row];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.contentView.backgroundColor = self.theme.secondaryBackgroundColor;
+    cell.backgroundColor = self.theme.secondaryBackgroundColor;
+    cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
@@ -362,7 +357,7 @@
 }
 
 - (NSString *)titleForShippingType:(STPShippingType)type {
-    if (self.configuration.requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+    if ([self.configuration.requiredShippingAddressFields containsObject:STPContactFieldPostalAddress]) {
         switch (type) {
             case STPShippingTypeShipping:
                 return STPLocalizedString(@"Shipping", @"Title for shipping info form");
@@ -378,7 +373,7 @@
 }
 
 - (NSString *)headerTitleForShippingType:(STPShippingType)type {
-     if (self.configuration.requiredShippingAddressFields & PKAddressFieldPostalAddress) {
+     if ([self.configuration.requiredShippingAddressFields containsObject:STPContactFieldPostalAddress]) {
         switch (type) {
             case STPShippingTypeShipping:
                 return STPLocalizedString(@"Shipping Address", @"Title for shipping address entry section");

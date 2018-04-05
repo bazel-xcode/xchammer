@@ -11,9 +11,9 @@
 
 @interface STPSwitchTableViewCell()
 
-@property(nonatomic, weak)UILabel *captionLabel;
-@property(nonatomic, weak)UISwitch *switchView;
-@property(nonatomic, weak)id<STPSwitchTableViewCellDelegate> delegate;
+@property (nonatomic, weak) UILabel *captionLabel;
+@property (nonatomic, weak) UISwitch *switchView;
+@property (nonatomic, weak) id<STPSwitchTableViewCellDelegate> delegate;
 
 @end
 
@@ -60,12 +60,12 @@
     if (![thumbTintColor isEqual:[UIColor whiteColor]]) {
         self.switchView.thumbTintColor = thumbTintColor;
     }
-    self.backgroundColor = [UIColor clearColor];
 	self.switchView.tintColor = self.theme.tertiaryBackgroundColor;
 	self.switchView.backgroundColor = self.theme.tertiaryBackgroundColor;
     self.switchView.onTintColor = self.theme.accentColor;
     self.captionLabel.font = self.theme.font;
-    self.contentView.backgroundColor = self.theme.secondaryBackgroundColor;
+    self.backgroundColor = self.theme.secondaryBackgroundColor;
+    self.contentView.backgroundColor = [UIColor clearColor];
 	self.captionLabel.textColor = self.theme.primaryForegroundColor;
 }
 

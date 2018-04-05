@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "STPAPIResponseDecodable.h"
+
 @class STPAPIClient;
 
 @interface STPAPIRequest<__covariant ResponseType:id<STPAPIResponseDecodable>> : NSObject
@@ -17,13 +18,31 @@ typedef void(^STPAPIResponseBlock)(ResponseType object, NSHTTPURLResponse *respo
 + (NSURLSessionDataTask *)postWithAPIClient:(STPAPIClient *)apiClient
                                    endpoint:(NSString *)endpoint
                                  parameters:(NSDictionary *)parameters
-                                 serializer:(ResponseType)serializer
+                               deserializer:(ResponseType)deserializer
                                  completion:(STPAPIResponseBlock)completion;
+
++ (NSURLSessionDataTask *)postWithAPIClient:(STPAPIClient *)apiClient
+                                    endpoint:(NSString *)endpoint
+                                  parameters:(NSDictionary *)parameters
+                               deserializers:(NSArray<ResponseType> *)deserializers
+                                  completion:(STPAPIResponseBlock)completion;
 
 + (NSURLSessionDataTask *)getWithAPIClient:(STPAPIClient *)apiClient
                                   endpoint:(NSString *)endpoint
                                 parameters:(NSDictionary *)parameters
-                                serializer:(id<STPAPIResponseDecodable>)serializer
+                              deserializer:(ResponseType)deserializer
                                 completion:(STPAPIResponseBlock)completion;
+
++ (NSURLSessionDataTask *)deleteWithAPIClient:(STPAPIClient *)apiClient
+                                     endpoint:(NSString *)endpoint
+                                   parameters:(NSDictionary *)parameters
+                                 deserializer:(ResponseType)deserializer
+                                   completion:(STPAPIResponseBlock)completion;
+
++ (NSURLSessionDataTask *)deleteWithAPIClient:(STPAPIClient *)apiClient
+                                     endpoint:(NSString *)endpoint
+                                   parameters:(NSDictionary *)parameters
+                                deserializers:(NSArray<ResponseType> *)deserializer
+                                   completion:(STPAPIResponseBlock)completion;
 
 @end

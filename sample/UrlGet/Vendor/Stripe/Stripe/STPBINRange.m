@@ -11,10 +11,10 @@
 
 @interface STPBINRange()
 
-@property(nonatomic)NSUInteger length;
-@property(nonatomic)NSString *qRangeLow;
-@property(nonatomic)NSString *qRangeHigh;
-@property(nonatomic)STPCardBrand brand;
+@property (nonatomic) NSUInteger length;
+@property (nonatomic) NSString *qRangeLow;
+@property (nonatomic) NSString *qRangeHigh;
+@property (nonatomic) STPCardBrand brand;
 
 - (BOOL)matchesNumber:(NSString *)number;
 
@@ -30,22 +30,35 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSArray *ranges = @[
-                            // Catch-all values
+                            // Unknown
                             @[@"", @"", @16, @(STPCardBrandUnknown)],
+
+                            // American Express
                             @[@"34", @"34", @15, @(STPCardBrandAmex)],
                             @[@"37", @"37", @15, @(STPCardBrandAmex)],
+
+                            // Diners Club
                             @[@"30", @"30", @14, @(STPCardBrandDinersClub)],
                             @[@"36", @"36", @14, @(STPCardBrandDinersClub)],
                             @[@"38", @"39", @14, @(STPCardBrandDinersClub)],
-                            @[@"6011", @"6011", @16, @(STPCardBrandDiscover)],
-                            @[@"622", @"622",   @16, @(STPCardBrandDiscover)],
-                            @[@"64", @"65",     @16, @(STPCardBrandDiscover)],
+
+                            // Discover
+                            @[@"60", @"60", @16, @(STPCardBrandDiscover)],
+                            @[@"64", @"65", @16, @(STPCardBrandDiscover)],
+
+                            // JCB
                             @[@"35", @"35", @16, @(STPCardBrandJCB)],
-                            @[@"5", @"5", @16, @(STPCardBrandMasterCard)],
-                            @[@"4", @"4", @16, @(STPCardBrandVisa)],
-                            // Specific known BIN ranges
-                            @[@"222100", @"272099", @16, @(STPCardBrandMasterCard)],
-                            
+
+                            // MasterCard
+                            @[@"50", @"59", @16, @(STPCardBrandMasterCard)],
+                            @[@"22", @"27", @16, @(STPCardBrandMasterCard)],
+                            @[@"67", @"67", @16, @(STPCardBrandMasterCard)], // Maestro
+
+                            // UnionPay
+                            @[@"62", @"62", @16, @(STPCardBrandUnionPay)],
+
+                            // Visa
+                            @[@"40", @"49", @16, @(STPCardBrandVisa)],
                             @[@"413600", @"413600", @13, @(STPCardBrandVisa)],
                             @[@"444509", @"444509", @13, @(STPCardBrandVisa)],
                             @[@"444509", @"444509", @13, @(STPCardBrandVisa)],
@@ -81,11 +94,31 @@
     return STPBINRangeAllRanges;
 }
 
+
+/**
+ Number matching strategy: Truncate the longer of the two numbers (theirs and our
+ bounds) to match the length of the shorter one, then do numerical compare.
+ */
 - (BOOL)matchesNumber:(NSString *)number {
-    NSString *low = [number stringByPaddingToLength:self.qRangeLow.length withString:@"0" startingAtIndex:0];
-    NSString *high = [number stringByPaddingToLength:self.qRangeHigh.length withString:@"0" startingAtIndex:0];
-    
-    return self.qRangeLow.integerValue <= low.integerValue && self.qRangeHigh.integerValue >= high.integerValue;
+
+    BOOL withinLowRange = NO;
+    BOOL withinHighRange = NO;
+
+    if (number.length < self.qRangeLow.length) {
+        withinLowRange = number.integerValue >= [self.qRangeLow substringToIndex:number.length].integerValue;
+    }
+    else {
+        withinLowRange = [number substringToIndex:self.qRangeLow.length].integerValue >= self.qRangeLow.integerValue;
+    }
+
+    if (number.length < self.qRangeHigh.length) {
+        withinHighRange = number.integerValue <= [self.qRangeHigh substringToIndex:number.length].integerValue;
+    }
+    else {
+        withinHighRange = [number substringToIndex:self.qRangeHigh.length].integerValue <= self.qRangeHigh.integerValue;
+    }
+
+    return withinLowRange && withinHighRange;
 }
 
 - (NSComparisonResult)compare:(STPBINRange *)other {

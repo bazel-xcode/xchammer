@@ -11,10 +11,7 @@
 #import "STPBundleLocator.h"
 #import "STPImageLibrary+Private.h"
 
-#define FAUXPAS_IGNORED_IN_METHOD(...)
-
 // Dummy class for locating the framework bundle
-
 
 @implementation STPImageLibrary
 
@@ -42,6 +39,10 @@
     return [self brandImageForCardBrand:STPCardBrandMasterCard];
 }
 
++ (UIImage *)unionPayCardImage {
+    return [self brandImageForCardBrand:STPCardBrandUnionPay];
+}
+
 + (UIImage *)visaCardImage {
     return [self brandImageForCardBrand:STPCardBrandVisa];
 }
@@ -63,6 +64,11 @@
     return [self safeImageNamed:imageName];
 }
 
++ (UIImage *)errorImageForCardBrand:(STPCardBrand)brand {
+    NSString *imageName = brand == STPCardBrandAmex ? @"stp_card_error_amex" : @"stp_card_error";
+    return [self safeImageNamed:imageName];
+}
+
 + (UIImage *)safeImageNamed:(NSString *)imageName {
     return [self safeImageNamed:imageName templateIfAvailable:NO];
 }
@@ -73,14 +79,6 @@
 
 + (UIImage *)addIcon {
     return [self safeImageNamed:@"stp_icon_add" templateIfAvailable:YES];
-}
-
-+ (UIImage *)leftChevronIcon {
-    return [self safeImageNamed:@"stp_icon_chevron_left" templateIfAvailable:YES];
-}
-
-+ (UIImage *)smallRightChevronIcon {
-    return [self safeImageNamed:@"stp_icon_chevron_right_small" templateIfAvailable:YES];
 }
 
 + (UIImage *)checkmarkIcon {
@@ -101,11 +99,9 @@
 
 + (UIImage *)safeImageNamed:(NSString *)imageName
         templateIfAvailable:(BOOL)templateIfAvailable {
-    FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
-    UIImage *image = nil;
-    if ([UIImage respondsToSelector:@selector(imageNamed:inBundle:compatibleWithTraitCollection:)]) {
-        image = [UIImage imageNamed:imageName inBundle:[STPBundleLocator stripeResourcesBundle] compatibleWithTraitCollection:nil];
-    }
+
+    UIImage *image = [UIImage imageNamed:imageName inBundle:[STPBundleLocator stripeResourcesBundle] compatibleWithTraitCollection:nil];
+
     if (image == nil) {
         image = [UIImage imageNamed:imageName];
     }
@@ -118,29 +114,35 @@
 + (UIImage *)brandImageForCardBrand:(STPCardBrand)brand 
                            template:(BOOL)isTemplate {
     BOOL shouldUseTemplate = isTemplate;
-    FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
     NSString *imageName;
     switch (brand) {
-            case STPCardBrandAmex:
+        case STPCardBrandAmex:
             imageName = shouldUseTemplate ? @"stp_card_amex_template" : @"stp_card_amex";
             break;
-            case STPCardBrandDinersClub:
+        case STPCardBrandDinersClub:
             imageName = shouldUseTemplate ? @"stp_card_diners_template" : @"stp_card_diners";
             break;
-            case STPCardBrandDiscover:
+        case STPCardBrandDiscover:
             imageName = shouldUseTemplate ? @"stp_card_discover_template" : @"stp_card_discover";
             break;
-            case STPCardBrandJCB:
+        case STPCardBrandJCB:
             imageName = shouldUseTemplate ? @"stp_card_jcb_template" : @"stp_card_jcb";
             break;
-            case STPCardBrandMasterCard:
+        case STPCardBrandMasterCard:
             imageName = shouldUseTemplate ? @"stp_card_mastercard_template" : @"stp_card_mastercard";
             break;
-            case STPCardBrandUnknown:
-            shouldUseTemplate = YES;
-            imageName = @"stp_card_placeholder_template";
+        case STPCardBrandUnionPay:
+            if ([[[NSLocale currentLocale] localeIdentifier].lowercaseString hasPrefix:@"zh"]) {
+                imageName = shouldUseTemplate ? @"stp_card_unionpay_template_zh" : @"stp_card_unionpay_zh";
+            } else {
+                imageName = shouldUseTemplate ? @"stp_card_unionpay_template_en" : @"stp_card_unionpay_en";
+            }
             break;
-            case STPCardBrandVisa:
+        case STPCardBrandUnknown:
+            shouldUseTemplate = YES;
+            imageName = @"stp_card_unknown";
+            break;
+        case STPCardBrandVisa:
             imageName = shouldUseTemplate ? @"stp_card_visa_template" : @"stp_card_visa";
             break;
     }
@@ -159,19 +161,6 @@
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
-}
-
-+ (UIImage *)paddedImageWithInsets:(UIEdgeInsets)insets
-                          forImage:(UIImage *)image {
-    CGSize size = CGSizeMake(image.size.width + insets.left + insets.right,
-                             image.size.height + insets.top + insets.bottom);
-    UIGraphicsBeginImageContextWithOptions(size, NO, image.scale);
-    CGPoint origin = CGPointMake(insets.left, insets.top);
-    [image drawAtPoint:origin];
-    UIImage *imageWithInsets = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    imageWithInsets = [imageWithInsets imageWithRenderingMode:image.renderingMode];
-    return imageWithInsets;
 }
 
 @end

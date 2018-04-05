@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 // This is a private class that is only a UIViewController subclass by virtue of the fact
 // that that makes it easier to attach to another UIViewController as a child.
 @interface STPKeyboardDetectingViewController : UIViewController
-@property(nonatomic, assign)CGRect lastKeyboardFrame;
-@property(nonatomic, weak)UIView *lastResponder;
-@property(nonatomic, nullable, copy)STPKeyboardFrameBlock keyboardFrameBlock;
-@property(nonatomic, weak)UIScrollView *managedScrollView;
-@property(nonatomic, assign)CGFloat currentBottomInsetChange;
+@property (nonatomic, assign) CGRect lastKeyboardFrame;
+@property (nonatomic, weak) UIView *lastResponder;
+@property (nonatomic, nullable, copy) STPKeyboardFrameBlock keyboardFrameBlock;
+@property (nonatomic, weak) UIScrollView *managedScrollView;
+@property (nonatomic, assign) CGFloat currentBottomInsetChange;
 @end
 
 @implementation STPKeyboardDetectingViewController
@@ -67,17 +67,9 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self.keyboardFrameBlock || self.managedScrollView) {
         if (!CGRectEqualToRect(self.lastKeyboardFrame, keyboardFrame)) {
-            // we're iOS 8 or later
             UIView *responder = [self.parentViewController.view stp_findFirstResponder];
             self.lastResponder = responder;
-            if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)]) {
-                [self doKeyboardChangeAnimationWithNewFrame:keyboardFrame];
-            } else {
-                NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-                [UIView animateWithDuration:duration animations:^{
-                    [self doKeyboardChangeAnimationWithNewFrame:keyboardFrame];
-                }];
-            }
+            [self doKeyboardChangeAnimationWithNewFrame:keyboardFrame];
         }
     }
 }

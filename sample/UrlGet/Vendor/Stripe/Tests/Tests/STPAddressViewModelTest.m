@@ -18,6 +18,7 @@
 - (void)testInitWithRequiredBillingFields {
     STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredBillingFields:STPBillingAddressFieldsNone];
     XCTAssertTrue([sut.addressCells count] == 0);
+    XCTAssertTrue(sut.isValid);
 
     sut = [[STPAddressViewModel alloc] initWithRequiredBillingFields:STPBillingAddressFieldsZip];
     XCTAssertTrue([sut.addressCells count] == 1);
@@ -30,9 +31,9 @@
                        @(STPAddressFieldTypeName),
                        @(STPAddressFieldTypeLine1),
                        @(STPAddressFieldTypeLine2),
+                       @(STPAddressFieldTypeZip),
                        @(STPAddressFieldTypeCity),
                        @(STPAddressFieldTypeState),
-                       @(STPAddressFieldTypeZip),
                        @(STPAddressFieldTypeCountry),
                        ];
     for (NSUInteger i=0; i<[sut.addressCells count]; i++) {
@@ -41,15 +42,15 @@
 }
 
 - (void)testInitWithRequiredShippingFields {
-    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:PKAddressFieldNone];
+    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:nil];
     XCTAssertTrue([sut.addressCells count] == 0);
 
-    sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:PKAddressFieldName];
+    sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:[NSSet setWithArray:@[STPContactFieldName]]];
     XCTAssertTrue([sut.addressCells count] == 1);
     STPAddressFieldTableViewCell *cell1 = sut.addressCells[0];
     XCTAssertEqual(cell1.type, STPAddressFieldTypeName);
 
-    sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:(PKAddressField)(PKAddressFieldName|PKAddressFieldEmail)];
+    sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:[NSSet setWithArray:@[STPContactFieldName, STPContactFieldEmailAddress]]];
     XCTAssertTrue([sut.addressCells count] == 2);
     NSArray *types = @[
                        @(STPAddressFieldTypeName),
@@ -59,16 +60,16 @@
         XCTAssertEqual(sut.addressCells[i].type, [types[i] integerValue]);
     }
 
-    sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:(PKAddressField)(PKAddressFieldPostalAddress|PKAddressFieldEmail|PKAddressFieldPhone)];
+    sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:[NSSet setWithArray:@[STPContactFieldPostalAddress, STPContactFieldEmailAddress, STPContactFieldPhoneNumber]]];
     XCTAssertTrue([sut.addressCells count] == 9);
     types = @[
               @(STPAddressFieldTypeEmail),
               @(STPAddressFieldTypeName),
               @(STPAddressFieldTypeLine1),
               @(STPAddressFieldTypeLine2),
+              @(STPAddressFieldTypeZip),
               @(STPAddressFieldTypeCity),
               @(STPAddressFieldTypeState),
-              @(STPAddressFieldTypeZip),
               @(STPAddressFieldTypeCountry),
               @(STPAddressFieldTypePhone),
               ];
@@ -78,14 +79,14 @@
 }
 
 - (void)testGetAddress {
-    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:(PKAddressField)(PKAddressFieldPostalAddress|PKAddressFieldEmail|PKAddressFieldPhone)];
+    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:[NSSet setWithArray:@[STPContactFieldPostalAddress, STPContactFieldEmailAddress, STPContactFieldPhoneNumber]]];
     sut.addressCells[0].contents = @"foo@example.com";
     sut.addressCells[1].contents = @"John Smith";
     sut.addressCells[2].contents = @"55 John St";
     sut.addressCells[3].contents = @"#3B";
-    sut.addressCells[4].contents = @"New York";
-    sut.addressCells[5].contents = @"NY";
-    sut.addressCells[6].contents = @"10002";
+    sut.addressCells[4].contents = @"10002";
+    sut.addressCells[5].contents = @"New York";
+    sut.addressCells[6].contents = @"NY";
     sut.addressCells[7].contents = @"US";
     sut.addressCells[8].contents = @"555-555-5555";
 
@@ -112,30 +113,52 @@
     address.country = @"US";
     address.phone = @"555-555-5555";
 
-    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:(PKAddressField)(PKAddressFieldPostalAddress|PKAddressFieldEmail|PKAddressFieldPhone)];
+    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredShippingFields:[NSSet setWithArray:@[STPContactFieldPostalAddress, STPContactFieldEmailAddress, STPContactFieldPhoneNumber]]];
     sut.address = address;
     XCTAssertEqualObjects(sut.addressCells[0].contents, @"foo@example.com");
     XCTAssertEqualObjects(sut.addressCells[1].contents, @"John Smith");
     XCTAssertEqualObjects(sut.addressCells[2].contents, @"55 John St");
     XCTAssertEqualObjects(sut.addressCells[3].contents, @"#3B");
-    XCTAssertEqualObjects(sut.addressCells[4].contents, @"New York");
-    XCTAssertEqualObjects(sut.addressCells[5].contents, @"NY");
-    XCTAssertEqualObjects(sut.addressCells[6].contents, @"10002");
+    XCTAssertEqualObjects(sut.addressCells[4].contents, @"10002");
+    XCTAssertEqualObjects(sut.addressCells[5].contents, @"New York");
+    XCTAssertEqualObjects(sut.addressCells[6].contents, @"NY");
     XCTAssertEqualObjects(sut.addressCells[7].contents, @"US");
     XCTAssertEqualObjects(sut.addressCells[7].textField.text, @"United States");
     XCTAssertEqualObjects(sut.addressCells[8].contents, @"555-555-5555");
 }
 
-- (void)testIsValid {
+- (void)testIsValid_Zip {
+    STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredBillingFields:STPBillingAddressFieldsZip];
+
+    STPAddress *address = [STPAddress new];
+
+    address.country = @"US";
+    sut.address = address;
+    XCTAssertEqual(sut.addressCells.count, 1ul);
+    XCTAssertFalse(sut.isValid, @"US addresses have postalCode, require it when requiredBillingFields is .Zip");
+
+    address.postalCode = @"94016";
+    sut.address = address;
+    XCTAssertTrue(sut.isValid);
+
+    address.country = @"MO"; // in Macao, postalCode is optional
+    address.postalCode = nil;
+    sut.address = address;
+    XCTAssertEqual(sut.addressCells.count, 0ul);
+    XCTAssertTrue(sut.isValid, @"in Macao, postalCode is optional, valid without one");
+}
+
+
+- (void)testIsValid_Full {
     STPAddressViewModel *sut = [[STPAddressViewModel alloc] initWithRequiredBillingFields:STPBillingAddressFieldsFull];
     XCTAssertFalse(sut.isValid);
     sut.addressCells[0].contents = @"John Smith";
     sut.addressCells[1].contents = @"55 John St";
     sut.addressCells[2].contents = @"#3B";
     XCTAssertFalse(sut.isValid);
-    sut.addressCells[3].contents = @"New York";
-    sut.addressCells[4].contents = @"NY";
-    sut.addressCells[5].contents = @"10002";
+    sut.addressCells[3].contents = @"10002";
+    sut.addressCells[4].contents = @"New York";
+    sut.addressCells[5].contents = @"NY";
     sut.addressCells[6].contents = @"US";
     XCTAssertTrue(sut.isValid);
 }

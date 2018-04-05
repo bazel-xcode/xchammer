@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface STPImageLibrary (Private)
 
 + (UIImage *)addIcon;
-+ (UIImage *)leftChevronIcon;
-+ (UIImage *)smallRightChevronIcon;
 + (UIImage *)checkmarkIcon;
 + (UIImage *)largeCardFrontImage;
 + (UIImage *)largeCardBackImage;
@@ -27,9 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
                            template:(BOOL)isTemplate;
 + (UIImage *)imageWithTintColor:(UIColor *)color
                        forImage:(UIImage *)image;
-+ (UIImage *)paddedImageWithInsets:(UIEdgeInsets)insets
-                          forImage:(UIImage *)image;
-
 @end
 
 NS_ASSUME_NONNULL_END

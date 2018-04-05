@@ -12,7 +12,7 @@
 #import "STPPaymentCardTextFieldViewModel.h"
 
 @interface STPPaymentCardTextFieldViewModelTest : XCTestCase
-@property(nonatomic)STPPaymentCardTextFieldViewModel *viewModel;
+@property (nonatomic) STPPaymentCardTextFieldViewModel *viewModel;
 @end
 
 @implementation STPPaymentCardTextFieldViewModelTest
@@ -72,17 +72,6 @@
         self.viewModel.cvc = test[0];
         XCTAssertEqualObjects(self.viewModel.cvc, test[1]);
     }
-}
-
-- (void)testNumberWithoutLastDigits {
-    self.viewModel.cardNumber = @"4242424242424242";
-    XCTAssertEqualObjects([self.viewModel numberWithoutLastDigits], @"424242424242");
-    
-    self.viewModel.cardNumber = @"378282246310005";
-    XCTAssertEqualObjects([self.viewModel numberWithoutLastDigits], @"3782822463");
-    
-    self.viewModel.cardNumber = @"";
-    XCTAssertEqualObjects([self.viewModel numberWithoutLastDigits], @"424242424242");
 }
 
 - (void)testValidity {

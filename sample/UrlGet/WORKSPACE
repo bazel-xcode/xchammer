@@ -1,129 +1,27 @@
-http_archive(
-    name = "io_bazel_rules_appengine",
-    sha256 = "f4fb98f31248fca5822a9aec37dc362105e57bc28e17c5611a8b99f1d94b37a4",
-    strip_prefix = "rules_appengine-0.0.6",
-    url = "https://github.com/bazelbuild/rules_appengine/archive/0.0.6.tar.gz",
-)
-
-load("@io_bazel_rules_appengine//appengine:appengine.bzl", "appengine_repositories")
-
 load('@bazel_tools//tools/build_defs/repo:git.bzl', system_git_repository='git_repository')
 
 # Apple specific skylark rules
-# TODO: why is this using system_git_repostiory
-system_git_repository(
-    name = "build_bazel_rules_apple",
-# Waiting on a better patch to rules_apple that we'll try to
-# upstream.
-    remote = "https://github.com/rahul-malik/rules_apple.git",
-    commit = "289a3944156a7cba7f1cc06ef825c872198d3318"
+
+git_repository(
+    name = "bazel_skylib",
+    remote = "https://github.com/bazelbuild/bazel-skylib.git",
+    tag = "0.3.1",
 )
 
+git_repository(
+    name = "build_bazel_rules_apple",
+    remote = "https://github.com/bazelbuild/rules_apple.git",
+    tag = "0.4.0",
+)
 
-appengine_repositories()
+http_file(
+    name = "xctestrunner",
+    executable = 1,
+    url = "https://github.com/google/xctestrunner/releases/download/0.2.2/ios_test_runner.par",
+)
 
 bind(
     name = "xcrunwrapper",
     actual = "//ios-app/xcrunwrapper"
-)
-# LLVM/Clang 4.0
-# We need a newer version of clang for PINLinter support
-# The Clang that ships with xcode cannot load plugins
-CLANG_DIRNAME="clang+llvm-4.0.0-x86_64-apple-darwin"
-new_http_archive(
-  name = 'clang40',
-  url = 'http://releases.llvm.org/4.0.0/' + CLANG_DIRNAME + '.tar.xz',
-  strip_prefix = CLANG_DIRNAME,
-  sha256 = '5504064916d0651c185ceff85871298f31e2eaf4abf1333b2c36f5eed5e9cde6',
-  build_file_content = """
-package(default_visibility = ['//visibility:public'])
-
-filegroup(
-  name = 'clang',
-  srcs = [
-    'bin/clang',
-  ],
-)
-
-filegroup(
-  name = 'clang-format',
-  srcs = [
-    'bin/clang-format',
-  ],
-)
-
-filegroup(
-  name = 'ar',
-  srcs = [
-    'bin/llvm-ar',
-  ],
-)
-
-filegroup(
-  name = 'nm',
-  srcs = [
-    'bin/llvm-nm',
-  ],
-)
-
-filegroup(
-  name = 'objdump',
-  srcs = [
-    'bin/llvm-objdump',
-  ],
-)
-
-filegroup(
-  name = 'as',
-  srcs = [
-    'bin/llvm-as',
-  ],
-)
-
-filegroup(
-  name = 'compiler_pieces',
-  srcs = glob([
-    'bin/**',
-    'share/**',
-    'libexec/**',
-    'lib/**',
-    'include/**',
-  ]),
-)
-
-filegroup(
-  name = 'compiler_components',
-  srcs = [
-    ':clang',
-    ':ar',
-    ':nm',
-    ':objdump',
-    ':as',
-  ],
-)
-""",
-)
-## Protobuf dependencies
-
-new_http_archive(
-  name = "six",
-  url = "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz",
-  sha256 = '105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a',
-  strip_prefix = "six-1.10.0",
-  build_file_content = """
-filegroup(
-    name = "srcs",
-    srcs = glob(["**"]),
-    visibility = ["//visibility:public"],
-)
-
-py_library(
-    name = "six",
-    srcs = ["six.py"],
-    imports = ["."],
-    srcs_version = "PY2AND3",
-    visibility = ["//visibility:public"],
-)
-"""
 )
 

@@ -1,13 +1,26 @@
 load("@build_bazel_rules_apple//apple/bundling:entitlements.bzl",
      entitlements_rule="entitlements")
 
-
 def _entitlements_writer_impl(ctx):
+    link_inputs = ctx.attr.entitlements.objc.link_inputs
     out = ctx.new_file(ctx.attr.name + ".entitlements")
+    if len(link_inputs) == 0:
+        # Create some dummy entitlements
+        cmd = ' '.join([
+            'touch', out.path, '\n',
+        ])
+        ctx.action(
+            command=cmd,
+            mnemonic="EntitlementsWriter",
+            inputs=[],
+            outputs=[out]
+        )
+        return struct(
+            files=depset([out])
+        )
 
+    # Export the entitlements from link_inputs
     entitlements_file = ctx.attr.entitlements.objc.link_inputs.to_list()[0]
-
-    # Copy over the linker input to a file name that we control
     cmd = ' '.join([
         'cp', entitlements_file.path, out.path, '\n',
     ])

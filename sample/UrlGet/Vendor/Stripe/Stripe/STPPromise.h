@@ -21,9 +21,9 @@ typedef void (^STPPromiseCompletionBlock)(__nullable T value,  NSError * _Nullab
 typedef id _Nonnull (^STPPromiseMapBlock)(T value);
 typedef STPPromise* _Nonnull (^STPPromiseFlatMapBlock)(T value);
 
-@property(atomic, readonly)BOOL completed;
-@property(atomic, readonly)T value;
-@property(atomic, readonly)NSError *error;
+@property (atomic, readonly) BOOL completed;
+@property (atomic, readonly) T value;
+@property (atomic, readonly) NSError *error;
 
 + (instancetype)promiseWithError:(NSError *)error;
 + (instancetype)promiseWithValue:(T)value;
@@ -43,7 +43,7 @@ typedef STPPromise* _Nonnull (^STPPromiseFlatMapBlock)(T value);
 
 @end
 
-typedef STPPromise* _Nonnull (^STPVoidPromiseFlatMapBlock)();
+typedef STPPromise* _Nonnull (^STPVoidPromiseFlatMapBlock)(void);
 
 @interface STPVoidPromise : STPPromise
 

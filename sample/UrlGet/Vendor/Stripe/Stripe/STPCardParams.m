@@ -7,6 +7,7 @@
 //
 
 #import "STPCardParams.h"
+#import "STPCard+Private.h"
 
 #import "STPCardValidator.h"
 #import "StripeError.h"
@@ -19,6 +20,7 @@
     self = [super init];
     if (self) {
         _additionalAPIParameters = @{};
+        _address = [STPAddress new];
     }
     return self;
 }
@@ -31,26 +33,33 @@
     }
 }
 
-- (STPAddress *)address {
-    STPAddress *address = [STPAddress new];
-    address.name = self.name;
-    address.line1 = self.addressLine1;
-    address.line2 = self.addressLine2;
-    address.city = self.addressCity;
-    address.state = self.addressState;
-    address.postalCode = self.addressZip;
-    address.country = self.addressCountry;
-    return address;
+- (void)setAddress:(STPAddress *)address {
+    _address = address;
+    self.name = address.name;
 }
 
-- (void)setAddress:(STPAddress *)address {
-    self.name = address.name;
-    self.addressLine1 = address.line1;
-    self.addressLine2 = address.line2;
-    self.addressCity = address.city;
-    self.addressState = address.state;
-    self.addressZip = address.postalCode;
-    self.addressCountry = address.country;
+#pragma mark - Description
+
+- (NSString *)description {
+    NSArray *props = @[
+                       // Object
+                       [NSString stringWithFormat:@"%@: %p", NSStringFromClass([self class]), self],
+
+                       // Basic card details
+                       [NSString stringWithFormat:@"last4 = %@", self.last4],
+                       [NSString stringWithFormat:@"expMonth = %lu", (unsigned long)self.expMonth],
+                       [NSString stringWithFormat:@"expYear = %lu", (unsigned long)self.expYear],
+                       [NSString stringWithFormat:@"cvc = %@", (self.cvc) ? @"<redacted>" : nil],
+
+                       // Additional card details (alphabetical)
+                       [NSString stringWithFormat:@"currency = %@", self.currency],
+
+                       // Cardholder details
+                       [NSString stringWithFormat:@"name = %@", (self.name) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"address = %@", (self.address) ? @"<redacted>" : nil],
+                       ];
+
+    return [NSString stringWithFormat:@"<%@>", [props componentsJoinedByString:@"; "]];
 }
 
 #pragma mark - STPFormEncodable
@@ -61,19 +70,74 @@
 
 + (NSDictionary *)propertyNamesToFormFieldNamesMapping {
     return @{
-             @"number": @"number",
-             @"cvc": @"cvc",
-             @"name": @"name",
-             @"addressLine1": @"address_line1",
-             @"addressLine2": @"address_line2",
-             @"addressCity": @"address_city",
-             @"addressState": @"address_state",
-             @"addressZip": @"address_zip",
-             @"addressCountry": @"address_country",
-             @"expMonth": @"exp_month",
-             @"expYear": @"exp_year",
-             @"currency": @"currency",
+             NSStringFromSelector(@selector(number)): @"number",
+             NSStringFromSelector(@selector(cvc)): @"cvc",
+             NSStringFromSelector(@selector(name)): @"name",
+             NSStringFromSelector(@selector(addressLine1)): @"address_line1",
+             NSStringFromSelector(@selector(addressLine2)): @"address_line2",
+             NSStringFromSelector(@selector(addressCity)): @"address_city",
+             NSStringFromSelector(@selector(addressState)): @"address_state",
+             NSStringFromSelector(@selector(addressZip)): @"address_zip",
+             NSStringFromSelector(@selector(addressCountry)): @"address_country",
+             NSStringFromSelector(@selector(expMonth)): @"exp_month",
+             NSStringFromSelector(@selector(expYear)): @"exp_year",
+             NSStringFromSelector(@selector(currency)): @"currency",
              };
+}
+
+- (void)setName:(NSString *)name {
+    _name = name.copy;
+    self.address.name = name;
+}
+
+#pragma mark - Deprecated methods
+
+- (void)setAddressLine1:(NSString *)addressLine1 {
+    self.address.line1 = addressLine1;
+}
+
+- (NSString *)addressLine1 {
+    return self.address.line1;
+}
+
+- (void)setAddressLine2:(NSString *)addressLine2 {
+    self.address.line2 = addressLine2;
+}
+
+- (NSString *)addressLine2 {
+    return self.address.line2;
+}
+
+- (void)setAddressZip:(NSString *)addressZip {
+    self.address.postalCode = addressZip;
+}
+
+- (NSString *)addressZip {
+    return self.address.postalCode;
+}
+
+- (void)setAddressCity:(NSString *)addressCity {
+    self.address.city = addressCity;
+}
+
+- (NSString *)addressCity {
+    return self.address.city;
+}
+
+- (void)setAddressState:(NSString *)addressState {
+    self.address.state = addressState;
+}
+
+- (NSString *)addressState {
+    return self.address.state;
+}
+
+- (void)setAddressCountry:(NSString *)addressCountry {
+    self.address.country = addressCountry;
+}
+
+- (NSString *)addressCountry {
+    return self.address.country;
 }
 
 @end
