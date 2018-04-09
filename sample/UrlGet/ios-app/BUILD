@@ -106,8 +106,7 @@ objc_library(
         "//Vendor/Weixin:Weixin",
         "//Vendor/Stripe:Stripe"
     ],
-
     # Not added
-    sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage"],
+    sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage"]
 )
 

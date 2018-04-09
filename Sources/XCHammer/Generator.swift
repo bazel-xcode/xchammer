@@ -574,7 +574,7 @@ enum Generator {
 
     /// Main entry point of generation.
     public static func generateProjects(workspaceRootPath: Path, bazelPath: Path,
-            configPath: Path, config: XCHammerConfig, xcworkspacePath: Path?) -> Result<(),
+                                        configPath: Path, config: XCHammerConfig, xcworkspacePath: Path?, force: Bool = false) -> Result<(),
                 GenerateError> {
         // Listen to Tulsi logs. Assume this function is called 1 time
         NotificationCenter.default.addObserver(forName:
@@ -606,7 +606,7 @@ enum Generator {
         // updated, since it is slow as hell.
         let logger = XCHammerLogger.shared()
         let states = projectStates.values.filter { !$0.0 }
-        guard states.count > 0 else {
+        guard force || states.count > 0 else {
             logger.logInfo("Skipping update for now")
             return .success()
         }
@@ -651,7 +651,7 @@ enum Generator {
 
             let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees
-            if existingState?.0 == true {
+            if !force && existingState?.0 == true {
                 logger.logInfo("Skipping update for now")
                 return .success()
             }

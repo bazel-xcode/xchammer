@@ -97,7 +97,7 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
 
 // Traversal predicates
 private let stopAfterNeedsRecursive: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { $0.needsRecursiveExtraction ? .justOnceMore : .keepGoing }
-private let stopAtBundles: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { $0.type == "objc_bundle_library" ? .stop : .keepGoing }
+private let stopAtBundles: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { $0.type == "objc_bundle" || $0.type == "objc_bundle_library" ? .stop : .keepGoing }
 
 public class XcodeTarget: Hashable, Equatable {
     private let ruleEntry: RuleEntry
@@ -803,8 +803,7 @@ public class XcodeTarget: Hashable, Equatable {
     lazy var xcBundles: [XCGTargetSource] = {
         let bundleResources = ([self] + self.transitiveTargets(map:
                     self.targetMap,
-                    predicate: stopAfterNeedsRecursive))
-            .filter { $0.type == "objc_bundle" }
+                    predicate: stopAtBundles <> stopAfterNeedsRecursive))
             .flatMap { $0.xcResources }
         return Set(bundleResources.map { $0.path }).map { XCGTargetSource(path: $0) }
     }()
@@ -1025,6 +1024,10 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
             return "iOS"
         }
     }(xcodeTarget)
+
+    let bundleTargetDeps = xcodeTarget.transitiveTargets(map: xcodeTarget.targetMap)
+        .filter { $0.type == "objc_bundle_library" }
+        .map { XCGDependency(type: .target, reference: $0.xcTargetName)}
     
     return XCGTarget(
         name: xcodeTarget.xcTargetName,
@@ -1034,7 +1037,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
         configFiles: getDiagsXCConfigFiles(for: xcodeTarget, genOptions:
             genOptions),
         sources: sources,
-        dependencies: deps + linkedDeps,
+        dependencies: deps + linkedDeps + bundleTargetDeps,
         prebuildScripts: prebuildScripts,
         postbuildScripts: postbuildScripts,
         scheme: nil,
