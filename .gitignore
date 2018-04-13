@@ -25,4 +25,8 @@ depsHash
 sample/UrlGet/IntegrationTests.xcodeproj/
 sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/HammerLog.txt
 sample/UrlGet/tools/XCHammer
+
 tulsigen-*
+tulsi-includes
+tulsi-workspace
+

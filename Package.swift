@@ -14,8 +14,7 @@ let package = Package(
     dependencies: [
         // xchammer branches
         .package(url: "https://github.com/yonaskolb/XcodeGen.git", .revision("e1b9bc29f7c4538757fc9481d73948b1ccd76ad6")),
-        .package(url: "https://github.com/pinterest/Tulsi.git",
-            .revision("499fe40f63580d5bbd4a133241ee3083a169c00f")),
+        .package(url: "https://github.com/pinterest/Tulsi.git", .revision("6ebee5d7d8b98b834515012f01c455fb54c2e78a")),
         // other deps
         .package(url: "https://github.com/jpsim/Yams.git", from: "0.3.6"),
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),

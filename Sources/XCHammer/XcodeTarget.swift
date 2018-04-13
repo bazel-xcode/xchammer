@@ -897,6 +897,87 @@ public class XcodeTarget: Hashable, Equatable {
         }
         return productType
     }
+
+    /// Get a Bazel build target
+    /// This uses a custom build_bazel.py which requires:
+    /// - LLDB init style debug setup for speed and cachability
+    /// - Custom debug mapping in clang frontend via Bazel tweaks
+    /// It is not enabled by default due to the above implications.
+    func getBazelBuildableTarget() -> XCGTarget? {
+        guard let productType = extractProductType() else {
+            return nil
+        }
+
+        // TODO: Support testing in Bazel
+        guard isTopLevelTestTarget == false else {
+            return nil
+        }
+
+        let platform = { (xcodeTarget: XcodeTarget) -> String in
+            if let deploymentTarget = xcodeTarget.deploymentTarget {
+                switch deploymentTarget.platform {
+                case .ios: return "iOS"
+                case .macos: return "macOS"
+                case .tvos: return "tvOS"
+                case .watchos: return "watchOS"
+                }
+            } else {
+                return "iOS"
+            }
+        }(self)
+
+        let targetConfig = genOptions.config.getTargetConfig(for: label.value)
+
+        var cmd: [String] = [
+            label.value,
+            "--bazel", genOptions.bazelPath.string,
+            "--bazel_bin_path", "bazel-bin",
+            "--verbose",
+            "--install_generated_artifacts"
+        ]
+
+        if let buildBazelOptions = targetConfig?.buildBazelOptions {
+           cmd = cmd + ["--bazel_options", buildBazelOptions, "--"]
+        }
+
+        if let buildBazelStartupOptions = targetConfig?.buildBazelStartupOptions {
+           cmd = cmd + ["--bazel_startup_options", buildBazelStartupOptions, "--"]
+        }
+
+        // tulsi-aspects are adjacent to the XCHammer bin
+        let buildInvocation = dirname(CommandLine.arguments[0]) +
+            "/tulsi-aspects/bazel_build.py " +
+            cmd.joined(separator: " ")
+
+        let getScriptContent: (() -> String) = {
+            guard
+                let templatePath = targetConfig?.buildBazelTemplate,
+                let template = try? String(contentsOf: (self.genOptions.workspaceRootPath + Path(
+                    templatePath)).url) else {
+                return """
+                export TULSI_USE_HAMMER_DEBUG_CONFIG=YES
+                \(buildInvocation)
+                """
+            }
+            return template.replacingOccurrences(of: "__BAZEL_COMMAND__",
+                    with: buildInvocation)
+        }
+
+        let bazelScript = XCGBuildScript(path: nil, script: getScriptContent(),
+                name: "Bazel build")
+        return XCGTarget(
+            name: xcTargetName + "-Bazel",
+            type: PBXProductType(rawValue: productType.rawValue)!,
+            platform: Platform(rawValue: platform)!,
+            settings: makeXcodeGenSettings(from: XCBuildSettings()),
+            configFiles: [String: String](),
+            sources: [],
+            dependencies: [],
+            prebuildScripts: [bazelScript],
+            scheme: nil,
+            legacy: nil
+        )
+    }
 }
 
 // MARK: - Equatable

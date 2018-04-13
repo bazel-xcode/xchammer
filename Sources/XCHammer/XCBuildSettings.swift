@@ -186,11 +186,12 @@ struct XCBuildSettings: Encodable {
         case codeSigningStyle = "CODE_SIGN_STYLE"
         case moduleMapFile = "MODULEMAP_FILE"
         case testTargetName = "TEST_TARGET_NAME"
+        case useHeaderMap = "USE_HEADERMAP"
 
         // Hammer Rules
         case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
         case mobileProvisionProfileFile = "HAMMER_PROFILE_FILE"
-        case useHeaderMap = "USE_HEADERMAP"
+        case tulsiWR = "TULSI_WR"
     }
 
     func encode(to encoder: Encoder) throws {
@@ -233,6 +234,9 @@ struct XCBuildSettings: Encodable {
         try moduleMapFile.map { try container.encode($0.v, forKey: .moduleMapFile) }
         try useHeaderMap.map { try container.encode($0.v, forKey: .useHeaderMap) }
         try testTargetName.map { try container.encode($0.v, forKey: .testTargetName) }
+
+        // XCHammer only supports Xcode projects at the root directory
+        try container.encode("$SOURCE_ROOT", forKey: .tulsiWR)
     }
 }
 
