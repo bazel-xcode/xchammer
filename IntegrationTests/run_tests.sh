@@ -37,6 +37,12 @@ function testBuild() {
     assertExitCode "Xcode built successfully"
 }
 
+function testBazelBuild() {
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL --generate_bazel_targets --force
+    xcodebuild -scheme ios-app-Bazel -project $TEST_PROJ -sdk iphonesimulator
+    assertExitCode "Xcode built bazel targets successfully"
+}
+
 function testNooping() {
     echo "Testing noop generation"
     $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
@@ -98,6 +104,7 @@ function testsDidFinish() {
 function runTests() {
     set -e
     testBuild
+    testBazelBuild
     testGenerateWhileBuilding
     testNooping
 }

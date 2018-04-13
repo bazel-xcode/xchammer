@@ -11,6 +11,21 @@ import Foundation
 struct XCHammerTargetConfig: Codable {
     /// Command line arguments for each target
     let commandLineArguments: [String]?
+
+    /// Bazel Target options
+
+    /// Build options passed to the Bazel invocation
+    let buildBazelOptions: String?
+
+    /// Startup options passed to the Bazel build invocation
+    let buildBazelStartupOptions: String?
+
+    /// Template for the `Bazel build` runscript relative to the
+    /// workspace root.
+    /// Variables:
+    /// __BAZEL_COMMAND__
+    /// This is the actual build invocation.
+    let buildBazelTemplate: String?
 }
 
 struct XCHammerProjectConfig: Codable {

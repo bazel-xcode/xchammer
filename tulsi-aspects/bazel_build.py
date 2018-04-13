@@ -173,8 +173,9 @@ class _OptionsParser(object):
         })
 
     # Options specific to debugger integration in Xcode.
-    xcode_version_major = int(os.environ['XCODE_VERSION_MAJOR'])
-    if xcode_version_major < 800:
+    # TODO:(jerry) investigate why -fdebug-compilation-dir
+    # doesn't seem to work in the latest clang.
+    if False:
       xcode_lldb_options = [
           '--copt=-Xclang', '--copt=-fdebug-compilation-dir',
           '--copt=-Xclang', '--copt=%s' % main_group_path,
@@ -478,8 +479,17 @@ class BazelBuildBridge(object):
 
     self.generate_dsym = os.environ.get('TULSI_USE_DSYM', 'NO') == 'YES'
     self.use_bep = os.environ.get('TULSI_USE_BEP', 'YES') == 'YES'
+
+    # TODO:(jerry) this doesn't do anything
     self.patch_lldbinit_enabled = os.environ.get('PATCH_LLDBINIT_ENABLED', 'NO') == 'YES'
     self.use_lldb_init = os.environ.get('TULSI_USE_LLDBINIT', 'NO') == 'YES'
+
+    # Custom XCHammer Debug profile. Note, that this is undocumented
+    # and relies on a custom toolchain in the build
+    self.use_hammer_debug_config = os.environ.get('TULSI_USE_HAMMER_DEBUG_CONFIG', 'NO') == 'YES'
+    if self.use_hammer_debug_config:
+	self.generate_dsym = False
+	self.use_lldb_init = True
 
     # Target architecture.  Must be defined for correct setting of
     # the --config flag
@@ -680,7 +690,7 @@ class BazelBuildBridge(object):
     # In cases where a dSYM bundle was produced, the post_processor will have
     # already corrected the paths and use of target.source-map is redundant (and
     # appears to trigger actual problems in Xcode 8.1 betas).
-    if self.use_lldb_init and self.xcode_version_major >= 800:
+    if self.use_lldb_init or self.use_hammer_debug_config:
       timer = Timer('Updating .lldbinit', 'updating_lldbinit').Start()
       exit_code = self._UpdateLLDBInit(self.generate_dsym)
       timer.End()
@@ -722,8 +732,9 @@ class BazelBuildBridge(object):
 
     # Do not follow symlinks on __file__ in case this script is linked during
     # development.
+    # TODO: (jerry) consider reworking XCHammer to match this
     tulsi_package_dir = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'Bazel'))
+        os.path.join(os.path.dirname(__file__), '..', 'tulsi-aspects'))
 
     if self.use_bep:
       bazel_command.append('--build_event_json_file=%s' %
@@ -1668,81 +1679,15 @@ class BazelBuildBridge(object):
     return 0
 
   def _ExtractTargetSourcePaths(self):
-    """Extracts set((source paths, symlink)) from the target's debug symbols.
-
-    Returns:
-      None: if an error occurred.
-      set(str): containing tuples of unique source paths in the target binary
-                associated with the symlink used by Tulsi generated Xcode
-                projects if applicable. For example, a source path to a
-                /genfiles/ directory will be associated with "bazel-genfiles".
-                Paths will only be returned if they're available on the
-                local filesystem.
-    """
-    if not os.path.isfile(self.binary_path):
-      _PrintXcodeWarning('No binary at expected path %r' % self.binary_path)
-      return None
-
-    returncode, output = self._RunSubprocess([
-        'xcrun',
-        'dsymutil',
-        '-s',
-        self.binary_path
-    ])
-    if returncode:
-      _PrintXcodeWarning('dsymutil returned %d while examining symtable for %r'
-                         % (returncode, self.binary_path))
-      return None
-
-    # Symbol table lines of interest are of the form:
-    #  [index] n_strx (N_SO ) n_sect n_desc n_value 'source_path'
-    # where source_path is an absolute path (rather than a filename). There are
-    # several paths of interest:
-    # The path up to "/bin/" is mapped to bazel-bin.
-    # The path up to "/genfiles/" is mapped to bazel-genfiles.
-    # The path up to "execroot" covers any other cases.
-    source_path_re = re.compile(
-        r'\[\s*\d+\]\s+.+?\(N_SO\s*\)\s+.+?\'(/.+?/execroot)/(.*?)\'\s*$')
-    source_path_prefixes = set()
-
-    # TODO(b/35624202): Remove when target.source_map problem is resolved.
-    paths_not_found = set()
-
-    bazel_out_symlink = self.bazel_symlink_prefix + 'out'
-    for line in output.split('\n'):
-      match = source_path_re.match(line)
-      if not match:
-        continue
-      basepath = match.group(1)
-      if not os.path.exists(basepath):
-        # TODO(b/35624202): Remove when target.source_map problem is resolved.
-        if basepath not in paths_not_found:
-          paths_not_found.add(basepath)
-          self._PrintPathNotFoundWarning(basepath)
-        continue
-      # Subpaths of interest will be of the form
-      # <workspace>/bazel-out/<arch>-<mode>/<interesting_bit>/...
-      subpath = match.group(2)
-      components = subpath.split(os.sep, 5)
-      if len(components) >= 4 and components[1] == bazel_out_symlink:
-        symlink_component = components[3]
-        match_path = os.path.join(basepath, *components[:4])
-        if not os.path.exists(match_path):
-          # TODO(b/35624202): Remove when target.source_map problem is resolved.
-          if match_path not in paths_not_found:
-            paths_not_found.add(match_path)
-            self._PrintPathNotFoundWarning(match_path)
-          continue
-        if symlink_component == 'bin':
-          source_path_prefixes.add((match_path, self.bazel_bin_path))
-          continue
-        if symlink_component == 'genfiles':
-          source_path_prefixes.add((match_path, self.bazel_genfiles_path))
-          continue
-
-      source_path_prefixes.add((basepath, None))
-
-    return source_path_prefixes
+      # Map the local sources to the __BAZEL_WORKSPACE_DIR__
+      # TODO: (jerry) consider:
+      # - Renaming this to something Hammer-ish
+      # - Proposing these techniques to Bazel and Tulsi
+      source_paths = set()
+      source_paths.add((
+        "/__SHARED_CACHABLE_PINTEREST_BAZEL_WORKSPACE_DIR__",
+        self.workspace_root))
+      return source_paths
 
   def _LinkTulsiWorkspace(self):
     """Links the Bazel Workspace to the Tulsi Workspace (`tulsi-workspace`)."""

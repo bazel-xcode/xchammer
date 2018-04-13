@@ -11,3 +11,7 @@ projects:
             - "Vendor/**"
             - "ios-app/**"
 
+targetConfig:
+    "//ios-app:ios-app":
+        buildBazelTemplate: "UrlGetXcodeBuildScript.sh"
+        buildBazelOptions: "--action_env=X=Y"
