@@ -36,7 +36,7 @@ enum Generator {
     /// @note this version is written into the `XCHAMMER_DEPS_HASH` build setting
     /// the version can be extracted with a simple search: i.e.
     /// grep -m 1 XCHAMMER_DEPS_HASH $PROJ | sed 's,.*version:\(.*\):.*,\1,g'
-    public static let BinaryVersion = "0.1.5"
+    public static let BinaryVersion = "0.1.6"
 
     /// Used to store the `depsHash` into the project
     static let DepsHashSettingName = "XCHAMMER_DEPS_HASH"
@@ -115,9 +115,9 @@ enum Generator {
             exit 0
         fi
 
-        PREV_STAT=`stat -f %c "\(genStatusPath)"`
+        PREV_STAT=`/usr/bin/stat -f %c "\(genStatusPath)"`
         \(generateCommand.joined(separator: " "))
-        STAT=`stat -f %c "\(genStatusPath)"`
+        STAT=`/usr/bin/stat -f %c "\(genStatusPath)"`
         if [[ "$PREV_STAT" != "$STAT" ]]; then
             echo "error: Xcode project was out-of-date so we updated it for you! Please build again."
             exit 1
@@ -574,7 +574,7 @@ enum Generator {
 
     /// Main entry point of generation.
     public static func generateProjects(workspaceRootPath: Path, bazelPath: Path,
-            configPath: Path, config: XCHammerConfig, xcworkspacePath: Path?) -> Result<(),
+                                        configPath: Path, config: XCHammerConfig, xcworkspacePath: Path?, force: Bool = false) -> Result<(),
                 GenerateError> {
         // Listen to Tulsi logs. Assume this function is called 1 time
         NotificationCenter.default.addObserver(forName:
@@ -606,7 +606,7 @@ enum Generator {
         // updated, since it is slow as hell.
         let logger = XCHammerLogger.shared()
         let states = projectStates.values.filter { !$0.0 }
-        guard states.count > 0 else {
+        guard force || states.count > 0 else {
             logger.logInfo("Skipping update for now")
             return .success()
         }
@@ -651,7 +651,7 @@ enum Generator {
 
             let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees
-            if existingState?.0 == true {
+            if !force && existingState?.0 == true {
                 logger.logInfo("Skipping update for now")
                 return .success()
             }

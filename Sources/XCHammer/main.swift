@@ -99,10 +99,11 @@ struct GenerateCommand: CommandProtocol {
     func run(_ options: Options) -> Result<(), CommandError> {
         do {
             let config = try getHammerConfig(path: options.configPath)
-            Generator.generateProjects(workspaceRootPath:
+            // Is it intentional to not handle the error in the result here?
+            _  = Generator.generateProjects(workspaceRootPath:
                     options.workspaceRootPath, bazelPath: options.bazelPath,
                     configPath: options.configPath, config:
-                    config, xcworkspacePath: options.xcworkspacePath)
+                config, xcworkspacePath: options.xcworkspacePath, force: options.forceRun)
             return .success()
         } catch {
             return .failure(.swiftException(error))
