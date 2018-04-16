@@ -374,13 +374,23 @@ enum Generator {
             schemes: schemes,
             genOptions: genOptions,
             xcodeProjPath: tempProjectPath)
+    }
 
-        // Move the new project to the output path.
-        // This needs to be atomic, or it will cause issues.
-        try? FileManager.default.removeItem(atPath:
-                genOptions.outputProjectPath.string)
+    /// Move the new project to the output path.
+    /// This needs to be atomic, or it will cause issues.
+    private static func replaceProject(genOptions: XCHammerGenerateOptions)
+        throws {
+        let tempDirPath = genOptions.outputProjectPath.string + "-tmp"
+        let tempProjectPath = Path(tempDirPath)
+        XCHammerLogger.shared().logInfo("Replacing old project")
+        if FileManager.default.fileExists(atPath:
+                genOptions.outputProjectPath.string) {
+            try FileManager.default.removeItem(atPath:
+                    genOptions.outputProjectPath.string)
+        }
         try FileManager.default.moveItem(atPath: tempProjectPath.string,
                 toPath: genOptions.outputProjectPath.string)
+        XCHammerLogger.shared().logInfo("Overwrote project")
     }
 
     /// Skip hashing children of Xcode directory like files
@@ -572,6 +582,12 @@ enum Generator {
 
     // Mark - Public
 
+    /// Internal state used to associate updatedness with a generation
+    struct GenerateState {
+        let genOptions: XCHammerGenerateOptions
+        let skipped: Bool
+    }
+
     /// Main entry point of generation.
     public static func generateProjects(workspaceRootPath: Path, bazelPath: Path,
                                         configPath: Path, config: XCHammerConfig, xcworkspacePath: Path?, force: Bool = false) -> Result<(),
@@ -631,8 +647,8 @@ enum Generator {
             fatalError("Can't get genfiles")
         }
 
-        let results = config.projects.map { $0.key }.parallelMap({
-            projectName -> Result<(), GenerateError> in
+        let generateResults = config.projects.map { $0.key }.parallelMap({
+            projectName -> Result<GenerateState, GenerateError> in
             let logger = XCHammerLogger.shared()
             let profiler = XCHammerProfiler("generate_project")
             let outputProjectPath = workspaceRootPath + Path(projectName + ".xcodeproj")
@@ -648,12 +664,12 @@ enum Generator {
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath: xcworkspacePath)
 
-
             let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees
             if !force && existingState?.0 == true {
                 logger.logInfo("Skipping update for now")
-                return .success()
+                return .success(GenerateState(genOptions: genOptions,
+                            skipped: true))
             }
 
             // Attempt to get the depsHash from the project state or recompute
@@ -661,7 +677,21 @@ enum Generator {
                     genOptions.workspaceRootPath, genOptions: genOptions)
             return generateProject(genOptions: genOptions,
                     ruleEntryMap: ruleEntryMap, genfileLabels: genfileLabels,
-                    depsHash: depsHash)
+                    depsHash: depsHash).map {
+                return GenerateState(genOptions: genOptions,
+                        skipped: false)
+            }
+        })
+
+        let results = generateResults.parallelMap({
+             generateResult -> Result<(), GenerateError> in
+             guard case let .success(state) = generateResult,
+                !state.skipped else {
+                return generateResult.map { $0 }
+             }
+             return doResult {
+                try replaceProject(genOptions: state.genOptions)
+             }
         })
 
         // Write the genStatus into the workspace
@@ -677,6 +707,10 @@ enum Generator {
                  fatalError("Can't write genStatus")
             }
         }
-        return results.first ?? .success()
+        let result: Result<(), GenerateError> = .success()
+        return results.reduce(into: result, {
+             result, element in
+             return result &&& element
+        })
     }
 }
