@@ -963,13 +963,16 @@ public class XcodeTarget: Hashable, Equatable {
                     with: buildInvocation)
         }
 
+        // Minimal settings for this build
+        var settings = XCBuildSettings()
+        settings.codeSigningRequired <>= First("NO")
         let bazelScript = XCGBuildScript(path: nil, script: getScriptContent(),
                 name: "Bazel build")
         return XCGTarget(
             name: xcTargetName + "-Bazel",
             type: PBXProductType(rawValue: productType.rawValue)!,
             platform: Platform(rawValue: platform)!,
-            settings: makeXcodeGenSettings(from: XCBuildSettings()),
+            settings: makeXcodeGenSettings(from: settings),
             configFiles: [String: String](),
             sources: [],
             dependencies: [],
