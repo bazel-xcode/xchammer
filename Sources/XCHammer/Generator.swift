@@ -28,6 +28,7 @@ extension XCHammerConfig {
 
 enum Generator {
     static let BazelPreBuildTargetName = "GeneratedFiles"
+    static let ClearSourceMapTargetName = "ResetLLDBInit"
     static let UpdateXcodeProjectTargetName = "UpdateXcodeProject"
 
     /// The current version of the generator
@@ -58,6 +59,8 @@ enum Generator {
                 (xcodeGenTarget.xcodeTarget.xcTargetName, xcodeGenTarget)})
     }
 
+    // Mark - Xcode helper targets
+
     private static func makeBazelPreBuildTarget(labels: [BuildLabel], genOptions:
             XCHammerGenerateOptions) -> XCGTarget {
         let bazel = genOptions.bazelPath.string
@@ -85,6 +88,32 @@ enum Generator {
         )
         return target
     }
+
+    private static func makeClearSourceMapTarget(labels: [BuildLabel], genOptions:
+            XCHammerGenerateOptions) -> XCGTarget {
+        let argStr = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'"
+        let target = XCGTarget(
+            name: ClearSourceMapTargetName,
+            type: PBXProductType.none,
+            platform: Platform.iOS,
+            settings: XCGSettings(dictionary: [String: Any]()),
+            configFiles: [:],
+            sources: [],
+            dependencies: [],
+            prebuildScripts: [],
+            postbuildScripts: [],
+            scheme: nil,
+            // TODO: (jerry) Fix missing initializer visibility
+            legacy: try! XCGLegacyTarget(jsonDictionary: [
+                "toolPath": "/bin/bash",
+                "arguments": argStr,
+                "passSettings": true,
+                "workingDirectory": genOptions.workspaceRootPath.string
+            ])
+        )
+        return target
+    }
+
 
     private static func makeUpdateXcodeProjectTarget(genOptions:
             XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> XCGTarget {
@@ -218,6 +247,8 @@ enum Generator {
                     XcodeScheme.BuildTarget(target: UpdateXcodeProjectTargetName,
                             project: genOptions.projectName, productName: ""),
                     XcodeScheme.BuildTarget(target: BazelPreBuildTargetName,
+                            project: genOptions.projectName, productName: ""),
+                    XcodeScheme.BuildTarget(target: ClearSourceMapTargetName,
                             project: genOptions.projectName, productName: "")
 
                 ] + getSchemeDeps(xcodeTarget: xcodeTarget) + [
@@ -384,6 +415,9 @@ enum Generator {
         let updateXcodeProjectTarget = makeUpdateXcodeProjectTarget(genOptions:
                 genOptions, projectPath: tempProjectPath, depsHash: depsHash)
         
+        let clearSourceMapTarget = makeClearSourceMapTarget(labels: targetsToBuild,
+                genOptions: genOptions)
+
         let options = ProjectSpec.Options(
                 carthageBuildPath: nil,
                 createIntermediateGroups: true,
@@ -416,7 +450,8 @@ enum Generator {
                 bazelBuildableXcodeTargets.flatMap { $0.getBazelBuildableTarget() }
         let allTargets = allXCTargets.map { k, v in v.target } + [
                 updateXcodeProjectTarget,
-                bazelPreBuildTarget
+                bazelPreBuildTarget,
+                clearSourceMapTarget
             ] + bazelBuildableTargets
 
         let project = XCGProject(
