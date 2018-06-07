@@ -847,8 +847,12 @@ public class XcodeTarget: Hashable, Equatable {
         // Assume extensions are contained in the same workspace
         return extensions
             .flatMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
-            .map { XCGDependency(type: .target, reference: $0.xcTargetName,
-                    embed: $0.isExtension) }
+            .map { 
+                var mutableDep = XCGDependency(type: .target, reference: $0.xcTargetName,
+                                               embed: $0.isExtension)
+                mutableDep.codeSign = false
+                return mutableDep
+            }
     }
 
     func extractModuleMap() -> String? {
