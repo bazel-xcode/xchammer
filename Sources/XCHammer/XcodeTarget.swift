@@ -271,6 +271,16 @@ public class XcodeTarget: Hashable, Equatable {
             }
     }()
 
+    lazy var hasCompiledSources: Bool = {
+        let sourceFiles = self.sourceFiles
+            .map { $0.subPath }
+            .filter { (!$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap"))
+                && (!$0.hasSuffix(".hpp") && !$0.hasSuffix(".h"))
+                && (!$0.hasSuffix(".hh") && !$0.hasSuffix(".hxx"))
+            }
+        return (sourceFiles.count + self.nonARCSourceFiles.count) > 0
+    }()
+
     lazy var xcSources: [ProjectSpec.TargetSource] = {
         let sourceFiles = self.sourceFiles.map { $0.subPath }.filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }.map { ProjectSpec.TargetSource(path: $0) }
         let nonArcFiles = self.nonARCSourceFiles.map { ProjectSpec.TargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
@@ -419,10 +429,10 @@ public class XcodeTarget: Hashable, Equatable {
         let deps = self.transitiveTargets(map: self.targetMap, predicate:
                 stopAfterNeedsRecursive, force: true)
             .flatMap { xcodeTarget -> [ProjectSpec.Dependency] in
-                guard let linkableProductName =
-                    xcodeTarget.extractLinkableBuiltProductName(map:
-                            self.targetMap), includeTarget(xcodeTarget, pathPredicate:
-                        alwaysIncludePathPredicate) else {
+                guard xcodeTarget.hasCompiledSources,
+                    let linkableProductName =
+                    xcodeTarget.extractLinkableBuiltProductName(map: self.targetMap),
+                    includeTarget(xcodeTarget, pathPredicate: alwaysIncludePathPredicate) else {
                     // either way, get the dependencies
                     return xcodeTarget.xcDependencies
                 }

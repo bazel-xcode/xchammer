@@ -106,10 +106,20 @@ objc_library(
         "//Vendor/PINOperation:PINOperation",
         "//Vendor/PINCache:PINCache",
         "//Vendor/Weixin:Weixin",
-        "//Vendor/Stripe:Stripe"
+        "//Vendor/Stripe:Stripe",
+		":Utils",
     ],
 
     # Not added
     sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage"],
 )
+
+# Utils is a header library only
+# There should be no source files added to it.
+objc_library(
+	name = "Utils",
+    hdrs = glob(["Utils/*"]),
+	includes = ["Utils"]
+)
+
 
