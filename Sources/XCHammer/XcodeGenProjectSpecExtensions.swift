@@ -15,13 +15,13 @@ import ProjectSpec
 /// We should fix this in XcodeGen, so we can use ProjectSpec.__TYPE__
 /// TODO: (jerry) Fix this when realted PR's land
 
-public typealias XCGProject = ProjectSpec
+public typealias XCGProject = ProjectSpec.Project
 public typealias XCGTargetSource = TargetSource
 public typealias XCGSettings = Settings
 public typealias XCGDependency = Dependency
 public typealias XCGTarget = Target
 public typealias XCGBuildScript = BuildScript
-public typealias XCGOptions = ProjectSpec.Options
+public typealias XCGOptions = SpecOptions
 public typealias XCGLegacyTarget = LegacyTarget
 
 extension XCGDependency : Hashable {

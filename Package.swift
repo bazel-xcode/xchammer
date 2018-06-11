@@ -12,13 +12,20 @@ let package = Package(
           targets: ["XCHammer"]),
     ],
     dependencies: [
-        // xchammer branches
-        .package(url: "https://github.com/yonaskolb/XcodeGen.git", .revision("e1b9bc29f7c4538757fc9481d73948b1ccd76ad6")),
-        .package(url: "https://github.com/pinterest/Tulsi.git", .revision("6ebee5d7d8b98b834515012f01c455fb54c2e78a")),
-        // other deps
-        .package(url: "https://github.com/jpsim/Yams.git", from: "0.3.6"),
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
-        .package(url: "https://github.com/Carthage/Commandant.git", from: "0.12.0"),
+        .package(url: "https://github.com/yonaskolb/XcodeGen.git",
+            .revision("2ebfc9a9dc23ce029b81da8408d8991a9fc77a58")),
+
+        // Changes reside in the xchammer branch
+        .package(url: "https://github.com/pinterest/Tulsi.git",
+            .revision("6ebee5d7d8b98b834515012f01c455fb54c2e78a")),
+
+        // Note: XcodeGen now transitively depends on this one, so the versions
+        // must match!
+        .package(url: "https://github.com/JohnSundell/ShellOut.git", from:
+            "2.1.0"),
+
+        .package(url: "https://github.com/Carthage/Commandant.git", from:
+            "0.12.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

@@ -90,11 +90,13 @@ objc_library(
     name = "UrlGetClasses",
     srcs = glob(["UrlGet/*.m"], exclude= [
         "UrlGet/NoArc.m",
-    ]),
+    ]) + [
+        "UrlGet/Some.cc",
+    ],
     non_arc_srcs = [
         "UrlGet/NoArc.m",
     ],
-    hdrs = glob(["UrlGet/*.h"]),
+    hdrs = glob(["UrlGet/*.h", "UrlGet/*.hpp"]),
 
     # Not added
     xibs = ["UrlGet/UrlGetViewController.xib"],

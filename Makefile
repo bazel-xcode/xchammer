@@ -54,7 +54,7 @@ build-release: SWIFTBFLAGS = --configuration $(CONFIG) -Xswiftc -static-stdlib
 build-release: build-impl
 
 build-impl:
-	swift build $(SWIFTBFLAGS)
+	swift build $(SWIFTBFLAGS) | tee .build/last_build.log
 	# Install bundle resources
 	ditto $(ASPECTDIR) .build/$(CONFIG)/$(ASPECTDIR)
 	ditto $(ASSETDIR) .build/$(CONFIG)/$(ASSETDIR)
