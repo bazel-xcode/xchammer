@@ -418,7 +418,7 @@ enum Generator {
         let clearSourceMapTarget = makeClearSourceMapTarget(labels: targetsToBuild,
                 genOptions: genOptions)
 
-        let options = ProjectSpec.Options(
+        let options = XCGOptions(
                 carthageBuildPath: nil,
                 createIntermediateGroups: true,
                 indentWidth: 4,

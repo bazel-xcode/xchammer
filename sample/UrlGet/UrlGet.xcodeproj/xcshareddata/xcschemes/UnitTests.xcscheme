@@ -43,6 +43,20 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
+               BuildableName = ""
+               BlueprintName = "ResetLLDBInit"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
                BuildableName = "UnitTests.xctest"
                BlueprintName = "UnitTests"
                ReferencedContainer = "container:UrlGet.xcodeproj">

@@ -15,12 +15,14 @@
 #import "AppDelegate.h"
 #import "UrlGetViewController.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
+#import "Some.hpp"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   NSLog(@"%@", [GSDAppIndexing class]);
+  NSLog(@"%d", SomeCC);
   UITabBarController *bar = [[UITabBarController alloc] init];
   [bar setViewControllers:
       @[[[UrlGetViewController alloc] init]]];

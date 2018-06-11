@@ -1,7 +1,7 @@
 # This file is governed by XCHammer
 set -e
 
-if [[ "0.1.6" != "/Users/jerry/Projects/xchammer-github/.build/debug/XCHammer --version" ]]; then 
+if [[ "0.1.7" != "/Users/jerry/Projects/xchammer-github/.build/debug/XCHammer --version" ]]; then 
     echo "warning: XCHammer version mismatch"
 fi
 
