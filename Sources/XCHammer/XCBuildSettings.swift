@@ -293,7 +293,7 @@ extension XCBuildSettings: Monoid {
 
 /// Mark - XcodeGen support
 
-func makeXcodeGenSettings(from settings: XCBuildSettings) -> XCGSettings {
+func makeXcodeGenSettings(from settings: XCBuildSettings) -> ProjectSpec.Settings {
     return Settings(dictionary: settings.getJSON())
 }
 

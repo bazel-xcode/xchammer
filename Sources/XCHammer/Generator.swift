@@ -17,7 +17,7 @@ import TulsiGenerator
 /// Internal struct to help building out the `Spec`
 private struct XcodeGenTarget {
     let xcodeTarget: XcodeTarget
-    let target: XCGTarget
+    let target: ProjectSpec.Target
 }
 
 extension XCHammerConfig {
@@ -62,16 +62,16 @@ enum Generator {
     // Mark - Xcode helper targets
 
     private static func makeBazelPreBuildTarget(labels: [BuildLabel], genOptions:
-            XCHammerGenerateOptions) -> XCGTarget {
+            XCHammerGenerateOptions) -> ProjectSpec.Target {
         let bazel = genOptions.bazelPath.string
         let retrySh = XCHammerAsset.retry.getPath(underProj: genOptions.outputProjectPath)
         // We retry.sh the bazel command so if Xcode updates, the build still works
         let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build --experimental_show_artifacts \(labels.map{ $0.value }.joined(separator: " ")))'"
-        let target = XCGTarget(
+        let target = ProjectSpec.Target(
             name: BazelPreBuildTargetName,
             type: PBXProductType.none,
             platform: Platform.iOS,
-            settings: XCGSettings(dictionary: [String: Any]()),
+            settings: ProjectSpec.Settings(dictionary: [String: Any]()),
             configFiles: [:],
             sources: [],
             dependencies: [],
@@ -79,7 +79,7 @@ enum Generator {
             postbuildScripts: [],
             scheme: nil,
             // TODO: (jerry) Fix missing initializer visibility
-            legacy: try! XCGLegacyTarget(jsonDictionary: [
+            legacy: try! ProjectSpec.LegacyTarget(jsonDictionary: [
                 "toolPath": "/bin/bash",
                 "arguments": argStr,
                 "passSettings": true,
@@ -90,13 +90,13 @@ enum Generator {
     }
 
     private static func makeClearSourceMapTarget(labels: [BuildLabel], genOptions:
-            XCHammerGenerateOptions) -> XCGTarget {
+            XCHammerGenerateOptions) -> ProjectSpec.Target {
         let argStr = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'"
-        let target = XCGTarget(
+        let target = ProjectSpec.Target(
             name: ClearSourceMapTargetName,
             type: PBXProductType.none,
             platform: Platform.iOS,
-            settings: XCGSettings(dictionary: [String: Any]()),
+            settings: ProjectSpec.Settings(dictionary: [String: Any]()),
             configFiles: [:],
             sources: [],
             dependencies: [],
@@ -104,7 +104,7 @@ enum Generator {
             postbuildScripts: [],
             scheme: nil,
             // TODO: (jerry) Fix missing initializer visibility
-            legacy: try! XCGLegacyTarget(jsonDictionary: [
+            legacy: try! ProjectSpec.LegacyTarget(jsonDictionary: [
                 "toolPath": "/bin/bash",
                 "arguments": argStr,
                 "passSettings": true,
@@ -116,7 +116,7 @@ enum Generator {
 
 
     private static func makeUpdateXcodeProjectTarget(genOptions:
-            XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> XCGTarget {
+            XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> ProjectSpec.Target {
         // Use whatever command and XCHammer this project was built with
         let generateCommand = CommandLine.arguments.filter { $0 != "--force" }
 
@@ -168,11 +168,11 @@ enum Generator {
 
         let argStr = "-c \(updateScriptPath)"
 
-        let target = XCGTarget(
+        let target = ProjectSpec.Target(
             name: UpdateXcodeProjectTargetName,
             type: PBXProductType.none,
             platform: Platform.iOS,
-            settings: XCGSettings(dictionary: [String: Any]()),
+            settings: ProjectSpec.Settings(dictionary: [String: Any]()),
             configFiles: [:],
             sources: [],
             dependencies: [],
@@ -180,7 +180,7 @@ enum Generator {
             postbuildScripts: [],
             scheme: nil,
             // TODO: (jerry) Fix missing initializer visibility
-            legacy: try! XCGLegacyTarget(jsonDictionary: [
+            legacy: try! ProjectSpec.LegacyTarget(jsonDictionary: [
                 "toolPath": "/bin/bash",
                 "arguments": argStr,
                 "passSettings": true,
@@ -418,7 +418,7 @@ enum Generator {
         let clearSourceMapTarget = makeClearSourceMapTarget(labels: targetsToBuild,
                 genOptions: genOptions)
 
-        let options = XCGOptions(
+        let options = SpecOptions(
                 carthageBuildPath: nil,
                 createIntermediateGroups: true,
                 indentWidth: 4,
@@ -454,7 +454,7 @@ enum Generator {
                 clearSourceMapTarget
             ] + bazelBuildableTargets
 
-        let project = XCGProject(
+        let project = ProjectSpec.Project(
             basePath: genOptions.workspaceRootPath,
             name: name,
             targets: allTargets.sorted { $0.name < $1.name },

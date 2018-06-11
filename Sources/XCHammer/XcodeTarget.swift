@@ -271,18 +271,18 @@ public class XcodeTarget: Hashable, Equatable {
             }
     }()
 
-    lazy var xcSources: [XCGTargetSource] = {
-        let sourceFiles = self.sourceFiles.map { $0.subPath }.filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }.map { XCGTargetSource(path: $0) }
-        let nonArcFiles = self.nonARCSourceFiles.map { XCGTargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
+    lazy var xcSources: [ProjectSpec.TargetSource] = {
+        let sourceFiles = self.sourceFiles.map { $0.subPath }.filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }.map { ProjectSpec.TargetSource(path: $0) }
+        let nonArcFiles = self.nonARCSourceFiles.map { ProjectSpec.TargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
         let resources = self.xcResources
         let bundles = self.xcBundles
 
-        let all: [XCGTargetSource] = resources + nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
+        let all: [ProjectSpec.TargetSource] = resources + nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
             sourceFiles :
-            [XCGTargetSource(path: XCHammerAsset.stubImp.getPath(underProj:
+            [ProjectSpec.TargetSource(path: XCHammerAsset.stubImp.getPath(underProj:
                     self.genOptions.outputProjectPath), compilerFlags: ["-x objective-c", "-std=gnu99"])]
         ) + bundles
-        let s: Set<XCGTargetSource> = Set(all)
+        let s: Set<ProjectSpec.TargetSource> = Set(all)
         return Array(s)
     }()
 
@@ -319,7 +319,7 @@ public class XcodeTarget: Hashable, Equatable {
         }
     }
 
-    lazy var xcResources: [XCGTargetSource] = {
+    lazy var xcResources: [ProjectSpec.TargetSource] = {
         if self.needsRecursiveExtraction {
             let deps: [XcodeTarget] = ([self] +
                     self.transitiveTargets(map:
@@ -348,8 +348,8 @@ public class XcodeTarget: Hashable, Equatable {
         return path.extension != "plist" && path.extension != "mobileprovision"
     }
 
-    lazy var myResources: [XCGTargetSource] = {
-        let resources: [XCGTargetSource] = self.pathsForAttrs(attrs: [.launch_storyboard, .supporting_files])
+    lazy var myResources: [ProjectSpec.TargetSource] = {
+        let resources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.launch_storyboard, .supporting_files])
             .filter(self.isAllowableXcodeGenSource(path:))
             .flatMap { path in
             let pathComponents = path.components
@@ -359,16 +359,16 @@ public class XcodeTarget: Hashable, Equatable {
                 let formattedPath = Path(pathComponents[pathComponents.startIndex ... specialIndex].joined(separator: Path.separator))
                 if formattedPath.extension == "lproj" {
                     // TODO: Don't hardcode the parents for lproj
-                    return XCGTargetSource(path: formattedPath.parent().string, type: .group)
+                    return ProjectSpec.TargetSource(path: formattedPath.parent().string, type: .group)
                 } else {
-                    return XCGTargetSource(path: formattedPath.string)
+                    return ProjectSpec.TargetSource(path: formattedPath.string)
                 }
             } else {
-                return XCGTargetSource(path: path.string)
+                return ProjectSpec.TargetSource(path: path.string)
             }
         }
 
-        let structuredResources: [XCGTargetSource] = self.pathsForAttrs(attrs: [.structured_resources]).flatMap { resourcePath -> XCGTargetSource? in
+        let structuredResources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.structured_resources]).flatMap { resourcePath -> ProjectSpec.TargetSource? in
             guard let buildFilePath = self.buildFilePath else { return nil }
             let basePath = Path(buildFilePath).parent().normalize()
             // now we can recover the relative path provided inside the build files
@@ -376,7 +376,7 @@ public class XcodeTarget: Hashable, Equatable {
             // the structured path is the first directory relative to the build file dir
             let structuredPath = basePath + Path(buildFileRelativePath.components[0])
             // structured resources are rendered as folder-references in Xcode
-            return XCGTargetSource(path: structuredPath.string, compilerFlags:
+            return ProjectSpec.TargetSource(path: structuredPath.string, compilerFlags:
                     [], type: .folder)
         }
 
@@ -415,10 +415,10 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     // Returns transitive linkable
-    lazy var transitiveDeps: Set<XCGDependency> = {
+    lazy var transitiveDeps: Set<ProjectSpec.Dependency> = {
         let deps = self.transitiveTargets(map: self.targetMap, predicate:
                 stopAfterNeedsRecursive, force: true)
-            .flatMap { xcodeTarget -> [XCGDependency] in
+            .flatMap { xcodeTarget -> [ProjectSpec.Dependency] in
                 guard let linkableProductName =
                     xcodeTarget.extractLinkableBuiltProductName(map:
                             self.targetMap), includeTarget(xcodeTarget, pathPredicate:
@@ -427,7 +427,7 @@ public class XcodeTarget: Hashable, Equatable {
                     return xcodeTarget.xcDependencies
                 }
                 // make an explicit dep if it's valid
-                return [XCGDependency(type: .framework, reference: linkableProductName,
+                return [ProjectSpec.Dependency(type: .framework, reference: linkableProductName,
                         embed: xcodeTarget.isExtension)]
                     + xcodeTarget.xcDependencies
             }
@@ -500,7 +500,7 @@ public class XcodeTarget: Hashable, Equatable {
                     settings.bundleLoader <>= First("$(TEST_HOST)")
                 }
             case .test_bundle:
-                // These are actual XCGTargets'
+                // These are actual ProjectSpec.Targets'
                 break
             case .sdk_dylibs, .sdk_frameworks, .weak_sdk_frameworks:
                 // These are implemented below
@@ -652,7 +652,7 @@ public class XcodeTarget: Hashable, Equatable {
         return self.xcType?.contains("-test") ?? false
     }()
 
-    lazy var xcDependencies: [XCGDependency] = {
+    lazy var xcDependencies: [ProjectSpec.Dependency] = {
         guard self.frameworkImports.count > 0 else {
             return []
         }
@@ -686,23 +686,23 @@ public class XcodeTarget: Hashable, Equatable {
 
         return xcodeTargetDeps
             .filter { includeTarget($0, pathPredicate: alwaysIncludePathPredicate) }
-            .flatMap { XCGDependency(type: .target, reference: $0.xcTargetName,
+            .flatMap { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                     embed:
                     $0.isExtension) } + self.frameworkDependencies
     }()
 
-    lazy var frameworkDependencies: [XCGDependency] = {
+    lazy var frameworkDependencies: [ProjectSpec.Dependency] = {
         // Uwrap Framework deps to prevent having a Goofy framework target that doesn't do anything
         let shouldEmbed = self.attributes[.is_dynamic] as? Bool ?? false
         let frameworkImports = self.frameworkImports
             .map { fileInfo in fileInfo.fullPath }
-            .map { XCGDependency(type: .framework, reference: $0, embed: shouldEmbed) }
+            .map { ProjectSpec.Dependency(type: .framework, reference: $0, embed: shouldEmbed) }
 
         let childFrameworkImports = self.unfilteredDependencies.flatMap { entry in
             entry.frameworkDependencies
         }
 
-        return Array(Set<XCGDependency>(frameworkImports + childFrameworkImports))
+        return Array(Set<ProjectSpec.Dependency>(frameworkImports + childFrameworkImports))
     }()
 
     lazy var xcType: String? = {
@@ -800,13 +800,13 @@ public class XcodeTarget: Hashable, Equatable {
         return Array(Set(allDefines))
     }
 
-    lazy var xcBundles: [XCGTargetSource] = {
+    lazy var xcBundles: [ProjectSpec.TargetSource] = {
         let bundleResources = ([self] + self.transitiveTargets(map:
                     self.targetMap,
                     predicate: stopAfterNeedsRecursive))
             .filter { $0.type == "objc_bundle" }
             .flatMap { $0.xcResources }
-        return Set(bundleResources.map { $0.path }).map { XCGTargetSource(path: $0) }
+        return Set(bundleResources.map { $0.path }).map { ProjectSpec.TargetSource(path: $0) }
     }()
 
     func extractLibraryDeps(map targetMap: XcodeTargetMap) -> [String] {
@@ -843,12 +843,12 @@ public class XcodeTarget: Hashable, Equatable {
         return self.extractAttributeArray(attr: .weak_sdk_frameworks, map: self.targetMap)
     }()
 
-    fileprivate var xcExtensionDeps: [XCGDependency] {
+    fileprivate var xcExtensionDeps: [ProjectSpec.Dependency] {
         // Assume extensions are contained in the same workspace
         return extensions
             .flatMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
             .map { 
-                var mutableDep = XCGDependency(type: .target, reference: $0.xcTargetName,
+                var mutableDep = ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                                                embed: $0.isExtension)
                 mutableDep.codeSign = false
                 return mutableDep
@@ -907,7 +907,7 @@ public class XcodeTarget: Hashable, Equatable {
     /// - LLDB init style debug setup for speed and cachability
     /// - Custom debug mapping in clang frontend via Bazel tweaks
     /// It is not enabled by default due to the above implications.
-    func getBazelBuildableTarget() -> XCGTarget? {
+    func getBazelBuildableTarget() -> ProjectSpec.Target? {
         guard let productType = extractProductType() else {
             return nil
         }
@@ -970,9 +970,9 @@ public class XcodeTarget: Hashable, Equatable {
         // Minimal settings for this build
         var settings = XCBuildSettings()
         settings.codeSigningRequired <>= First("NO")
-        let bazelScript = XCGBuildScript(path: nil, script: getScriptContent(),
+        let bazelScript = ProjectSpec.BuildScript(path: nil, script: getScriptContent(),
                 name: "Bazel build")
-        return XCGTarget(
+        return ProjectSpec.Target(
             name: xcTargetName + "-Bazel",
             type: PBXProductType(rawValue: productType.rawValue)!,
             platform: Platform(rawValue: platform)!,
@@ -1000,20 +1000,20 @@ func shouldFlatten(xcodeTarget: XcodeTarget) -> Bool {
 
 /// Mark - XcodeGen support
 
-private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGenerateOptions, targetMap: XcodeTargetMap) -> ([XCGBuildScript], [XCGBuildScript]) {
-    func getProcessScript() -> XCGBuildScript {
+private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGenerateOptions, targetMap: XcodeTargetMap) -> ([ProjectSpec.BuildScript], [ProjectSpec.BuildScript]) {
+    func getProcessScript() -> ProjectSpec.BuildScript {
         // Use whatever XCHammer this project was built with
         let processContent = "\(CommandLine.arguments[0]) process-ipa"
-        return  XCGBuildScript(path: nil, script: processContent, name: "Process IPA")
+        return  ProjectSpec.BuildScript(path: nil, script: processContent, name: "Process IPA")
     }
 
-    func getCodeSignerScript() -> XCGBuildScript {
+    func getCodeSignerScript() -> ProjectSpec.BuildScript {
         let codeSignerContent = "$PROJECT_FILE_PATH/" + XCHammerAsset.codesigner.getPath()
-        return XCGBuildScript(path: nil, script: codeSignerContent, name: "Codesign")
+        return ProjectSpec.BuildScript(path: nil, script: codeSignerContent, name: "Codesign")
     }
 
-    let basePostScripts: [XCGBuildScript]
-    let basePreScripts: [XCGBuildScript] = []
+    let basePostScripts: [ProjectSpec.BuildScript]
+    let basePreScripts: [ProjectSpec.BuildScript] = []
     if xcodeTarget.needsRecursiveExtraction,
         xcodeTarget.mobileProvisionProfileFile != nil,
         xcodeTarget.extractCodeSignEntitlementsFile(genOptions: genOptions) != nil {
@@ -1025,7 +1025,7 @@ private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGener
     return (basePreScripts, basePostScripts)
 }
 
-public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
+public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Target? {
     let genOptions = xcodeTarget.genOptions
     let config = genOptions.config
     let targetMap = xcodeTarget.targetMap
@@ -1040,16 +1040,16 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
     }
 
     let xcodeTargetSources = xcodeTarget.xcSources
-    let sources: [XCGTargetSource]
+    let sources: [ProjectSpec.TargetSource]
     let settings: XCBuildSettings
-    let deps: [XCGDependency]
+    let deps: [ProjectSpec.Dependency]
     let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
     // Find the linked deps and extract the deps name
     // We need actual targets here, since these are things like Applications
     let linkedDeps = xcodeTarget.linkedTargetLabels
         .flatMap { targetMap.xcodeTarget(buildLabel: $0, depender: xcodeTarget) }
         .filter { includeTarget($0, pathPredicate: pathsPredicate) }
-        .map { XCGDependency(type: .target, reference: $0.xcTargetName,
+        .map { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                 embed: $0.isExtension) }
 
     // Fuse or use the actual rule entry
@@ -1114,7 +1114,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> XCGTarget? {
         }
     }(xcodeTarget)
     
-    return XCGTarget(
+    return ProjectSpec.Target(
         name: xcodeTarget.xcTargetName,
         type: PBXProductType(rawValue: productType.rawValue)!,
         platform: Platform(rawValue: platform)!,
