@@ -34,7 +34,7 @@ enum ProjectWriter {
         }
     }
 
-    static func write(project xcodeGenSpec: XCGProject, genOptions: XCHammerGenerateOptions,
+    static func write(project xcodeGenSpec: ProjectSpec.Project, genOptions: XCHammerGenerateOptions,
             xcodeProjPath: Path) throws {
         let profiler = XCHammerProfiler("xcode_gen")
         defer {
