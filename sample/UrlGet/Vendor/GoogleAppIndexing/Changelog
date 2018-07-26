@@ -1,0 +1,18 @@
+Version 2.0 - September 29th 2015
+=================================
+Features:
+  - SDK is now compatible with iOS 9.0
+  - Adds new registerApp: API call.
+
+Version 1.0.3 - September 17th 2015
+===================================
+Features:
+  - The blue 'back bar' UI is now disabled for iOS 9 and above.
+
+Resolved Issues:
+  - The SDK can be archived for submission using XCode 7.
+
+Version 1.0 - May 26th 2015
+===========================
+Features:
+  - Initial launch of the Google App Indexing SDK

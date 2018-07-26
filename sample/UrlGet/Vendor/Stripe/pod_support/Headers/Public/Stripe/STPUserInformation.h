@@ -1,0 +1,1 @@
+../../../../Stripe/PublicHeaders/STPUserInformation.h

@@ -1,0 +1,17 @@
+targets:
+    - "//ios-app:UITests"
+    - "//ios-app:UnitTests"
+    - "//ios-app:UnitTestsWithHost"
+    - "//ios-app:ios-app"
+    - "//ios-app:share-extension"
+
+projects:
+    "UrlGet":
+        paths:
+            - "Vendor/**"
+            - "ios-app/**"
+
+targetConfig:
+    "//ios-app:ios-app":
+        buildBazelTemplate: "UrlGetXcodeBuildScript.sh"
+        buildBazelOptions: "--action_env=X=Y"

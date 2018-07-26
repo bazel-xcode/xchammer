@@ -1,0 +1,33 @@
+{
+    "id": "src_123",
+    "object": "source",
+    "amount": null,
+    "client_secret": "src_client_secret_123",
+    "created": 1483575790,
+    "currency": null,
+    "flow": "none",
+    "livemode": false,
+    "metadata": {},
+    "owner": {
+        "address": null,
+        "email": null,
+        "name": null,
+        "phone": null,
+        "verified_address": null,
+        "verified_email": null,
+        "verified_name": null,
+        "verified_phone": null
+    },
+    "status": "chargeable",
+    "type": "card",
+    "usage": "reusable",
+    "card": {
+        "brand": "Visa",
+        "country": "US",
+        "exp_month": 12,
+        "exp_year": 2034,
+        "funding": "debit",
+        "last4": "5556",
+        "three_d_secure": "not_supported"
+    }
+}

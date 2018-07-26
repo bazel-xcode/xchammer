@@ -1,0 +1,50 @@
+# Xcode
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.mode1
+*.mode2v3
+*.mode1v3
+xcuserdata
+Snapshots
+
+# OS X
+*.DS_Store
+
+# Build Outputs
+prepare_commit_log
+prepare_commit_result
+build/
+generated/
+
+# Fastlane
+fastlane/test_output/
+fastlane/report.xml
+
+# Code Coverage (gcov)
+*.gcno
+*.gcda
+.idea
+
+# Python
+*.pyc
+env/
+
+# Arcanist
+.phutil_module_cache
+
+# Infer
+infer-out/
+
+# Bazel
+bazel-*
+Platform/include
+Platform/frameworks
+Platform/PinterestPINCore_lipo.a
+Scripts/bazel/bin
+Scripts/bazel/lib
+install_bazel.sh
+*.tulsiconf-user
+*.tulsigen-user
+
+compile_commands.json
