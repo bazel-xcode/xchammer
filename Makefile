@@ -22,7 +22,7 @@ clean:
 
 # Create an archive package with a release binary and all bundle resources
 archive: CONFIG = release
-archive: build-release
+archive: build-release aspects
 	mkdir -p tmp_build_dir/$(PRODUCT)
 	ditto .build/$(CONFIG)/$(PRODUCT) tmp_build_dir/$(PRODUCT)/
 	./export_tulsi_aspect_dir.sh ${PWD}/$(ASPECTDIR)
@@ -35,7 +35,7 @@ unsafe_install: archive
 	mkdir -p $(PREFIX)/bin
 	ditto tmp_build_dir/$(PRODUCT) $(PREFIX)/bin/
 
-install: clean archive aspects
+install: clean archive
 	mkdir -p $(PREFIX)/bin
 	ditto tmp_build_dir/$(PRODUCT) $(PREFIX)/bin/
 
