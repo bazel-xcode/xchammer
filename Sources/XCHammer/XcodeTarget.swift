@@ -420,6 +420,8 @@ public class XcodeTarget: Hashable, Equatable {
         }
     }
 
+    private static let librarySourceTypes = Set(["swift", "m", "mm", "cpp", "c", "cc", "S"])
+
     // Returns transitive linkable
     lazy var transitiveDeps: Set<ProjectSpec.Dependency> = {
         let deps = self.transitiveTargets(map: self.targetMap, predicate:
@@ -432,6 +434,27 @@ public class XcodeTarget: Hashable, Equatable {
                     // either way, get the dependencies
                     return xcodeTarget.xcDependencies
                 }
+
+                guard let productType = xcodeTarget.extractProductType() else { return xcodeTarget.xcDependencies }
+
+                switch productType {
+                // Do not link static libraries that aren't going to exist.
+                // These targets still need to be included in the project.
+                case .StaticLibrary, .DynamicLibrary:
+                    let compiledSrcs = (xcodeTarget.sourceFiles + xcodeTarget.nonARCSourceFiles)
+                        .filter {
+                       fileInfo in
+                       let path = fileInfo.subPath
+                       guard let suffix = path.components(separatedBy: ".").last else { return false }
+                       return XcodeTarget.librarySourceTypes.contains(suffix)
+                    }
+                    if compiledSrcs.count == 0 {
+                        return xcodeTarget.xcDependencies
+                    }
+                default:
+                    break
+                }
+
                 // make an explicit dep if it's valid
                 return [ProjectSpec.Dependency(type: .framework, reference: linkableProductName,
                         embed: xcodeTarget.isExtension)]
