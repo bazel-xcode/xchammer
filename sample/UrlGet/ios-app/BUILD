@@ -102,10 +102,11 @@ objc_library(
     xibs = ["UrlGet/UrlGetViewController.xib"],
 
     deps = [
+        "//ios-app/HeaderLib:HeaderLib",
         "//Vendor/GoogleAppIndexing:GoogleAppIndexing",
         "//Vendor/PINOperation:PINOperation",
         "//Vendor/PINCache:PINCache",
-        "//Vendor/Stripe:Stripe"
+        "//Vendor/Stripe:Stripe",
     ],
 
     # Not added
