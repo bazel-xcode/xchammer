@@ -1,6 +1,6 @@
 # XCHammer
 
-XCHammer generates Xcode projects from a Bazel Workspace.
+XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace.
 
 ## Usage
 
@@ -36,6 +36,15 @@ projects:
 *Generate a single project containing the target ios-app*
 
 See [XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift) for detailed documentation.
+
+## Versioning
+
+XCHammer releases correspond to a tested, canonical, Bazel release.
+
+For Apple based development, XCHammer depends on attributes of
+[`rules_apple`](https://github.com/bazelbuild/rules_apple). The current, tested,
+version is updated in the [sample
+WORKSPACE](https://github.com/pinterest/xchammer/blob/master/sample/UrlGet/WORKSPACE).
 
 ## Sample
 

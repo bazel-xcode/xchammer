@@ -158,7 +158,7 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     fileprivate var defines: [String]? {
-        return ruleEntry.defines
+        return ruleEntry.objcDefines
     }
 
     fileprivate var sourceFiles: [BazelFileInfo] {
@@ -173,7 +173,7 @@ public class XcodeTarget: Hashable, Equatable {
         return ruleEntry.includePaths
     }
 
-    fileprivate var dependencies: Set<String> {
+    fileprivate var dependencies: Set<BuildLabel> {
         return ruleEntry.dependencies
     }
 
@@ -187,10 +187,6 @@ public class XcodeTarget: Hashable, Equatable {
 
     fileprivate var weakDependencies: Set<BuildLabel> {
         return ruleEntry.weakDependencies
-    }
-
-    fileprivate var intermediateArtifacts: Set<BazelFileInfo>? {
-        return ruleEntry.intermediateArtifacts
     }
 
     fileprivate var buildFilePath: String? {
@@ -268,7 +264,6 @@ public class XcodeTarget: Hashable, Equatable {
         ]
 
         return self.dependencies
-            .map { BuildLabel($0) }
             .flatMap { self.targetMap.xcodeTarget(buildLabel: $0, depender: self) }
             .flatMap { xcodeTarget in
                 (unwrapSuffixes.map { xcodeTarget.label.value.hasSuffix($0) }.any()) ?
@@ -386,8 +381,11 @@ public class XcodeTarget: Hashable, Equatable {
                     [], type: .folder)
         }
 
-        // dedupe
+        // Normalize for Xcode
+        // - dedupe
+        // - frameworks shouldn't be injested as a resource or a source
         return Array(Set(resources + structuredResources))
+                .filter { !$0.path.hasSuffix(".framework") }
     }()
 
     func extractBuiltProductName() -> String {
@@ -544,7 +542,6 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         // Product Name
-        // TODO: Determine if we need to fall back to another name here.
         settings.productName <>= self.bundleName.map { First($0) }
 
         // Product Bundle Identifier
@@ -553,7 +550,7 @@ public class XcodeTarget: Hashable, Equatable {
         // Set Header Search Paths
         if let headerSearchPaths = self.includePaths {
             settings.headerSearchPaths <>= OrderedArray(["$(inherited)"]) <> headerSearchPaths
-                .filter { !$0.0.hasPrefix("tulsi-includes") }
+                .filter { !$0.0.contains("tulsi-includes") }
                 .foldMap { (path: String, isRecursive: Bool) in
                 if path.hasSuffix("module_map") {
                     return ["$(SRCROOT)/bazel-genfiles/\(path)"]
@@ -687,9 +684,10 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         // TODO: Move this to transitiveDeps
-        let xcodeTargetDeps: [XcodeTarget] = self.dependencies.flatMap { depName in
-            let label = BuildLabel(depName)
-            guard let target = self.targetMap.xcodeTarget(buildLabel: label, depender: self) else {
+        let xcodeTargetDeps: [XcodeTarget] = self.dependencies.flatMap {
+            depLabel in
+            let depName = depLabel.value
+            guard let target = self.targetMap.xcodeTarget(buildLabel: depLabel, depender: self) else {
                 return nil
             }
 
@@ -701,11 +699,12 @@ public class XcodeTarget: Hashable, Equatable {
                 let unwrappedDeps = target.dependencies
                 for depEntry in unwrappedDeps {
                     // If it's an iOS app, strip out entitlements
-                    if depEntry.hasSuffix("entitlements") {
+                    if depEntry.value.hasSuffix("entitlements") {
                         continue
                     }
 
-                    if let foundTarget = self.targetMap.xcodeTarget(buildLabel: BuildLabel(depEntry, normalize: true), depender: self) {
+                    if let foundTarget = self.targetMap.xcodeTarget(buildLabel:
+                            depEntry, depender: self) {
                         return foundTarget
                     }
                 }
@@ -885,17 +884,20 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     func extractModuleMap() -> String? {
-        guard let file = (self.sourceFiles + self.nonARCSourceFiles).first(where: { $0.subPath.hasSuffix(".modulemap") }) else {
-            return nil
-        }
-        return "$(SRCROOT)/\(file.rootPath)/\(file.subPath)"
+        return (self.sourceFiles + self.nonARCSourceFiles)
+            .first(where: { $0.subPath.hasSuffix(".modulemap") })
+            .map(getXCRelativePath)
     }
 
     func extractHeaderMap() -> String? {
-        guard let file = (self.sourceFiles + self.nonARCSourceFiles).first(where: { $0.subPath.hasSuffix(".hmap") }) else {
-            return nil
-        }
-        return "$(SRCROOT)/\(file.rootPath)/\(file.subPath)"
+        return (self.sourceFiles + self.nonARCSourceFiles)
+            .first(where: { $0.subPath.hasSuffix(".hmap") })
+            .map {
+                return getXCRelativePath(for: $0)
+                    // __BAZEL_GEN_DIR__ is a custom toolchain make variable
+                    // resolve that to $(SRCROOT)/bazel-genfiles.
+                    .replacingOccurrences(of: "__BAZEL_GEN_DIR__", with: "")
+             }
     }
 
     func extractProductType() -> ProductType? {
@@ -961,26 +963,10 @@ public class XcodeTarget: Hashable, Equatable {
 
         let targetConfig = genOptions.config.getTargetConfig(for: label.value)
 
-        var cmd: [String] = [
-            label.value,
-            "--bazel", genOptions.bazelPath.string,
-            "--bazel_bin_path", "bazel-bin",
-            "--verbose",
-            "--install_generated_artifacts"
-        ]
-
-        if let buildBazelOptions = targetConfig?.buildBazelOptions {
-           cmd = cmd + ["--bazel_options", buildBazelOptions, "--"]
-        }
-
-        if let buildBazelStartupOptions = targetConfig?.buildBazelStartupOptions {
-           cmd = cmd + ["--bazel_startup_options", buildBazelStartupOptions, "--"]
-        }
-
-        // tulsi-aspects are adjacent to the XCHammer bin
+        // bazel_build.py is adjacent to the XCHammer bin
         let buildInvocation = dirname(CommandLine.arguments[0]) +
-            "/tulsi-aspects/bazel_build.py " +
-            cmd.joined(separator: " ")
+            "/bazel_build.py " + label.value + " --bazel " +
+            genOptions.bazelPath.string
 
         let getScriptContent: (() -> String) = {
             guard
@@ -993,12 +979,20 @@ public class XcodeTarget: Hashable, Equatable {
                 """
             }
             return template.replacingOccurrences(of: "__BAZEL_COMMAND__",
-                    with: buildInvocation)
+                    with:
+                """
+                \(buildInvocation)
+                """)
         }
 
         // Minimal settings for this build
         var settings = XCBuildSettings()
         settings.codeSigningRequired <>= First("NO")
+
+        // A custom XCHammerAsset bazel_build_settings.py is loaded by bazel_build.py
+        settings.pythonPath =
+            First("${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets")
+
         let bazelScript = ProjectSpec.BuildScript(path: nil, script: getScriptContent(),
                 name: "Bazel build")
         return ProjectSpec.Target(
@@ -1151,7 +1145,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
         configFiles: getDiagsXCConfigFiles(for: xcodeTarget, genOptions:
             genOptions),
         sources: sources,
-        dependencies: deps + linkedDeps,
+        dependencies: Array(Set(deps + linkedDeps)),
         prebuildScripts: prebuildScripts,
         postbuildScripts: postbuildScripts,
         scheme: nil,

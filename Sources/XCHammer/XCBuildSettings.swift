@@ -162,6 +162,7 @@ struct XCBuildSettings: Encodable {
     // Disable Xcode derived headermaps, be explicit to avoid divergence
     var useHeaderMap: First<String>? = First("NO")
     var testTargetName: First<String>?
+    var pythonPath: First<String>?
 
     enum CodingKeys: String, CodingKey {
         // Add to this list the known XCConfig keys
@@ -193,6 +194,8 @@ struct XCBuildSettings: Encodable {
         case moduleMapFile = "MODULEMAP_FILE"
         case testTargetName = "TEST_TARGET_NAME"
         case useHeaderMap = "USE_HEADERMAP"
+
+        case pythonPath = "PYTHONPATH"
 
         // Hammer Rules
         case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
@@ -240,6 +243,7 @@ struct XCBuildSettings: Encodable {
         try moduleMapFile.map { try container.encode($0.v, forKey: .moduleMapFile) }
         try useHeaderMap.map { try container.encode($0.v, forKey: .useHeaderMap) }
         try testTargetName.map { try container.encode($0.v, forKey: .testTargetName) }
+        try pythonPath.map { try container.encode($0.v, forKey: .pythonPath) }
 
         // XCHammer only supports Xcode projects at the root directory
         try container.encode("$SOURCE_ROOT", forKey: .tulsiWR)
@@ -283,7 +287,8 @@ extension XCBuildSettings: Monoid {
             codeSignEntitlementsFile: lhs.codeSignEntitlementsFile <> rhs.codeSignEntitlementsFile,
             moduleMapFile: lhs.moduleMapFile <> rhs.moduleMapFile,
             useHeaderMap: lhs.useHeaderMap <> rhs.useHeaderMap,
-            testTargetName: lhs.testTargetName <> rhs.testTargetName
+            testTargetName: lhs.testTargetName <> rhs.testTargetName,
+            pythonPath: lhs.pythonPath <> rhs.pythonPath
         )
     }
 

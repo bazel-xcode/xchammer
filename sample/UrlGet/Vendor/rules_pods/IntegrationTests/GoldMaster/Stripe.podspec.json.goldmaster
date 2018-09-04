@@ -1,0 +1,125 @@
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+config_setting(
+  name = "iosCase",
+  values = {
+    "cpu": "powerpc1"
+  }
+  )
+filegroup(
+  name = "Stripe_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "Stripe",
+  "Stripe_module_map",
+  "Stripe",
+  [
+    "Stripe_hdrs"
+  ]
+  )
+objc_library(
+  name = "Stripe",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "Stripe/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "Stripe/*.h",
+      "Stripe/PublicHeaders/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":Stripe_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "Stripe",
+    [
+      "Stripe/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "Stripe_module_map"
+  ],
+  sdk_frameworks = [
+    "Foundation",
+    "Security",
+    "WebKit",
+    "PassKit",
+    "AddressBook"
+  ],
+  deps = [
+    ":Stripe_Bundle_Stripe"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ],
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ]
+    }
+    ) + [
+    "-IVendor/Stripe/pod_support/Headers/Public/Stripe/"
+  ] + [
+    "-fmodule-name=Stripe_pod_module"
+  ],
+  bundles = select(
+    {
+      "//conditions:default": [
+        ":Stripe_Bundle_Stripe"
+      ]
+    }
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "Stripe_acknowledgement",
+  deps = [
+
+  ],
+  value = "//Vendor/Stripe/pod_support_buildable:acknowledgement_fragment"
+  )
+objc_bundle_library(
+  name = "Stripe_Bundle_Stripe",
+  resources = select(
+    {
+      "//conditions:default": glob(
+        [
+          "Stripe/Resources/**/*"
+        ],
+        exclude_directories = 1
+        )
+    }
+    )
+  )

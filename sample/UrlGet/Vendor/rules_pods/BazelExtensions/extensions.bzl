@@ -52,13 +52,14 @@ acknowledgement_merger = rule(
 
 def acknowledgments_plist(name,
                           deps,
-                          merger="//pod_support_buildable:acknowledgement_merger",
+                          output_name="Acknowledgements",
+                          merger="//Vendor/rules_pods/BazelExtensions:acknowledgement_merger",
                           ):
     acknowledgement_merger(
         name=name,
         deps=deps,
         value=None,
-        output_name="Acknowledgements",
+        output_name=output_name,
         merger=merger,
         visibility=["//visibility:public"]
     )
@@ -70,8 +71,8 @@ def acknowledgments_plist(name,
 
 def acknowledged_target(name,
                         deps,
-                        merger="//pod_support_buildable:acknowledgement_merger",
-                        value="//pod_support_buildable:acknowledgement_fragment",
+                        value,
+                        merger="//Vendor/rules_pods/BazelExtensions:acknowledgement_merger",
                         ):
     acknowledgement_merger(
         name=name,
@@ -169,6 +170,6 @@ def gen_module_map(pod_name,
                     dir_name=dir_name,
                     module_name=module_name,
                     hdrs=dep_hdrs,
-                    module_map_name=module_map_name,                    
+                    module_map_name=module_map_name,
                     visibility = ["//visibility:public"])
 

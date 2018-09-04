@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/yonaskolb/Spectre.git",
         "state": {
           "branch": null,
-          "revision": "2b520ec417fc515c70e7093ae3ee321c3237e215",
-          "version": "0.8.1"
+          "revision": "e76cd0985d5fe006247e9e0c061d65561e14d3a2",
+          "version": "0.8.2"
         }
       },
       {
@@ -105,7 +105,7 @@
         "repositoryURL": "https://github.com/pinterest/Tulsi.git",
         "state": {
           "branch": null,
-          "revision": "6ebee5d7d8b98b834515012f01c455fb54c2e78a",
+          "revision": "e3c0dcb9dda0dc191034c061fdd4f0e4397ad527",
           "version": null
         }
       },

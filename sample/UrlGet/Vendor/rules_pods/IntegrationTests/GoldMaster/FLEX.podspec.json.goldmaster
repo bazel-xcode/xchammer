@@ -1,0 +1,97 @@
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "FLEX_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "FLEX",
+  "FLEX_module_map",
+  "FLEX",
+  [
+    "FLEX_hdrs"
+  ]
+  )
+objc_library(
+  name = "FLEX",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "Classes/**/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "Classes/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":FLEX_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "FLEX",
+    [
+      "Classes/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "FLEX_module_map"
+  ],
+  sdk_frameworks = [
+    "Foundation",
+    "UIKit",
+    "CoreGraphics"
+  ],
+  sdk_dylibs = [
+    "z",
+    "sqlite3"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ],
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ]
+    }
+    ) + [
+    "-IVendor/FLEX/pod_support/Headers/Public/FLEX/"
+  ] + [
+    "-fmodule-name=FLEX_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "FLEX_acknowledgement",
+  deps = [
+
+  ],
+  value = "//Vendor/FLEX/pod_support_buildable:acknowledgement_fragment"
+  )

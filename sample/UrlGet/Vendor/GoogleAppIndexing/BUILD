@@ -1,6 +1,6 @@
-load('//Vendor/GoogleAppIndexing/pod_support_buildable:extensions.bzl', 'pch_with_name_hint')
-load('//Vendor/GoogleAppIndexing/pod_support_buildable:extensions.bzl', 'acknowledged_target')
-load('//Vendor/GoogleAppIndexing/pod_support_buildable:extensions.bzl', 'gen_module_map')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
@@ -15,7 +15,7 @@ filegroup(
   name = "GoogleAppIndexing_hdrs",
   srcs = glob(
     [
-      "pod_support/Headers/Public/**/*.h"
+      "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
     ),
@@ -96,9 +96,9 @@ objc_library(
 acknowledged_target(
   name = "GoogleAppIndexing_acknowledgement",
   deps = [
-    ":GoogleAppIndexing_Bundle_GoogleAppIndexingResources_acknowledgement",
-    ":GoogleAppIndexing_VendoredFrameworks_acknowledgement"
-  ]
+
+  ],
+  value = "//Vendor/GoogleAppIndexing/pod_support_buildable:acknowledgement_fragment"
   )
 objc_bundle(
   name = "GoogleAppIndexing_Bundle_GoogleAppIndexingResources",
@@ -113,7 +113,8 @@ acknowledged_target(
   name = "GoogleAppIndexing_Bundle_GoogleAppIndexingResources_acknowledgement",
   deps = [
 
-  ]
+  ],
+  value = "//Vendor/GoogleAppIndexing/pod_support_buildable:acknowledgement_fragment"
   )
 objc_framework(
   name = "GoogleAppIndexing_VendoredFrameworks",
@@ -132,5 +133,6 @@ acknowledged_target(
   name = "GoogleAppIndexing_VendoredFrameworks_acknowledgement",
   deps = [
 
-  ]
+  ],
+  value = "//Vendor/GoogleAppIndexing/pod_support_buildable:acknowledgement_fragment"
   )

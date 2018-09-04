@@ -48,7 +48,8 @@ enum Generator {
     /// Used to store the `depsHash` into the project
     static let DepsHashSettingName = "XCHAMMER_DEPS_HASH"
 
-    private static func makeTargets(targetMap: XcodeTargetMap, genOptions: XCHammerGenerateOptions) -> [String: XcodeGenTarget] {
+    private static func makeTargets(targetMap: XcodeTargetMap, genOptions:
+            XCHammerGenerateOptions) -> [String: XcodeGenTarget] {
         let profiler = XCHammerProfiler("convert_targets")
         defer {
             profiler.logEnd(true)
@@ -321,9 +322,56 @@ enum Generator {
         }
     }
 
+    private static func getBazelBuildSettings(targets: [String: XcodeGenTarget],
+            genOptions: XCHammerGenerateOptions, bazelExecRoot: String) -> BazelBuildSettings {
+        let targetFlags = targets.values.compactMap {
+            xcgTarget -> (String, BazelFlagsSet)? in
+            let xcodeTarget = xcgTarget.xcodeTarget
+            guard xcodeTarget.getBazelBuildableTarget() != nil else {
+                return nil
+            }
+
+            let targetConfig = genOptions.config.getTargetConfig(for:
+                    xcodeTarget.label.value)
+            let baseBuildOptions = [
+                // Use `override_repository` in Bazel to resolve the Tulsi
+                // workspace adjacent to the Binary.
+                "--override_repository=tulsi=" + getTulsiAspectRepo(),
+                // This is a hack for BEP output not being updated as much as it
+                // should be. By publishing all actions, it flushes the buffer
+                // more frequently ( still not as much as it should ).
+                // The underlying issue fixed in HEAD
+                // https://github.com/bazelbuild/bazel/commit/de3d8bf821dba97471ab4ccfc1f1b1559f0a1cac
+                // TODO: Remove
+                "--build_event_publish_all_actions=true"
+            ]
+
+            let buildOptions = (targetConfig?.buildBazelOptions ?? "") + " " +
+                baseBuildOptions.joined(separator: " ")
+            let startupOptions = targetConfig?.buildBazelStartupOptions ?? ""
+            let flags = BazelFlags(startupStr: startupOptions,
+                    buildStr: buildOptions)
+            return (xcodeTarget.label.value, BazelFlagsSet(common: flags))
+        }
+
+        return BazelBuildSettings(bazel: genOptions.bazelPath.string,
+                bazelExecRoot: bazelExecRoot,
+                defaultPlatformConfigIdentifier: "iphone",
+                platformConfigurationFlags: nil,
+                swiftTargets: Set(),
+                tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
+                tulsiCacheSafeFlagSet: BazelFlagsSet(),
+                tulsiSwiftFlagSet: BazelFlagsSet(),
+                tulsiNonSwiftFlagSet: BazelFlagsSet(),
+                swiftFeatures: [],
+                nonSwiftFeatures: [],
+                projDefaultFlagSet: BazelFlagsSet(),
+                projTargetFlagSets: Dictionary.from(targetFlags))
+    }
+
     private static func writeProject(targetMap: XcodeTargetMap, name: String,
-            genOptions: XCHammerGenerateOptions, genfileLabels: [BuildLabel],
-            depsHash: String) throws {
+            genOptions: XCHammerGenerateOptions, bazelExecRoot: String,
+            genfileLabels: [BuildLabel], depsHash: String) throws {
         // Setup project asset dir
         let tempDirPath = genOptions.outputProjectPath.string + "-tmp"
         let tempProjectPath = Path(tempDirPath)
@@ -373,6 +421,27 @@ enum Generator {
 
         let allXCTargets: [String: XcodeGenTarget] = makeTargets(targetMap:
                 targetMap, genOptions: genOptions)
+
+        // Generate and write out the "Bazel Build Settings"
+        // build_bazel.py reads this file in to determine settings
+        let bazelBuildSettings = getBazelBuildSettings(targets: allXCTargets,
+                genOptions: genOptions, bazelExecRoot: bazelExecRoot)
+        let settingsTemplatePath = basePath +
+                "/bazel_build_settings.py.template"
+        guard let settingsTemplate = try? String(contentsOf: URL(fileURLWithPath:
+            settingsTemplatePath)) else {
+            fatalError("Missing template:" + settingsTemplatePath) 
+        }
+        let settingsFile = settingsTemplate.replacingOccurrences(of: "# <template>",
+                with: "BUILD_SETTINGS = \(bazelBuildSettings.toPython(""))")
+        let settingsFilePath = XCHammerAsset.bazelBuildSettings.getPath(underProj:
+                tempProjectPath)
+
+        guard FileManager.default.createFile(atPath: settingsFilePath,
+                contents: settingsFile.data(using: .utf8), attributes: nil) else {
+             fatalError("Can't write settings file")
+        }
+
         // Code gen entitlement rules and write a build file
         let entitlementRules = allXCTargets
             .flatMap { (name: String, xcodeGenTarget: XcodeGenTarget) in
@@ -640,8 +709,8 @@ enum Generator {
     }
 
     private static func generateProject(genOptions: XCHammerGenerateOptions,
-            ruleEntryMap: RuleEntryMap, genfileLabels: [BuildLabel], depsHash:
-            String) ->
+            ruleEntryMap: RuleEntryMap, bazelExecRoot: String, genfileLabels:
+            [BuildLabel], depsHash: String) ->
     Result<(), GenerateError> {
         do {
             let logger = XCHammerLogger.shared()
@@ -650,8 +719,8 @@ enum Generator {
             let projectName = genOptions.outputProjectPath.lastComponentWithoutExtension
             logger.logInfo("Converting to XcodeGen specification")
             try writeProject(targetMap: targetMap, name: projectName,
-                    genOptions: genOptions, genfileLabels: genfileLabels,
-                    depsHash: depsHash)
+                    genOptions: genOptions, bazelExecRoot: bazelExecRoot,
+                    genfileLabels: genfileLabels, depsHash: depsHash)
             return .success()
         } catch {
             return .failure(.some(error))
@@ -661,7 +730,7 @@ enum Generator {
     private static func getAssetBase() -> String {
         let assetDir = "/XCHammerAssets"
         #if Xcode
-            // Xcode Swift PM integration support.
+            // Xcode Swift PM build system support.
             // There is no way to correctly bundle resources in this scenario.
             let components = #file .split(separator: "/")
             let assetBase = "/" + components [0 ... components.count - 4].joined(separator: "/")
@@ -672,6 +741,18 @@ enum Generator {
             fatalError("Missing XCHammerAssets")
         }
         return assetBase
+    }
+
+    private static func getTulsiAspectRepo() -> String {
+        #if Xcode
+            // Xcode Swift PM build system support.
+            // There is no way to correctly bundle resources in this scenario.
+            let components = #file .split(separator: "/")
+            let assetBase = "/" + components [0 ... components.count - 4].joined(separator: "/")
+            return assetBase + "/tulsi-aspects"
+        #else
+            return Bundle.main.bundlePath
+        #endif
     }
 
     private static func getDepsHashSettingValue(projectPath: Path) throws ->
@@ -746,17 +827,18 @@ enum Generator {
         let entryMapProfiler = XCHammerProfiler("read_aspects")
         // get Tulsi to give us the RuleEntryMap from our workspace
         logger.logInfo("Reading Bazel configurations")
-        let ruleEntryMapResult = doResult {
-            return try TulsiHooks.emitRuleEntryMap(labels:
+        let workspaceInfoResult = doResult {
+            return try TulsiHooks.getWorkspaceInfo(labels:
                 config.buildTargetLabels, bazelPath: bazelPath,
                 workspaceRootPath: workspaceRootPath)
         }
         entryMapProfiler.logEnd(true)
 
-        guard case let .success(ruleEntryMap) = ruleEntryMapResult else {
-            return .failure(ruleEntryMapResult.error!)
+        guard case let .success(workspaceInfo) = workspaceInfoResult else {
+            return .failure(workspaceInfoResult.error!)
         }
 
+        let ruleEntryMap = workspaceInfo.ruleEntryMap
         guard let genfileLabels = try? BazelQueryer.genFileQuery(targets:
             config.buildTargetLabels, bazelPath: bazelPath,
             workspaceRoot: workspaceRootPath) else {
@@ -794,7 +876,8 @@ enum Generator {
             let depsHash = existingState?.1 ?? getHash(workspaceRootPath:
                     genOptions.workspaceRootPath, genOptions: genOptions)
             return generateProject(genOptions: genOptions,
-                    ruleEntryMap: ruleEntryMap, genfileLabels: genfileLabels,
+                    ruleEntryMap: ruleEntryMap, bazelExecRoot:
+                    workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
                     depsHash: depsHash).map {
                 return GenerateState(genOptions: genOptions,
                         skipped: false)

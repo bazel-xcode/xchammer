@@ -44,6 +44,9 @@ enum XCHammerAsset: String {
     /// the Xcode project and is unstable.
     case genStatus = "genStatus"
 
+    /// Write all of the settings for this project
+    case bazelBuildSettings = "bazel_build_settings.py"
+
     func getPath() -> String {
         return "XCHammerAssets/" + self.rawValue
     }

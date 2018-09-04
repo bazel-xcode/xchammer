@@ -1,0 +1,88 @@
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "SlackTextViewController_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "SlackTextViewController",
+  "SlackTextViewController_module_map",
+  "SlackTextViewController",
+  [
+    "SlackTextViewController_hdrs"
+  ]
+  )
+objc_library(
+  name = "SlackTextViewController",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "Source/**/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "Source/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":SlackTextViewController_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "SlackTextViewController",
+    [
+      "Source/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "SlackTextViewController_module_map"
+  ],
+  copts = [
+
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/SlackTextViewController/pod_support/Headers/Public/SlackTextViewController/"
+  ] + [
+    "-fmodule-name=SlackTextViewController_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "SlackTextViewController_acknowledgement",
+  deps = [
+
+  ],
+  value = "//Vendor/SlackTextViewController/pod_support_buildable:acknowledgement_fragment"
+  )

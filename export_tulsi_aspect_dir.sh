@@ -10,16 +10,11 @@ ROOT_DIR=$PWD
 TULSI=$(ls -t -d $PWD/.build/checkouts/Tulsi.git-* | head -n1)
 
 cd $TULSI
-echo "Building Tulsi"
-xcodebuild -target TulsiGenerator -project src/Tulsi.xcodeproj/
+echo "Building Tulsi resources"
+xcodebuild build -scheme TulsiApp -derivedDataPath $PWD/tulsi_build -project src/Tulsi.xcodeproj/ -configuration Release
 
 echo "Exporting resources to $1"
 # Export resources
 rm -rf $EXPORT_DIR
-OUT_DIR=src/build/Release/TulsiGenerator.framework/Resources/
 
-if [[ $(command -v realpath) ]]; then
-    cp -r $(realpath src/build/Release/TulsiGenerator.framework/Resources) $EXPORT_DIR
-else
-    cp -r src/build/Release/TulsiGenerator.framework/Resources $EXPORT_DIR
-fi
+cp -r tulsi_build/Build/Products/Release/TulsiGenerator.framework/Resources/ $EXPORT_DIR

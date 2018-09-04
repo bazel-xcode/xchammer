@@ -31,6 +31,11 @@ struct XCHammerTargetConfig: Codable {
     /// Variables:
     /// __BAZEL_COMMAND__
     /// This is the actual build invocation.
+    /// 
+    /// i.e.
+    /// # MyTemplate.sh.tpl
+    /// # Some scripting things..
+    /// __BAZEL_COMMAND__
     let buildBazelTemplate: String?
 }
 
