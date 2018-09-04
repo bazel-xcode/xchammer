@@ -1,1 +1,0 @@
-../../../Vendor/rules_pods/BazelExtensions/extensions.bzl

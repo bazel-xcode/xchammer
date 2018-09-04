@@ -1,10 +1,15 @@
 load("@build_bazel_rules_apple//apple/bundling:entitlements.bzl",
      entitlements_rule="entitlements")
 
+load(
+    "@build_bazel_rules_apple//apple/bundling:entitlements.bzl",
+    "AppleEntitlementsInfo",
+)
+
 def _entitlements_writer_impl(ctx):
-    link_inputs = ctx.attr.entitlements.objc.link_inputs
+    entitlement_info = ctx.attr.entitlements[AppleEntitlementsInfo]
     out = ctx.new_file(ctx.attr.name + ".entitlements")
-    if len(link_inputs) == 0:
+    if not entitlement_info or not entitlement_info.final_entitlements:
         # Create some dummy entitlements
         cmd = ' '.join([
             'touch', out.path, '\n',
@@ -20,7 +25,7 @@ def _entitlements_writer_impl(ctx):
         )
 
     # Export the entitlements from link_inputs
-    entitlements_file = ctx.attr.entitlements.objc.link_inputs.to_list()[0]
+    entitlements_file = entitlement_info.final_entitlements
     cmd = ' '.join([
         'cp', entitlements_file.path, out.path, '\n',
     ])

@@ -1,0 +1,102 @@
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+filegroup(
+  name = "FBSDKLoginKit_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "FBSDKLoginKit",
+  "FBSDKLoginKit_module_map",
+  "FBSDKLoginKit",
+  [
+    "FBSDKLoginKit_hdrs"
+  ]
+  )
+objc_library(
+  name = "FBSDKLoginKit",
+  enable_modules = 0,
+  srcs = glob(
+    [
+      "FBSDKLoginKit/FBSDKLoginKit/**/*.m"
+    ],
+    exclude_directories = 1
+    ) + glob(
+    [
+      "FBSDKLoginKit/FBSDKLoginKit/**/*.h"
+    ],
+    exclude_directories = 1
+    ),
+  hdrs = [
+    ":FBSDKLoginKit_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "FBSDKLoginKit",
+    [
+      "FBSDKLoginKit/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "FBSDKLoginKit_module_map"
+  ],
+  weak_sdk_frameworks = [
+    "Accounts",
+    "CoreLocation",
+    "Social",
+    "Security",
+    "QuartzCore",
+    "CoreGraphics",
+    "UIKit",
+    "Foundation",
+    "AudioToolbox"
+  ],
+  deps = [
+    "//Vendor/FBSDKCoreKit:FBSDKCoreKit"
+  ],
+  copts = [
+    "-Wno-non-modular-include-in-framework-module -Wno-error=noon-modular-include-in-framework-module"
+  ] + select(
+    {
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ],
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ]
+    }
+    ) + [
+    "-IVendor/FBSDKLoginKit/pod_support/Headers/Public/FBSDKLoginKit/"
+  ] + [
+    "-fmodule-name=FBSDKLoginKit_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "FBSDKLoginKit_acknowledgement",
+  deps = [
+    "//Vendor/FBSDKCoreKit:FBSDKCoreKit_acknowledgement"
+  ],
+  value = "//Vendor/FBSDKLoginKit/pod_support_buildable:acknowledgement_fragment"
+  )

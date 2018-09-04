@@ -1,6 +1,6 @@
-load('//Vendor/Stripe/pod_support_buildable:extensions.bzl', 'pch_with_name_hint')
-load('//Vendor/Stripe/pod_support_buildable:extensions.bzl', 'acknowledged_target')
-load('//Vendor/Stripe/pod_support_buildable:extensions.bzl', 'gen_module_map')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
@@ -21,7 +21,7 @@ filegroup(
   name = "Stripe_hdrs",
   srcs = glob(
     [
-      "pod_support/Headers/Public/**/*.h"
+      "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
     ),
@@ -119,8 +119,9 @@ objc_library(
 acknowledged_target(
   name = "Stripe_acknowledgement",
   deps = [
-    ":Stripe_Bundle_Stripe_acknowledgement"
-  ]
+
+  ],
+  value = "//Vendor/Stripe/pod_support_buildable:acknowledgement_fragment"
   )
 objc_bundle_library(
   name = "Stripe_Bundle_Stripe",
@@ -139,5 +140,6 @@ acknowledged_target(
   name = "Stripe_Bundle_Stripe_acknowledgement",
   deps = [
 
-  ]
+  ],
+  value = "//Vendor/Stripe/pod_support_buildable:acknowledgement_fragment"
   )

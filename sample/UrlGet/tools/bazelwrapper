@@ -7,12 +7,16 @@ SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 pushd "$SCRIPTPATH/.." > /dev/null
 trap popd > /dev/null ERR EXIT
 
-BAZEL_VERSION="0.12.0rc1"
-BAZEL_VERSION_SHA="fe9bf6e4d920c668f28a37d5d2ea11cee38871e90ccf5c2a52c7a327dd6de9a9"
-BAZEL_VERSION_URL="https://releases.bazel.build/0.12.0/rc1/bazel-0.12.0rc1-installer-darwin-x86_64.sh"
+# Go to bazel release page
+# These are typically posted in groups.google
+# https://groups.google.com/forum/#!forum/bazel-discuss
+BAZEL_VERSION="0.16.1"
+BAZEL_VERSION_SHA="07d5c753738c7186117168770f525b59c39b24103f714be2ffcaadd8e2c53a78"
+BAZEL_VERSION_URL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-darwin-x86_64.sh"
 
 BAZEL_ROOT="$HOME/.bazelenv/versions/$BAZEL_VERSION"
 BAZEL_PATH="$BAZEL_ROOT/bin/bazel"
+XCODE_SELECT_ENV_PATH="${SCRIPTPATH}/.xcode_select_env"
 LEGACY_BAZEL_PATH="$SCRIPTPATH/../Scripts/bazel/bin/bazel"
 
 BAZEL=""
@@ -50,7 +54,7 @@ if ! [[ -e "$BAZEL" ]]; then
 fi
 
 if [[ -x "${BAZEL}" ]]; then
-    exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH=$PATH HOME=$HOME "${BAZEL}" "$@"
+  exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH=$PATH HOME=$HOME "${BAZEL}" "$@"
 else
   echo "WARNING: Missing installation of bazel" >&2;
   exit 1

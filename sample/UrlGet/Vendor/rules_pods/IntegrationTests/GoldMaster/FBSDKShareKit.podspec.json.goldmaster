@@ -1,0 +1,195 @@
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'pch_with_name_hint')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'acknowledged_target')
+load('//Vendor/rules_pods/BazelExtensions:extensions.bzl', 'gen_module_map')
+# Add a config setting release for compilation mode
+# Assume that people are using `opt` for release mode
+# see the bazel user manual for more information
+# https://bazel.build/versions/master/docs/bazel-user-manual.html
+native.config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+  )
+config_setting(
+  name = "iosCase",
+  values = {
+    "cpu": "powerpc1"
+  }
+  )
+config_setting(
+  name = "tvosCase",
+  values = {
+    "cpu": "powerpc3"
+  }
+  )
+filegroup(
+  name = "FBSDKShareKit_hdrs",
+  srcs = glob(
+    [
+      "pod_support/Headers/Public/**/*"
+    ],
+    exclude_directories = 1
+    ),
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+gen_module_map(
+  "FBSDKShareKit",
+  "FBSDKShareKit_module_map",
+  "FBSDKShareKit",
+  [
+    "FBSDKShareKit_hdrs"
+  ]
+  )
+objc_library(
+  name = "FBSDKShareKit",
+  enable_modules = 0,
+  srcs = select(
+    {
+      "//conditions:default": glob(
+        [
+          "FBSDKShareKit/FBSDKShareKit/**/*.m"
+        ],
+        exclude = [
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareButton.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareViewController.m"
+        ],
+        exclude_directories = 1
+        ),
+      ":tvosCase": glob(
+        [
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareButton.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareViewController.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKHashtag.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareAPI.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareConstants.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareLinkContent.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareMediaContent.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphAction.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphContent.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphObject.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphValueContainer.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKSharePhoto.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKSharePhotoContent.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareVideo.m",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareVideoContent.m",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareError.m",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareUtility.m",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKVideoUploader.m"
+        ],
+        exclude_directories = 1
+        )
+    }
+    ) + select(
+    {
+      "//conditions:default": glob(
+        [
+          "FBSDKShareKit/FBSDKShareKit/**/*.h"
+        ],
+        exclude = [
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareButton.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareViewController.h"
+        ],
+        exclude_directories = 1
+        ),
+      ":tvosCase": glob(
+        [
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareButton.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKDeviceShareViewController.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKHashtag.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareAPI.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareConstants.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareKit.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareLinkContent.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareMediaContent.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphAction.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphContent.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphObject.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareOpenGraphValueContainer.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKSharePhoto.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKSharePhotoContent.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareVideo.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKShareVideoContent.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKSharing.h",
+          "FBSDKShareKit/FBSDKShareKit/FBSDKSharingContent.h",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareDefines.h",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareError.h",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareLinkContent+Internal.h",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareOpenGraphValueContainer+Internal.h",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKShareUtility.h",
+          "FBSDKShareKit/FBSDKShareKit/Internal/FBSDKVideoUploader.h"
+        ],
+        exclude_directories = 1
+        )
+    }
+    ),
+  hdrs = [
+    ":FBSDKShareKit_hdrs"
+  ],
+  pch = pch_with_name_hint(
+    "FBSDKShareKit",
+    [
+      "FBSDKShareKit/**/*.pch"
+    ]
+    ),
+  includes = [
+    "pod_support/Headers/Public/",
+    "FBSDKShareKit_module_map"
+  ],
+  weak_sdk_frameworks = select(
+    {
+      "//conditions:default": [
+        "Accounts",
+        "AudioToolbox",
+        "CoreGraphics",
+        "CoreLocation",
+        "Foundation",
+        "QuartzCore",
+        "Security",
+        "Social",
+        "UIKit"
+      ],
+      ":tvosCase": [
+        "AudioToolbox",
+        "CoreGraphics",
+        "CoreLocation",
+        "Foundation",
+        "QuartzCore",
+        "Security",
+        "UIKit"
+      ]
+    }
+    ),
+  deps = [
+    "//Vendor/FBSDKCoreKit:FBSDKCoreKit"
+  ],
+  copts = [
+    "-Wno-non-modular-include-in-framework-module -Wno-error=noon-modular-include-in-framework-module"
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DPOD_CONFIGURATION_RELEASE=0"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+    ) + [
+    "-IVendor/FBSDKShareKit/pod_support/Headers/Public/FBSDKShareKit/"
+  ] + [
+    "-fmodule-name=FBSDKShareKit_pod_module"
+  ],
+  visibility = [
+    "//visibility:public"
+  ]
+  )
+acknowledged_target(
+  name = "FBSDKShareKit_acknowledgement",
+  deps = [
+    "//Vendor/FBSDKCoreKit:FBSDKCoreKit_acknowledgement"
+  ],
+  value = "//Vendor/FBSDKShareKit/pod_support_buildable:acknowledgement_fragment"
+  )

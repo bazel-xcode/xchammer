@@ -10,7 +10,7 @@ if [[ $ACTION == "clean" ]]; then
 fi
 
 PREV_STAT=`/usr/bin/stat -f %c "/Users/jerry/Projects/xchammer-github/sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/genStatus"`
-/Users/jerry/Projects/xchammer-github/.build/debug/XCHammer generate /Users/jerry/Projects/xchammer-github/sample/UrlGet/XCHammer.yaml --workspace_root /Users/jerry/Projects/xchammer-github/sample/UrlGet --bazel /Users/jerry/Projects/xchammer-github/sample/UrlGet/tools/bazelwrapper
+/Users/jerry/Projects/xchammer-github/.build/debug/XCHammer generate /Users/jerry/Projects/xchammer-github/sample/UrlGet/XCHammer.yaml --workspace_root /Users/jerry/Projects/xchammer-github/sample/UrlGet --bazel /Users/jerry/Projects/xchammer-github/sample/UrlGet/tools/bazelwrapper --generate_bazel_targets
 STAT=`/usr/bin/stat -f %c "/Users/jerry/Projects/xchammer-github/sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/genStatus"`
 if [[ "$PREV_STAT" != "$STAT" ]]; then
     echo "error: Xcode project was out-of-date so we updated it for you! Please build again."

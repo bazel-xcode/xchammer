@@ -17,9 +17,9 @@ import TulsiGenerator
 import PathKit
 
 enum TulsiHooks {
-    static func emitRuleEntryMap(labels: [BuildLabel], bazelPath: Path,
+    static func getWorkspaceInfo(labels: [BuildLabel], bazelPath: Path,
             workspaceRootPath: Path) throws ->
-        RuleEntryMap {
+        XCHammerBazelWorkspaceInfo {
         let ungeneratedProjectName = "Some"
         let config = TulsiGeneratorConfig(projectName: ungeneratedProjectName,
                 buildTargetLabels: labels,
@@ -27,10 +27,8 @@ enum TulsiHooks {
                 additionalFilePaths: [],
                 options: TulsiOptionSet(),
                 bazelURL: TulsiParameter(value: bazelPath.url,
-                    source: .options)
-                )
-        let ruleEntryMap = try TulsiRuleEntryMapExtractor.extract(config:
+                    source: .options))
+        return try TulsiRuleEntryMapExtractor.extract(config:
                 config, workspace: workspaceRootPath.url)
-        return ruleEntryMap
     }
 }
