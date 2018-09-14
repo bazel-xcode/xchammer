@@ -354,10 +354,13 @@ enum Generator {
             return (xcodeTarget.label.value, BazelFlagsSet(common: flags))
         }
 
+        let platformOptions = genOptions.config
+                .projects[genOptions.projectName]?.buildBazelPlatformOptions
+
         return BazelBuildSettings(bazel: genOptions.bazelPath.string,
                 bazelExecRoot: bazelExecRoot,
                 defaultPlatformConfigIdentifier: "iphone",
-                platformConfigurationFlags: nil,
+                platformConfigurationFlags: platformOptions,
                 swiftTargets: Set(),
                 tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
                 tulsiCacheSafeFlagSet: BazelFlagsSet(),

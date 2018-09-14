@@ -56,6 +56,21 @@ struct XCHammerProjectConfig: Codable {
     /// @note XCHammer targets are configured to build and link dependencies
     /// across a given workspace.
     let paths: [String]?
+
+    /// Bazel Project Options
+
+    /// Provide Bazel options for a given platform:
+    /// i.e.
+    /// ios_x86_64
+    /// If no options are provided, then defaults are applied.
+    /// @see BazelBuildSettings
+    /// Interesting platforms include
+    /// macos_x86_64
+    /// ios_x86_64, ios_i386, ios_arm64, ios_armv7
+    /// watchos_i386, watchos_armv7k, tvos_x86_64
+    /// @note: this is written into a python program which is later
+    /// serialized. Spaces and escapes matter.
+    let buildBazelPlatformOptions: [String: [String]]?
 }
 
 struct XCHammerConfig: Codable {

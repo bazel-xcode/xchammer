@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_183987345262"
-               BuildableName = "UpdateXcodeProject"
+               BlueprintIdentifier = ""
+               BuildableName = ""
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -23,13 +23,13 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
+            buildForProfiling = "NO"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_593532437987"
-               BuildableName = "share-extension-Bazel.appex"
+               BlueprintIdentifier = ""
+               BuildableName = "share-extension.appex-Bazel"
                BlueprintName = "share-extension-Bazel"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -40,18 +40,21 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_593532437987"
-            BuildableName = "share-extension-Bazel.appex"
+            BlueprintIdentifier = ""
+            BuildableName = "share-extension.appex-Bazel"
             BlueprintName = "share-extension-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <CommandLineArguments>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -69,12 +72,14 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_593532437987"
-            BuildableName = "share-extension-Bazel.appex"
+            BlueprintIdentifier = ""
+            BuildableName = "share-extension.appex-Bazel"
             BlueprintName = "share-extension-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -88,12 +93,14 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_593532437987"
-            BuildableName = "share-extension-Bazel.appex"
+            BlueprintIdentifier = ""
+            BuildableName = "share-extension.appex-Bazel"
             BlueprintName = "share-extension-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
