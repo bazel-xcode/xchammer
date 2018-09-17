@@ -243,6 +243,7 @@ BUILD_SETTINGS = BazelBuildSettings(
                 startup = [],
                 build = [
                     '--action_env=X=Y',
+                    '--action_env=CLI_SDK=$(SDKROOT)',
                     '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],

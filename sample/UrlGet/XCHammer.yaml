@@ -14,4 +14,7 @@ projects:
 targetConfig:
     "//ios-app:ios-app":
         buildBazelTemplate: "UrlGetXcodeBuildScript.sh"
-        buildBazelOptions: "--action_env=X=Y"
+        # Example of setting some options and "Make variable" replacements
+        # Note, that this is an example of an ability of tools/bazelwrapper
+        # and dynamically configuring Bazel options at runtime.
+        buildBazelOptions: "--action_env=X=Y --action_env=CLI_SDK=$(SDKROOT)"
