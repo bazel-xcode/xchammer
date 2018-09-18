@@ -908,10 +908,9 @@ enum Generator {
                  fatalError("Can't write genStatus")
             }
         }
-        let result: Result<(), GenerateError> = .success()
-        return results.reduce(into: result, {
+        return results.reduce(.success()) {
              result, element in
-             return result &&& element
+             return result.fanout(element)
         })
     }
 }
