@@ -910,7 +910,7 @@ enum Generator {
         }
         return results.reduce(.success()) {
              result, element in
-             return result.flatMap { in _ element }
+             return result.flatMap { _ in element }
         }
     }
 }
