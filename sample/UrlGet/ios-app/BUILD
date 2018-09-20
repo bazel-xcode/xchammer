@@ -15,15 +15,36 @@ ios_extension(
     visibility = ["//visibility:public"],
 )
 
+ios_extension(
+    name = "siri-extension",
+    deps = ["siri-ext-bin"],
+    infoplists = [],
+    bundle_id = "Google.UrlGet.SiriExtension",
+    families = ["iphone"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "AppIntentVocabulary",
+    srcs = glob(["SiriExtension/Resources/Localization/*.lproj/AppIntentVocabulary.plist"]),
+    visibility = ["//ios-app:ios-app"]
+)
+
 objc_library(
     name = "ios-ext-bin",
     srcs = ["empty-main.m"]
 )
 
+objc_library(
+    name = "siri-ext-bin",
+    hdrs = native.glob(["SiriExtension/Sources/**/*.h"]),
+    srcs = native.glob(["SiriExtension/Sources/**/*.m"]),
+)
+
 ios_application(
     name = "ios-app",
     deps = ["ios-app-bin"],
-    extensions = [":share-extension"],
+    extensions = [":share-extension", ":siri-extension"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     bundle_id = "Google.UrlGet",
@@ -37,6 +58,9 @@ objc_library(
     ],
     deps = [
         ":UrlGetClasses",
+    ],
+    resources = [
+        ":AppIntentVocabulary",
     ],
     defines = [
         "EXAMPLE_DEF=1"
@@ -113,4 +137,3 @@ objc_library(
     # Not added
     sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage"],
 )
-
