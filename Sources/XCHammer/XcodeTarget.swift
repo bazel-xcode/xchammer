@@ -800,6 +800,10 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         let label = BuildLabel(self.label.value + "_entitlements")
+        guard targetMap.anyXcodeTarget(withBuildLabel: label) != nil else {
+            return nil
+        }
+
         // The above rules ( written to the code gen'd build file )
         // dumps entitlements to this file
         let relativeProjDir = genOptions.outputProjectPath.string
@@ -1074,20 +1078,22 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
         .map { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                 embed: $0.isExtension) }
 
-    // Fuse or use the actual rule entry
+    // Determine settings, sources, and deps
+    // There are 2 different possibilities:
+    // 1) High level "Fusing" of a target from multiple targets
+    // 2) A simple conversion of the target: taking it "as is"
     if shouldFlatten(xcodeTarget: xcodeTarget) {
-        let unwrapedFlatFlattendDeps = xcodeTarget.unfilteredDependencies
-            .filter { flattened.contains($0) }
-        // Source sources of unwrapped flattend deps,
-        // assuming these sources' are the source's source of truth.
-        sources = unwrapedFlatFlattendDeps.flatMap { $0.xcSources }
+        // Determine deps to fuse into the rule.
+        let fusableDeps = xcodeTarget.unfilteredDependencies
+            .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
+                    pathsPredicate) }
 
+        // Use settings, sources, and deps from the fusable deps
+        sources = fusableDeps.flatMap { $0.xcSources }
         settings = xcodeTarget.settings
-            <> unwrapedFlatFlattendDeps.foldMap { $0.settings }
-
+            <> fusableDeps.foldMap { $0.settings }
         if shouldPropagateDeps(forTarget: xcodeTarget) {
-            // Extract and depend on deps of the flat flattended deps
-            deps = unwrapedFlatFlattendDeps
+            deps = fusableDeps
                 .flatMap { $0.transitiveDeps } + xcodeTarget.xcExtensionDeps
         } else {
             deps = []

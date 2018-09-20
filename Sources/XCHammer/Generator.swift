@@ -354,10 +354,13 @@ enum Generator {
             return (xcodeTarget.label.value, BazelFlagsSet(common: flags))
         }
 
+        let platformOptions = genOptions.config
+                .projects[genOptions.projectName]?.buildBazelPlatformOptions
+
         return BazelBuildSettings(bazel: genOptions.bazelPath.string,
                 bazelExecRoot: bazelExecRoot,
                 defaultPlatformConfigIdentifier: "iphone",
-                platformConfigurationFlags: nil,
+                platformConfigurationFlags: platformOptions,
                 swiftTargets: Set(),
                 tulsiCacheAffectingFlagsSet: BazelFlagsSet(),
                 tulsiCacheSafeFlagSet: BazelFlagsSet(),
@@ -908,10 +911,9 @@ enum Generator {
                  fatalError("Can't write genStatus")
             }
         }
-        let result: Result<(), GenerateError> = .success()
-        return results.reduce(into: result, {
+        return results.reduce(.success()) {
              result, element in
-             return result &&& element
-        })
+             return result.flatMap { _ in element }
+        }
     }
 }
