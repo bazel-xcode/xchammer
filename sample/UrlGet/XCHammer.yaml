@@ -10,6 +10,13 @@ projects:
         paths:
             - "Vendor/**"
             - "ios-app/**"
+        # Example of overriding the default platform options
+        # Note,  this is not set, we put sensible defaults in.
+        buildBazelPlatformOptions:
+            ios_x86_64:
+                - "--config=ios_x86_64"
+            ios_arm64:
+                - "--config=ios_arm64"
 
 targetConfig:
     "//ios-app:ios-app":

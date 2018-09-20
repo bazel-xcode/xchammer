@@ -1,0 +1,19 @@
+# Dummy build configuration
+# Take note that:
+# 1) It hardcodes the compilation mode. 
+# Typically, this is done dynamically in a custom runscript template
+# based on user options.  Consider adding defaults into XCHammer
+# 2) It builds standalone.
+# 3) It doesn't generate a dsym
+build \
+    --compilation_mode=dbg \
+    --explain=/tmp/XCHammerBuildExplain.txt \
+    --verbose_explanations \
+    --apple_generate_dsym=false \
+    --spawn_strategy=standalone
+
+build:ios_x86_64 \
+    --ios_multi_cpus=x86_64
+
+build:ios_arm64 \
+    --ios_multi_cpus=arm64
