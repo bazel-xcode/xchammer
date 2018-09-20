@@ -7,6 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface XCIntentHandler : NSObject
+@interface AppJerry : NSObject
 
 @end

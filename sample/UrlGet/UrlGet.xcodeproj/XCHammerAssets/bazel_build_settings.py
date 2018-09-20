@@ -130,8 +130,8 @@ class BazelBuildSettings(object):
 BUILD_SETTINGS = None
 
 BUILD_SETTINGS = BazelBuildSettings(
-    '/Users/jerry/Projects/xchammer-github/sample/UrlGet/tools/bazelwrapper',
-    '/private/var/tmp/_bazel_jerry/02ea23f0453c053e153f98f04fdb461a/execroot/__main__',
+    '/Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/tools/bazelwrapper',
+    '/private/var/tmp/_bazel_mzuccarino/516059ac3683698c9bbc9bdebe7f41c6/execroot/__main__',
     'iphone',
     {
         'ios_x86_64': [
@@ -150,11 +150,29 @@ BUILD_SETTINGS = BazelBuildSettings(
     [],
     BazelFlagsSet(),
     {
+        '//ios-app:jerry-extension': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
         '//ios-app:UrlGetClasses': BazelFlagsSet(
             flags = BazelFlags(
                 startup = [],
                 build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app:siri-extension': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],
             ),
@@ -163,7 +181,7 @@ BUILD_SETTINGS = BazelBuildSettings(
             flags = BazelFlags(
                 startup = [],
                 build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],
             ),
@@ -172,16 +190,7 @@ BUILD_SETTINGS = BazelBuildSettings(
             flags = BazelFlags(
                 startup = [],
                 build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
-        '//ios-app:ios-ext-bin': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],
             ),
@@ -190,7 +199,7 @@ BUILD_SETTINGS = BazelBuildSettings(
             flags = BazelFlags(
                 startup = [],
                 build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],
             ),
@@ -199,7 +208,70 @@ BUILD_SETTINGS = BazelBuildSettings(
             flags = BazelFlags(
                 startup = [],
                 build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//Vendor/PINOperation:PINOperation': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app:ios-app-bin': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app:ios-ext-bin': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app:siri-ext-bin': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app:jerry-ext-bin': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app/HeaderLib:HeaderLib': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//Vendor/PINCache:Arc-exception-safe': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],
             ),
@@ -210,43 +282,7 @@ BUILD_SETTINGS = BazelBuildSettings(
                 build = [
                     '--action_env=X=Y',
                     '--action_env=CLI_SDK=$(SDKROOT)',
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
-        '//Vendor/PINCache:Arc-exception-safe': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
-        '//Vendor/PINOperation:PINOperation': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
-        '//ios-app/HeaderLib:HeaderLib': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
-        '//ios-app:ios-app-bin': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/jerry/Projects/xchammer-github/.build/debug',
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
                     '--build_event_publish_all_actions=true',
                 ],
             ),

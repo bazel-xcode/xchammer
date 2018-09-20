@@ -15,10 +15,15 @@ ios_extension(
     visibility = ["//visibility:public"],
 )
 
+objc_library(
+    name = "ios-ext-bin",
+    srcs = ["empty-main.m"]
+)
+
 ios_extension(
     name = "siri-extension",
     deps = ["siri-ext-bin"],
-    infoplists = [],
+    infoplists = ["SiriExtension/Resources/SiriExtension-Info.plist"],
     bundle_id = "Google.UrlGet.SiriExtension",
     families = ["iphone"],
     visibility = ["//visibility:public"],
@@ -27,24 +32,46 @@ ios_extension(
 filegroup(
     name = "AppIntentVocabulary",
     srcs = glob(["SiriExtension/Resources/Localization/*.lproj/AppIntentVocabulary.plist"]),
-    visibility = ["//ios-app:ios-app"]
-)
-
-objc_library(
-    name = "ios-ext-bin",
-    srcs = ["empty-main.m"]
+    visibility = ["//visibility:public"]
 )
 
 objc_library(
     name = "siri-ext-bin",
     hdrs = native.glob(["SiriExtension/Sources/**/*.h"]),
     srcs = native.glob(["SiriExtension/Sources/**/*.m"]),
+    resources = [
+        ":AppIntentVocabulary",
+    ],
+)
+
+ios_extension(
+    name = "jerry-extension",
+    deps = ["jerry-ext-bin"],
+    infoplists = ["JerryExtension/Resources/JerryExtension-Info.plist"],
+    bundle_id = "Google.UrlGet.JerryExtension",
+    families = ["iphone"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "JerryIntentVocabulary",
+    srcs = glob(["JerryExtension/Resources/Localization/*.lproj/*.strings"]),
+    visibility = ["//visibility:public"]
+)
+
+objc_library(
+    name = "jerry-ext-bin",
+    hdrs = native.glob(["JerryExtension/Sources/**/*.h"]),
+    srcs = native.glob(["JerryExtension/Sources/**/*.m"]),
+    resources = [
+        ":JerryIntentVocabulary",
+    ],
 )
 
 ios_application(
     name = "ios-app",
     deps = ["ios-app-bin"],
-    extensions = [":share-extension", ":siri-extension"],
+    extensions = [":share-extension", ":siri-extension", ":jerry-extension"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     bundle_id = "Google.UrlGet",
@@ -58,9 +85,6 @@ objc_library(
     ],
     deps = [
         ":UrlGetClasses",
-    ],
-    resources = [
-        ":AppIntentVocabulary",
     ],
     defines = [
         "EXAMPLE_DEF=1"
@@ -135,5 +159,5 @@ objc_library(
     ],
 
     # Not added
-    sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage"],
+    sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage", "Intents"],
 )

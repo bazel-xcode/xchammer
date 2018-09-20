@@ -5,12 +5,12 @@
 //  Created by XC Hammer
 //
 
-#import "AppIntent.h"
+#import "AppJerry.h"
 
-@interface XCIntentHandler ()
+@interface AppJerry ()
 
 @end
 
-@implementation XCIntentHandler
+@implementation AppJerry
 
 @end

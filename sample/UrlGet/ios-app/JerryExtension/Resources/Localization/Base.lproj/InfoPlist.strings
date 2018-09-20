@@ -1,0 +1,10 @@
+/*
+ XCHammer strings
+ */
+
+"NSLocationUsageDescription" = "";
+"NSLocationWhenInUseUsageDescription" = "";
+"NSContactsUsageDescription" = "";
+"NSCameraUsageDescription" = "";
+"NSPhotoLibraryUsageDescription" = "";
+"NSSiriUsageDescription" = "";
