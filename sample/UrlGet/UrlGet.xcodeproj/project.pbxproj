@@ -4140,7 +4140,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited) -D_FORTIFY_SOURCE=1 $(inherited) -D_FORTIFY_SOURCE=1";
 				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-UITests_entitlements.entitlements";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
 				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGetTests;
 				PRODUCT_NAME = UITests;
 				SDKROOT = iphoneos;
@@ -4267,7 +4267,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited) -D_FORTIFY_SOURCE=1 $(inherited) -D_FORTIFY_SOURCE=1";
 				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-UnitTestsWithHost_entitlements.entitlements";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
 				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGetTests;
 				PRODUCT_NAME = UnitTestsWithHost;
 				SDKROOT = iphoneos;
@@ -4447,7 +4447,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited) -D_FORTIFY_SOURCE=1 $(inherited) -D_FORTIFY_SOURCE=1";
 				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-UITests_entitlements.entitlements";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
 				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGetTests;
 				PRODUCT_NAME = UITests;
 				SDKROOT = iphoneos;
@@ -4594,7 +4594,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited) -D_FORTIFY_SOURCE=1 $(inherited) -D_FORTIFY_SOURCE=1";
 				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-UnitTestsWithHost_entitlements.entitlements";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
 				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGetTests;
 				PRODUCT_NAME = UnitTestsWithHost;
 				SDKROOT = iphoneos;
@@ -4655,7 +4655,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited) -D_FORTIFY_SOURCE=1 $(inherited) -D_FORTIFY_SOURCE=1";
 				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-UnitTests_entitlements.entitlements";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bazelbuild.rulesapple.Tests;
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = iphoneos;
@@ -4826,7 +4826,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited) -D_FORTIFY_SOURCE=1 $(inherited) -D_FORTIFY_SOURCE=1";
 				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-UnitTests_entitlements.entitlements";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework CoreLocation -framework AudioToolbox -framework Security -framework UIKit -framework QuartzCore -framework Foundation -framework CoreImage -framework SystemConfiguration -framework WebKit -framework PassKit -framework Contacts -framework CoreText -framework SafariServices -weak_framework UIKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bazelbuild.rulesapple.Tests;
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = iphoneos;

@@ -801,6 +801,10 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         let label = BuildLabel(self.label.value + "_entitlements")
+        guard targetMap.anyXcodeTarget(withBuildLabel: label) != nil else {
+            return nil
+        }
+
         // The above rules ( written to the code gen'd build file )
         // dumps entitlements to this file
         let relativeProjDir = genOptions.outputProjectPath.string
