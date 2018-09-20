@@ -78,14 +78,14 @@ if [[ -x "${BAZEL}" ]]; then
         MAKEVAR=$(echo $ARG | sed 's,.*\$(\(.*\)).*,\1,g')
         # Next, parameter expansion of the variable by name
         VALUE="${!MAKEVAR}"
-        REPLACED=$(echo $ARG | sed "s,\$(\(.*\)),$VALUE,g")
+        REPLACED="$(echo $ARG | sed "s,\$(\(.*\)),$VALUE,g")"
         ARGS+=(${REPLACED})
       else
         ARGS+=("${ARG}")
       fi
   done
 
-  exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH=$PATH HOME=$HOME "${BAZEL}" ${ARGS[@]}
+  exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH=$PATH HOME=$HOME "${BAZEL}" "${ARGS[@]}"
 else
   echo "WARNING: Missing installation of bazel" >&2;
   exit 1
