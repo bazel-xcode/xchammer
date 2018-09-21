@@ -14,16 +14,16 @@ export_entitlements(
   platform_type = "ios"
 )
 export_entitlements(
-  name = "ios-app-jerry-extension_entitlements",
-  entitlements = None,
-  provisioning_profile = None,
-  bundle_id = "Google.UrlGet.JerryExtension",
-  platform_type = "ios"
-)
-export_entitlements(
   name = "ios-app-ios-app_entitlements",
   entitlements = None,
   provisioning_profile = None,
   bundle_id = "Google.UrlGet",
+  platform_type = "ios"
+)
+export_entitlements(
+  name = "ios-app-jerry-extension_entitlements",
+  entitlements = None,
+  provisioning_profile = None,
+  bundle_id = "Google.UrlGet.JerryExtension",
   platform_type = "ios"
 )
