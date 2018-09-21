@@ -11,7 +11,7 @@ TULSI=$(ls -t -d $PWD/.build/checkouts/Tulsi.git-* | head -n1)
 
 cd $TULSI
 echo "Building Tulsi resources"
-xcodebuild build -scheme TulsiApp -derivedDataPath $PWD/tulsi_build -project src/Tulsi.xcodeproj/ -configuration Release
+xcodebuild build -quiet -scheme TulsiApp -derivedDataPath $PWD/tulsi_build -project src/Tulsi.xcodeproj/ -configuration Release
 
 echo "Exporting resources to $1"
 # Export resources
