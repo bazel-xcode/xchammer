@@ -118,6 +118,7 @@
 		BF_305816078570 /* stp_card_applepay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_458974510861 /* stp_card_applepay@2x.png */; };
 		BF_306186377385 /* STPCardValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_716273040248 /* STPCardValidator.m */; };
 		BF_307222715199 /* stp_card_error.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_550412986688 /* stp_card_error.png */; };
+		BF_309045885116 /* strings-extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_910389829219 /* strings-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_309156400099 /* STPSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_235441027813 /* STPSource.m */; };
 		BF_309570989202 /* stp_card_amex.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_390212303514 /* stp_card_amex.png */; };
 		BF_310147481663 /* stp_card_applepay.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_153681520641 /* stp_card_applepay.png */; };
@@ -143,10 +144,12 @@
 		BF_344516029993 /* stp_card_jcb.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_739797562620 /* stp_card_jcb.png */; };
 		BF_344635626378 /* GoogleNetworkingUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_536943478702 /* GoogleNetworkingUtilities.framework */; };
 		BF_349880824923 /* STPAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_744571361438-1" /* STPAPIRequest.m */; };
+		BF_353317260207 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_827262883523 /* InfoPlist.strings */; };
 		BF_357314905437 /* stp_card_amex@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_838405705884 /* stp_card_amex@3x.png */; };
 		BF_357489808821 /* STPPaymentContextAmountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_393824443136 /* STPPaymentContextAmountModel.m */; };
 		BF_358123724804 /* stp_card_unionpay_template_zh.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_607867791021 /* stp_card_unionpay_template_zh.png */; };
 		BF_359877986903 /* STPFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_118015691316-1" /* STPFormTextField.m */; };
+		BF_360825627851 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_827262883523 /* InfoPlist.strings */; };
 		BF_362461023323 /* PINCache.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_201151680337-1" /* PINCache.m */; };
 		BF_362750078846 /* STPCustomerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_764679247202 /* STPCustomerContext.m */; };
 		BF_363066368412 /* stp_card_discover@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_460546061817 /* stp_card_discover@3x.png */; };
@@ -155,9 +158,10 @@
 		BF_365572872399 /* STPMultipartFormDataEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_344043994903 /* STPMultipartFormDataEncoder.m */; };
 		BF_365968776464 /* stp_icon_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_701860410388 /* stp_icon_add@2x.png */; };
 		BF_367284426572 /* STPAddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_670019473135 /* STPAddCardViewController.m */; };
-		BF_368759417844 /* AppJerry.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_560907325124-1" /* AppJerry.m */; };
+		BF_369875356536 /* AppJerry.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_720345196462-1" /* AppJerry.m */; };
 		BF_370608658701 /* STPCardParams.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_983798454349 /* STPCardParams.m */; };
 		BF_371536116472 /* stp_card_visa.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_620185860855 /* stp_card_visa.png */; };
+		BF_372859359289 /* StringsExtension-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FR_575999326641 /* StringsExtension-Info.plist */; };
 		BF_376657278382 /* stp_card_discover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_867716578881 /* stp_card_discover@2x.png */; };
 		BF_378840913279 /* STPAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_729837640388 /* STPAPIClient.m */; };
 		BF_379613470386 /* GoogleAppIndexingResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_351883541716 /* GoogleAppIndexingResources.bundle */; };
@@ -215,6 +219,7 @@
 		BF_477621904475 /* STPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_401789639718-1" /* STPStringUtils.m */; };
 		BF_484844982921 /* STPSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_793362014210-1" /* STPSwitchTableViewCell.m */; };
 		BF_485817685451 /* stp_card_unionpay_zh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_127100525052 /* stp_card_unionpay_zh@3x.png */; };
+		BF_486194470271 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_104204687231 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
 		BF_489322762158 /* STPRedirectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_522111507539 /* STPRedirectContext.m */; };
 		BF_489787044526 /* STPMultipartFormDataPart.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_430199726738 /* STPMultipartFormDataPart.m */; };
 		BF_490736564052 /* stp_icon_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_213958106393 /* stp_icon_checkmark.png */; };
@@ -260,7 +265,6 @@
 		BF_558507126140 /* stp_card_unknown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_653524283850 /* stp_card_unknown@2x.png */; };
 		BF_559836411561 /* STPShippingMethodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_805980394107 /* STPShippingMethodTableViewCell.m */; };
 		BF_559895246776 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_388157799616 /* main.m */; };
-		BF_561320329132 /* libjerry-ext-bin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_448911078734 /* libjerry-ext-bin.a */; };
 		BF_563013784716 /* STPCoreScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_651201787786 /* STPCoreScrollViewController.m */; };
 		BF_563626665274 /* STPPaymentMethodsInternalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_303088826339 /* STPPaymentMethodsInternalViewController.m */; };
 		BF_564964647160 /* GoogleAppIndexingResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_351883541716 /* GoogleAppIndexingResources.bundle */; };
@@ -297,7 +301,6 @@
 		BF_619165246202 /* STPPaymentActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_847087900331 /* STPPaymentActivityIndicatorView.m */; };
 		BF_619760599042 /* STPSourceOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_761061955139 /* STPSourceOwner.m */; };
 		BF_622220407417 /* NSError+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_136387137481-1" /* NSError+Stripe.m */; };
-		BF_622572157430 /* jerry-extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_182019143783 /* jerry-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_624140904670 /* stp_card_unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_458081448840 /* stp_card_unknown.png */; };
 		BF_624388286307 /* STPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_218958582687 /* STPTheme.m */; };
 		BF_624533472251 /* stp_card_jcb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_498036443375 /* stp_card_jcb@2x.png */; };
@@ -312,6 +315,7 @@
 		BF_638181999525 /* NSDecimalNumber+Stripe_Currency.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_485300186977 /* NSDecimalNumber+Stripe_Currency.m */; };
 		BF_638318951126 /* STPCustomerContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_764679247202 /* STPCustomerContext.m */; };
 		BF_641847747226 /* STPAddressViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_650044337253-1" /* STPAddressViewModel.m */; };
+		BF_643237519141 /* StringsExtension-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FR_575999326641 /* StringsExtension-Info.plist */; };
 		BF_644423025658 /* libStripe-ios-11.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_334313231181 /* libStripe-ios-11.3.a */; };
 		BF_644483827733 /* STPSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_235441027813 /* STPSource.m */; };
 		BF_647200911547 /* STPAspects.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_225093974291 /* STPAspects.m */; };
@@ -336,7 +340,6 @@
 		BF_682900860588 /* Tests2.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_447194245190 /* Tests2.m */; };
 		BF_691269567943 /* stp_card_jcb_template.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_584192437806 /* stp_card_jcb_template.png */; };
 		BF_691914571811 /* SiriExtension-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FR_609723908966 /* SiriExtension-Info.plist */; };
-		BF_693088923383 /* JerryExtension-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FR_494309947067 /* JerryExtension-Info.plist */; };
 		BF_693418203202 /* STPBINRange.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_670697261324 /* STPBINRange.m */; };
 		BF_693631994031 /* GoogleAuthUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_358060139028 /* GoogleAuthUtilities.framework */; };
 		BF_695166312425 /* libPINCache-Arc-exception-safe-ios-9.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_205813692671 /* libPINCache-Arc-exception-safe-ios-9.0.a */; };
@@ -357,6 +360,7 @@
 		BF_718842850114 /* AppIntent.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_501274904079 /* AppIntent.m */; };
 		BF_719520352570 /* stp_card_error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_550565498786 /* stp_card_error@3x.png */; };
 		BF_721271532741 /* STPFormEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_375651978668 /* STPFormEncoder.m */; };
+		BF_722312868055 /* libstrings-ext-bin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_666369934619 /* libstrings-ext-bin.a */; };
 		BF_724018934696 /* stp_card_visa_template@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_161686194489 /* stp_card_visa_template@3x.png */; };
 		BF_726182205540 /* STPShippingMethodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_805980394107 /* STPShippingMethodTableViewCell.m */; };
 		BF_726887199051 /* stp_card_unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_458081448840 /* stp_card_unknown.png */; };
@@ -427,7 +431,6 @@
 		BF_809361463000 /* stp_card_cvc.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_275604636587 /* stp_card_cvc.png */; };
 		BF_811880897715 /* STPPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_177669650679-1" /* STPPromise.m */; };
 		BF_819923078927 /* STPShippingAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_744666232521 /* STPShippingAddressViewController.m */; };
-		BF_819964916964 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_104204687231 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
 		BF_822557121935 /* STPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_218958582687 /* STPTheme.m */; };
 		BF_831697474059 /* libPINCache-Core-ios-11.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_683369487726 /* libPINCache-Core-ios-11.3.a */; };
 		BF_834502484694 /* stp_card_visa@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_464213115625 /* stp_card_visa@2x.png */; };
@@ -436,9 +439,6 @@
 		BF_842714463720 /* STPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_207298251625 /* STPAddress.m */; };
 		BF_843119778099 /* STPPaymentCardTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_786851096829 /* STPPaymentCardTextFieldCell.m */; };
 		BF_843248890798 /* stp_card_form_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_435082555494 /* stp_card_form_back@3x.png */; };
-		BF_843414962686 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_301553387360 /* InfoPlist.strings */; };
-		BF_848398523279 /* JerryExtension-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FR_494309947067 /* JerryExtension-Info.plist */; };
-		BF_848430953022 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_301553387360 /* InfoPlist.strings */; };
 		BF_849479514763 /* NSCharacterSet+Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_856763993418 /* NSCharacterSet+Stripe.m */; };
 		BF_851253922391 /* stp_card_cvc_amex.png in Resources */ = {isa = PBXBuildFile; fileRef = FR_648806668237 /* stp_card_cvc_amex.png */; };
 		BF_854999455782 /* PINCache.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_201151680337-1" /* PINCache.m */; };
@@ -496,8 +496,8 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = P_4793904575952 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = NT_182019143783;
-			remoteInfo = "jerry-extension";
+			remoteGlobalIDString = NT_910389829219;
+			remoteInfo = "strings-extension";
 		};
 		CIP_58354672782 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -524,7 +524,7 @@
 			files = (
 				BF_389902562892 /* share-extension.appex in CopyFiles */,
 				BF_803562003601 /* siri-extension.appex in CopyFiles */,
-				BF_622572157430 /* jerry-extension.appex in CopyFiles */,
+				BF_309045885116 /* strings-extension.appex in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,7 +550,7 @@
 		FR_119347389557 /* stp_card_unionpay_en@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_unionpay_en@3x.png"; sourceTree = "<group>"; };
 		FR_119347408405 /* stp_card_unionpay_en@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_unionpay_en@2x.png"; sourceTree = "<group>"; };
 		FR_123089320494 /* STPPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentMethod.h; sourceTree = "<group>"; };
-		FR_124077148523 /* jerry-ext-bin.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; name = "jerry-ext-bin.a"; path = "libjerry-ext-bin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_125791735798 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		FR_127100525052 /* stp_card_unionpay_zh@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_unionpay_zh@3x.png"; sourceTree = "<group>"; };
 		FR_127100545188 /* stp_card_unionpay_zh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_unionpay_zh@2x.png"; sourceTree = "<group>"; };
 		FR_135608655768 /* STPBankAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPBankAccount.h; sourceTree = "<group>"; };
@@ -601,7 +601,6 @@
 		"FR_180708382140-1" /* STPCustomer+SourceTuple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STPCustomer+SourceTuple.h"; sourceTree = "<group>"; };
 		FR_181346025846 /* STPPostalCodeValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPPostalCodeValidator.m; sourceTree = "<group>"; };
 		"FR_181346025846-1" /* STPPostalCodeValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPostalCodeValidator.h; sourceTree = "<group>"; };
-		FR_182019143783 /* jerry-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "jerry-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_190239098214 /* STPShippingMethodsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPShippingMethodsViewController.m; sourceTree = "<group>"; };
 		FR_190239098217 /* STPShippingMethodsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPShippingMethodsViewController.h; sourceTree = "<group>"; };
 		FR_192292988800 /* PINCacheMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PINCacheMacros.h; sourceTree = "<group>"; };
@@ -662,7 +661,6 @@
 		FR_290482945381 /* STPAddCardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPAddCardViewController.h; sourceTree = "<group>"; };
 		FR_296053825144 /* STPPaymentActivityIndicatorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentActivityIndicatorView.h; sourceTree = "<group>"; };
 		FR_301377298368 /* STPPaymentConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentConfiguration.h; sourceTree = "<group>"; };
-		FR_301553387360 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FR_302600842104 /* STPPaymentContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentContext.h; sourceTree = "<group>"; };
 		FR_303088826339 /* STPPaymentMethodsInternalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPPaymentMethodsInternalViewController.m; sourceTree = "<group>"; };
 		FR_303088832029 /* STPPaymentMethodsInternalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentMethodsInternalViewController.h; sourceTree = "<group>"; };
@@ -768,14 +766,12 @@
 		FR_446151064510 /* stp_icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stp_icon_add.png; sourceTree = "<group>"; };
 		FR_447194245190 /* Tests2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests2.m; sourceTree = "<group>"; };
 		FR_448345672017 /* FABKitProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FABKitProtocol.h; sourceTree = "<group>"; };
-		FR_448911078734 /* libjerry-ext-bin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libjerry-ext-bin.a"; sourceTree = "<group>"; };
 		FR_451065136063 /* UIViewController+Stripe_NavigationItemProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Stripe_NavigationItemProxy.m"; sourceTree = "<group>"; };
 		"FR_451065136063-1" /* UIViewController+Stripe_NavigationItemProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Stripe_NavigationItemProxy.h"; sourceTree = "<group>"; };
 		FR_454126136560 /* STPAPIResponseDecodable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPAPIResponseDecodable.h; sourceTree = "<group>"; };
 		FR_454291026560 /* STPPaymentConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPPaymentConfiguration.m; sourceTree = "<group>"; };
 		FR_454823234837 /* NoArc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoArc.m; sourceTree = "<group>"; };
 		FR_454974753213 /* stp_icon_checkmark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_icon_checkmark@3x.png"; sourceTree = "<group>"; };
-		FR_457618828220 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		FR_458081448840 /* stp_card_unknown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stp_card_unknown.png; sourceTree = "<group>"; };
 		FR_458863902474 /* STPSourceVerification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPSourceVerification.h; sourceTree = "<group>"; };
 		FR_458974510861 /* stp_card_applepay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_applepay@2x.png"; sourceTree = "<group>"; };
@@ -803,7 +799,6 @@
 		FR_490229470460 /* NSURLComponents+Stripe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURLComponents+Stripe.h"; sourceTree = "<group>"; };
 		"FR_490229470460-1" /* NSURLComponents+Stripe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURLComponents+Stripe.m"; sourceTree = "<group>"; };
 		FR_493781913276 /* STPColorUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPColorUtils.h; sourceTree = "<group>"; };
-		FR_494309947067 /* JerryExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JerryExtension-Info.plist"; sourceTree = "<group>"; };
 		FR_494783133802 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "zh-Hans"; path = "zh-Hans.lproj/AppIntentVocabulary.plist"; sourceTree = "<group>"; };
 		FR_498036443375 /* stp_card_jcb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_jcb@2x.png"; sourceTree = "<group>"; };
 		FR_499280427849 /* stp_card_diners@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_diners@2x.png"; sourceTree = "<group>"; };
@@ -848,8 +843,6 @@
 		FR_553085332782 /* STPCardValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPCardValidator.h; sourceTree = "<group>"; };
 		FR_554896677909 /* stp_card_jcb@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_jcb@3x.png"; sourceTree = "<group>"; };
 		FR_555038450084 /* STPCardParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPCardParams.h; sourceTree = "<group>"; };
-		FR_560907325124 /* AppJerry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppJerry.h; sourceTree = "<group>"; };
-		"FR_560907325124-1" /* AppJerry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppJerry.m; sourceTree = "<group>"; };
 		FR_560961278475 /* STPPromise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPromise.h; sourceTree = "<group>"; };
 		FR_563291007487 /* STPCoreViewController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STPCoreViewController+Private.h"; sourceTree = "<group>"; };
 		FR_564276906433 /* STPPaymentCardTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentCardTextField.h; sourceTree = "<group>"; };
@@ -858,6 +851,7 @@
 		FR_573665251373 /* STPImageLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPImageLibrary.h; sourceTree = "<group>"; };
 		FR_573822806939 /* STPColorUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPColorUtils.m; sourceTree = "<group>"; };
 		"FR_573822806939-1" /* STPColorUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPColorUtils.h; sourceTree = "<group>"; };
+		FR_575999326641 /* StringsExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StringsExtension-Info.plist"; sourceTree = "<group>"; };
 		FR_577405838685 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSymbolUtilities.framework; path = Vendor/GoogleSymbolUtilities/Frameworks/frameworks/GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
 		FR_578888125127 /* libPINOperation-ios-11.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPINOperation-ios-11.3.a"; sourceTree = "<group>"; };
 		FR_581387210768 /* stp_card_form_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stp_card_form_back.png; sourceTree = "<group>"; };
@@ -913,6 +907,7 @@
 		FR_661294188967 /* STPShippingAddressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPShippingAddressViewController.h; sourceTree = "<group>"; };
 		FR_661735356868 /* STPPaymentContextAmountModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentContextAmountModel.h; sourceTree = "<group>"; };
 		FR_662890025590 /* STPCustomerContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPCustomerContext.h; sourceTree = "<group>"; };
+		FR_666369934619 /* libstrings-ext-bin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libstrings-ext-bin.a"; sourceTree = "<group>"; };
 		FR_669064331373 /* STPShippingMethodsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPShippingMethodsViewController.h; sourceTree = "<group>"; };
 		FR_670019473135 /* STPAddCardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPAddCardViewController.m; sourceTree = "<group>"; };
 		FR_670697261324 /* STPBINRange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPBINRange.m; sourceTree = "<group>"; };
@@ -949,6 +944,8 @@
 		FR_714908972385 /* Stripe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stripe.h; sourceTree = "<group>"; };
 		FR_716273040248 /* STPCardValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPCardValidator.m; sourceTree = "<group>"; };
 		FR_719224241995 /* stp_card_mastercard_template.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stp_card_mastercard_template.png; sourceTree = "<group>"; };
+		FR_720345196462 /* AppJerry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppJerry.h; sourceTree = "<group>"; };
+		"FR_720345196462-1" /* AppJerry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppJerry.m; sourceTree = "<group>"; };
 		FR_720396073744 /* stp_shipping_form.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stp_shipping_form.png; sourceTree = "<group>"; };
 		FR_720729207925 /* STPCardIOProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPCardIOProxy.h; sourceTree = "<group>"; };
 		FR_727895182634 /* STPCoreViewController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STPCoreViewController+Private.h"; sourceTree = "<group>"; };
@@ -968,6 +965,7 @@
 		FR_744571361438 /* STPAPIRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPAPIRequest.h; sourceTree = "<group>"; };
 		"FR_744571361438-1" /* STPAPIRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPAPIRequest.m; sourceTree = "<group>"; };
 		FR_744666232521 /* STPShippingAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPShippingAddressViewController.m; sourceTree = "<group>"; };
+		FR_745612128133 /* strings-ext-bin.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; name = "strings-ext-bin.a"; path = "libstrings-ext-bin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_746622612454 /* UINavigationController+Stripe_Completion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Stripe_Completion.h"; sourceTree = "<group>"; };
 		FR_746622613527 /* UINavigationController+Stripe_Completion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Stripe_Completion.m"; sourceTree = "<group>"; };
 		FR_747790741358 /* STPSourcePoller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPSourcePoller.h; sourceTree = "<group>"; };
@@ -991,6 +989,7 @@
 		FR_766928612639 /* stp_card_amex_template@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_amex_template@3x.png"; sourceTree = "<group>"; };
 		FR_767601579243 /* stp_card_form_front@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_form_front@2x.png"; sourceTree = "<group>"; };
 		FR_767601582739 /* stp_card_form_front@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_form_front@3x.png"; sourceTree = "<group>"; };
+		FR_770631286662 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		FR_770817608373 /* STPSourceRedirect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPSourceRedirect.m; sourceTree = "<group>"; };
 		FR_772386701230 /* Fabric.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fabric.h; sourceTree = "<group>"; };
 		FR_774763671036 /* STPSourceVerification+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STPSourceVerification+Private.h"; sourceTree = "<group>"; };
@@ -1008,6 +1007,7 @@
 		FR_786618818576 /* stp_card_diners@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_diners@3x.png"; sourceTree = "<group>"; };
 		FR_786851096828 /* STPPaymentCardTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentCardTextFieldCell.h; sourceTree = "<group>"; };
 		FR_786851096829 /* STPPaymentCardTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPPaymentCardTextFieldCell.m; sourceTree = "<group>"; };
+		FR_788950277856 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FR_790877768775 /* STPPaymentCardTextFieldViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPPaymentCardTextFieldViewModel.h; sourceTree = "<group>"; };
 		FR_791050653111 /* UIViewController+Stripe_NavigationItemProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Stripe_NavigationItemProxy.h"; sourceTree = "<group>"; };
 		FR_791168379253 /* stp_test_upload_image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stp_test_upload_image.jpeg; sourceTree = "<group>"; };
@@ -1024,12 +1024,12 @@
 		FR_809418927836 /* STPDelegateProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPDelegateProxy.h; sourceTree = "<group>"; };
 		FR_813294530495 /* Stripe-ios-9.0.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; name = "Stripe-ios-9.0.a"; path = "libStripe-ios-9.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_813949290948 /* STPCoreScrollViewController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STPCoreScrollViewController+Private.h"; sourceTree = "<group>"; };
-		FR_815267481851 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FR_819492685632 /* stp_card_mastercard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stp_card_mastercard.png; sourceTree = "<group>"; };
 		FR_820602908988 /* STPEmailAddressValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STPEmailAddressValidator.m; sourceTree = "<group>"; };
 		FR_820602908989 /* STPEmailAddressValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPEmailAddressValidator.h; sourceTree = "<group>"; };
 		FR_823402288931 /* STPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPAddress.h; sourceTree = "<group>"; };
 		FR_824435249884 /* Fabric.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fabric.h; sourceTree = "<group>"; };
+		FR_827262883523 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FR_828784758374 /* STPSourcePoller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPSourcePoller.h; sourceTree = "<group>"; };
 		FR_828800361135 /* STPSourceParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPSourceParams.h; sourceTree = "<group>"; };
 		FR_829657687624 /* NSMutableURLRequest+Stripe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Stripe.h"; sourceTree = "<group>"; };
@@ -1065,7 +1065,6 @@
 		"FR_866814615747-1" /* UIViewController+Stripe_ParentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Stripe_ParentViewController.h"; sourceTree = "<group>"; };
 		FR_867716578881 /* stp_card_discover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stp_card_discover@2x.png"; sourceTree = "<group>"; };
 		FR_870129501381 /* UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_870675892529 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		FR_871158067621 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = cs; path = cs.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
 		FR_871742726913 /* STPAPIClient+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STPAPIClient+Private.h"; sourceTree = "<group>"; };
 		FR_875549008649 /* ios-app-bin.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; name = "ios-app-bin.a"; path = "libios-app-bin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1090,6 +1089,7 @@
 		FR_904866835747 /* UIViewController+Stripe_Promises.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Stripe_Promises.m"; sourceTree = "<group>"; };
 		FR_904866835750 /* UIViewController+Stripe_Promises.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Stripe_Promises.h"; sourceTree = "<group>"; };
 		FR_905090839392 /* STPCoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPCoreViewController.h; sourceTree = "<group>"; };
+		FR_910389829219 /* strings-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "strings-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_911085306196 /* STPConnectAccountParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPConnectAccountParams.h; sourceTree = "<group>"; };
 		FR_912348913657 /* STPCoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPCoreViewController.h; sourceTree = "<group>"; };
 		FR_914453841196 /* ShareExtension-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShareExtension-Info.plist"; sourceTree = "<group>"; };
@@ -1103,14 +1103,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FBP_18201914378 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_561320329132 /* libjerry-ext-bin.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FBP_24378941017 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1192,6 +1184,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FBP_91038982921 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_722312868055 /* libstrings-ext-bin.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1246,6 +1246,15 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		G_1763201774618 /* StringsExtension */ = {
+			isa = PBXGroup;
+			children = (
+				G_4489656136222 /* Resources */,
+				G_4350420135899 /* Sources */,
+			);
+			path = StringsExtension;
+			sourceTree = "<group>";
+		};
 		G_1884487984427 /* HeaderLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -1273,8 +1282,8 @@
 				FR_147245088243 /* libUrlGetClasses-ios-9.0.a */,
 				FR_610748361952 /* libios-app-bin.a */,
 				FR_107900841834 /* libios-ext-bin.a */,
-				FR_448911078734 /* libjerry-ext-bin.a */,
 				FR_169594879022 /* libsiri-ext-bin.a */,
+				FR_666369934619 /* libstrings-ext-bin.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1533,11 +1542,11 @@
 			path = PINOperation;
 			sourceTree = "<group>";
 		};
-		G_4135819949501 /* Sources */ = {
+		G_4350420135899 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				FR_560907325124 /* AppJerry.h */,
-				"FR_560907325124-1" /* AppJerry.m */,
+				FR_720345196462 /* AppJerry.h */,
+				"FR_720345196462-1" /* AppJerry.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1554,15 +1563,24 @@
 			isa = PBXGroup;
 			children = (
 				G_1884487984427 /* HeaderLib */,
-				G_8159455465733 /* JerryExtension */,
 				G_4418938681710 /* ShareExtension */,
 				G_8746163756724 /* SiriExtension */,
+				G_1763201774618 /* StringsExtension */,
 				G_1032369705962 /* UnitTests */,
 				G_2699493850274 /* UrlGet */,
 				FR_221764191289 /* Diags.xcconfig */,
 				FR_838972687587 /* empty-main.m */,
 			);
 			path = "ios-app";
+			sourceTree = "<group>";
+		};
+		G_4489656136222 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				G_8945623286968 /* Localization */,
+				FR_575999326641 /* StringsExtension-Info.plist */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		G_4547529336777 /* Public */ = {
@@ -1782,14 +1800,6 @@
 			path = Stripe;
 			sourceTree = "<group>";
 		};
-		G_5840876818590 /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				VG_301553387360 /* InfoPlist.strings */,
-			);
-			path = Localization;
-			sourceTree = "<group>";
-		};
 		G_6159393876080 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1832,15 +1842,6 @@
 			path = PINOperation;
 			sourceTree = "<group>";
 		};
-		G_6875156755195 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				G_5840876818590 /* Localization */,
-				FR_494309947067 /* JerryExtension-Info.plist */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		G_7029414687469 /* pod_support */ = {
 			isa = PBXGroup;
 			children = (
@@ -1864,15 +1865,6 @@
 				FR_609723908966 /* SiriExtension-Info.plist */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		G_8159455465733 /* JerryExtension */ = {
-			isa = PBXGroup;
-			children = (
-				G_6875156755195 /* Resources */,
-				G_4135819949501 /* Sources */,
-			);
-			path = JerryExtension;
 			sourceTree = "<group>";
 		};
 		G_8448771205358 = {
@@ -1921,12 +1913,12 @@
 				FR_875549008649 /* ios-app-bin.a */,
 				FR_443002457585 /* ios-app.app */,
 				FR_637944311431 /* ios-ext-bin.a */,
-				FR_124077148523 /* jerry-ext-bin.a */,
-				FR_182019143783 /* jerry-extension.appex */,
 				FR_593532437987 /* share-extension-Bazel.appex */,
 				FR_243789410170 /* share-extension.appex */,
 				FR_253406074136 /* siri-ext-bin.a */,
 				FR_361814418977 /* siri-extension.appex */,
+				FR_745612128133 /* strings-ext-bin.a */,
+				FR_910389829219 /* strings-extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1997,6 +1989,14 @@
 				FR_480331574684 /* UINavigationBar+Stripe_Theme.h */,
 			);
 			path = PublicHeaders;
+			sourceTree = "<group>";
+		};
+		G_8945623286968 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				VG_827262883523 /* InfoPlist.strings */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		G_8972043729317 /* Images */ = {
@@ -2116,7 +2116,7 @@
 		};
 		LT_173102942353 /* GeneratedFiles */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (/Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/tools/bazelwrapper clean) || (/Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/retry.sh /Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/tools/bazelwrapper build --experimental_show_artifacts //ios-app:siri-extension_entitlements //ios-app:share-extension_entitlements //ios-app:jerry-extension_entitlements //ios-app:ios-app_entitlements //Vendor/PINOperation:PINOperation_module_map_module_map_file //Vendor/PINCache:PINCache_module_map_module_map_file //Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities_module_map_module_map_file //Vendor/GoogleNetworkingUtilities:GoogleNetworkingUtilities_module_map_module_map_file //Vendor/GoogleAuthUtilities:GoogleAuthUtilities_module_map_module_map_file //Vendor/GoogleAppIndexing:GoogleAppIndexing_module_map_module_map_file //UrlGet.xcodeproj/XCHammerAssets:ios-app-siri-extension_entitlements //UrlGet.xcodeproj/XCHammerAssets:ios-app-share-extension_entitlements //UrlGet.xcodeproj/XCHammerAssets:ios-app-ios-app_entitlements //UrlGet.xcodeproj/XCHammerAssets:ios-app-jerry-extension_entitlements)'";
+			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (/Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/tools/bazelwrapper clean) || (/Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/retry.sh /Users/mzuccarino/code/mikezucc/xchammer/sample/UrlGet/tools/bazelwrapper build --experimental_show_artifacts //ios-app:strings-extension_entitlements //ios-app:siri-extension_entitlements //ios-app:share-extension_entitlements //ios-app:ios-app_entitlements //Vendor/PINOperation:PINOperation_module_map_module_map_file //Vendor/PINCache:PINCache_module_map_module_map_file //Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities_module_map_module_map_file //Vendor/GoogleNetworkingUtilities:GoogleNetworkingUtilities_module_map_module_map_file //Vendor/GoogleAuthUtilities:GoogleAuthUtilities_module_map_module_map_file //Vendor/GoogleAppIndexing:GoogleAppIndexing_module_map_module_map_file //UrlGet.xcodeproj/XCHammerAssets:ios-app-siri-extension_entitlements //UrlGet.xcodeproj/XCHammerAssets:ios-app-share-extension_entitlements //UrlGet.xcodeproj/XCHammerAssets:ios-app-ios-app_entitlements //UrlGet.xcodeproj/XCHammerAssets:ios-app-strings-extension_entitlements)'";
 			buildConfigurationList = CL_173102942353 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
 			buildPhases = (
 				SBP_17310294235 /* Sources */,
@@ -2147,22 +2147,6 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		NT_124077148523 /* jerry-ext-bin */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CL_124077148523 /* Build configuration list for PBXNativeTarget "jerry-ext-bin" */;
-			buildPhases = (
-				SBP_12407714852 /* Sources */,
-				RBP_12407714852 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "jerry-ext-bin";
-			productName = "jerry-ext-bin";
-			productReference = FR_124077148523 /* jerry-ext-bin.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		NT_175704718595 /* UrlGetClasses-ios-9.0 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_175704718595 /* Build configuration list for PBXNativeTarget "UrlGetClasses-ios-9.0" */;
@@ -2194,23 +2178,6 @@
 			productName = "ios-app-Bazel";
 			productReference = FR_179453799913 /* ios-app-Bazel.app */;
 			productType = "com.apple.product-type.application";
-		};
-		NT_182019143783 /* jerry-extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CL_182019143783 /* Build configuration list for PBXNativeTarget "jerry-extension" */;
-			buildPhases = (
-				SBP_18201914378 /* Sources */,
-				RBP_18201914378 /* Resources */,
-				FBP_18201914378 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "jerry-extension";
-			productName = "jerry-extension";
-			productReference = FR_182019143783 /* jerry-extension.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 		NT_196722873933 /* Stripe-ios-11.3 */ = {
 			isa = PBXNativeTarget;
@@ -2309,7 +2276,7 @@
 			dependencies = (
 				TD_535733985110 /* PBXTargetDependency */,
 				TD_555833782667 /* PBXTargetDependency */,
-				TD_145132888624 /* PBXTargetDependency */,
+				TD_747346155877 /* PBXTargetDependency */,
 			);
 			name = "ios-app";
 			productName = "ios-app";
@@ -2458,6 +2425,22 @@
 			productReference = FR_707080851040 /* Stripe-Stripe_Bundle_Stripe-ios-11.3.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
+		NT_745612128133 /* strings-ext-bin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_745612128133 /* Build configuration list for PBXNativeTarget "strings-ext-bin" */;
+			buildPhases = (
+				SBP_74561212813 /* Sources */,
+				RBP_74561212813 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "strings-ext-bin";
+			productName = "strings-ext-bin";
+			productReference = FR_745612128133 /* strings-ext-bin.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		NT_756408111234 /* HeaderLib-ios-9.0 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_756408111234 /* Build configuration list for PBXNativeTarget "HeaderLib-ios-9.0" */;
@@ -2582,6 +2565,23 @@
 			productReference = FR_875549008649 /* ios-app-bin.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		NT_910389829219 /* strings-extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_910389829219 /* Build configuration list for PBXNativeTarget "strings-extension" */;
+			buildPhases = (
+				SBP_91038982921 /* Sources */,
+				RBP_91038982921 /* Resources */,
+				FBP_91038982921 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "strings-extension";
+			productName = "strings-extension";
+			productReference = FR_910389829219 /* strings-extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2590,16 +2590,10 @@
 			attributes = {
 				LastUpgradeCheck = 0930;
 				TargetAttributes = {
-					NT_124077148523 = {
-						ProvisioningStyle = manual;
-					};
 					NT_175704718595 = {
 						ProvisioningStyle = manual;
 					};
 					NT_179453799913 = {
-						ProvisioningStyle = manual;
-					};
-					NT_182019143783 = {
 						ProvisioningStyle = manual;
 					};
 					NT_196722873933 = {
@@ -2647,6 +2641,9 @@
 					NT_707080851040 = {
 						ProvisioningStyle = manual;
 					};
+					NT_745612128133 = {
+						ProvisioningStyle = manual;
+					};
 					NT_756408111234 = {
 						ProvisioningStyle = manual;
 					};
@@ -2669,6 +2666,9 @@
 						ProvisioningStyle = manual;
 					};
 					NT_875549008649 = {
+						ProvisioningStyle = manual;
+					};
+					NT_910389829219 = {
 						ProvisioningStyle = manual;
 					};
 				};
@@ -2720,40 +2720,23 @@
 				NT_179453799913 /* ios-app-Bazel */,
 				NT_875549008649 /* ios-app-bin */,
 				NT_637944311431 /* ios-ext-bin */,
-				NT_124077148523 /* jerry-ext-bin */,
-				NT_182019143783 /* jerry-extension */,
 				NT_243789410170 /* share-extension */,
 				NT_593532437987 /* share-extension-Bazel */,
 				NT_253406074136 /* siri-ext-bin */,
 				NT_361814418977 /* siri-extension */,
+				NT_745612128133 /* strings-ext-bin */,
+				NT_910389829219 /* strings-extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		RBP_12407714852 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_848430953022 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		RBP_17570471859 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BF_379613470386 /* GoogleAppIndexingResources.bundle in Resources */,
 				BF_625777932861 /* UrlGetViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		RBP_18201914378 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_843414962686 /* InfoPlist.strings in Resources */,
-				BF_693088923383 /* JerryExtension-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2795,9 +2778,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_529924854363 /* GoogleAppIndexingResources.bundle in Resources */,
-				BF_848398523279 /* JerryExtension-Info.plist in Resources */,
 				BF_128560851764 /* ShareExtension-Info.plist in Resources */,
 				BF_668909179812 /* SiriExtension-Info.plist in Resources */,
+				BF_372859359289 /* StringsExtension-Info.plist in Resources */,
 				BF_951074971939 /* UrlGet-Info.plist in Resources */,
 				BF_632167503271 /* UrlGetViewController.xib in Resources */,
 			);
@@ -3000,6 +2983,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		RBP_74561212813 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_360825627851 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		RBP_87012950138 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3013,6 +3004,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_234494727001 /* GoogleAppIndexingResources.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		RBP_91038982921 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_353317260207 /* InfoPlist.strings in Resources */,
+				BF_643237519141 /* StringsExtension-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3071,14 +3071,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		SBP_12407714852 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_368759417844 /* AppJerry.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		SBP_17310294235 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3102,14 +3094,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		SBP_18201914378 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_819964916964 /* Stub.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3346,6 +3330,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_74561212813 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_369875356536 /* AppJerry.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_75640811123 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3512,14 +3504,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_91038982921 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_486194470271 /* Stub.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		TD_145132888624 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_182019143783 /* jerry-extension */;
-			targetProxy = "CIP_44300245758-2" /* PBXContainerItemProxy */;
-		};
 		TD_535733985110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_243789410170 /* share-extension */;
@@ -3540,6 +3535,11 @@
 			target = NT_443002457585 /* ios-app */;
 			targetProxy = CIP_58354672782 /* PBXContainerItemProxy */;
 		};
+		TD_747346155877 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_910389829219 /* strings-extension */;
+			targetProxy = "CIP_44300245758-2" /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -3551,17 +3551,6 @@
 				FR_494783133802 /* zh-Hans */,
 			);
 			name = AppIntentVocabulary.plist;
-			sourceTree = "<group>";
-		};
-		VG_301553387360 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FR_301553387360 /* Base */,
-				FR_815267481851 /* cs */,
-				FR_457618828220 /* en-GB */,
-				FR_870675892529 /* zh-Hant */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		VG_549793573278 /* Localizable.strings */ = {
@@ -3578,6 +3567,17 @@
 				FR_776344734580 /* zh-Hans */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		VG_827262883523 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FR_827262883523 /* Base */,
+				FR_788950277856 /* cs */,
+				FR_125791735798 /* en-GB */,
+				FR_770631286662 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -3792,38 +3792,6 @@
 					Foundation,
 					"-weak_framework",
 					UIKit,
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TULSI_WR = $SOURCE_ROOT;
-				USE_HEADERMAP = NO;
-			};
-			name = Debug;
-		};
-		BC_159329996982 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
-				CLANG_ENABLE_MODULES = NO;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CODE_SIGN_STYLE = manual;
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-D_FORTIFY_SOURCE=1",
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4949,6 +4917,48 @@
 			};
 			name = Release;
 		};
+		BC_422821497100 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/StringsExtension/Resources/StringsExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-D_FORTIFY_SOURCE=1",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
+					"-ObjC",
+					"-sectcreate",
+					__TEXT,
+					__entitlements,
+					"$(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-strings-extension_entitlements.entitlements",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGet.StringsExtension;
+				PRODUCT_NAME = "strings-extension";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
 		BC_430395197856 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
@@ -5263,7 +5273,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
-				XCHAMMER_DEPS_HASH = "version:0.1.7:-8473842487065668034-1537481146-5003061736987530029-390533949451143316313908610728580882113281163160542124800-2228606524981042457-8742693117245690758-1537476040-666111654822239088-1537476040-689712657248687846829074163902571322396278295626662351341-2626311190415904923-8220394299430735609-848205287412479865-7989260170070047884-15374760407964233260437465531-7315060473208213662-15374760402506253069274818631050767898345806038-641936043688698666430576453881372195303063640766068516120-41538179474337742386374722415315892097-82397515401807903352616904902310998854-1198817581469908844-36098138363674446223659374292725667277-6145581409945031556-9491122994963957051236023912715738082-8640188960862850106655538682259426817-5396365198391674060-6944411394966634106-13354932680071789666048628499963014512-29835980521213810202327330699439257550-84860043461589761683973855870880942773-7037027415018862143360557621777643576-74743546315099427603946931962866781981-4033096085752626477-243567739455111951448569008498051097537654849263714863761-3153676371510550094658784597265149670233423825478050905059645432936803753104321288890129527346578166757383820315859645432936803957958234540657452832526578166757383822364343482489067929606526019629108967248926-7236451628659420411-52713803689258256105874044749057908540-1537476040-82935793621333967098091738737287316495-24906256297722267935215807742037225772-5656621702510990160-897414455782409771468943591654976078316881668035512326325353966058420992420-2263650544365863282-226365054437452235059114089404216901443597818447160785385287954445083372688753529732058630993039176440746505590191-6383679802501917264-66711988634858689132251412223089385180-1819710864076497660-13329635375452864736732404479720310212-140426299055237937278119000820901715835479200048025102809-41212799320032860561282519532391727281-137144657612567836619851504346547269566569168551233595949-21220209294831232943632972316564818412400302578160835789-902433587976499384-18197108631634640404956436316425211180805928446767235862654784857191994033381171071219097302314-2866620983180345553-3590727606572635947-55885302505308116263597818449791034878591140894028668393459114089401516777241587037301362313144210431520127303435668346890531594354175939921408888366183-3680283591925415706-8541337013526846941-2242878072073645662183749405582914245-7274686006380541694508067371762222596312801032173867417578985798789083720983-4202161092895152869-575286511831899290841216728073903563088618831412926224195645620850931045619357225786532362886804343195022405542524-38855181692692576446637561724678013005-224287807004468206-2257901425632751912970735921499989850-51912020885728585359143360305213034881-422875270180934981889494235253478339484496180869915976970-20407078503085061636322555219372279237974833166119393090-33018273507779216286133428808155420912-61271368785319032995767722004966034424-47114697935560995156243586993326364416-99077624179654376-712620711368000375-7288723744525280516-8553921798311893554210761480006943676878818305665984923071703661006427277057-6904570403681993912-15374760401755464309364312943-23314443749141391507325941422466297535-519770597385937275-8928615114325607656914909668490681259246572463829197465132153707909329342434-344677931328580572589880945785837199318061944023736615496211076234407182841-254699082990696193290891760074384379236779953081111327896-112603923680690345762110762236697645961806194402373661594-74996125440857759916779953081111327731416152674646777748017190627256944674646034086409752273750-153747604080053012144377728585838339743922510100583833974392251005572340465739238839397680366925008311850695429917665310025-23958590956128905697249639371895310586-6891338346720224301-86143188263156475347852119466168534136-5673742439910773876-16588538439281621653234192857290398870-8304905425395355725-1596460088433530626-8316377004599514437-83049054253953544404604750415501804467-8316377004599513152-1541163495668397492-8301449956874797629-5211733006286472034329752029311339967863890333067618503-6581560403632727199-6283534780113295205-533113332062405806-8551211679468785459-6949839392077997200-6445007950814995297-5822557612972898855-5822557612973686043-2536329804598649973-3034744668576306530-854856621041004067-64450700041002970544778979733151873194-7243333586285146422-67584646558321408713874301050447003723-777391826313672730090644442531916221821047653126212533932-7128117354473976278-4357478449263585881-51581266568669504637190440716111841517-27627610187460101701218803536432621002-88498333752229290867877956564326449158-18114671186637752785637063357011499587-6816594419247441316-472335823793700167-755605995536591848057144723262544131313381265717187726027-25573319889817079365103367079938147412-6457052047986066107-20031696272457995802584001436029579522-2564043186334740827-2554450031438243958-25725702582778379431549321101038512819749364998859121854066363801911850203596216023827140148782612410299201793184642805162941122491-874147814276973698519498264006806117-1297673377488256334-5618929415671352875-470991578592802387-1797161565442885945-497870399485846354130801818758795580528921457137830740698-5025505910325555987-71748147863451095983514581946839263154171089315380797051035819647606755869281858984029838206770-846915525716855438-5381778577690914331-8934713361162389792-7425182610629903075-3776942967643613935378506615099610750459882482813160979441492180332462387262812726556628449074162577179615724830915685640124890978076582712769546219024-1632946264362837076134708164214703351935864358425304314992320567596589946185496737379650954363190270423170265875767274402540587937100-5146300641224843879-420547763654339443070646241098826217956661393486720217708155681803991896742990721680993853538614492446827099433501-9150545133656132954-5784371068132079820-53778074123560498868477442263421133317-2325565609803830733-914262001139296435279779540754665037069704533714540884879029339242192110080-3888416660141790407-173214210445803384586343544299546678986306930438006995392499737177965022866-6212902320520456328-846424668119443393932171496564708118476291262662687955887-5757138779571961560-50627049829661797956638317134827282745499767966855736513924781346342729531777078429956863629646-7805102015281157501-15330391241138473898899913557904586433-64402537155341725708156133641060255206-5082245608491487341-5082316390694818926-55825443009127205-55860834144544550-208856916110695963954245601238017969255424555721527164993-5603778982163127565756789379832514345007126653012716882-2088569282305243924-4267217066399715596-3297213526801476837-72287346627108695427898178289881896867-15713231466135867757414923180058431144-2577376116295449141-2481772395022816309-762034084062431094163473859907043301057861193690199199060-31783558432733862107010984440183225364345623079905451400426611770956637352476449252379337893225-31467454224052098168598011772476578433-11659321574129463444663451176409096812-2919754145606491099-3571475855954180651125316086694770432224866402236771321-1323082589411256850535218274143547596541752328032481614477861619194807813960-40942889017251057954524024711420814040-178077607080898698-9157173701435248747829697380580983407-1261304270772289443440083696852240706576598277690791921-56073180957048620-56108572092465965-55967007550796585-56002398686213930-559316164153792401159149248022878214-55896225279961895-579202978221074974-8165058893617288468506713072125131344-6768638495793371300-60166145726317116267826963784751386498563906337829439133477819284789700417647206648093253773468-7129713383820693606727548983207182592-528637341713259779986041528545651693202553269516817023003-29033527890485952193939640614317340338-71563490991645083844889376863217236839-1537476040-2734903828164989554-4904300549154576140-72509058801099333023541741586727571566-1571974436101795153-8794830429588852570-6937927939398094993-153747604029318484432325853161092228348017813118-9172388575791882391-15374760401266669884985814400-8200195202873624183229642977192114489361685543880047028456873549916340109362603042038616278871-1537476040-5379949573569615966912474502863786525-1537476040764779775372864970-518762995561969027743083248053588588736024510140756371167-1300290581354301737-3757611446925466749-3021600819009237531-6990093571529791457-7631331722773599654-153747604133634660380252717118580589455731383345293687605984840774533090801874617451201565770061809255856-152599344783630600088048671706069230486477618845528781901-4303278975975260862-6869125066255877620-1795116698857636708537595140006656545183447978183663179233070196995010422122-2260647788846168689-4276896340267911842-5093359424358337413-345984647488585051361026930144828353346180215561669910556551393317151109392966791908317641768261028495299071691025-5780732881134893548134527046398695846-3814287260755625935096918605365204153-7616095980476685457-8624793976082427695-762233928808360361986069774157087971278212289478691851857-8369392565227583961-4257148888508944087001692845648613347-7555618079386075475-1814084458839648689-458267045786218290870094035312237201463124140430442589262-530619228265943108629943314194428907141562781342664298645375274006423132735-4956869912925519438593750632552763106336877924640079665802878766677142073501-8108777575804407231-5862817283401373821-575278887408637931450910306309145424788302369421641284453-7736040194202602941-3796704030168022526546838735880137363730170009563457730176922357904540159962-27149324200064027816053478684044016953-30887438693051688169115537400476924075-2734079538358622208-6918111226815082953-63872804354060092907275601901389325593-3822397865959401300502150765037680942-3818795253849093167-1968538031453718676-7359138630317540396-41511320589780839416537612002480391824-2581517825770038465-5836712311632587931-861476900341284211435718035068128535703741949137153716471305851921115033558-2301224456156565457-3700722707174462586173131485585321968-3957735361494639117-32648924197697444676207454418362117841-8834750551330569143-6482263251241233110550660400743960253-3937558125733917265-525797115407159479595356153041763620954081652038163760740485113732020886321878952005039091038-189187649126344693956937745143203898747883131626417694334714343325152078222030441114771750442258730795857284416713-46298452223734004662489406388980622604897650008303623460583261357079234389864371039499188078450-7985176282021350539-890594783483320423-8816495203601786030383083241890657624-8467928135676887902-1182689963897618409-5305895700570765760350688504586783163160638381046221406112330474776361537010-3129426597234946883934091105261587069961604695282962294459311697083225391-748735994897278855212333522912235066444099288540304578940-193023047173334913872872067965633381-775554138942294136844832231524437519178387777382356336830-1173462493705284015-5238425108396792350845240672416248117-75156898191612145463106855320600802427-7102346195876436083150003197670960185-1637328811256441964-3191678382061182300-2056383879666190270-7777796771682812237-14733490073593136428426526313124199139-6029044304684587995-341728503182768951635064590586628011913001067921454263912-35568568602698638015376539208261076021-8245062055692356865-2695971652034484750-147285141128344929231085066872049790537664479723188189675-672835058043888047541085979732964236376905581916387248911511800355713375338-190055137013545524286694457905124665362517681924335866271221718267727648696981776229530828447857002148616488368111438043691472252773-6973879806883819223-2318495357070552133885094149765079928949587209598492904-823695205232324994788224795350357706595725972713151602414-1537476040-4282099880787881025-9171748585296769620-5812985619133817607498785970547946593-6304122209670633013-1537476040-9196271956823179998776641742361938448-1537476040-6305976185429586516-332084195985421586-29040514185457191753329807709223814955-1104674858844269173-443624406853804817961952217007984133733360443657687161672-1552770175832015219-2465043645589324398-5255166164085454922-3486169254838316993-6598257045345228369500940627287546339631705530474407094895454026848949774782-5853136935096940610-2220688794442484668-80949220357653761924019696695274145206247059493270671956-8787409614002043291-4391953139238982493-7212782120134123350-3922278094170257434-2220688797126839233-5853136935097595975-2853441943191652449-87874096140018794466247059493270999641-8094922035765785842401969680264832765-7212782120133795665-439195313923898253818681269941245009934360629372886019461-2852830940620771924-57112263820392169308388557522945962171-17346859814894800776993326174504640453-6746329307664744102914749700877272964952494689013961761426283777320529700576-43072065535878048367342838742683428147-79632797486494985245908846389289709627-1805965220689450135-10175480332466088325565263540779848302-23808777008435629393109199356115250281-8850153881366543552-3068092809907961237-7873279769986162878-9111246709732985434-5411644834275607747276206406271991234991491170128507464771964137342088464537-2908296587454973080-68289086375567958333983780147711899846856041890335606977342084323259623387216949897300388424694-24585924356012015275503927230035427671-1682818238516063202689917900453681047-1458259685724693877-58510737164393033353120323744192597395-5813614699652547181460656435098093041224287028150208614-471846293253547837168925594414143606833673498024669184408-6902622699175212698-42713044631355577342382045047118316904-4909689809672103288-40585318861775968922612475962540246376-3501070213660205477-6081263340704220386-1218616241508652686-8403492651119182152-699834981312483023931084185431015817934032622170221434103-7549334420222889182-378378394307740071658269213969799378122515499195894055030-15374760408230475588994969588-241626271546556351669257064440429584144258994655471386336-5896422611027131982-6606450628573090596-5759697908174136608-35367615644010952344646299206506073514222741870315408912438128256324304255113094250145045337679-83522355493308117411413461386407024051-7977203383812669281-7068401052501839007-8734281439813677633-5894116888770946645-2331854564413923931-18874210198127865207771364053422041894-50141204301461207497913699937702783707-59484249008404918543188280677168897176-48342453567399306025819394548853393103-8820857979107049471-8307632356464343371-9401985661379981517218497335565279082-8461253180509702746894831502314437699086341317065234986176889164589538297877-8723995406746172646-86051054813611769668618982277117395785-9071862009417017167-80827946796069550918111820904769276742-3940921787535932942-3418610985781711067-5163578102766911807-4901533933803695986-3156566816818495246985191163501953735-3805137622202046267-2386337454380775001-6821539016493956325-5862051654627549400-6509340292102773505-5585534171345902525-4627792047763159032-3678877618572717121-380350331905304659944360711329995767504844325431715992525105917377327235702071603965396391648818653281089046424772-4154856040537513212-4572201187776714781-7460831994075743370-4073542884633883110-5087440323333254985-6334987661853195220-3878338557255866337-48021446780127373178874954504598862821-7006660837750983805-5018119404064567660-109484576773358706613601343034511545493094250145045337679-2320735395209062814-739640963000497757057618778981551435578012800193552761175-5306399489804795808-3097509426665355679217128463852469616788313909515564465435533849317861102172-4815530957473844621-5741680527920463253-5017027146168614310-4538324291269851531-6390136520858823059-49393636433711753222448491304728689257-3374716092869348769-64680088360053416145811055984065095262-5646301263029037982919333096537937998-4685441722156674733-3832158940269526432-7056507856780735396-8494315990011829804-42613723755019990727599580832716815961566171596469228770-59339840388585073686982286842607061392-8187815246271049387-561833121750202888576462350739257007109008131162228668665-8903556893007701306-738001375719130141121547534287426563-8490256423316899205-4311343889716905663-2413982301023387771-91874808276917112344827483420206552699174875857639703067527167926528784568961512432872478234617732655843719490430-4429065378995243687-18281409283635908625763418943888172747-20768951135332605078873980745877047568417091797995436955-3623792770550834324-71335380798479909242243540060595838417821290326421264689015071608974411348-19175843867117669224271391049427005024-36367952980625895775326188733261896435-80342788036677805281062169866366795112-1449294593069044388-6725343574498655754-3617050155975143892-70182352934314774044397221553342886022-7825098835662495383570158864536521053189321077799557917021635996809781594712-41203134232476445727349382668551553619-73800137571912689-4437555678701784967-7806835797742704788-17415861589087709152485817334632644735-2246962629282046549-2076895113533260754329220530438939977-812704701965941899-8391270515165303763-57188422081656953917059256685391148943-214542201402617444927167926528784570619201005883727497220-30350484420538348674690548871100037497-39519136424907672995849255319224190979-4350845199414797880-6770444019469066726-22647890199731617347856175917192735477-244300490563447667388043443693448537576349272358821568055-7133538069110572679-2116524801590351257-4129360994491637459-2406878139638086923-50574535347763027883725386103422952117-6606062086576074229-3060948633229337761-78304655980990478772169292694389348210-27014948547497894873706235376393639206-8765030008941914385296058755524994419-8034278803667780363-408279055023638268013218293569984834559201005883727497220-1323801672220005825984320194666510853-3930240172579484320-28949798065104455247326594773412675856-8965782736173724005-1790696023029691486-1248564546589389749-66907447676162726432183860160709575690-1878230637187037878-4696779300135016099852225297646133604-1929714896014728690-605388118916313852740071391646428682948655073216253617062-3746472641145228684-8567920162698772203-8683984971074641134143338958731757550327077859600439401084007139167327222859-3746472641145228669-768061694271072733286550732162536170526483636398832934938-8895418190159185950-7089795325586559829-6828854797510195142-1466675174200336369-34181174704385567038076008369706722444-32227963820930298767766756038758038191-83013956408474573558218836515529944661209850004947409972855347155816188863504895433216809267160-8683984971074641134-1261926750710890924157801205260994822098500052158454293424202104962945770755347155816188863406104277019839509043-39378539847515720405361848198642421857-2486233477922970107-2403982024974840053-7545709383095297575-4181262871707013297-4743902710763029998153780604384546155-48816242609936975676770704141747301322-4990415325230236548-49529185914419233666653695955892070159-656730546770198192705884332234794528775616539398580009-86726399203546052658131532148159738345-5390914570818143915-8521628537669495763-8511206813611740493-18323849227671412393809009575042587278-7021139909883180698-64886594245514796264001941227546723030-879316197977714782539900788767058486762315509761361707222142735786132963948-786772646939776813222448230869246977079192153239783657203-5625381048197754402-19703607487266499381166194074727831523772707940555682179-1452374135488047467-6096958767615286894636797673177947237-32179302573059147306590750093607392065-9182321291799331689194211454389777431633492366070554720923983815571346778172-3572668871465356414-6493770306557789307965068509766316080-4750522143772391545529784307579825090123196827457838157811905720546140124481-48056500676900065032870345719612304194-5536000956888526745-65862750659324993618745094870401652089-844667068764220987887923253107102056582857013216746045152069879396369644698489328441250916416658649715289384634-42799046772760425545895865341776517979-4248840277500115555-4924845183912142932-831663154918195311-514485683308333321-4232287667641463179-90761268866251858876299879971231137342-8204205066769705916-259310459352510902725336127084534533028715743675281347747-10502598001718404612864635111175816252-3504931041948050369-1520756311810104397-58572239697320275874745273363038473522-1931834000199887563-46385329496051204251100472939212180362-6815040101744084349-86975513214494251077982144795103675032-5751138600613056700-451369677854040977725556921890765811903390954399404486537-53676077256890545055971697923695251914-39475952425084067045325896478626066996238359048352286422-66762402647502642973405518101840420522-8450727807960721692399922081223888492488037632346565065-7360920501492573276-3340376692029257838-6932644245945231586-3725987573540650640-297100485149267853878851063499686019457993790354148380510-140946096598215807-593155483297652491141615178436723453462224386605285684571063781937808792672-36131826745894577218565760706882267377168492837685395929883037756344393903995930774910010637662637973771029605736345313934436380915797165914816516860396755460663304019279241700363200128898489105013595961317081-482034711917157552742124297917633253801429672798583047994765028108242030734-6185361174088072112-684129840805457611035744285794035558194331711412153012674-39232619670152441147753970665500016823-91018048155898130565290390226973463714-387701809258320936991779714542117927607060516638171529558-1998393256587269737-8242197003348318842-60260155350948473451691449254950642901-5347007072306521819-4580741741685593698-75003057292822068116241755574927062180-2304242856566738100-50389160451796624188561239934615136734-4720397464744429504649953120963679545428016241014414087004320296267236311425-6198552897944831690-7155426633672612162-9136395549303478816-846527424213593507063402388639046458082384687416615563386-969623466207234439-6350994620449891329743438346080433852084036457750547647235409423100462506248749220069158785006771983032447089208904191850927568999385-30544296600601846972923049675721616030-8332444105727320130-8727617102784681755469676965462024961-7478085846660880488522620662872071903228297968489736526722111547681784584178-76053302803343894244723284766101090366608919509580932301-79066357373480282611063782768973731412172443970151416286825030886316600651482659311998231205586349553376129609796-69713199818566089726406468869274811822-1732254364865997554-6104343279093292704-602755733510388172-468297091346866055646432338200995024743004549650532136738-2247878778987252689124188531031234040645126037529444815147163904224730678911-8311678561343315495-425997074531723909466789887325078885201667889204856734220-19033149951009591226650909420480346468-1321024580239148794-873166975321204200491396925988171551862262375852188489583-177654723318061285-2325878903348830040-26870009685614059486821056597368099778850769660154802888879877081767479763-9839645660856584484311780001916232582-8507076631081871754-840301620592165477369781956346527422453800908694327293121-41299969743539032721446426419412806368-1715139924414912780-30254516002515663997216092533499726483-39174167633755647388529533433425632422-5360129265651203790-14590293389271706925709634970879672937-2166939787998615743-7910988462665650723-6071622698047367112-27370657341931085794285399742733873489-236023380049780072876946567451963802997226403872602724586-37369627618459697242254867244477414578-2458701987023923478-78493081190532529771242714691197614068-6806806937204737667-14560202208377420542599064586478974857-82597746265197662857118564917997445744-4815065188934800769-25927634727433431891935904276598642129-442655378625276730-60071282628749302267438460524996314039-72621076940676035384629423888225346138-3173208751174891330716197741322691627953518716602191883696239300418351871963-576086746294602220372669540675092063366691295380327060420784678197226556811304133063959771855-555495304951028728886593791118984565917109658029809125614-653134040275782397557244530164563628046836155456494637534-765542082701681192-5407029681682951651-11153548869843556075354227530804449471663395756374892003842438710409293381301314024034043970223-7908672190242522070-902140961093511670670880903573902291167997039506266725521-85853055765468501752413087668355033472598579915521369869-175024384416533544-8358502356988706162109348430979843483-8444183788760870903504924516979985911742071614398820666774083811067464613461898841793318494494-780570825629012766758306044679953722792701454673577791856-30330239905289183636229000227705321597222792185143707812-81075094658965605748688213209394731319-5968525785162653070-90176490745888689813408915926022728289-7899919827437698680-619435336707938644640752392262879792162811896568835407881-3162103900613354657-3623748570753732063-5541494679176074373-21442227773661179304041402725700084678-34238451907112128048692632944857180996-7303969957937301601-6712194242837566910-1501343192940295504-6518973261915126378-3856330561019103902-63589912223356726274913492429434039705-75377141768682934153569550581314318717-8110778868146919992-74974542683586821251427681379662758431-621924626579158934-7199937138051816074-3100555203250675777901720091097762298340637808819931157968992507917036410256-8433105929432080549-6570196209670628578-903925712009799277818258612859220104187314214201230622334356880673163810205-5410521161894707162-1504491986580647078-367498255353268300749505654579507400548051184306205989053-2581639449495778692153505654349363282742967871306706907526896476094481150211-6962111242932739071-5893307832034863450-22371029650278677537942435710264951091852735944775287727370427581749724331717275067089620872970689145473860930381-56021775492369328-6177795380184573808-5072505919702849896-34455766022234187321904242301881417759-4946317409618038955-9058668480376387247503207118026251940-1940967814517377954253092200999352037416727195814091996199161372645505399431662948111152578211471008798080416852638911346259534432217-1318352466143572142-7675567217871193575710619538625340490640652155548668582062627480089789296348837139375629569299169987290077522261-8538698435825990576-7907540119955873050-472419854599519334060704224239825061276994036545469708291-1993320240101744977-43411703481733627256033399705578552532-882272343455654323-1851884267665513183-15374760406230246366364580697-84561718801179021537686002673570695001302494714544680999-22867168126745469036190953376737240437-132037769601076588457407058343030172819051293304839427781-29591620633253790-776301875346978494887653100981724348683818714774732171588654002911926612484128085514444221827457011753517461414787955448314170039965-577866678332053977268056946665567885945000423109594358420-30509390441758234359020797856957300006295181312654243258340516393487255422-692368657619202605-85955931583003529976288030400018796343-47776200174645351764812586206581730250-32559690740026044511333710604824908554-121745006608660271282694024128516610181071723757575546898-7899571232758122523-7243452406292062485-834878039970631275648929110672720438621722126037464856283724061482760664745617860771578588380-5927107476141755495492131892461502986817737211744694507381477221860350425918-4544309966338137706-1426390754717510984-8831215943197651733-883268399880585246143831533558541817244113837111224582476-21941670889150741643530933762957584886-4541422012139078547535694687326875741490617149690016251548205612630214836842-432341639315889582947932161025465330143259807701051546444-2999010419541535130-6932051975474530339-4937913754424006835-5137934194408051544-81698524250246099273888271769002021238181258126807851111-22653445423862629736064587486631557696-103816961949657044-1516144345990665109-8339604594876112701-5725660295935222760-3264463962211624467-861097569579331249-3264463806076942602-861097621624225204-4474841487965788767-45614357084800857356420762245918551649-3948731218246647896867602953120278338373613832906958163181812580747629571567207978111552031114-79513203793198854394407837713705902994-11691719700612558074236957554566262803-90426240845845329484080336693474892858-3786599084416899028613031633750874222-6763330958955381922574004319349878343929501345928740797014948537067575510590140726358990155568758559722362527087-676333099365197789247472216913493645233498224391073175353-60273198488133436-4199407432093913424588686779054074003341369699857878763674792652699644696473069085076426814826-67767549194406877229036702694815845428-39176048280730235865543500090405319582-44880019968388811735425598571457695949-6359236837492697560-17023385397170434155905198203753363615-8012004719548351014108263382045442704632146131650384676911966217668624182062784096338331251368031226408387037798914863833869137842144202764126241524158614068071909008817857203780836289895898-83093510381607241817303255822218204605-11127437920254701092924538091648714926-161504228728083562511071345450689316561966205659619293247-11194983434557802281394135095016502102-7738812400490039209-93864927810760921957640328428445858016217566630565448839-45738053920436941532924533633136132781-11127432195316366047303251363705622460-830935327609116424654777529481349279495208929124105409869-72946077972415847111728330876301606778-7823105752294643674-819560337592343033731799538487029247317907471619714398844-3283007686385849661565159259755692275690206343425069746645239897485114478089-571822719519120056353680660835233030546871694469286612680-84601946424548682153171882890989080511-340445810574647168-539836770491915346272122499932383344751339603094759872486-9212650036895344330-87977622028430696927252297929066687998-8687728324160674262-909668507686965341868836017998182464858066517258572941939353277021266313990-27255208441537665838635209603383485142436441161134687842-7385144920863919676337018771023245621-2451119086977895259-44835139432445020606816056364410659947-608256506761169290279297396305404058081044367200405773518-653039299559285287084745608109033155006593755287104774918-5147036592784326916-8745875710721633497-85570214533222197404148967813060937423-8857570313014469847-8571323680829702839-85955931583003529524596276216501266213-23395963241709912934051418066154151329-17828703519370059972621109187189405826-883676023079153494-5599964818147236693-483750788046110501232984988081042764035670803544929244327-6937817553336341736-5553225659267598206-3479904237450658622-692368657619212850340516393487255467-21863765693633225087872954026778351126-305093904417582345079554483141805257303818714774725617938654002911925957119-86530613775418884001831318085891797571-29591620633253145-4299029351491267018-1858580608496044824-3996385597216527332-132037769869512044957407058343029763169051293315576846026-1084640404743261948-44222111970944010916190953376737240522-228671681267450593868911870682666373466189894009955671328-1426390754712268099-8832683998805857586-454430996365378314149213189246150299131773721174479936503-2483279335535082318-592710747614175541056178607715785986255114737764523143475-8044675878087251650648929110672720447121722126037464856183724061482760658296707290368289560164-834878039970631600-7899571232758127648-7243452407634239770-48799349913113026543199858574105202603-8508962383243660441071723757575552023-12174500660864388678269402412851671263-325596907400293213613337106048144227894812586206581740495-2429238691572185980688360179981824905089827719180646553726234881575392373549-9096685076868998053611671453526029134-86877283241606768274818534830438135326-92126500368953430457252297929066677753-87977622028430696474765256832112341327-44252609268076559913671768021656254843-62951142828894292757644433027879774760-3270084247219401554530451929607490825-396249613743472660-5785476239089457246-56663882500303393005209710604526434195-8748373975854394058-7595376999810755693-2543332513551927706-55644766493388165697728423414586960755-3457383830248761347647781661335025938299624682528254415464439793865972066434879000468736946901834797751972392673-655457267796051430612211713575678059645629055900849980331-67717477655049770874518528552715302640529954899591902475050269620002312325065497727208928958197903245135429151-7878736122739557692-759543079502647384324644429524450540994981704332570434420-59946220043068983652620365932188556673-6951947284611267949-5586805588842925361-29959486169392030062392121774600004646-3627342555446415746805905234240354363851782564339648287060401836621084258183567139584108127350-1333864458788395721-5785226859597804368-2440395246014623303-41803529190450307371114659190044575555-7691942648356320671-67716596151324126344512320265165947958955340666256809094793216102551775899-4323416393158897114-29990104195415325653259807701051546489-2250165439620431074535694687326875738990617149690003144298573071031258712767-45414220121390785922231845021287251161-2194167088915079289141525183268124189119765165363102953992937654772591564719-8738888692208923163-85570214533222402254148967813060938068-8857570313014142162-87458757107216335226593755287104775083-6530392995592853035-6082565067611693067792973963054042629310443672004057940032172032562185079406-48801809287874490157188902761761801729-80078437679272022192326273981863962873-44835139432445020701137932435019589136-738514492086392132-23158071030832778368635209592646066897-2725520844151145138353277021266969355806651725857556338443522311686396565058296691702407802512-552636316909359821176839922367561542-3180305247611639643-5950989422362496107698604599800224203040420776811748713832898293772107542130-5845425580935567583-8952158976334894470-937152761260279887-3412775290414548440-49804624385526404321632999417309897325761566876784364055761566876784364700-4218846984596643620-1291008392906921776-17918657622408065038192650570000785864-2878619633928271074-609022822337781247-673707521726731431564291219247831712278115535465215930697-280468393778038303736349455613091685513392126997261969911339212699726197636-5834651129625077705-2456003920658843873-61660305041397079245605042209534083722-7008370186240246828572206823245152555578849120714514242864302031547454364001-170238784245421586168224428524527662345722068232787069880-2842340458262600474151087921911438624964424832560359396834302031547454364046-6564319533728109888-1537483803-240513035645248364856050422095340632378733180307529819891783030881200381539656800674028312273305680244701765891015-2750060930334248103-1537476041";
+				XCHAMMER_DEPS_HASH = "version:0.1.7:-8473842487065668034-1537481146-5003061736987530029-390533949451143316313908610728580882113281163160542124800-2228606524981042457-8742693117245690758-1537476040-666111654822239088-1537476040-689712657248687846829074163902571322396278295626662351341-2626311190415904923-8220394299430735609-848205287412479865-7989260170070047884-15374760407964233260437465531-7315060473208213662-15374760402506253069274818631050767898345806038-641936043688698666430576453881372195303063640766068516120-41538179474337742386374722415315892097-82397515401807903352616904902310998854-1198817581469908844-36098138363674446223659374292725667277-6145581409945031556-9491122994963957051236023912715738082-8640188960862850106655538682259426817-5396365198391674060-6944411394966634106-13354932680071789666048628499963014512-29835980521213810202327330699439257550-84860043461589761683973855870880942773-7037027415018862143360557621777643576-74743546315099427603946931962866781981-4033096085752626477-243567739455111951448569008498051097537654849263714863761-3153676371510550094658784597265149670233423825478050905059645432936803753104321288890129527346578166757383820315859645432936803957958234540657452832526578166757383822364343482489067929606526019629108967248926-7236451628659420411-52713803689258256105874044749057908540-1537476040-82935793621333967098091738737287316495-24906256297722267935215807742037225772-5656621702510990160-897414455782409771468943591654976078316881668035512326325353966058420992420-2263650544365863282-226365054437452235059114089404216901443597818447160785385287954445083372688753529732058630993039176440746505590191-6383679802501917264-66711988634858689132251412223089385180-1819710864076497660-13329635375452864736732404479720310212-140426299055237937278119000820901715835479200048025102809-41212799320032860561282519532391727281-137144657612567836619851504346547269566569168551233595949-21220209294831232943632972316564818412400302578160835789-902433587976499384-18197108631634640404956436316425211180805928446767235862654784857191994033381171071219097302314-2866620983180345553-3590727606572635947-55885302505308116263597818449791034878591140894028668393459114089401516777241587037301362313144210431520127303435668346890531594354175939921408888366183-3680283591925415706-8541337013526846941-2242878072073645662183749405582914245-7274686006380541694508067371762222596312801032173867417578985798789083720983-4202161092895152869-575286511831899290841216728073903563088618831412926224195645620850931045619357225786532362886804343195022405542524-38855181692692576446637561724678013005-224287807004468206-2257901425632751912970735921499989850-51912020885728585359143360305213034881-422875270180934981889494235253478339484496180869915976970-20407078503085061636322555219372279237974833166119393090-33018273507779216286133428808155420912-61271368785319032995767722004966034424-47114697935560995156243586993326364416-99077624179654376-712620711368000375-7288723744525280516-8553921798311893554210761480006943676878818305665984923071703661006427277057-6904570403681993912-15374760401755464309364312943-23314443749141391507325941422466297535-519770597385937275-8928615114325607656914909668490681259246572463829197465132153707909329342434-344677931328580572589880945785837199318061944023736615496211076234407182841-254699082990696193290891760074384379236779953081111327896-112603923680690345762110762236697645961806194402373661594-74996125440857759916779953081111327731416152674646777748017190627256944674646034086409752273750-153747604080053012144377728585838339743922510100583833974392251005572340465739238839397680366925008311850695429917665310025-23958590956128905697249639371895310586-6891338346720224301-86143188263156475347852119466168534136-5673742439910773876-16588538439281621653234192857290398870-8304905425395355725-1596460088433530626-8316377004599514437-83049054253953544404604750415501804467-8316377004599513152-1541163495668397492-8301449956874797629-5211733006286472034329752029311339967863890333067618503-6581560403632727199-6283534780113295205-533113332062405806-8551211679468785459-6949839392077997200-6445007950814995297-5822557612972898855-5822557612973686043-2536329804598649973-3034744668576306530-854856621041004067-64450700041002970544778979733151873194-7243333586285146422-67584646558321408713874301050447003723-777391826313672730090644442531916221821047653126212533932-7128117354473976278-4357478449263585881-51581266568669504637190440716111841517-27627610187460101701218803536432621002-88498333752229290867877956564326449158-18114671186637752785637063357011499587-6816594419247441316-472335823793700167-755605995536591848057144723262544131313381265717187726027-25573319889817079365103367079938147412-6457052047986066107-20031696272457995802584001436029579522-2564043186334740827-2554450031438243958-25725702582778379431549321101038512819749364998859121854066363801911850203596216023827140148782612410299201793184642805162941122491-874147814276973698519498264006806117-1297673377488256334-5618929415671352875-470991578592802387-1797161565442885945-497870399485846354130801818758795580528921457137830740698-5025505910325555987-71748147863451095983514581946839263154171089315380797051035819647606755869281858984029838206770-846915525716855438-5381778577690914331-8934713361162389792-7425182610629903075-3776942967643613935378506615099610750459882482813160979441492180332462387262812726556628449074162577179615724830915685640124890978076582712769546219024-1632946264362837076134708164214703351935864358425304314992320567596589946185496737379650954363190270423170265875767274402540587937100-5146300641224843879-420547763654339443070646241098826217956661393486720217708155681803991896742990721680993853538614492446827099433501-9150545133656132954-5784371068132079820-53778074123560498868477442263421133317-2325565609803830733-914262001139296435279779540754665037069704533714540884879029339242192110080-3888416660141790407-173214210445803384586343544299546678986306930438006995392499737177965022866-6212902320520456328-846424668119443393932171496564708118476291262662687955887-5757138779571961560-50627049829661797956638317134827282745499767966855736513924781346342729531777078429956863629646-7805102015281157501-15330391241138473898899913557904586433-64402537155341725708156133641060255206-5082245608491487341-5082316390694818926-55825443009127205-55860834144544550-208856916110695963954245601238017969255424555721527164993-5603778982163127565756789379832514345007126653012716882-2088569282305243924-4267217066399715596-3297213526801476837-72287346627108695427898178289881896867-15713231466135867757414923180058431144-2577376116295449141-2481772395022816309-762034084062431094163473859907043301057861193690199199060-31783558432733862107010984440183225364345623079905451400426611770956637352476449252379337893225-31467454224052098168598011772476578433-11659321574129463444663451176409096812-2919754145606491099-3571475855954180651125316086694770432224866402236771321-1323082589411256850535218274143547596541752328032481614477861619194807813960-40942889017251057954524024711420814040-178077607080898698-9157173701435248747829697380580983407-1261304270772289443440083696852240706576598277690791921-56073180957048620-56108572092465965-55967007550796585-56002398686213930-559316164153792401159149248022878214-55896225279961895-579202978221074974-8165058893617288468506713072125131344-6768638495793371300-60166145726317116267826963784751386498563906337829439133477819284789700417647206648093253773468-7129713383820693606727548983207182592-528637341713259779986041528545651693202553269516817023003-29033527890485952193939640614317340338-71563490991645083844889376863217236839-1537476040-2734903828164989554-4904300549154576140-72509058801099333023541741586727571566-1571974436101795153-8794830429588852570-6937927939398094993-153747604029318484432325853161092228348017813118-9172388575791882391-15374760401266669884985814400-8200195202873624183229642977192114489361685543880047028456873549916340109362603042038616278871-1537476040-5379949573569615966912474502863786525-1537476040764779775372864970-518762995561969027743083248053588588736024510140756371167-1300290581354301737-3757611446925466749-3021600819009237531-6990093571529791457-7631331722773599654-153747604133634660380252717118580589455731383345293687605984840774533090801874617451201565770061809255856-152599344783630600088048671706069230486477618845528781901-4303278975975260862-6869125066255877620-1795116698857636708537595140006656545183447978183663179233070196995010422122-2260647788846168689-4276896340267911842-5093359424358337413-345984647488585051361026930144828353346180215561669910556551393317151109392966791908317641768261028495299071691025-5780732881134893548134527046398695846-3814287260755625935096918605365204153-7616095980476685457-8624793976082427695-762233928808360361986069774157087971278212289478691851857-8369392565227583961-4257148888508944087001692845648613347-7555618079386075475-1814084458839648689-458267045786218290870094035312237201463124140430442589262-530619228265943108629943314194428907141562781342664298645375274006423132735-4956869912925519438593750632552763106336877924640079665802878766677142073501-8108777575804407231-5862817283401373821-575278887408637931450910306309145424788302369421641284453-7736040194202602941-3796704030168022526546838735880137363730170009563457730176922357904540159962-27149324200064027816053478684044016953-30887438693051688169115537400476924075-2734079538358622208-6918111226815082953-63872804354060092907275601901389325593-3822397865959401300502150765037680942-3818795253849093167-1968538031453718676-7359138630317540396-41511320589780839416537612002480391824-2581517825770038465-5836712311632587931-861476900341284211435718035068128535703741949137153716471305851921115033558-2301224456156565457-3700722707174462586173131485585321968-3957735361494639117-32648924197697444676207454418362117841-8834750551330569143-6482263251241233110550660400743960253-3937558125733917265-525797115407159479595356153041763620954081652038163760740485113732020886321878952005039091038-189187649126344693956937745143203898747883131626417694334714343325152078222030441114771750442258730795857284416713-46298452223734004662489406388980622604897650008303623460583261357079234389864371039499188078450-7985176282021350539-890594783483320423-8816495203601786030383083241890657624-8467928135676887902-1182689963897618409-5305895700570765760350688504586783163160638381046221406112330474776361537010-3129426597234946883934091105261587069961604695282962294459311697083225391-748735994897278855212333522912235066444099288540304578940-193023047173334913872872067965633381-775554138942294136844832231524437519178387777382356336830-1173462493705284015-5238425108396792350845240672416248117-75156898191612145463106855320600802427-7102346195876436083150003197670960185-1637328811256441964-3191678382061182300-2056383879666190270-7777796771682812237-14733490073593136428426526313124199139-6029044304684587995-341728503182768951635064590586628011913001067921454263912-35568568602698638015376539208261076021-8245062055692356865-2695971652034484750-147285141128344929231085066872049790537664479723188189675-672835058043888047541085979732964236376905581916387248911511800355713375338-190055137013545524286694457905124665362517681924335866271221718267727648696981776229530828447857002148616488368111438043691472252773-6973879806883819223-2318495357070552133885094149765079928949587209598492904-823695205232324994788224795350357706595725972713151602414-1537476040-4282099880787881025-9171748585296769620-5812985619133817607498785970547946593-6304122209670633013-1537476040-9196271956823179998776641742361938448-1537476040-6305976185429586516-332084195985421586-29040514185457191753329807709223814955-1104674858844269173-443624406853804817961952217007984133733360443657687161672-1552770175832015219-2465043645589324398-5255166164085454922-3486169254838316993-6598257045345228369500940627287546339631705530474407094895454026848949774782-5853136935096940610-2220688794442484668-80949220357653761924019696695274145206247059493270671956-8787409614002043291-4391953139238982493-7212782120134123350-3922278094170257434-2220688797126839233-5853136935097595975-2853441943191652449-87874096140018794466247059493270999641-8094922035765785842401969680264832765-7212782120133795665-439195313923898253818681269941245009934360629372886019461-2852830940620771924-57112263820392169308388557522945962171-17346859814894800776993326174504640453-6746329307664744102914749700877272964952494689013961761426283777320529700576-43072065535878048367342838742683428147-79632797486494985245908846389289709627-1805965220689450135-10175480332466088325565263540779848302-23808777008435629393109199356115250281-8850153881366543552-3068092809907961237-7873279769986162878-9111246709732985434-5411644834275607747276206406271991234991491170128507464771964137342088464537-2908296587454973080-68289086375567958333983780147711899846856041890335606977342084323259623387216949897300388424694-24585924356012015275503927230035427671-1682818238516063202689917900453681047-1458259685724693877-58510737164393033353120323744192597395-5813614699652547181460656435098093041224287028150208614-471846293253547837168925594414143606833673498024669184408-6902622699175212698-42713044631355577342382045047118316904-4909689809672103288-40585318861775968922612475962540246376-3501070213660205477-6081263340704220386-1218616241508652686-8403492651119182152-699834981312483023931084185431015817934032622170221434103-7549334420222889182-378378394307740071658269213969799378122515499195894055030-15374760408230475588994969588-241626271546556351669257064440429584144258994655471386336-5896422611027131982-6606450628573090596-5759697908174136608-35367615644010952344646299206506073514222741870315408912438128256324304255113094250145045337679-83522355493308117411413461386407024051-7977203383812669281-7068401052501839007-8734281439813677633-5894116888770946645-2331854564413923931-18874210198127865207771364053422041894-50141204301461207497913699937702783707-59484249008404918543188280677168897176-48342453567399306025819394548853393103-8820857979107049471-8307632356464343371-9401985661379981517218497335565279082-8461253180509702746894831502314437699086341317065234986176889164589538297877-8723995406746172646-86051054813611769668618982277117395785-9071862009417017167-80827946796069550918111820904769276742-3940921787535932942-3418610985781711067-5163578102766911807-4901533933803695986-3156566816818495246985191163501953735-3805137622202046267-2386337454380775001-6821539016493956325-5862051654627549400-6509340292102773505-5585534171345902525-4627792047763159032-3678877618572717121-380350331905304659944360711329995767504844325431715992525105917377327235702071603965396391648818653281089046424772-4154856040537513212-4572201187776714781-7460831994075743370-4073542884633883110-5087440323333254985-6334987661853195220-3878338557255866337-48021446780127373178874954504598862821-7006660837750983805-5018119404064567660-109484576773358706613601343034511545493094250145045337679-2320735395209062814-739640963000497757057618778981551435578012800193552761175-5306399489804795808-3097509426665355679217128463852469616788313909515564465435533849317861102172-4815530957473844621-5741680527920463253-5017027146168614310-4538324291269851531-6390136520858823059-49393636433711753222448491304728689257-3374716092869348769-64680088360053416145811055984065095262-5646301263029037982919333096537937998-4685441722156674733-3832158940269526432-7056507856780735396-8494315990011829804-42613723755019990727599580832716815961566171596469228770-59339840388585073686982286842607061392-8187815246271049387-561833121750202888576462350739257007109008131162228668665-8903556893007701306-738001375719130141121547534287426563-8490256423316899205-4311343889716905663-2413982301023387771-91874808276917112344827483420206552699174875857639703067527167926528784568961512432872478234617732655843719490430-4429065378995243687-18281409283635908625763418943888172747-20768951135332605078873980745877047568417091797995436955-3623792770550834324-71335380798479909242243540060595838417821290326421264689015071608974411348-19175843867117669224271391049427005024-36367952980625895775326188733261896435-80342788036677805281062169866366795112-1449294593069044388-6725343574498655754-3617050155975143892-70182352934314774044397221553342886022-7825098835662495383570158864536521053189321077799557917021635996809781594712-41203134232476445727349382668551553619-73800137571912689-4437555678701784967-7806835797742704788-17415861589087709152485817334632644735-2246962629282046549-2076895113533260754329220530438939977-812704701965941899-8391270515165303763-57188422081656953917059256685391148943-214542201402617444927167926528784570619201005883727497220-30350484420538348674690548871100037497-39519136424907672995849255319224190979-4350845199414797880-6770444019469066726-22647890199731617347856175917192735477-244300490563447667388043443693448537576349272358821568055-7133538069110572679-2116524801590351257-4129360994491637459-2406878139638086923-50574535347763027883725386103422952117-6606062086576074229-3060948633229337761-78304655980990478772169292694389348210-27014948547497894873706235376393639206-8765030008941914385296058755524994419-8034278803667780363-408279055023638268013218293569984834559201005883727497220-1323801672220005825984320194666510853-3930240172579484320-28949798065104455247326594773412675856-8965782736173724005-1790696023029691486-1248564546589389749-66907447676162726432183860160709575690-1878230637187037878-4696779300135016099852225297646133604-1929714896014728690-605388118916313852740071391646428682948655073216253617062-3746472641145228684-8567920162698772203-8683984971074641134143338958731757550327077859600439401084007139167327222859-3746472641145228669-768061694271072733286550732162536170526483636398832934938-8895418190159185950-7089795325586559829-6828854797510195142-1466675174200336369-34181174704385567038076008369706722444-32227963820930298767766756038758038191-83013956408474573558218836515529944661209850004947409972855347155816188863504895433216809267160-8683984971074641134-1261926750710890924157801205260994822098500052158454293424202104962945770755347155816188863406104277019839509043-39378539847515720405361848198642421857-2486233477922970107-2403982024974840053-7545709383095297575-4181262871707013297-4743902710763029998153780604384546155-48816242609936975676770704141747301322-4990415325230236548-49529185914419233666653695955892070159-656730546770198192705884332234794528775616539398580009-86726399203546052658131532148159738345-5390914570818143915-8521628537669495763-8511206813611740493-18323849227671412393809009575042587278-7021139909883180698-64886594245514796264001941227546723030-879316197977714782539900788767058486762315509761361707222142735786132963948-786772646939776813222448230869246977079192153239783657203-5625381048197754402-19703607487266499381166194074727831523772707940555682179-1452374135488047467-6096958767615286894636797673177947237-32179302573059147306590750093607392065-9182321291799331689194211454389777431633492366070554720923983815571346778172-3572668871465356414-6493770306557789307965068509766316080-4750522143772391545529784307579825090123196827457838157811905720546140124481-48056500676900065032870345719612304194-5536000956888526745-65862750659324993618745094870401652089-844667068764220987887923253107102056582857013216746045152069879396369644698489328441250916416658649715289384634-42799046772760425545895865341776517979-4248840277500115555-4924845183912142932-831663154918195311-514485683308333321-4232287667641463179-90761268866251858876299879971231137342-8204205066769705916-259310459352510902725336127084534533028715743675281347747-10502598001718404612864635111175816252-3504931041948050369-1520756311810104397-58572239697320275874745273363038473522-1931834000199887563-46385329496051204251100472939212180362-6815040101744084349-86975513214494251077982144795103675032-5751138600613056700-451369677854040977725556921890765811903390954399404486537-53676077256890545055971697923695251914-39475952425084067045325896478626066996238359048352286422-66762402647502642973405518101840420522-8450727807960721692399922081223888492488037632346565065-7360920501492573276-3340376692029257838-6932644245945231586-3725987573540650640-297100485149267853878851063499686019457993790354148380510-140946096598215807-593155483297652491141615178436723453462224386605285684571063781937808792672-36131826745894577218565760706882267377168492837685395929883037756344393903995930774910010637662637973771029605736345313934436380915797165914816516860396755460663304019279241700363200128898489105013595961317081-482034711917157552742124297917633253801429672798583047994765028108242030734-6185361174088072112-684129840805457611035744285794035558194331711412153012674-39232619670152441147753970665500016823-91018048155898130565290390226973463714-387701809258320936991779714542117927607060516638171529558-1998393256587269737-8242197003348318842-60260155350948473451691449254950642901-5347007072306521819-4580741741685593698-75003057292822068116241755574927062180-2304242856566738100-50389160451796624188561239934615136734-4720397464744429504649953120963679545428016241014414087004320296267236311425-6198552897944831690-7155426633672612162-9136395549303478816-846527424213593507063402388639046458082384687416615563386-969623466207234439-6350994620449891329743438346080433852084036457750547647235409423100462506248749220069158785006771983032447089208904191850927568999385-30544296600601846972923049675721616030-8332444105727320130-8727617102784681755469676965462024961-7478085846660880488522620662872071903228297968489736526722111547681784584178-76053302803343894244723284766101090366608919509580932301-79066357373480282611063782768973731412172443970151416286825030886316600651482659311998231205586349553376129609796-69713199818566089726406468869274811822-1732254364865997554-6104343279093292704-602755733510388172-468297091346866055646432338200995024743004549650532136738-2247878778987252689124188531031234040645126037529444815147163904224730678911-8311678561343315495-425997074531723909466789887325078885201667889204856734220-19033149951009591226650909420480346468-1321024580239148794-873166975321204200491396925988171551862262375852188489583-177654723318061285-2325878903348830040-26870009685614059486821056597368099778850769660154802888879877081767479763-9839645660856584484311780001916232582-8507076631081871754-840301620592165477369781956346527422453800908694327293121-41299969743539032721446426419412806368-1715139924414912780-30254516002515663997216092533499726483-39174167633755647388529533433425632422-5360129265651203790-14590293389271706925709634970879672937-2166939787998615743-7910988462665650723-6071622698047367112-27370657341931085794285399742733873489-236023380049780072876946567451963802997226403872602724586-37369627618459697242254867244477414578-2458701987023923478-78493081190532529771242714691197614068-6806806937204737667-14560202208377420542599064586478974857-82597746265197662857118564917997445744-4815065188934800769-25927634727433431891935904276598642129-442655378625276730-60071282628749302267438460524996314039-72621076940676035384629423888225346138-3173208751174891330716197741322691627953518716602191883696239300418351871963-576086746294602220372669540675092063366691295380327060420784678197226556811304133063959771855-555495304951028728886593791118984565917109658029809125614-653134040275782397557244530164563628046836155456494637534-765542082701681192-5407029681682951651-11153548869843556075354227530804449471663395756374892003842438710409293381301314024034043970223-7908672190242522070-902140961093511670670880903573902291167997039506266725521-85853055765468501752413087668355033472598579915521369869-175024384416533544-8358502356988706162109348430979843483-8444183788760870903504924516979985911742071614398820666774083811067464613461898841793318494494-780570825629012766758306044679953722792701454673577791856-30330239905289183636229000227705321597222792185143707812-81075094658965605748688213209394731319-5968525785162653070-90176490745888689813408915926022728289-7899919827437698680-619435336707938644640752392262879792162811896568835407881-3162103900613354657-3623748570753732063-5541494679176074373-21442227773661179304041402725700084678-34238451907112128048692632944857180996-7303969957937301601-6712194242837566910-1501343192940295504-6518973261915126378-3856330561019103902-63589912223356726274913492429434039705-75377141768682934153569550581314318717-8110778868146919992-74974542683586821251427681379662758431-621924626579158934-7199937138051816074-3100555203250675777901720091097762298340637808819931157968992507917036410256-8433105929432080549-6570196209670628578-903925712009799277818258612859220104187314214201230622334356880673163810205-5410521161894707162-1504491986580647078-367498255353268300749505654579507400548051184306205989053-2581639449495778692153505654349363282742967871306706907526896476094481150211-6962111242932739071-5893307832034863450-22371029650278677537942435710264951091852735944775287727370427581749724331717275067089620872970689145473860930381-56021775492369328-6177795380184573808-5072505919702849896-34455766022234187321904242301881417759-4946317409618038955-9058668480376387247503207118026251940-1940967814517377954253092200999352037416727195814091996199161372645505399431662948111152578211471008798080416852638911346259534432217-1318352466143572142-7675567217871193575710619538625340490640652155548668582062627480089789296348837139375629569299169987290077522261-8538698435825990576-7907540119955873050-472419854599519334060704224239825061276994036545469708291-1993320240101744977-43411703481733627256033399705578552532-882272343455654323-1851884267665513183-15374760406230246366364580697-84561718801179021537686002673570695001302494714544680999-22867168126745469036190953376737240437-132037769601076588457407058343030172819051293304839427781-29591620633253790-776301875346978494887653100981724348683818714774732171588654002911926612484128085514444221827457011753517461414787955448314170039965-577866678332053977268056946665567885945000423109594358420-30509390441758234359020797856957300006295181312654243258340516393487255422-692368657619202605-85955931583003529976288030400018796343-47776200174645351764812586206581730250-32559690740026044511333710604824908554-121745006608660271282694024128516610181071723757575546898-7899571232758122523-7243452406292062485-834878039970631275648929110672720438621722126037464856283724061482760664745617860771578588380-5927107476141755495492131892461502986817737211744694507381477221860350425918-4544309966338137706-1426390754717510984-8831215943197651733-883268399880585246143831533558541817244113837111224582476-21941670889150741643530933762957584886-4541422012139078547535694687326875741490617149690016251548205612630214836842-432341639315889582947932161025465330143259807701051546444-2999010419541535130-6932051975474530339-4937913754424006835-5137934194408051544-81698524250246099273888271769002021238181258126807851111-22653445423862629736064587486631557696-103816961949657044-1516144345990665109-8339604594876112701-5725660295935222760-3264463962211624467-861097569579331249-3264463806076942602-861097621624225204-4474841487965788767-45614357084800857356420762245918551649-3948731218246647896867602953120278338373613832906958163181812580747629571567207978111552031114-79513203793198854394407837713705902994-11691719700612558074236957554566262803-90426240845845329484080336693474892858-3786599084416899028613031633750874222-6763330958955381922574004319349878343929501345928740797014948537067575510590140726358990155568758559722362527087-676333099365197789247472216913493645233498224391073175353-60273198488133436-4199407432093913424588686779054074003341369699857878763674792652699644696473069085076426814826-67767549194406877229036702694815845428-39176048280730235865543500090405319582-44880019968388811735425598571457695949-6359236837492697560-17023385397170434155905198203753363615-8012004719548351014108263382045442704632146131650384676911966217668624182062784096338331251368031226408387037798914863833869137842144202764126241524158614068071909008817857203780836289895898-83093510381607241817303255822218204605-11127437920254701092924538091648714926-161504228728083562511071345450689316561966205659619293247-11194983434557802281394135095016502102-7738812400490039209-93864927810760921957640328428445858016217566630565448839-45738053920436941532924533633136132781-11127432195316366047303251363705622460-830935327609116424654777529481349279495208929124105409869-72946077972415847111728330876301606778-7823105752294643674-819560337592343033731799538487029247317907471619714398844-3283007686385849661565159259755692275690206343425069746645239897485114478089-571822719519120056353680660835233030546871694469286612680-84601946424548682153171882890989080511-340445810574647168-539836770491915346272122499932383344751339603094759872486-9212650036895344330-87977622028430696927252297929066687998-8687728324160674262-909668507686965341868836017998182464858066517258572941939353277021266313990-27255208441537665838635209603383485142436441161134687842-7385144920863919676337018771023245621-2451119086977895259-44835139432445020606816056364410659947-608256506761169290279297396305404058081044367200405773518-653039299559285287084745608109033155006593755287104774918-5147036592784326916-8745875710721633497-85570214533222197404148967813060937423-8857570313014469847-8571323680829702839-85955931583003529524596276216501266213-23395963241709912934051418066154151329-17828703519370059972621109187189405826-883676023079153494-5599964818147236693-483750788046110501232984988081042764035670803544929244327-6937817553336341736-5553225659267598206-3479904237450658622-692368657619212850340516393487255467-21863765693633225087872954026778351126-305093904417582345079554483141805257303818714774725617938654002911925957119-86530613775418884001831318085891797571-29591620633253145-4299029351491267018-1858580608496044824-3996385597216527332-132037769869512044957407058343029763169051293315576846026-1084640404743261948-44222111970944010916190953376737240522-228671681267450593868911870682666373466189894009955671328-1426390754712268099-8832683998805857586-454430996365378314149213189246150299131773721174479936503-2483279335535082318-592710747614175541056178607715785986255114737764523143475-8044675878087251650648929110672720447121722126037464856183724061482760658296707290368289560164-834878039970631600-7899571232758127648-7243452407634239770-48799349913113026543199858574105202603-8508962383243660441071723757575552023-12174500660864388678269402412851671263-325596907400293213613337106048144227894812586206581740495-2429238691572185980688360179981824905089827719180646553726234881575392373549-9096685076868998053611671453526029134-86877283241606768274818534830438135326-92126500368953430457252297929066677753-87977622028430696474765256832112341327-44252609268076559913671768021656254843-62951142828894292757644433027879774760-3270084247219401554530451929607490825-396249613743472660-5785476239089457246-56663882500303393005209710604526434195-8748373975854394058-7595376999810755693-2543332513551927706-55644766493388165697728423414586960755-3457383830248761347647781661335025938299624682528254415464439793865972066434879000468736946901834797751972392673-655457267796051430612211713575678059645629055900849980331-67717477655049770874518528552715302640529954899591902475050269620002312325065497727208928958197903245135429151-7878736122739557692-759543079502647384324644429524450540994981704332570434420-59946220043068983652620365932188556673-6951947284611267949-5586805588842925361-29959486169392030062392121774600004646-3627342555446415746805905234240354363851782564339648287060401836621084258183567139584108127350-1333864458788395721-5785226859597804368-2440395246014623303-41803529190450307371114659190044575555-7691942648356320671-67716596151324126344512320265165947958955340666256809094793216102551775899-4323416393158897114-29990104195415325653259807701051546489-2250165439620431074535694687326875738990617149690003144298573071031258712767-45414220121390785922231845021287251161-2194167088915079289141525183268124189119765165363102953992937654772591564719-8738888692208923163-85570214533222402254148967813060938068-8857570313014142162-87458757107216335226593755287104775083-6530392995592853035-6082565067611693067792973963054042629310443672004057940032172032562185079406-48801809287874490157188902761761801729-80078437679272022192326273981863962873-44835139432445020701137932435019589136-738514492086392132-23158071030832778368635209592646066897-2725520844151145138353277021266969355806651725857556338443522311686396565058296691702407802512-4218846984596643620-1291008392906921776-17918657622408065038192650570000785864-2878619633928271074-609022822337781247-673707521726731431564291219247831712278115535465215930697-280468393778038303736349455613091685513392126997261969911339212699726197636-5834651129625077705-2456003920658843873-61660305041397079245605042209534083722-7008370186240246828572206823245152555578849120714514242864302031547454364001-170238784245421586168224428524527662345722068232787069880-2842340458262600474151087921911438624964424832560359396834302031547454364046-4603781772028137678-656199175170212247175880300949385371356518386342516593083245340184240491394857897795796862416292784905898370512802980756370415697890-3049890551978386054-2269995619271987017-320740058938474722139888020875434451483460055320682565709-7034447752918803581-7034447752918801016-6564319533728109888-1537823766-240513035645248364856050422095340632378733180307529819891783030881200381539656800674028312273305680244701765891015-2750060930334248103-1537476041";
 			};
 			name = Debug;
 		};
@@ -6117,6 +6127,38 @@
 			};
 			name = Release;
 		};
+		BC_680184608082 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-D_FORTIFY_SOURCE=1",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
 		BC_691299199769 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6255,11 +6297,12 @@
 			};
 			name = Release;
 		};
-		BC_723626945455 /* Release */ = {
+		BC_738764295197 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -6271,67 +6314,14 @@
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "$(SRCROOT)/ios-app/JerryExtension/Resources/JerryExtension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-D_FORTIFY_SOURCE=1",
 				);
-				OTHER_LDFLAGS = "-ObjC";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
-					"-ObjC",
-					"-sectcreate",
-					__TEXT,
-					__entitlements,
-					"$(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-jerry-extension_entitlements.entitlements",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGet.JerryExtension;
-				PRODUCT_NAME = "jerry-extension";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TULSI_WR = $SOURCE_ROOT;
-				USE_HEADERMAP = NO;
-			};
-			name = Release;
-		};
-		BC_729306355402 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CODE_SIGN_STYLE = manual;
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "$(SRCROOT)/ios-app/JerryExtension/Resources/JerryExtension-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-D_FORTIFY_SOURCE=1",
-				);
-				OTHER_LDFLAGS = "-ObjC";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
-					"-ObjC",
-					"-sectcreate",
-					__TEXT,
-					__entitlements,
-					"$(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-jerry-extension_entitlements.entitlements",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGet.JerryExtension;
-				PRODUCT_NAME = "jerry-extension";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TULSI_WR = $SOURCE_ROOT;
@@ -6699,6 +6689,48 @@
 			};
 			name = Release;
 		};
+		BC_832986511068 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/StringsExtension/Resources/StringsExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-D_FORTIFY_SOURCE=1",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
+					"-ObjC",
+					"-sectcreate",
+					__TEXT,
+					__entitlements,
+					"$(SRCROOT)/bazel-genfiles/UrlGet.xcodeproj/XCHammerAssets/ios-app-strings-extension_entitlements.entitlements",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Google.UrlGet.StringsExtension;
+				PRODUCT_NAME = "strings-extension";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
 		BC_834161284878 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6861,38 +6893,6 @@
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
-		};
-		BC_869417366540 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FR_221764191289 /* Diags.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
-				CLANG_ENABLE_MODULES = NO;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CODE_SIGN_STYLE = manual;
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-D_FORTIFY_SOURCE=1",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TULSI_WR = $SOURCE_ROOT;
-				USE_HEADERMAP = NO;
-			};
-			name = Release;
 		};
 		BC_881114754245 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -7088,15 +7088,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		CL_124077148523 /* Build configuration list for PBXNativeTarget "jerry-ext-bin" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC_159329996982 /* Debug */,
-				BC_869417366540 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
 		CL_173102942353 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -7120,15 +7111,6 @@
 			buildConfigurations = (
 				BC_366749234220 /* Debug */,
 				BC_677531963685 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
-		CL_182019143783 /* Build configuration list for PBXNativeTarget "jerry-extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC_729306355402 /* Debug */,
-				BC_723626945455 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
@@ -7286,6 +7268,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		CL_745612128133 /* Build configuration list for PBXNativeTarget "strings-ext-bin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_738764295197 /* Debug */,
+				BC_680184608082 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_756408111234 /* Build configuration list for PBXNativeTarget "HeaderLib-ios-9.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -7354,6 +7345,15 @@
 			buildConfigurations = (
 				BC_909014643424 /* Debug */,
 				BC_219739276036 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_910389829219 /* Build configuration list for PBXNativeTarget "strings-extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_422821497100 /* Debug */,
+				BC_832986511068 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";

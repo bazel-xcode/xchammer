@@ -150,15 +150,6 @@ BUILD_SETTINGS = BazelBuildSettings(
     [],
     BazelFlagsSet(),
     {
-        '//ios-app:jerry-extension': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
         '//ios-app:UrlGetClasses': BazelFlagsSet(
             flags = BazelFlags(
                 startup = [],
@@ -204,7 +195,25 @@ BUILD_SETTINGS = BazelBuildSettings(
                 ],
             ),
         ),
+        '//ios-app:strings-extension': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
         '//Vendor/PINCache:Core': BazelFlagsSet(
+            flags = BazelFlags(
+                startup = [],
+                build = [
+                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
+                    '--build_event_publish_all_actions=true',
+                ],
+            ),
+        ),
+        '//ios-app:strings-ext-bin': BazelFlagsSet(
             flags = BazelFlags(
                 startup = [],
                 build = [
@@ -241,15 +250,6 @@ BUILD_SETTINGS = BazelBuildSettings(
             ),
         ),
         '//ios-app:siri-ext-bin': BazelFlagsSet(
-            flags = BazelFlags(
-                startup = [],
-                build = [
-                    '--override_repository=tulsi=/Users/mzuccarino/code/mikezucc/xchammer/.build/debug',
-                    '--build_event_publish_all_actions=true',
-                ],
-            ),
-        ),
-        '//ios-app:jerry-ext-bin': BazelFlagsSet(
             flags = BazelFlags(
                 startup = [],
                 build = [

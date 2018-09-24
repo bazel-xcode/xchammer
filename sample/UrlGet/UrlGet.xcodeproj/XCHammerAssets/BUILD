@@ -21,9 +21,9 @@ export_entitlements(
   platform_type = "ios"
 )
 export_entitlements(
-  name = "ios-app-jerry-extension_entitlements",
+  name = "ios-app-strings-extension_entitlements",
   entitlements = None,
   provisioning_profile = None,
-  bundle_id = "Google.UrlGet.JerryExtension",
+  bundle_id = "Google.UrlGet.StringsExtension",
   platform_type = "ios"
 )

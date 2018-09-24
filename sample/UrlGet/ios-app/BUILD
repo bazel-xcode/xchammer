@@ -45,33 +45,33 @@ objc_library(
 )
 
 ios_extension(
-    name = "jerry-extension",
-    deps = ["jerry-ext-bin"],
-    infoplists = ["JerryExtension/Resources/JerryExtension-Info.plist"],
-    bundle_id = "Google.UrlGet.JerryExtension",
+    name = "strings-extension",
+    deps = ["strings-ext-bin"],
+    infoplists = ["StringsExtension/Resources/StringsExtension-Info.plist"],
+    bundle_id = "Google.UrlGet.StringsExtension",
     families = ["iphone"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
-    name = "JerryIntentVocabulary",
-    srcs = glob(["JerryExtension/Resources/Localization/*.lproj/*.strings"]),
+    name = "StringsIntentVocabulary",
+    srcs = glob(["StringsExtension/Resources/Localization/*.lproj/*.strings"]),
     visibility = ["//visibility:public"]
 )
 
 objc_library(
-    name = "jerry-ext-bin",
-    hdrs = native.glob(["JerryExtension/Sources/**/*.h"]),
-    srcs = native.glob(["JerryExtension/Sources/**/*.m"]),
+    name = "strings-ext-bin",
+    hdrs = native.glob(["StringsExtension/Sources/**/*.h"]),
+    srcs = native.glob(["StringsExtension/Sources/**/*.m"]),
     resources = [
-        ":JerryIntentVocabulary",
+        ":StringsIntentVocabulary",
     ],
 )
 
 ios_application(
     name = "ios-app",
     deps = ["ios-app-bin"],
-    extensions = [":share-extension", ":siri-extension", ":jerry-extension"],
+    extensions = [":share-extension", ":siri-extension", ":strings-extension"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     bundle_id = "Google.UrlGet",
