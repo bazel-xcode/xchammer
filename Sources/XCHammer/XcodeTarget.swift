@@ -536,6 +536,8 @@ public class XcodeTarget: Hashable, Equatable {
                 break // These attrs are not related to XCConfigs
             case .binary:
                 break // Explicitly not handled since it is a implicit target we don't intend to handle
+            case .has_swift_info, .has_swift_dependency:
+                break
             default:
                 print("TODO: Unimplemented attribute \(attr) \(value)")
             }
