@@ -15,8 +15,21 @@ aspects:
 	# bundle
 	./export_tulsi_aspect_dir.sh ${PWD}/tulsi-aspects
 
+# Copy the tulsi-aspects and XCHammerAssets adjacent to the Xcode build
+# directory to allow loading of resources, since we can't express this in SPM or
+# Xcode generated SPM
+# This is the format of the XCHammer package
 workspace: aspects
 	swift package generate-xcodeproj
+	$(eval BUILD_DIR=$(shell xcodebuild -showBuildSettings \
+			-project XCHammer.xcodeproj/ \
+			-scheme XCHammer \
+			|  awk '$$1 == "BUILD_DIR" { print $$3 }'))
+	@mkdir -p "$(BUILD_DIR)"
+	@ditto "$(ASPECTDIR)" "$(BUILD_DIR)/Debug/"
+	@ditto "$(ASSETDIR)" "$(BUILD_DIR)/Debug/$(ASSETDIR)"
+	@ditto "$(ASPECTDIR)" "$(BUILD_DIR)/Release/"
+	@ditto "$(ASSETDIR)" "$(BUILD_DIR)/Release/$(ASSETDIR)"
 
 clean:
 	rm -rf tmp_build_dir
