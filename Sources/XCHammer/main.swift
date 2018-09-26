@@ -94,7 +94,7 @@ struct GenerateOptions: OptionsProtocol {
                  usage: "Path to the bazel binary")
             <*> m <| Option(key: "force", defaultValue: false,
                  usage: "Force run the generator")
-            <*> m <| Option(key: "generate_bazel_targets", defaultValue: false,
+            <*> m <| Option(key: "generate_bazel_targets", defaultValue: true,
                  usage: "Experimental generate bazel targets")
             <*> m <| Option(key: "xcworkspace", defaultValue: nil,
                  usage: "Path to the xcworkspace")
