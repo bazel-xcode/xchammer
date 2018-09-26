@@ -120,3 +120,6 @@ run_force: build
 	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
 	    $(GENERATE_BAZEL_TARGETS_FLAG) \
 	    --force
+
+
+ci: test
