@@ -20,10 +20,58 @@ objc_library(
     srcs = ["empty-main.m"]
 )
 
+ios_extension(
+    name = "siri-extension",
+    deps = ["siri-ext-bin"],
+    infoplists = ["SiriExtension/Resources/SiriExtension-Info.plist"],
+    bundle_id = "Google.UrlGet.SiriExtension",
+    families = ["iphone"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "AppIntentVocabulary",
+    srcs = glob(["SiriExtension/Resources/Localization/*.lproj/AppIntentVocabulary.plist"]),
+    visibility = ["//visibility:public"]
+)
+
+objc_library(
+    name = "siri-ext-bin",
+    hdrs = native.glob(["SiriExtension/Sources/**/*.h"]),
+    srcs = native.glob(["SiriExtension/Sources/**/*.m"]),
+    resources = [
+        ":AppIntentVocabulary",
+    ],
+)
+
+ios_extension(
+    name = "strings-extension",
+    deps = ["strings-ext-bin"],
+    infoplists = ["StringsExtension/Resources/StringsExtension-Info.plist"],
+    bundle_id = "Google.UrlGet.StringsExtension",
+    families = ["iphone"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "StringsIntentVocabulary",
+    srcs = glob(["StringsExtension/Resources/Localization/*.lproj/*.strings"]),
+    visibility = ["//visibility:public"]
+)
+
+objc_library(
+    name = "strings-ext-bin",
+    hdrs = native.glob(["StringsExtension/Sources/**/*.h"]),
+    srcs = native.glob(["StringsExtension/Sources/**/*.m"]),
+    resources = [
+        ":StringsIntentVocabulary",
+    ],
+)
+
 ios_application(
     name = "ios-app",
     deps = ["ios-app-bin"],
-    extensions = [":share-extension"],
+    extensions = [":share-extension", ":siri-extension", ":strings-extension"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     bundle_id = "Google.UrlGet",
@@ -111,6 +159,5 @@ objc_library(
     ],
 
     # Not added
-    sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage"],
+    sdk_frameworks = ["CoreLocation", "AudioToolbox", "Security", "UIKit", "CoreGraphics", "QuartzCore", "Foundation", "CoreImage", "Intents"],
 )
-

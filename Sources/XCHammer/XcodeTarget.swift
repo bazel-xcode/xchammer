@@ -345,8 +345,7 @@ public class XcodeTarget: Hashable, Equatable {
 
     func isAllowableXcodeGenSource(path: Path) -> Bool {
         // These files are handled in other ways.
-        // FIXME: remove filtering plist ( these could be used in source file )
-        return path.extension != "plist" && path.extension != "mobileprovision"
+        return path.extension != "mobileprovision"
     }
 
     lazy var myResources: [ProjectSpec.TargetSource] = {

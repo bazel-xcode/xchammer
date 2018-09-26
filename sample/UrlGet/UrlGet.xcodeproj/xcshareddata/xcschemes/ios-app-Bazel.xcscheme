@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = ""
-               BuildableName = ""
+               BlueprintIdentifier = "LT_183987345262"
+               BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -23,13 +23,13 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
+            buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = ""
-               BuildableName = "ios-app.app-Bazel"
+               BlueprintIdentifier = "NT_179453799913"
+               BuildableName = "ios-app-Bazel.app"
                BlueprintName = "ios-app-Bazel"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -40,21 +40,18 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = ""
-            BuildableName = "ios-app.app-Bazel"
+            BlueprintIdentifier = "NT_179453799913"
+            BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -72,14 +69,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = ""
-            BuildableName = "ios-app.app-Bazel"
+            BlueprintIdentifier = "NT_179453799913"
+            BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -93,14 +88,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = ""
-            BuildableName = "ios-app.app-Bazel"
+            BlueprintIdentifier = "NT_179453799913"
+            BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-      </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
