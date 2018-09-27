@@ -116,3 +116,6 @@ run_force: build
 	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
 	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
 	    --force
+
+
+ci: test
