@@ -61,7 +61,6 @@ struct GenerateOptions: OptionsProtocol {
                 // Defaults to PWD
                 let workspaceRootPath: Path = workspaceRootPathOpt?.normalize() ??
                     Path(FileManager.default.currentDirectoryPath)
-
                 // If the user gave us Bazel, then use that.
                 // Otherwise, try to get bazel from the env
                 let bazelPath: Path
@@ -117,7 +116,7 @@ struct GenerateCommand: CommandProtocol {
                     options.forceRun, generateBazelTargets: options.generateBazelTargets)
             switch result {
             case .success:
-                return .success()
+                return .success(())
             case .failure(let error):
                 return .failure(.swiftException(error))
             }
@@ -152,7 +151,7 @@ struct VersionCommand: CommandProtocol {
     typealias Options = NoOptions<CommandError>
     func run(_: Options) -> Result<(), CommandError> {
         print(Generator.BinaryVersion)
-        return .success()
+        return .success(())
     }
 }
 

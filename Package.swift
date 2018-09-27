@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 // Copyright 2018-present, Pinterest, Inc.
 //
@@ -52,6 +52,5 @@ let package = Package(
               "Commandant",
               "ShellOut"
          ])
-    ],
-    swiftLanguageVersions: [3]
+    ]
 )

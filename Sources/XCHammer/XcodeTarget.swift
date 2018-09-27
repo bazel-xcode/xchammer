@@ -234,7 +234,7 @@ public class XcodeTarget: Hashable, Equatable {
         // For now, we'll assume that all projects in the target have
         // an uncolliding name, unless targets are Vendored
         guard self.label.packageName!.contains("Vendor") == true else {
-            return [self.label.targetName!, deploymentSuffix].flatMap{ $0 }.joined(separator: "-")
+            return [self.label.targetName!, deploymentSuffix].compactMap{ $0 }.joined(separator: "-")
         }
 
         // We can't rely on target name in the global scope
@@ -242,9 +242,9 @@ public class XcodeTarget: Hashable, Equatable {
         // a pod has a different package name than the target. ( Texture-AsycDisplayKit )
         let lastPackageComponent = self.label.packageName!.split(separator: "/").last!
         if lastPackageComponent == self.label.targetName! {
-            return [String(lastPackageComponent), deploymentSuffix].flatMap { $0 }.joined(separator: "-")
+            return [String(lastPackageComponent), deploymentSuffix].compactMap { $0 }.joined(separator: "-")
         }
-        return [String(lastPackageComponent), self.label.targetName!, deploymentSuffix].flatMap { $0 }.joined(separator: "-")
+        return [String(lastPackageComponent), self.label.targetName!, deploymentSuffix].compactMap { $0 }.joined(separator: "-")
     }()
 
     func getXCSourceRootAbsolutePath(for fileInfo: BazelFileInfo) -> String {
@@ -273,7 +273,7 @@ public class XcodeTarget: Hashable, Equatable {
         ]
 
         return self.dependencies
-            .flatMap { self.targetMap.xcodeTarget(buildLabel: $0, depender: self) }
+            .compactMap { self.targetMap.xcodeTarget(buildLabel: $0, depender: self) }
             .flatMap { xcodeTarget in
                 (unwrapSuffixes.map { xcodeTarget.label.value.hasSuffix($0) }.any()) ?
                     xcodeTarget.unfilteredDependencies :
@@ -358,7 +358,7 @@ public class XcodeTarget: Hashable, Equatable {
             self.attributes[attr] as? [[String: Any]] ??
                 (self.attributes[attr] as? [String: Any]).map{ [$0] } ??
                 []
-        }.flatMap { $0["path"] as? String }.map { Path($0) }
+            }.compactMap { $0["path"] as? String }.map { Path($0) }
     }
 
     func isAllowableXcodeGenSource(path: Path) -> Bool {
@@ -369,7 +369,7 @@ public class XcodeTarget: Hashable, Equatable {
     lazy var myResources: [ProjectSpec.TargetSource] = {
         let resources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.launch_storyboard, .supporting_files])
             .filter(self.isAllowableXcodeGenSource(path:))
-            .flatMap { path in
+            .compactMap { path in
             let pathComponents = path.components
             if let specialIndex = (pathComponents.index { component in
                 DirectoriesAsFileSuffixes.map { component.hasSuffix("." + $0) }.any()
@@ -386,7 +386,7 @@ public class XcodeTarget: Hashable, Equatable {
             }
         }
 
-        let structuredResources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.structured_resources]).flatMap { resourcePath -> ProjectSpec.TargetSource? in
+        let structuredResources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.structured_resources]).compactMap { resourcePath -> ProjectSpec.TargetSource? in
             guard let buildFilePath = self.buildFilePath else { return nil }
             let basePath = Path(buildFilePath).parent().normalize()
             // now we can recover the relative path provided inside the build files
@@ -581,7 +581,7 @@ public class XcodeTarget: Hashable, Equatable {
 
         // Add my own + transitive header maps to copts
         settings.copts <>= ([self] + self.transitiveTargets(map: targetMap))
-            .flatMap { $0.self.extractHeaderMap() }
+            .compactMap { $0.self.extractHeaderMap() }
             .map { "-iquote \($0)" }
 
         // Delegate warnings and error config to xcconfig for targets that have
@@ -595,7 +595,7 @@ public class XcodeTarget: Hashable, Equatable {
         settings.frameworkSearchPaths <>= ["$(inherited)",
             "$(PLATFORM_DIR)/Developer/Library/Frameworks"] <>
                 OrderedArray(self.frameworkDependencies
-            .flatMap { dep in dep.reference }
+                    .compactMap { dep in dep.reference }
             .map(dirname)
             .map { "$(SRCROOT)/\($0)" })
 
@@ -650,11 +650,11 @@ public class XcodeTarget: Hashable, Equatable {
                 fatalError()
             }
             let offsetIdx = libName.utf8.index(libName.utf8.startIndex, offsetBy: 3)
-            return libName[offsetIdx ..< libName.utf8.endIndex]
+            return String(libName[offsetIdx ..< libName.utf8.endIndex])
         }
 
 
-        let linkerLibOpts: OrderedArray<String> = self.needsRecursiveExtraction ? OrderedArray(libraryDeps.flatMap { value in
+        let linkerLibOpts: OrderedArray<String> = self.needsRecursiveExtraction ? OrderedArray(libraryDeps.compactMap { value in
             "-l\(getLibraryName(atPath: value))"
         } + ["-ObjC"]) : []
 
@@ -701,7 +701,7 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         // TODO: Move this to transitiveDeps
-        let xcodeTargetDeps: [XcodeTarget] = self.dependencies.flatMap {
+        let xcodeTargetDeps: [XcodeTarget] = self.dependencies.compactMap {
             depLabel in
             let depName = depLabel.value
             guard let target = self.targetMap.xcodeTarget(buildLabel: depLabel, depender: self) else {
@@ -731,7 +731,7 @@ public class XcodeTarget: Hashable, Equatable {
 
         return xcodeTargetDeps
             .filter { includeTarget($0, pathPredicate: alwaysIncludePathPredicate) }
-            .flatMap { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
+            .compactMap { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                     embed:
                     $0.isExtension) } + self.frameworkDependencies
     }()
@@ -861,7 +861,7 @@ public class XcodeTarget: Hashable, Equatable {
     func extractLibraryDeps(map targetMap: XcodeTargetMap) -> [String] {
         return transitiveTargets(map: targetMap, predicate: stopAfterNeedsRecursive)
             .filter { $0.type == "objc_import" }
-            .flatMap { target -> [String]? in
+            .compactMap { target -> [String]? in
                 guard let archives = target.attributes[.archives] as? [[String: Any]] else {
                     return nil
                 }
@@ -895,7 +895,7 @@ public class XcodeTarget: Hashable, Equatable {
     fileprivate var xcExtensionDeps: [ProjectSpec.Dependency] {
         // Assume extensions are contained in the same workspace
         return extensions
-            .flatMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
+            .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
             .map { 
                 var mutableDep = ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                                                embed: $0.isExtension)
@@ -1091,7 +1091,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
     // Find the linked deps and extract the deps name
     // We need actual targets here, since these are things like Applications
     let linkedDeps = xcodeTarget.linkedTargetLabels
-        .flatMap { targetMap.xcodeTarget(buildLabel: $0, depender: xcodeTarget) }
+        .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: xcodeTarget) }
         .filter { includeTarget($0, pathPredicate: pathsPredicate) }
         .map { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                 embed: $0.isExtension) }

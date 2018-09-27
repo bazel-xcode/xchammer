@@ -54,7 +54,7 @@ private func processIpaExn(builtProductsDir: Path, codesigningFolderPath: Path) 
 func processIpa(builtProductsDir: Path, codesigningFolderPath: Path) -> Result<(), CommandError> {
     do {
         try processIpaExn(builtProductsDir: builtProductsDir, codesigningFolderPath: codesigningFolderPath)
-        return .success()
+        return .success(())
     } catch {
         return .failure(.io(error))
     }
