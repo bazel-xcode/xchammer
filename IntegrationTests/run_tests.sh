@@ -38,7 +38,7 @@ function testBuild() {
 }
 
 function testBazelBuild() {
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL --generate_bazel_targets --force
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL --force
     xcodebuild -scheme ios-app-Bazel -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built bazel targets successfully"
 }

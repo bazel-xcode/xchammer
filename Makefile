@@ -101,8 +101,6 @@ debug: build
 	# r
 	lldb $(ROOT_DIR)/.build/debug/XCHammer
 
-GENERATE_BAZEL_TARGETS_FLAG=--generate_bazel_targets
-
 
 # Run a debug build of XCHammer
 # Development hack: don't actually install, just symlink the debug build
@@ -110,13 +108,11 @@ run: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
 	    $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
-	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
-	    $(GENERATE_BAZEL_TARGETS_FLAG)
+	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper
 
 run_force: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
 	    $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
 	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
-	    $(GENERATE_BAZEL_TARGETS_FLAG) \
 	    --force
