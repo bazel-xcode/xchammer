@@ -75,5 +75,6 @@ def export_entitlements(name,
     entitlements_writer(
         name=name,
         entitlements=":" + name + "_exported",
-        visibility=["//visibility:public"]
+        visibility=["//visibility:public"],
+        tags=["xchammer"]
     )

@@ -247,12 +247,21 @@ public class XcodeTarget: Hashable, Equatable {
         return [String(lastPackageComponent), self.label.targetName!, deploymentSuffix].flatMap { $0 }.joined(separator: "-")
     }()
 
-    func getXCRelativePath(for fileInfo: BazelFileInfo) -> String {
+    func getXCSourceRootAbsolutePath(for fileInfo: BazelFileInfo) -> String {
         switch fileInfo.targetType {
         case .sourceFile:
             return "$(SRCROOT)/" + fileInfo.subPath
         case .generatedFile:
             return "$(SRCROOT)/bazel-genfiles/" + fileInfo.subPath
+        }
+    }
+
+    func getRelativePath(for fileInfo: BazelFileInfo) -> String {
+        switch fileInfo.targetType {
+        case .sourceFile:
+            return fileInfo.subPath
+        case .generatedFile:
+            return "bazel-genfiles/" + fileInfo.subPath
         }
     }
 
@@ -273,8 +282,17 @@ public class XcodeTarget: Hashable, Equatable {
     }()
 
     lazy var xcSources: [ProjectSpec.TargetSource] = {
-        let sourceFiles = self.sourceFiles.map { $0.subPath }.filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }.map { ProjectSpec.TargetSource(path: $0) }
-        let nonArcFiles = self.nonARCSourceFiles.map { ProjectSpec.TargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
+        let sourceFilePaths = self.sourceFiles
+            .map { sourceInfo -> String in
+                return self.getRelativePath(for: sourceInfo)
+            }
+        
+        let sourceFiles = sourceFilePaths
+            .filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }
+            .map { ProjectSpec.TargetSource(path: $0) }
+
+        let nonArcFiles = self.nonARCSourceFiles
+            .map { ProjectSpec.TargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
         let resources = self.xcResources
         let bundles = self.xcBundles
 
@@ -816,7 +834,7 @@ public class XcodeTarget: Hashable, Equatable {
     var mobileProvisionProfileFile: String? {
         return ruleEntry.normalNonSourceArtifacts
             .first { $0.subPath.hasSuffix("mobileprovision") }
-            .map(getXCRelativePath(for:))
+            .map(getXCSourceRootAbsolutePath(for:))
     }
 
     var isEntitlementsDep: Bool {
@@ -889,14 +907,14 @@ public class XcodeTarget: Hashable, Equatable {
     func extractModuleMap() -> String? {
         return (self.sourceFiles + self.nonARCSourceFiles)
             .first(where: { $0.subPath.hasSuffix(".modulemap") })
-            .map(getXCRelativePath)
+            .map(getXCSourceRootAbsolutePath)
     }
 
     func extractHeaderMap() -> String? {
         return (self.sourceFiles + self.nonARCSourceFiles)
             .first(where: { $0.subPath.hasSuffix(".hmap") })
             .map {
-                return getXCRelativePath(for: $0)
+                return getXCSourceRootAbsolutePath(for: $0)
                     // __BAZEL_GEN_DIR__ is a custom toolchain make variable
                     // resolve that to $(SRCROOT)/bazel-genfiles.
                     .replacingOccurrences(of: "__BAZEL_GEN_DIR__", with: "")
