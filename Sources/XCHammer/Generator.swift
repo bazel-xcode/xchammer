@@ -55,7 +55,7 @@ enum Generator {
             profiler.logEnd(true)
         }
 
-        let entries: [XcodeGenTarget] = targetMap.includedTargets.flatMap {
+        let entries: [XcodeGenTarget] = targetMap.includedTargets.compactMap {
             xcodeTarget in
             guard let target = makeXcodeGenTarget(from: xcodeTarget) else {
                 return nil
@@ -161,10 +161,10 @@ enum Generator {
         """
         // Write to the temp path, reference the actual path
         // 555 means readable and executable
-        let scriptAttrs: [String: Any] =
-        [FileAttributeKey.posixPermissions.rawValue: 0o555]
+        let scriptAttrs: [FileAttributeKey: Any] = [FileAttributeKey.posixPermissions: 0o555]
         let updateScriptTempPath = XCHammerAsset.updateScript.getPath(underProj:
                 projectPath)
+
         guard FileManager.default.createFile(atPath: updateScriptTempPath,
                 contents: updateScript.data(using: .utf8), attributes:
                 scriptAttrs) else {
@@ -237,7 +237,7 @@ enum Generator {
         }
 
         return targets
-            .flatMap { xcodeTarget in
+            .compactMap { xcodeTarget in
                 let type = xcodeTarget.xcType!
                 let name = xcodeTarget.xcTargetName
                 guard type.contains("application") || type.contains("-test") else {
@@ -447,7 +447,7 @@ enum Generator {
 
         // Code gen entitlement rules and write a build file
         let entitlementRules = allXCTargets
-            .flatMap { (name: String, xcodeGenTarget: XcodeGenTarget) in
+            .compactMap { (name: String, xcodeGenTarget: XcodeGenTarget) in
                 return xcodeGenTarget.xcodeTarget.extractExportEntitlementRule(map: targetMap)
         }
 
@@ -513,7 +513,7 @@ enum Generator {
 
         // Get Bazel targets for the specified labels
         let getBazelBuildableTargets: (() -> [XcodeTarget]) = {
-            Void -> [XcodeTarget] in
+            () -> [XcodeTarget] in
             guard genOptions.generateBazelTargets else {
                 return []
             }
@@ -525,7 +525,7 @@ enum Generator {
 
         let bazelBuildableXcodeTargets = getBazelBuildableTargets()
         let bazelBuildableTargets = 
-                bazelBuildableXcodeTargets.flatMap { $0.getBazelBuildableTarget() }
+            bazelBuildableXcodeTargets.compactMap { $0.getBazelBuildableTarget() }
         let allTargets = allXCTargets.map { k, v in v.target } + [
                 updateXcodeProjectTarget,
                 bazelPreBuildTarget,
@@ -629,7 +629,7 @@ enum Generator {
             }
         })
 
-        let dirHashEntries = hashCandidates.flatMap { url -> String? in 
+        let dirHashEntries = hashCandidates.compactMap { url -> String? in 
             // We need a different hash when these files change.
             // Use a timestamp for efficiency
             if url.pathExtension == "bzl" ||
@@ -724,7 +724,7 @@ enum Generator {
             try writeProject(targetMap: targetMap, name: projectName,
                     genOptions: genOptions, bazelExecRoot: bazelExecRoot,
                     genfileLabels: genfileLabels, depsHash: depsHash)
-            return .success()
+            return .success(())
         } catch {
             return .failure(.some(error))
         }
@@ -772,7 +772,7 @@ enum Generator {
                 DepsHashSettingName.utf8.count + 4)
         let end = proj.index(hashRange.upperBound, offsetBy: -3)
         guard beginning < end else { return nil } 
-        return proj[beginning...end]
+            return String(proj[beginning...end])
     }
 
     // Mark - Public
@@ -824,7 +824,7 @@ enum Generator {
         let states = projectStates.values.filter { !$0.0 }
         guard force || states.count > 0 else {
             logger.logInfo("Skipping update for now")
-            return .success()
+            return .success(())
         }
 
         let entryMapProfiler = XCHammerProfiler("read_aspects")
@@ -887,11 +887,16 @@ enum Generator {
             }
         })
 
+
         let results = generateResults.parallelMap({
              generateResult -> Result<(), GenerateError> in
              guard case let .success(state) = generateResult,
                 !state.skipped else {
-                return generateResult.map { $0 }
+                    return generateResult.map { $0 }.analysis(ifSuccess: { (_) -> Result<(), GenerateError> in
+                        return .success(())
+                    }, ifFailure: { (err) -> Result<(), GenerateError> in
+                        return Result.init(error: err)
+                    })
              }
              return doResult {
                 try replaceProject(genOptions: state.genOptions)
@@ -911,8 +916,8 @@ enum Generator {
                  fatalError("Can't write genStatus")
             }
         }
-        return results.reduce(.success()) {
-             result, element in
+
+        return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in
              return result.flatMap { _ in element }
         }
     }
