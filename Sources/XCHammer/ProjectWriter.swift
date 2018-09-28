@@ -60,6 +60,8 @@ enum ProjectWriter {
              │   │   └── WorkspaceSettings.xcsettings
          */
         // Create WorkspaceSettings.xcsettings to prevent the Xcode auto scheme creation.
+        // FIXME: Use the legacy build system for
+        // https://github.com/pinterest/xchammer/issues/58
         let sharedDataURL = (xcodeProjPath + "project.xcworkspace/xcshareddata").url
         let fm = FileManager.default
         try? fm.createDirectory(at: sharedDataURL, withIntermediateDirectories: false, attributes: nil)
@@ -70,6 +72,8 @@ enum ProjectWriter {
                         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
                         <plist version="1.0">
                         <dict>
+                            <key>BuildSystemType</key>
+                            <string>Original</string>
                             <key>IDEWorkspaceSharedSettings_AutocreateContextsIfNeeded</key>
                             <false/>
                         </dict>
