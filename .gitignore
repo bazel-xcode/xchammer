@@ -32,3 +32,4 @@ tulsi-workspace
 tulsi-aspects
 
 *.xcode_select_env
+bazel-*
