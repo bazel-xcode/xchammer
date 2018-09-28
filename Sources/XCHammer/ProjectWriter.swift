@@ -49,7 +49,7 @@ enum ProjectWriter {
 
         // generate the project from the spec
         let generator = ProjectGenerator(project: xcodeGenSpec)
-        let xcproj = try generator.generateXcodeProject()
+        let xcproj = try generator.generateXcodeProject(validate: false)
         try xcproj.write(path: xcodeProjPath)
 
 

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_183987345262"
+               BlueprintIdentifier = "LT_629454187867"
                BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_179453799913"
+               BlueprintIdentifier = "NT_700633204216"
                BuildableName = "ios-app-Bazel.app"
                BlueprintName = "ios-app-Bazel"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -46,7 +46,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_179453799913"
+            BlueprintIdentifier = "NT_700633204216"
             BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -69,7 +69,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_179453799913"
+            BlueprintIdentifier = "NT_700633204216"
             BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -88,7 +88,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_179453799913"
+            BlueprintIdentifier = "NT_700633204216"
             BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">

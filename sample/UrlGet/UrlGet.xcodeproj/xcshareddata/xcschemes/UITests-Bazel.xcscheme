@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_183987345262"
+               BlueprintIdentifier = "LT_629454187867"
                BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">

@@ -82,6 +82,7 @@ objc_library(
     name = "ios-app-bin",
     srcs = [
         "UrlGet/main.m",
+        ":GeneratedSource"
     ],
     deps = [
         ":UrlGetClasses",
@@ -89,6 +90,17 @@ objc_library(
     defines = [
         "EXAMPLE_DEF=1"
     ]
+)
+
+genrule(
+    name = "GeneratedSource",
+    srcs = [],
+    outs = ["Generated.m"],
+    cmd = "touch $@",
+    # Set this to the xchammer tag so that the source is present for our Xcode
+    # builds, during build time. If you don't use Xcode build, this tag doesn't
+    # matter. ( See Docs/XCHammerFAQ.md for more info )
+    tags=["xchammer"]
 )
 
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
