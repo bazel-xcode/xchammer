@@ -2,21 +2,19 @@
 
 XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace.
 
-## Installation
+## Usage
 
 _Note: this README is intended to be a minimal, quick start guide. For a comprehensive explanation of XCHammer, see [Introducing XCHammer](Docs/FastAndReproducibleBuildsWithXCHammer.md) and [The XCHammer FAQ](Docs/XCHammerFAQ.md)_
 
-First install XCHammer
+### Installation
+
+You can clone the xchammer repository and run the following to build and install on your path.
 ```
 make install
+
 ```
 
-Generate using a [XCHammerConfig](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift).
-```
-xchammer generate <configPath>
-```
-
-## Integration with your Project (Bazel)
+Alternatively, you can integrate xchammer in your existing bazel project if you prefer to use `bazel run` to invoke xchammer.
 
 Add the following to your `WORKSPACE` file
 ```
@@ -34,7 +32,17 @@ xchammer_dependencies()
 
 ```
 
-Then you can run `bazel build @xchammer//:xchammer` to compile from source.
+Then you can run `bazel build @xchammer//:xchammer` to compile from source to build a debug version of xchammer.
+
+For production, please build with `--compilation_mode=opt` to significantly speed up project generation times.
+
+### Configuration
+
+Generate using a [XCHammerConfig](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift).
+```
+xchammer generate <configPath>
+```
+
 
 ## Configuration Format
 

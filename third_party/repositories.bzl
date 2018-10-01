@@ -3,7 +3,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl",
      "new_git_repository")
 
 
-NAMESPACE_PREFIX = "xchammer-" # TODO(rmalik) add namespace to avoid collisions from consumers
+NAMESPACE_PREFIX = "xchammer-"
 
 def namespaced_name(name):
    if name.startswith("@"):
