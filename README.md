@@ -22,7 +22,8 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "xchammer",
-    remote  = "https://github.com/pinterest/xchammer"
+    remote  = "https://github.com/pinterest/xchammer",
+    tag = "0.2"
 )
 
 load("@xchammer:third_party:repositories.bzl", "xchammer_dependencies")

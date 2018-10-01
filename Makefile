@@ -119,3 +119,7 @@ run_force: build
 
 
 ci: test
+
+format:
+	$(ROOT_DIR)/tools/bazelwrapper run buildifier
+

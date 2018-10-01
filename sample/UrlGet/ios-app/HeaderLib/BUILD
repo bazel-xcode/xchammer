@@ -1,6 +1,5 @@
-
 objc_library(
-   name = "HeaderLib",
-   hdrs = ["HeaderLib.hpp"],
-   visibility = ["//visibility:public"]
+    name = "HeaderLib",
+    hdrs = ["HeaderLib.hpp"],
+    visibility = ["//visibility:public"],
 )
