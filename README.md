@@ -2,7 +2,7 @@
 
 XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace.
 
-## Usage
+## Installation
 
 _Note: this README is intended to be a minimal, quick start guide. For a comprehensive explanation of XCHammer, see [Introducing XCHammer](Docs/FastAndReproducibleBuildsWithXCHammer.md) and [The XCHammer FAQ](Docs/XCHammerFAQ.md)_
 
@@ -11,10 +11,30 @@ First install XCHammer
 make install
 ```
 
-Generate using a [XCHammerConfig](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift). 
+Generate using a [XCHammerConfig](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift).
 ```
 xchammer generate <configPath>
 ```
+
+## Integration with your Project (Bazel)
+
+Add the following to your `WORKSPACE` file
+```
+
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "xchammer",
+    remote  = "https://github.com/pinterest/xchammer"
+)
+
+load("@xchammer:third_party:repositories.bzl", "xchammer_dependencies")
+
+xchammer_dependencies()
+
+```
+
+Then you can run `bazel build @xchammer//:xchammer` to compile from source.
 
 ## Configuration Format
 
