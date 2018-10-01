@@ -4,14 +4,13 @@
 # @see process_ipa.py
 py_binary(
     name = "ipa_process",
-    main = "process_ipa.py",
     srcs = ["process_ipa.py"],
-    visibility = ["//visibility:public"]
+    main = "process_ipa.py",
+    visibility = ["//visibility:public"],
 )
 
 py_binary(
     name = "acknowledgement_merger",
     srcs = ["acknowledgement_merger.py"],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
-

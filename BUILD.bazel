@@ -4,42 +4,46 @@ licenses(["notice"])
 
 load(
     "@build_bazel_rules_apple//apple:macos.bzl",
-    "macos_application"
+    "macos_application",
 )
-
-load("@build_bazel_rules_swift//swift:swift.bzl", 
-     "swift_library"
+load(
+    "@build_bazel_rules_swift//swift:swift.bzl",
+    "swift_library",
 )
-
 load(
     "@build_bazel_rules_apple//apple:versioning.bzl",
-    "apple_bundle_version"
+    "apple_bundle_version",
 )
-
-load("//third_party:repositories.bzl", 
-     "namespaced_name")
+load(
+    "@com_github_bazelbuild_buildtools//buildifier:def.bzl",
+    "buildifier",
+)
+load(
+    "//third_party:repositories.bzl",
+    "namespaced_name",
+)
 
 swift_library(
     name = "Sources",
     srcs = glob(["Sources/**/*.swift"]),
-    deps = ["@" + namespaced_name(x) for x in [
-        "AEXML//:AEXML", 
-        "Commandant//:Commandant", 
-        "Commander//:Commander", 
-        "JSONUtilities//:JSONUtilities", 
-        "PathKit//:PathKit", 
-        "Rainbow//:Rainbow", 
-        "Result//:Result", 
-        "ShellOut//:ShellOut", 
-        "Tulsi//src/TulsiGenerator:tulsi_generator_lib",
-        "XcodeGen//:XcodeGenKit", 
-        "XcodeGen//:ProjectSpec", 
-        "xcproj//:xcproj", 
-        "Yams//:Yams"
-    ]],
     structured_resources = glob([
-        "XCHammerAssets/**"
-    ])
+        "XCHammerAssets/**",
+    ]),
+    deps = ["@" + namespaced_name(x) for x in [
+        "AEXML//:AEXML",
+        "Commandant//:Commandant",
+        "Commander//:Commander",
+        "JSONUtilities//:JSONUtilities",
+        "PathKit//:PathKit",
+        "Rainbow//:Rainbow",
+        "Result//:Result",
+        "ShellOut//:ShellOut",
+        "Tulsi//src/TulsiGenerator:tulsi_generator_lib",
+        "XcodeGen//:XcodeGenKit",
+        "XcodeGen//:ProjectSpec",
+        "xcproj//:xcproj",
+        "Yams//:Yams",
+    ]],
 )
 
 apple_bundle_version(
@@ -53,5 +57,9 @@ macos_application(
     infoplists = ["Info.plist"],
     minimum_os_version = "10.13",
     version = ":XCHammerVersion",
-    deps = [":Sources"]
+    deps = [":Sources"],
+)
+
+buildifier(
+    name = "buildifier",
 )

@@ -5,15 +5,19 @@ objc_library(
     name = "ObjcSupport",
     srcs = glob(["Sources/ObjcSupport/*.m"]),
     hdrs = glob(["Sources/ObjcSupport/include/*"]),
-    includes = ["Sources/ObjcSupport/include"]
+    includes = ["Sources/ObjcSupport/include"],
 )
 
 # PodToBUILD is a core library enabling Skylark code generation
 swift_library(
     name = "PodToBUILD",
     srcs = glob(["Sources/PodToBUILD/*.swift"]),
+    copts = [
+        "-swift-version",
+        "4",
+        "-static-stdlib",
+    ],
     deps = [":ObjcSupport"],
-    copts = ["-swift-version", "4", "-static-stdlib"],
 )
 
 # Compiler
@@ -45,7 +49,10 @@ swift_library(
 swift_library(
     name = "RepoToolsCore",
     srcs = glob(["Sources/RepoToolsCore/*.swift"]),
+    copts = [
+        "-swift-version",
+        "4",
+        "-static-stdlib",
+    ],
     deps = [":PodToBUILD"],
-    copts = ["-swift-version", "4", "-static-stdlib"],
 )
-

@@ -47,6 +47,8 @@ project. Don't mind that. Future work will involve addressing that_.
 
 ### What tests need to pass before my PR is acceptable?
 
+If you've modified any Bazel files (bzl, BUILD, ...) run `make format` to automatically format those to the Bazel style conventions.
+
 Run `make test` to run all test cases for XCHammer.
 
 _Note: Pinterest runs on the `HEAD` of XCHammer. We require all XCHammer edge

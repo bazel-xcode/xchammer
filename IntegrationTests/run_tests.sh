@@ -14,7 +14,7 @@ PRODUCT="XCHammer"
 SANDBOX="$ROOT_DIR/IntegrationTests/Sandbox"
 
 # We download and install bazel if its missing
-BAZEL=($SANDBOX/UrlGet/tools/bazelwrapper)
+BAZEL=($ROOT_DIR/tools/bazelwrapper)
 
 
 TEST_PROJ="$SANDBOX/UrlGet/UrlGet.xcodeproj"
@@ -28,7 +28,7 @@ function assertExitCode() {
     echo "✅  test_passed: $1"
 }
 
-# Test Methods: 
+# Test Methods:
 
 function testBuild() {
     echo "Testing generate and build with Xcode"
@@ -87,10 +87,10 @@ function preflightEnv() {
     ditto $ROOT_DIR/sample/UrlGet $SANDBOX/UrlGet
     rm -rf $SANDBOX/UrlGet/UrlGet.xcodeproj
 
-    cd $SANDBOX/UrlGet;  
+    cd $SANDBOX/UrlGet;
 
     echo "Checking bazel"
-    $BAZEL info 
+    $BAZEL info
     set +e
 }
 
