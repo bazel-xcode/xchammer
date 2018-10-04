@@ -8,6 +8,7 @@ PREFIX := /usr/local
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 aspects:
+	swift package resolve
 	# Export the tulsi workspace to PWD. We need this for
 	# Xcode, because there is no way to correctly install
 	# resources.
@@ -87,10 +88,11 @@ build-impl:
 	# in the context of our custom release package.
 	ditto $(ASPECTDIR) .build/$(CONFIG)/
 
+# Build impl doesn't build aspects because it is slow.
 build: build-debug
 	@ln -sf $(PWD)/.build/debug sample/UrlGet/tools/XCHammer
 
-test:
+test: aspects
 	$(ROOT_DIR)/IntegrationTests/run_tests.sh
 
 debug: build
