@@ -111,9 +111,8 @@ function runTests() {
 ## Execution
 
 echo "Running tests"
-
 # Do a debug build
-make build
+make build || exit 1
 
 trap testsDidFinish EXIT
 preflightEnv
