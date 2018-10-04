@@ -18,6 +18,9 @@ import Commandant
 import Result
 import Yams
 import ShellOut
+import ObjcSupport
+
+import SwiftBacktrace
 
 extension Path: ArgumentProtocol {
     public static let name: String = "Path"
@@ -155,13 +158,19 @@ struct VersionCommand: CommandProtocol {
     }
 }
 
+signal(SIGILL) {
+    _ in
+    print("SBT", backtrace().joined(separator: "\n"))          // backtrace()
+    print("DEMANGED", demangledBacktrace().joined(separator: "\n"))
+    exit(1)
+}
+
 func main() {
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
     commands.register(ProcessIpaCommand())
     commands.register(VersionCommand())
     commands.register(HelpCommand(registry: commands))
-
     var arguments = CommandLine.arguments
     // Remove executable name
     arguments.remove(at: 0)
@@ -173,7 +182,6 @@ func main() {
         print(error.localizedDescription)
         print("------")
     }
-
     commands.main(defaultVerb: "help", errorHandler: handle(error:))
 }
 

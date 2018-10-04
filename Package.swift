@@ -23,11 +23,17 @@ let package = Package(
         .executable(
           name: "XCHammer",
           targets: ["XCHammer"]),
+        .library(
+            name: "ObjcSupport",
+            targets: ["XCHammer"]),
+
     ],
     dependencies: [
         .package(url: "https://github.com/yonaskolb/XcodeGen.git",
             .revision("6ae4a9fc3b54ae4205618f22b6a734558a76ca20")),
 
+        .package(url: "https://github.com/norio-nomura/SwiftBacktrace.git",
+            .revision("61eeb12522b36a7af5d3403f42b0cd50938d0821")),
         // Changes reside in the xchammer branch
         .package(url: "https://github.com/pinterest/Tulsi.git",
             .revision("e3c0dcb9dda0dc191034c061fdd4f0e4397ad527")),
@@ -46,11 +52,16 @@ let package = Package(
         .target(
             name: "XCHammer",
             dependencies: [
+              "ObjcSupport",
               "XcodeGenKit",
               "ProjectSpec",
               "TulsiGenerator",
               "Commandant",
+              "SwiftBacktrace",
               "ShellOut"
-         ])
+         ]),
+        .target(
+            name: "ObjcSupport",
+            dependencies: []),
     ]
 )
