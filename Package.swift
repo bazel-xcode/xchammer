@@ -23,9 +23,6 @@ let package = Package(
         .executable(
           name: "XCHammer",
           targets: ["XCHammer"]),
-        .library(
-            name: "ObjcSupport",
-            targets: ["XCHammer"]),
 
     ],
     dependencies: [
@@ -52,16 +49,12 @@ let package = Package(
         .target(
             name: "XCHammer",
             dependencies: [
-              "ObjcSupport",
               "XcodeGenKit",
               "ProjectSpec",
               "TulsiGenerator",
               "Commandant",
               "SwiftBacktrace",
               "ShellOut"
-         ]),
-        .target(
-            name: "ObjcSupport",
-            dependencies: []),
+         ])
     ]
 )

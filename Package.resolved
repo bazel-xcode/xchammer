@@ -101,6 +101,15 @@
         }
       },
       {
+        "package": "SwiftBacktrace",
+        "repositoryURL": "https://github.com/norio-nomura/SwiftBacktrace.git",
+        "state": {
+          "branch": null,
+          "revision": "61eeb12522b36a7af5d3403f42b0cd50938d0821",
+          "version": null
+        }
+      },
+      {
         "package": "Tulsi",
         "repositoryURL": "https://github.com/pinterest/Tulsi.git",
         "state": {
