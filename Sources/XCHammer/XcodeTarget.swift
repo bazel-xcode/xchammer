@@ -985,7 +985,7 @@ public class XcodeTarget: Hashable, Equatable {
         let targetConfig = genOptions.config.getTargetConfig(for: label.value)
 
         // bazel_build.py is adjacent to the XCHammer bin
-        let buildInvocation = dirname(CommandLine.arguments[0]) +
+        let buildInvocation = dirname(ProcessInfo.processInfo.arguments[0]) +
             "/bazel_build.py " + label.value + " --bazel " +
             genOptions.bazelPath.string
 
