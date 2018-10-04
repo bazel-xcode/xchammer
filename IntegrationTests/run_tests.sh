@@ -111,7 +111,7 @@ function runTests() {
 ## Execution
 
 echo "Running tests"
-
+make aspects
 # Do a debug build
 make build
 
