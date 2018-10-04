@@ -8,6 +8,7 @@ PREFIX := /usr/local
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 aspects:
+	swift package resolve
 	# Export the tulsi workspace to PWD. We need this for
 	# Xcode, because there is no way to correctly install
 	# resources.
