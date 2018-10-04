@@ -108,13 +108,13 @@ run: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
 	    $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
-	    --bazel $(ROOT_DIR)/tools/bazelwrapper
+	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper
 
 run_force: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
 	    $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
-	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
+	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
 	    --force
 
 

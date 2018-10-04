@@ -14,8 +14,7 @@ PRODUCT="XCHammer"
 SANDBOX="$ROOT_DIR/IntegrationTests/Sandbox"
 
 # We download and install bazel if its missing
-BAZEL=($ROOT_DIR/tools/bazelwrapper)
-
+BAZEL=($SANDBOX/UrlGet/tools/bazelwrapper)
 
 TEST_PROJ="$SANDBOX/UrlGet/UrlGet.xcodeproj"
 TEST_NEW_IMPL_FILE="$SANDBOX/UrlGet/ios-app/UrlGet/XCHammerIntegrationTestFile.m"
