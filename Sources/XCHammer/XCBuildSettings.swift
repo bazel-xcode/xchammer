@@ -161,6 +161,8 @@ struct XCBuildSettings: Encodable {
     var moduleMapFile: First<String>?
     // Disable Xcode derived headermaps, be explicit to avoid divergence
     var useHeaderMap: First<String>? = First("NO")
+    var swiftVersion: First<String>?
+    var swiftCopts: [String] = []
     var testTargetName: First<String>?
     var pythonPath: First<String>?
 
@@ -194,6 +196,8 @@ struct XCBuildSettings: Encodable {
         case moduleMapFile = "MODULEMAP_FILE"
         case testTargetName = "TEST_TARGET_NAME"
         case useHeaderMap = "USE_HEADERMAP"
+        case swiftVersion = "SWIFT_VERSION"
+        case swiftCopts = "OTHER_SWIFT_FLAGS"
 
         case pythonPath = "PYTHONPATH"
 
@@ -211,6 +215,7 @@ struct XCBuildSettings: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(copts.joined(separator: " "), forKey: .copts)
+        try container.encode(swiftCopts.joined(separator: " "), forKey: .copts)
 
         try container.encode(headerSearchPaths.joined(separator: " "), forKey: .headerSearchPaths)
         try container.encode(frameworkSearchPaths.joined(separator: " "), forKey: .frameworkSearchPaths)
@@ -244,6 +249,7 @@ struct XCBuildSettings: Encodable {
         try useHeaderMap.map { try container.encode($0.v, forKey: .useHeaderMap) }
         try testTargetName.map { try container.encode($0.v, forKey: .testTargetName) }
         try pythonPath.map { try container.encode($0.v, forKey: .pythonPath) }
+        try swiftVersion.map { try container.encode($0.v, forKey: .swiftVersion) }
 
         // XCHammer only supports Xcode projects at the root directory
         try container.encode("$SOURCE_ROOT", forKey: .tulsiWR)
@@ -287,6 +293,8 @@ extension XCBuildSettings: Monoid {
             codeSignEntitlementsFile: lhs.codeSignEntitlementsFile <> rhs.codeSignEntitlementsFile,
             moduleMapFile: lhs.moduleMapFile <> rhs.moduleMapFile,
             useHeaderMap: lhs.useHeaderMap <> rhs.useHeaderMap,
+            swiftVersion: lhs.swiftVersion <> rhs.swiftVersion,
+            swiftCopts: lhs.swiftCopts <> rhs.swiftCopts,
             testTargetName: lhs.testTargetName <> rhs.testTargetName,
             pythonPath: lhs.pythonPath <> rhs.pythonPath
         )

@@ -1,0 +1,7 @@
+targets:
+    - "//:xchammer"
+
+projects:
+    "xchammer-bazel":
+        paths:
+            - "/**"

@@ -18,6 +18,7 @@ import PathKit
 import TulsiGenerator
 import ProjectSpec
 import xcproj
+import ShellOut
 
 private func shouldPropagateDeps(forTarget xcodeTarget: XcodeTarget) -> Bool {
     return xcodeTarget.needsRecursiveExtraction && xcodeTarget.label.packageName?.hasPrefix("@") == false
@@ -256,10 +257,17 @@ public class XcodeTarget: Hashable, Equatable {
         }
     }
 
+    func resolveExternalPath(for path: String) -> String {
+        if path.hasPrefix("external/") {
+            return "bazel-\(self.genOptions.workspaceRootPath.lastComponent)/\(path)"
+        }
+        return path
+    }
+
     func getRelativePath(for fileInfo: BazelFileInfo) -> String {
         switch fileInfo.targetType {
         case .sourceFile:
-            return fileInfo.subPath
+            return resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
             return "bazel-genfiles/" + fileInfo.subPath
         }
@@ -286,13 +294,14 @@ public class XcodeTarget: Hashable, Equatable {
             .map { sourceInfo -> String in
                 return self.getRelativePath(for: sourceInfo)
             }
-        
+
         let sourceFiles = sourceFilePaths
             .filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }
             .map { ProjectSpec.TargetSource(path: $0) }
 
         let nonArcFiles = self.nonARCSourceFiles
-            .map { ProjectSpec.TargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
+            .map { self.getRelativePath(for: $0) }
+            .map { ProjectSpec.TargetSource(path: $0, compilerFlags: ["-fno-objc-arc"]) }
         let resources = self.xcResources
         let bundles = self.xcBundles
 
@@ -369,6 +378,7 @@ public class XcodeTarget: Hashable, Equatable {
     lazy var myResources: [ProjectSpec.TargetSource] = {
         let resources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.launch_storyboard, .supporting_files])
             .filter(self.isAllowableXcodeGenSource(path:))
+            .map { Path(self.resolveExternalPath(for: $0.string)) }
             .compactMap { path in
             let pathComponents = path.components
             if let specialIndex = (pathComponents.index { component in
@@ -385,6 +395,7 @@ public class XcodeTarget: Hashable, Equatable {
                 return ProjectSpec.TargetSource(path: path.string)
             }
         }
+        
 
         let structuredResources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.structured_resources]).compactMap { resourcePath -> ProjectSpec.TargetSource? in
             guard let buildFilePath = self.buildFilePath else { return nil }
@@ -394,7 +405,7 @@ public class XcodeTarget: Hashable, Equatable {
             // the structured path is the first directory relative to the build file dir
             let structuredPath = basePath + Path(buildFileRelativePath.components[0])
             // structured resources are rendered as folder-references in Xcode
-            return ProjectSpec.TargetSource(path: structuredPath.string, compilerFlags:
+            return ProjectSpec.TargetSource(path: self.resolveExternalPath(for: structuredPath.string), compilerFlags:
                     [], type: .folder)
         }
 
@@ -416,7 +427,7 @@ public class XcodeTarget: Hashable, Equatable {
             return xcTargetName + ".xctest"
             case .AppExtension, .XPCService, .Watch1App, .Watch2App, .Watch1Extension, .Watch2Extension, .TVAppExtension:
             return xcTargetName + ".appex"
-            case .StaticLibrary:
+            case .StaticLibrary, .Tool:
             return xcTargetName
             default:
             fatalError()
@@ -555,6 +566,31 @@ public class XcodeTarget: Hashable, Equatable {
                 break // These attrs are not related to XCConfigs
             case .binary:
                 break // Explicitly not handled since it is a implicit target we don't intend to handle
+            case .swift_language_version:
+                guard let swiftVersion = value as? String else {
+                    break
+                }
+                settings.swiftVersion <>=  First(swiftVersion)
+            case .has_swift_dependency, .has_swift_info:
+                guard let swiftVersion = try? ShellOut.shellOut(to: "xcrun swift package tools-version") else {
+                    break
+                }
+                settings.swiftVersion <>=  First(swiftVersion)
+            case .swiftc_opts:
+                if let coptsArray = value as? [String] {
+                    let processedOpts = coptsArray.map { opt -> String in
+                        if opt.hasPrefix("-I") {
+                            let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
+                            let path = opt[substringRangeStart...]
+                            let processedOpt =  "-I$(SRCROOT)/\(path)"
+                            return processedOpt
+                        } else {
+                            return opt
+                        }
+                    }
+
+                    settings.swiftCopts <>= processedOpts
+                }
             default:
                 print("TODO: Unimplemented attribute \(attr) \(value)")
             }
@@ -562,6 +598,10 @@ public class XcodeTarget: Hashable, Equatable {
 
         // Product Name
         settings.productName <>= self.bundleName.map { First($0) }
+
+        if settings.productName == nil {
+            settings.productName = First(self.extractBuiltProductName())
+        }
 
         // Product Bundle Identifier
         settings.productBundleId <>= self.bundleID.map { First($0) }
@@ -757,6 +797,9 @@ public class XcodeTarget: Hashable, Equatable {
         return productType?.rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
     }()
 
+
+    
+
     /// MARK - Extraction helpers
     /// These helpers aren't memoized if they are called 1 time and cached
 
@@ -852,12 +895,13 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     lazy var xcBundles: [ProjectSpec.TargetSource] = {
+
         let bundleResources = ([self] + self.transitiveTargets(map:
                     self.targetMap,
                     predicate: stopAfterNeedsRecursive))
             .filter { $0.type == "objc_bundle" }
             .flatMap { $0.xcResources }
-        return Set(bundleResources.map { $0.path }).map { ProjectSpec.TargetSource(path: $0) }
+        return Set(bundleResources.map { self.resolveExternalPath(for: $0.path) }).map { ProjectSpec.TargetSource(path: $0) }
     }()
 
     func extractLibraryDeps(map targetMap: XcodeTargetMap) -> [String] {
@@ -1161,7 +1205,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
             return "iOS"
         }
     }(xcodeTarget)
-    
+
     return ProjectSpec.Target(
         name: xcodeTarget.xcTargetName,
         type: PBXProductType(rawValue: productType.rawValue)!,
