@@ -416,6 +416,8 @@ public class XcodeTarget: Hashable, Equatable {
             return xcTargetName + ".xctest"
             case .AppExtension, .XPCService, .Watch1App, .Watch2App, .Watch1Extension, .Watch2Extension, .TVAppExtension:
             return xcTargetName + ".appex"
+            case .StaticLibrary:
+            return xcTargetName
             default:
             fatalError()
         }
