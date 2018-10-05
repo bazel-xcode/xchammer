@@ -1,0 +1,8 @@
+Vendor/DoubleConversion/
+Vendor/Folly/
+Vendor/React/
+Vendor/Yoga/
+Vendor/boost-for-react-native/
+Vendor/glog/
+Vendor/rules_pods/
+*.xcodeproj

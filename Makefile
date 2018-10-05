@@ -119,8 +119,21 @@ run_force: build
 	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
 	    --force
 
+run_perf: build-release
+	@[[ -d sample/Frankenstein/Vendor/rules_pods ]] \
+		|| (echo "Run 'make' in sample/Frankenstein" && exit 1)
+	$(ROOT_DIR)/.build/release/$(PRODUCT) generate \
+	    $(ROOT_DIR)/sample/Frankenstein/XCHammer.yaml \
+	    --workspace_root $(ROOT_DIR)/sample/Frankenstein \
+	    --bazel $(ROOT_DIR)/sample/Frankenstein/tools/bazelwrapper \
+	    --force
 
-ci: test
+# On the CI we always load the deps
+run_perf_ci:
+	$(MAKE) -C sample/Frankenstein
+	$(MAKE) run_perf
+
+ci: test run_perf_ci
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier

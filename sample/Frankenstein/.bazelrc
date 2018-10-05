@@ -1,0 +1,5 @@
+# Needed for folly.
+# FIXME: Propagate HEADER_SEARCH_PATHS to hdrs
+build \
+    --spawn_strategy=standalone \
+
