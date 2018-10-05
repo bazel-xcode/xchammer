@@ -35,7 +35,7 @@ func alwaysIncludePathPredicate(_ path: String) -> Bool {
 /// Return a predicate that determines if a file should be included or not.
 /// We can use this function to filter based on user input.
 func makePathFiltersPredicate(_ paths: Set<String>) -> (String) -> Bool {
-    let recursiveFilters = Set<String>(paths.filter({ $0.hasSuffix("/**") }).map() {
+    let recursiveFilters = Set<String>(paths.filter({ $0.hasSuffix("**") }).map() {
         $0.substring(to: $0.characters.index($0.endIndex, offsetBy: -2))
     })
 

@@ -35,7 +35,7 @@ struct XCHammerGenerateOptions {
     }
 
     var pathsSet: Set<String> {
-        let paths = config.projects[projectName]?.paths ?? []
+        let paths = config.projects[projectName]?.paths ?? ["**"]
         return Set(paths)
     }
 
