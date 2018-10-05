@@ -65,5 +65,19 @@ adding examples of edge cases and bugs here :). Pull requests welcome!*
 
 ### How can I develop XCHammer with Xcode?
 
-To generate an Xcode project, use the make command, `make workspace`. Make sure, that in the scheme, to setup absolute paths to the `WORKSPACE` and `XCHammerConfig`.
+To generate an Xcode project, use the make command, `make workspace`. 
 
+*Running*
+To run XCHammer from Xcode for a given workspace, correctly setup the scheme for
+running. Set absolute paths to the `WORKSPACE` via `--workspace_root`,
+`XCHammerConfig` ( the first argument ), and `--bazel`. All 3 of these arguments
+are required.
+
+```
+1)  generate 
+2)  /path/to/UrlGet/XCHammer.yml 
+3)  --workspace_root /path/to/UrlGet/
+4)  --bazel /path/to/bazel/binary
+```
+_note: Currently, there are multiple issues using the SPM generated workspace,
+which will be fixed upon supporting XCHammer in XCHammer._ 

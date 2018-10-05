@@ -732,14 +732,7 @@ enum Generator {
 
     private static func getAssetBase() -> String {
         let assetDir = "/XCHammerAssets"
-        #if Xcode
-            // Xcode Swift PM build system support.
-            // There is no way to correctly bundle resources in this scenario.
-            let components = #file .split(separator: "/")
-            let assetBase = "/" + components [0 ... components.count - 4].joined(separator: "/")
-        #else
-            let assetBase = Bundle.main.resourcePath!
-        #endif
+        let assetBase = Bundle.main.resourcePath!
         guard FileManager.default.fileExists(atPath: assetBase + assetDir) else {
             fatalError("Missing XCHammerAssets")
         }
@@ -747,15 +740,7 @@ enum Generator {
     }
 
     private static func getTulsiAspectRepo() -> String {
-        #if Xcode
-            // Xcode Swift PM build system support.
-            // There is no way to correctly bundle resources in this scenario.
-            let components = #file .split(separator: "/")
-            let assetBase = "/" + components [0 ... components.count - 4].joined(separator: "/")
-            return assetBase + "/tulsi-aspects"
-        #else
-            return Bundle.main.bundlePath
-        #endif
+        return Bundle.main.bundlePath
     }
 
     private static func getDepsHashSettingValue(projectPath: Path) throws ->
