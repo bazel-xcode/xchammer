@@ -249,17 +249,19 @@ public class XcodeTarget: Hashable, Equatable {
     }()
 
     func getXCSourceRootAbsolutePath(for fileInfo: BazelFileInfo) -> String {
+
         switch fileInfo.targetType {
         case .sourceFile:
-            return "$(SRCROOT)/" + fileInfo.subPath
+            return "$(SRCROOT)/" + resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
             return "$(SRCROOT)/bazel-genfiles/" + fileInfo.subPath
         }
     }
 
     func resolveExternalPath(for path: String) -> String {
-        if path.hasPrefix("external/") {
-            return "bazel-\(self.genOptions.workspaceRootPath.lastComponent)/\(path)"
+        if path.hasPrefix("external/") || self.label.packageName?.hasPrefix("@") ?? false {
+            // HACK
+            return "bazel-\(self.genOptions.workspaceRootPath.lastComponent)/\(path.replacingOccurrences(of: "../", with: "external/"))"
         }
         return path
     }
