@@ -312,17 +312,25 @@ public class XcodeTarget: Hashable, Equatable {
             return []
         }
 
-        return unfilteredDependencies.flatMap { (xcodeTarget: XcodeTarget) -> [XcodeTarget] in
+        var transitiveTargets: [XcodeTarget] = []
+        var queue = unfilteredDependencies
+        while let xcodeTarget = queue.first {
+            queue.removeFirst()
+
             switch predicate.run(xcodeTarget) {
             case .stop:
-                return []
+                continue
             case .justOnceMore:
-                return [xcodeTarget]
+                transitiveTargets.append(xcodeTarget)
             case .keepGoing:
-                return [xcodeTarget] + xcodeTarget.transitiveTargets(map: targetMap,
-                        predicate: predicate, force: force)
+                transitiveTargets.append(xcodeTarget)
+                if force || xcodeTarget.needsRecursiveExtraction {
+                    queue.insert(contentsOf: xcodeTarget.unfilteredDependencies, at: 0)
+                }
             }
         }
+
+        return transitiveTargets
     }
 
     func makePathFiltersTransitionPredicate(paths: Set<String>) -> TraversalTransitionPredicate<XcodeTarget> {
