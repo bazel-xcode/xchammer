@@ -281,18 +281,44 @@ public class XcodeTarget: Hashable, Equatable {
             }
     }()
 
+    private static func isHeaderLike(path: String) -> Bool {
+        // Reference: XcodeGenKit/SourceGenerator.swift
+        return path.hasSuffix(".h") ||
+            path.hasSuffix(".hpp") ||
+            path.hasSuffix(".hh") ||
+            path.hasSuffix(".ipp") ||
+            path.hasSuffix(".tpp") ||
+            path.hasSuffix(".hxx") ||
+            path.hasSuffix(".def")
+    }
+
     lazy var xcSources: [ProjectSpec.TargetSource] = {
         let sourceFilePaths = self.sourceFiles
             .map { sourceInfo -> String in
                 return self.getRelativePath(for: sourceInfo)
             }
         
+        // This is a massive error if this will not allocate with a string.
         let sourceFiles = sourceFilePaths
             .filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }
-            .map { ProjectSpec.TargetSource(path: $0) }
-
+            .map { path -> ProjectSpec.TargetSource in
+                let phase = XcodeTarget.isHeaderLike(path: path) ?
+                    TargetSource.BuildPhase.headers : nil
+                return ProjectSpec.TargetSource(path: path, buildPhase: phase,
+                        headerVisibility:
+                        TargetSource.HeaderVisibility.`project`)
+            }
         let nonArcFiles = self.nonARCSourceFiles
-            .map { ProjectSpec.TargetSource(path: $0.subPath, compilerFlags: ["-fno-objc-arc"]) }
+            .map {
+                fileInfo -> ProjectSpec.TargetSource in
+                let path = fileInfo.subPath
+                let phase = XcodeTarget.isHeaderLike(path: path) ?
+                    TargetSource.BuildPhase.headers : nil
+                return ProjectSpec.TargetSource(path: path,
+                         compilerFlags: ["-fno-objc-arc"],
+                        buildPhase: phase, headerVisibility:
+                        TargetSource.HeaderVisibility.`project`)
+            }
         let resources = self.xcResources
         let bundles = self.xcBundles
 
