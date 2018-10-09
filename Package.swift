@@ -39,6 +39,10 @@ let package = Package(
 
         .package(url: "https://github.com/Carthage/Commandant.git", from:
             "0.12.0"),
+        
+        // Directness branch
+        .package(url: "https://github.com/kastiglione/PathKit.git",
+            .revision("5fa2b80530d96792aa00c81d32582ced649ce720")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -50,7 +54,8 @@ let package = Package(
               "ProjectSpec",
               "TulsiGenerator",
               "Commandant",
-              "ShellOut"
+              "ShellOut",
+              "PathKit",
          ])
     ]
 )
