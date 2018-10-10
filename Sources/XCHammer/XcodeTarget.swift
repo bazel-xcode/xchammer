@@ -338,10 +338,15 @@ public class XcodeTarget: Hashable, Equatable {
             return []
         }
 
+        var visited: Set<XcodeTarget> = [self]
         var transitiveTargets: [XcodeTarget] = []
         var queue = unfilteredDependencies
         while let xcodeTarget = queue.first {
             queue.removeFirst()
+
+            guard visited.insert(xcodeTarget).inserted else {
+                continue
+            }
 
             switch predicate.run(xcodeTarget) {
             case .stop:
