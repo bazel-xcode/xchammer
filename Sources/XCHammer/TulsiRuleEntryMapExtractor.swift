@@ -31,8 +31,7 @@ public enum TulsiRuleEntryMapExtractor {
 
         let execRoot = extractor.bazelExecutionRoot
         let features = BazelBuildSettingsFeatures.enabledFeatures(options:
-                config.options, workspaceRoot: workspace.path, bazelExecRoot:
-                execRoot)
+                config.options)
 
         let ruleEntryMap = try extractor.ruleEntriesForLabels(
                 config.buildTargetLabels, startupOptions:

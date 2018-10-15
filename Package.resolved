@@ -105,7 +105,7 @@
         "repositoryURL": "https://github.com/pinterest/Tulsi.git",
         "state": {
           "branch": null,
-          "revision": "e3c0dcb9dda0dc191034c061fdd4f0e4397ad527",
+          "revision": "654784aa316a9ab936c18afe644fdf545e25d0a5",
           "version": null
         }
       },
@@ -114,7 +114,7 @@
         "repositoryURL": "https://github.com/yonaskolb/XcodeGen.git",
         "state": {
           "branch": null,
-          "revision": "6ae4a9fc3b54ae4205618f22b6a734558a76ca20",
+          "revision": "8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0",
           "version": null
         }
       },
