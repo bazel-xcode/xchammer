@@ -297,7 +297,7 @@ public class XcodeTarget: Hashable, Equatable {
             .map { sourceInfo -> String in
                 return self.getRelativePath(for: sourceInfo)
             }
-        
+
         // This is a massive error if this will not allocate with a string.
         let sourceFiles = sourceFilePaths
             .filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }
@@ -338,7 +338,7 @@ public class XcodeTarget: Hashable, Equatable {
             return []
         }
         var visited: Set<XcodeTarget> = [self]
-      
+
         var transitiveTargets: [XcodeTarget] = []
         var queue = unfilteredDependencies
         while let xcodeTarget = queue.first {
@@ -365,7 +365,7 @@ public class XcodeTarget: Hashable, Equatable {
 
     func makePathFiltersTransitionPredicate(paths: Set<String>) -> TraversalTransitionPredicate<XcodeTarget> {
         let pathPredicate = makePathFiltersPredicate(paths)
-        return TraversalTransitionPredicate { xcodeTarget -> Transition in  
+        return TraversalTransitionPredicate { xcodeTarget -> Transition in
             guard let buildFilePath = xcodeTarget.buildFilePath else {
                 fatalError()
             }
@@ -457,7 +457,7 @@ public class XcodeTarget: Hashable, Equatable {
             case .StaticLibrary:
             return xcTargetName
             default:
-            fatalError()
+            return "$(TARGET_NAME)"
         }
     }
 
@@ -599,7 +599,13 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         // Product Name
+
         settings.productName <>= self.bundleName.map { First($0) }
+
+        if settings.productName == nil {
+            settings.productName = First(self.extractBuiltProductName())
+        }
+
 
         // Product Bundle Identifier
         settings.productBundleId <>= self.bundleID.map { First($0) }
@@ -645,13 +651,24 @@ public class XcodeTarget: Hashable, Equatable {
         // Set thes deployment target if available
         if let deploymentTgt = self.deploymentTarget {
             switch deploymentTgt.platform {
-            case .ios: settings.iOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-            case .tvos: settings.tvOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-            case .watchos: settings.watchOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-            case .macos: settings.macOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+            case .ios:
+                settings.iOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("iphoneos")
+                settings.targetedDeviceFamily <>= ["1", "2"]
+            case .tvos:
+                settings.tvOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("appletvos")
+                settings.targetedDeviceFamily <>= ["3"]
+            case .watchos:
+                settings.watchOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("watchos")
+                settings.targetedDeviceFamily <>= ["4"]
+            case .macos:
+                settings.macOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("macosx")
             }
         }
-
+        
         // Add defines as copts
         settings.copts <>= processDefines(defines: self.extractDefines(map: targetMap))
 
@@ -826,7 +843,7 @@ public class XcodeTarget: Hashable, Equatable {
               bundle_id = "\(bundleID)",
               platform_type = \"ios\"
             )
-            """    
+            """
         }
     }
 
@@ -848,7 +865,7 @@ public class XcodeTarget: Hashable, Equatable {
               entitlements: entitlements,
               provisioningProfile: provisioningProfile,
               bundleID: bundleID)
-        return exportEntitlements 
+        return exportEntitlements
     }
 
     func extractCodeSignEntitlementsFile(genOptions: XCHammerGenerateOptions) -> String? {
@@ -936,7 +953,7 @@ public class XcodeTarget: Hashable, Equatable {
         // Assume extensions are contained in the same workspace
         return extensions
             .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
-            .map { 
+            .map {
                 var mutableDep = ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
                                                embed: $0.isExtension)
                 mutableDep.codeSign = false
@@ -989,6 +1006,7 @@ public class XcodeTarget: Hashable, Equatable {
         ]
 
         guard let productType = BuildTypeToTargetType[self.type] else {
+            print("Unknown product type: \(self.type). Unable to extract xcode equivalent")
             return nil
         }
         return productType
@@ -1049,7 +1067,7 @@ public class XcodeTarget: Hashable, Equatable {
         // Minimal settings for this build
         var settings = XCBuildSettings()
         settings.codeSigningRequired <>= First("NO")
-
+        settings.productName <>= First("$(TARGET_NAME)")
         // A custom XCHammerAsset bazel_build_settings.py is loaded by bazel_build.py
         settings.pythonPath =
             First("${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets")
@@ -1199,7 +1217,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
             return "iOS"
         }
     }(xcodeTarget)
-    
+
     return ProjectSpec.Target(
         name: xcodeTarget.xcTargetName,
         type: PBXProductType(rawValue: productType.rawValue)!,

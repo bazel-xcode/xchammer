@@ -48,7 +48,7 @@ struct OrderedArray<T: Hashable>: Sequence {
 
 extension OrderedArray: ExpressibleByArrayLiteral {
     typealias ArrayLiteralElement = Element
-    
+
     init(arrayLiteral elements: T...) {
         self.init(elements)
     }

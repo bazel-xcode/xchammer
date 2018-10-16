@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_629454187867"
+               BlueprintIdentifier = "LT_577727725390"
                BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_879714440108"
+               BlueprintIdentifier = "LT_782485540818"
                BuildableName = "GeneratedFiles"
                BlueprintName = "GeneratedFiles"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -42,7 +42,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_535582595715"
+               BlueprintIdentifier = "LT_591252691410"
                BuildableName = "ResetLLDBInit"
                BlueprintName = "ResetLLDBInit"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -56,7 +56,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_757956135481"
+               BlueprintIdentifier = "NT_168961105602"
                BuildableName = "ios-app.app"
                BlueprintName = "ios-app"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -70,7 +70,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_394586624846"
+               BlueprintIdentifier = "NT_273688916710"
                BuildableName = "UnitTestsWithHost.xctest"
                BlueprintName = "UnitTestsWithHost"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -88,7 +88,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_394586624846"
+               BlueprintIdentifier = "NT_273688916710"
                BuildableName = "UnitTestsWithHost.xctest"
                BlueprintName = "UnitTestsWithHost"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -98,7 +98,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_394586624846"
+            BlueprintIdentifier = "NT_273688916710"
             BuildableName = "UnitTestsWithHost.xctest"
             BlueprintName = "UnitTestsWithHost"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -121,7 +121,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_394586624846"
+            BlueprintIdentifier = "NT_273688916710"
             BuildableName = "UnitTestsWithHost.xctest"
             BlueprintName = "UnitTestsWithHost"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -140,7 +140,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_394586624846"
+            BlueprintIdentifier = "NT_273688916710"
             BuildableName = "UnitTestsWithHost.xctest"
             BlueprintName = "UnitTestsWithHost"
             ReferencedContainer = "container:UrlGet.xcodeproj">
