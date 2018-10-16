@@ -3,8 +3,8 @@
    LastUpgradeVersion = "9.2"
    version = "1.3">
    <BuildAction
-      buildImplicitDependencies = "YES"
-      parallelizeBuildables = "NO">
+      parallelizeBuildables = "NO"
+      buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = ""
-               BuildableName = ""
+               BlueprintIdentifier = "LT_691292342913"
+               BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -23,13 +23,13 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
+            buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = ""
-               BuildableName = "ios-app.app-Bazel"
+               BlueprintIdentifier = "NT_600615860046"
+               BuildableName = "ios-app-Bazel.app"
                BlueprintName = "ios-app-Bazel"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -40,21 +40,18 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = ""
-            BuildableName = "ios-app.app-Bazel"
+            BlueprintIdentifier = "NT_600615860046"
+            BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -72,14 +69,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = ""
-            BuildableName = "ios-app.app-Bazel"
+            BlueprintIdentifier = "NT_600615860046"
+            BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -93,20 +88,18 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = ""
-            BuildableName = "ios-app.app-Bazel"
+            BlueprintIdentifier = "NT_600615860046"
+            BuildableName = "ios-app-Bazel.app"
             BlueprintName = "ios-app-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-      </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      revealArchiveInOrganizer = "YES"
-      buildConfiguration = "Debug">
+      buildConfiguration = "Debug"
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
