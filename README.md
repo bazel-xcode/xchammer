@@ -1,4 +1,5 @@
 # XCHammer
+[![Build Status](https://travis-ci.org/pinterest/xchammer.svg?branch=master)](https://travis-ci.org/pinterest/xchammer)
 
 XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace.
 
