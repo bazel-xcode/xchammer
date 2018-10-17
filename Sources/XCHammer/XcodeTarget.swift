@@ -75,9 +75,6 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
     guard pathPredicate(buildFilePath) else {
         return false
     }
-    if xcodeTarget.frameworkImports.count > 0 {
-        return false
-    }
     if shouldPropagateDeps(forTarget: xcodeTarget) {
         return true
     }
@@ -94,8 +91,7 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
         return false
     }
 
-    guard let _ = xcodeTarget.xcType,
-        xcodeTarget.label.packageName!.hasPrefix("@") == false else {
+    guard let _ = xcodeTarget.xcType else {
         return false
     }
     return true
@@ -248,9 +244,10 @@ public class XcodeTarget: Hashable, Equatable {
     }()
 
     func getXCSourceRootAbsolutePath(for fileInfo: BazelFileInfo) -> String {
+
         switch fileInfo.targetType {
         case .sourceFile:
-            return "$(SRCROOT)/" + fileInfo.subPath
+            return "$(SRCROOT)/" + resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
             return "$(SRCROOT)/bazel-genfiles/" + fileInfo.subPath
         }
@@ -259,10 +256,17 @@ public class XcodeTarget: Hashable, Equatable {
     func getRelativePath(for fileInfo: BazelFileInfo) -> String {
         switch fileInfo.targetType {
         case .sourceFile:
-            return fileInfo.subPath
+            return resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
             return "bazel-genfiles/" + fileInfo.subPath
         }
+    }
+
+    func resolveExternalPath(for path: String) -> String {
+        if path.hasPrefix("external/") || self.label.packageName?.hasPrefix("@") ?? false {
+            return path.replacingOccurrences(of: "../", with: "external/")
+        }
+        return path
     }
 
     lazy var unfilteredDependencies: [XcodeTarget] = {
@@ -293,15 +297,10 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     lazy var xcSources: [ProjectSpec.TargetSource] = {
-        let sourceFilePaths = self.sourceFiles
-            .map { sourceInfo -> String in
-                return self.getRelativePath(for: sourceInfo)
-            }
-
-        // This is a massive error if this will not allocate with a string.
-        let sourceFiles = sourceFilePaths
-            .filter { !$0.hasSuffix(".modulemap") && !$0.hasSuffix(".hmap") }
-            .map { path -> ProjectSpec.TargetSource in
+        let sourceFiles = self.sourceFiles
+            .filter { !$0.subPath.hasSuffix(".modulemap") && !$0.subPath.hasSuffix(".hmap") }
+            .map { fileInfo -> ProjectSpec.TargetSource in
+                let path = self.getRelativePath(for: fileInfo)
                 let phase = XcodeTarget.isHeaderLike(path: path) ?
                     TargetSource.BuildPhase.headers : nil
                 return ProjectSpec.TargetSource(path: path, buildPhase: phase,
@@ -311,7 +310,7 @@ public class XcodeTarget: Hashable, Equatable {
         let nonArcFiles = self.nonARCSourceFiles
             .map {
                 fileInfo -> ProjectSpec.TargetSource in
-                let path = fileInfo.subPath
+                let path = self.getRelativePath(for: fileInfo)
                 let phase = XcodeTarget.isHeaderLike(path: path) ?
                     TargetSource.BuildPhase.headers : nil
                 return ProjectSpec.TargetSource(path: path,
@@ -319,6 +318,7 @@ public class XcodeTarget: Hashable, Equatable {
                         buildPhase: phase, headerVisibility:
                         TargetSource.HeaderVisibility.`project`)
             }
+
         let resources = self.xcResources
         let bundles = self.xcBundles
 
@@ -405,14 +405,18 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     lazy var myResources: [ProjectSpec.TargetSource] = {
-        let resources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.launch_storyboard, .supporting_files])
+        let resources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs:
+                [.launch_storyboard, .supporting_files])
             .filter(self.isAllowableXcodeGenSource(path:))
-            .compactMap { path in
+            .compactMap { inputPath in
+            let path = Path(self.resolveExternalPath(for: inputPath.string))
             let pathComponents = path.components
             if let specialIndex = (pathComponents.index { component in
                 DirectoriesAsFileSuffixes.map { component.hasSuffix("." + $0) }.any()
             }) {
-                let formattedPath = Path(pathComponents[pathComponents.startIndex ... specialIndex].joined(separator: Path.separator))
+                let formattedPath =
+                    Path(pathComponents[pathComponents.startIndex ...
+                            specialIndex].joined(separator: Path.separator))
                 if formattedPath.extension == "lproj" {
                     // TODO: Don't hardcode the parents for lproj
                     return ProjectSpec.TargetSource(path: formattedPath.parent().string, type: .group)
@@ -424,16 +428,20 @@ public class XcodeTarget: Hashable, Equatable {
             }
         }
 
-        let structuredResources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs: [.structured_resources]).compactMap { resourcePath -> ProjectSpec.TargetSource? in
+        let structuredResources: [ProjectSpec.TargetSource] =
+            self.pathsForAttrs(attrs: [.structured_resources]).compactMap {
+                resourcePath -> ProjectSpec.TargetSource? in
             guard let buildFilePath = self.buildFilePath else { return nil }
             let basePath = Path(buildFilePath).parent().normalize()
             // now we can recover the relative path provided inside the build files
-            let buildFileRelativePath = Path(resourcePath.string.replacingOccurrences(of: basePath.string + "/", with: ""))
+            let buildFileRelativePath =
+            Path(resourcePath.string.replacingOccurrences(of: basePath.string +
+                        "/", with: ""))
             // the structured path is the first directory relative to the build file dir
             let structuredPath = basePath + Path(buildFileRelativePath.components[0])
             // structured resources are rendered as folder-references in Xcode
-            return ProjectSpec.TargetSource(path: structuredPath.string, compilerFlags:
-                    [], type: .folder)
+            return ProjectSpec.TargetSource(path: self.resolveExternalPath(for:
+                structuredPath.string), compilerFlags: [], type: .folder)
         }
 
         // Normalize for Xcode
@@ -612,7 +620,9 @@ public class XcodeTarget: Hashable, Equatable {
 
         // Set Header Search Paths
         if let headerSearchPaths = self.includePaths {
-            settings.headerSearchPaths <>= OrderedArray(["$(inherited)"]) <> headerSearchPaths
+            settings.headerSearchPaths <>=
+                OrderedArray(["$(inherited)"]) <>
+                headerSearchPaths
                 .filter { !$0.0.contains("tulsi-includes") }
                 .foldMap { (path: String, isRecursive: Bool) in
                 if path.hasSuffix("module_map") {
@@ -624,6 +634,9 @@ public class XcodeTarget: Hashable, Equatable {
                 }
             }
         }
+
+        settings.headerSearchPaths <>=
+                OrderedArray(["external"])
 
         // Add my own + transitive header maps to copts
         settings.copts <>= ([self] + self.transitiveTargets(map: targetMap))
@@ -907,12 +920,13 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     lazy var xcBundles: [ProjectSpec.TargetSource] = {
+
         let bundleResources = ([self] + self.transitiveTargets(map:
                     self.targetMap,
                     predicate: stopAfterNeedsRecursive))
             .filter { $0.type == "objc_bundle" }
             .flatMap { $0.xcResources }
-        return Set(bundleResources.map { $0.path }).map { ProjectSpec.TargetSource(path: $0) }
+        return Set(bundleResources.map { self.resolveExternalPath(for: $0.path) }).map { ProjectSpec.TargetSource(path: $0) }
     }()
 
     func extractLibraryDeps(map targetMap: XcodeTargetMap) -> [String] {

@@ -131,6 +131,13 @@ run_force: build
 	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper \
 	    --force
 
+run_workspace_sample: build
+	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	    $(ROOT_DIR)/sample/WorkspaceSource/XCHammer.yaml \
+	    --workspace_root $(ROOT_DIR)/sample/WorkspaceSource \
+	    --bazel $(ROOT_DIR)/sample/WorkspaceSource/tools/bazelwrapper \
+	    --force
+
 run_perf: build-release
 	@[[ -d sample/Frankenstein/Vendor/rules_pods ]] \
 		|| (echo "Run 'make' in sample/Frankenstein" && exit 1)

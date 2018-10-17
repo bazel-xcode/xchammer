@@ -1,0 +1,7 @@
+targets:
+    - ":ios-app"
+
+projects:
+    "WorkspaceSource":
+        paths:
+            - "**"

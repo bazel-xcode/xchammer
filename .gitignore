@@ -34,3 +34,4 @@ tulsi-aspects
 *.xcode_select_env
 bazel-*
 sample/*/*.xcodeproj
+external
