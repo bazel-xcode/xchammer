@@ -499,6 +499,7 @@ enum Generator {
         let options = SpecOptions(
                 carthageBuildPath: nil,
                 createIntermediateGroups: true,
+                settingPresets: .none,
                 indentWidth: 4,
                 tabWidth: 4,
                 usesTabs: false

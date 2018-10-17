@@ -81,4 +81,5 @@ def export_entitlements(
         name = name,
         entitlements = ":" + name + "_exported",
         visibility = ["//visibility:public"],
+        tags = ["xchammer"],
     )

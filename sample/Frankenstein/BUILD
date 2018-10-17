@@ -22,11 +22,11 @@ objc_library(
         "//Vendor/React:Core",
         "//Vendor/React:CxxBridge",
         "//Vendor/React:DevSupport",
+        "//Vendor/React:RCTAnimation",
         "//Vendor/React:RCTImage",
         "//Vendor/React:RCTNetwork",
         "//Vendor/React:RCTText",
         "//Vendor/React:RCTWebSocket",
-        "//Vendor/React:RCTAnimation",
-        "//Vendor/Yoga:Yoga"
+        "//Vendor/Yoga",
     ],
 )
