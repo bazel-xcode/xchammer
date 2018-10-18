@@ -236,11 +236,15 @@ enum Generator {
             return []
         }
 
+        let specifiedLabels = Set(genOptions.config.buildTargetLabels)
         return targets
             .compactMap { xcodeTarget in
                 let type = xcodeTarget.xcType!
                 let name = xcodeTarget.xcTargetName
-                guard type.contains("application") || type.contains("-test") else {
+                guard type.contains("application")
+                    || type.contains("-test")
+                    || specifiedLabels.contains(xcodeTarget.label)
+                    else {
                     return nil
                 }
 
