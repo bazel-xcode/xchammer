@@ -562,8 +562,7 @@ enum Generator {
 
     /// Move the new project to the output path.
     /// This needs to be atomic, or it will cause issues.
-    private static func replaceProject(genOptions: XCHammerGenerateOptions)
-        throws {
+    private static func replaceProject(genOptions: XCHammerGenerateOptions) throws {
         let tempDirPath = genOptions.outputProjectPath.string + "-tmp"
         let tempProjectPath = Path(tempDirPath)
         XCHammerLogger.shared().logInfo("Replacing old project")
@@ -574,16 +573,17 @@ enum Generator {
         }
         try FileManager.default.moveItem(atPath: tempProjectPath.string,
                 toPath: genOptions.outputProjectPath.string)
+
         XCHammerLogger.shared().logInfo("Overwrote project")
     }
 
     /// Skip hashing children of Xcode directory like files
     private static func skipXcodeDirChild(parent: URL, url: URL) -> Bool {
-	// These file types are treated like directories
-	let xcodeDirLikeFileTypesAndPathComponents = ["app", "appex", "bundle",
-	    "framework", "octest", "xcassets", "xcodeproj", "xcdatamodel",
-	    "xcdatamodeld", "xcmappingmodel", "xctest", "xcstickers", "xpc",
-	    "scnassets" ].map { ($0, "." + $0 ) }
+        // These file types are treated like directories
+        let xcodeDirLikeFileTypesAndPathComponents = ["app", "appex", "bundle",
+            "framework", "octest", "xcassets", "xcodeproj", "xcdatamodel",
+            "xcdatamodeld", "xcmappingmodel", "xctest", "xcstickers", "xpc",
+            "scnassets" ].map { ($0, "." + $0 ) }
 
         let firstMatch = xcodeDirLikeFileTypesAndPathComponents.lazy.first {
             (ext, dotExt) in
@@ -901,6 +901,18 @@ enum Generator {
                     contents: "".data(using: .utf8), attributes: nil) else {
                  fatalError("Can't write genStatus")
             }
+        }
+
+        // Symlink the canonical bazel external directory
+        let linkTo = (workspaceRootPath.string + "/external")
+        let canonicalExternalDir = Path(workspaceInfo.bazelExecRoot).normalize()
+                .parent().parent().string + "/external"
+        try? FileManager.default.removeItem(atPath: linkTo)
+        do {
+            try FileManager.default.createSymbolicLink(atPath: linkTo,
+                    withDestinationPath: canonicalExternalDir)
+        } catch {
+            fatalError("Cant link external symlink \(error)")
         }
 
         return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in

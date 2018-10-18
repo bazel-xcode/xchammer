@@ -76,28 +76,43 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BuildableName = "UITests.xctest"
                BlueprintName = "UITests"
-               ReferencedContainer = "container:UrlGet.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = ""
-               BuildableName = "UnitTestsWithHost.xctest"
-               BlueprintName = "UnitTestsWithHost"
-               ReferencedContainer = "container:UrlGet.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = ""
+=======
                BuildableName = "UnitTests.xctest"
                BlueprintName = "UnitTests"
+>>>>>>> Workspace rules and sample Pass 1:sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
+               BuildableName = "UnitTestsWithHost.xctest"
+               BlueprintName = "UnitTestsWithHost"
+=======
+               BuildableName = "UITests.xctest"
+               BlueprintName = "UITests"
+>>>>>>> Workspace rules and sample Pass 1:sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
+=======
+               BuildableName = "UnitTestsWithHost.xctest"
+               BlueprintName = "UnitTestsWithHost"
+>>>>>>> Workspace rules and sample Pass 1:sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -164,7 +179,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
-      revealArchiveInOrganizer = "YES">
+      revealArchiveInOrganizer = "YES"
+      buildConfiguration = "Debug">
    </ArchiveAction>
 </Scheme>
