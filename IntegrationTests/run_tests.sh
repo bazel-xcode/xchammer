@@ -14,10 +14,10 @@ PRODUCT="XCHammer"
 SANDBOX="$ROOT_DIR/IntegrationTests/Sandbox"
 
 # We download and install bazel if its missing
-BAZEL=($SANDBOX/UrlGet/tools/bazelwrapper)
+BAZEL=($SANDBOX/$SAMPLE/tools/bazelwrapper)
 
-TEST_PROJ="$SANDBOX/UrlGet/UrlGet.xcodeproj"
-TEST_NEW_IMPL_FILE="$SANDBOX/UrlGet/ios-app/UrlGet/XCHammerIntegrationTestFile.m"
+TEST_PROJ="$SANDBOX/$SAMPLE/$SAMPLE.xcodeproj"
+TEST_NEW_IMPL_FILE="$SANDBOX/$SAMPLE/ios-app/$SAMPLE/XCHammerIntegrationTestFile.m"
 
 function assertExitCode() {
     if [[ $? != 0 ]]; then
@@ -31,21 +31,21 @@ function assertExitCode() {
 
 function testBuild() {
     echo "Testing generate and build with Xcode"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
     xcodebuild -scheme ios-app -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built successfully"
 }
 
 function testBazelBuild() {
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL --force
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL --force
     xcodebuild -scheme ios-app-Bazel -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built bazel targets successfully"
 }
 
 function testNooping() {
     echo "Testing noop generation"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
-    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL`
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
+    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL`
 
     # We print Skipping update when we noop
     echo $RESULT | grep "Skipping"
@@ -54,7 +54,7 @@ function testNooping() {
 
 # Create a new file, and make sure Xcode is doing a build with that file
 function testGenerateWhileBuilding() {
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/UrlGet/XCHammer.yaml --bazel $BAZEL
+    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
 
     touch $TEST_NEW_IMPL_FILE
 
@@ -83,10 +83,10 @@ function preflightEnv() {
     # Bootstrap the sandbox. We hydrate the sandbox with the sample
     # program to prevent polluting the sample
     mkdir -p $SANDBOX
-    ditto $ROOT_DIR/sample/UrlGet $SANDBOX/UrlGet
-    rm -rf $SANDBOX/UrlGet/UrlGet.xcodeproj
+    ditto $ROOT_DIR/sample/$SAMPLE $SANDBOX/$SAMPLE
+    rm -rf $SANDBOX/$SAMPLE/$SAMPLE.xcodeproj
 
-    cd $SANDBOX/UrlGet;
+    cd $SANDBOX/$SAMPLE;
 
     echo "Checking bazel"
     $BAZEL info

@@ -93,7 +93,7 @@ build: build-debug
 	@ln -sf $(PWD)/.build/debug sample/UrlGet/tools/XCHammer
 
 test: aspects
-	$(ROOT_DIR)/IntegrationTests/run_tests.sh
+	SAMPLE=UrlGet $(ROOT_DIR)/IntegrationTests/run_tests.sh
 
 debug: build
 	# Launches LLDB with XCHammer
@@ -104,19 +104,31 @@ debug: build
 	lldb $(ROOT_DIR)/.build/debug/XCHammer
 
 
-# Run a debug build of XCHammer
+# XCHammer Samples
+# A sample exemplifies important behavior in XCHammer
+#
+# Conventions:
+# - in the directory sample i.e. sample/UrlGet
+# - has an XCHammer.yaml
+# - contains a project named after the dir i.e. UrlGet.xcodeproj
+# - has bazel and non bazel targets that build.
+# - has a bazelwrapper ( a shellscript that runs some bazel )
+SAMPLE ?= UrlGet
+
+# Run a debug build of XCHammer against a sample
 # Development hack: don't actually install, just symlink the debug build
+# See README for usage in a normal project
 run: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
-	    $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml \
-	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
-	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper
+	    $(ROOT_DIR)/sample/$(SAMPLE)/XCHammer.yaml \
+	    --workspace_root $(ROOT_DIR)/sample/$(SAMPLE) \
+	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper
 
 run_force: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
-	    $(ROOT_DIR)/sample/UrlGet/XCHammer.yaml \
-	    --workspace_root $(ROOT_DIR)/sample/UrlGet \
-	    --bazel $(ROOT_DIR)/sample/UrlGet/tools/bazelwrapper \
+	    $(ROOT_DIR)/sample/$(SAMPLE)/XCHammer.yaml \
+	    --workspace_root $(ROOT_DIR)/sample/$(SAMPLE) \
+	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper \
 	    --force
 
 run_perf: build-release
@@ -127,6 +139,27 @@ run_perf: build-release
 	    --workspace_root $(ROOT_DIR)/sample/Frankenstein \
 	    --bazel $(ROOT_DIR)/sample/Frankenstein/tools/bazelwrapper \
 	    --force
+
+# Create golden files from samples.
+# Expectations:
+# - output is stable. i.e. things don't move around
+# - output is reproducible across machines
+# TODO: Port Frankenstein to external PodToBUILD before adding it as a
+# goldmaster
+goldmaster:
+	@rm -rf IntegrationTests/Goldmaster
+	@mkdir -p IntegrationTests/Goldmaster
+	@for S in $$(ls sample); do \
+		[[ $$S != "Frankenstein" ]] || continue; \
+		SAMPLE=$$S make run_force || exit 1; \
+		echo "Making goldmaster for $$S"; \
+		MASTER=IntegrationTests/Goldmaster/$$S.xcodeproj; \
+		mkdir -p $$MASTER; \
+		ditto sample/$$S/$$S.xcodeproj/project.pbxproj $$MASTER/project.pbxproj; \
+		sed -i '' 's,$(PWD),__PWD__,g' $$MASTER/project.pbxproj; \
+		sed -i '' 's,XCHAMMER.*,,g' $$MASTER/project.pbxproj; \
+		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
+	done
 
 # On the CI we always load the deps
 run_perf_ci:

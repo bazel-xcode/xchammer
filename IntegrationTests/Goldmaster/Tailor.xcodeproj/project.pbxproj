@@ -1,0 +1,498 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF_398660406203 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_583976683100 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
+		BF_494849420755 /* libios-app-main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_304815010208 /* libios-app-main.a */; };
+		BF_653225681046 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_532122750278 /* AppDelegate.swift */; };
+		BF_664364250412 = {isa = PBXBuildFile; fileRef = FR_765521743216 /* ios-app.app */; };
+		BF_790511827305 = {isa = PBXBuildFile; fileRef = FR_148620552024 /* ios-app-main.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FR_148620552024 /* ios-app-main.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = "ios-app-main.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_304815010208 /* libios-app-main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libios-app-main.a"; sourceTree = "<group>"; };
+		FR_532122750278 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FR_583976683100 /* Stub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stub.m; sourceTree = "<group>"; };
+		FR_765521743216 /* ios-app.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_892705507893 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FBP_76552174321 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_494849420755 /* libios-app-main.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G_1456824486394 /* Tailor.xcodeproj */ = {
+			isa = PBXGroup;
+			children = (
+				G_1826419514828 /* XCHammerAssets */,
+			);
+			path = Tailor.xcodeproj;
+			sourceTree = "<group>";
+		};
+		G_1826419514828 /* XCHammerAssets */ = {
+			isa = PBXGroup;
+			children = (
+				FR_583976683100 /* Stub.m */,
+			);
+			path = XCHammerAssets;
+			sourceTree = "<group>";
+		};
+		G_4431972641387 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FR_304815010208 /* libios-app-main.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		G_5331449210359 = {
+			isa = PBXGroup;
+			children = (
+				FR_532122750278 /* AppDelegate.swift */,
+				FR_892705507893 /* Info.plist */,
+				G_1456824486394 /* Tailor.xcodeproj */,
+				G_4431972641387 /* Frameworks */,
+				G_5519997764541 /* Products */,
+			);
+			indentWidth = 4;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
+		};
+		G_5519997764541 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FR_148620552024 /* ios-app-main.a */,
+				FR_765521743216 /* ios-app.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		LT_734738077716 /* UpdateXcodeProject */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c __PWD__/sample/Tailor/Tailor.xcodeproj/XCHammerAssets/updateXcodeProj.sh";
+			buildConfigurationList = CL_734738077716 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */;
+			buildPhases = (
+				SBP_73473807771 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = "__PWD__/sample/Tailor";
+			dependencies = (
+			);
+			name = UpdateXcodeProject;
+			passBuildSettingsInEnvironment = 1;
+			productName = UpdateXcodeProject;
+		};
+		LT_828992211475 /* ResetLLDBInit */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'";
+			buildConfigurationList = CL_828992211475 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */;
+			buildPhases = (
+				SBP_82899221147 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = "__PWD__/sample/Tailor";
+			dependencies = (
+			);
+			name = ResetLLDBInit;
+			passBuildSettingsInEnvironment = 1;
+			productName = ResetLLDBInit;
+		};
+		LT_907828020914 /* GeneratedFiles */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (__PWD__/sample/Tailor/tools/bazelwrapper clean) || (__PWD__/sample/Tailor/Tailor.xcodeproj/XCHammerAssets/retry.sh __PWD__/sample/Tailor/tools/bazelwrapper build --experimental_show_artifacts //Tailor.xcodeproj/XCHammerAssets:-ios-app_entitlements)'";
+			buildConfigurationList = CL_907828020914 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
+			buildPhases = (
+				SBP_90782802091 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = "__PWD__/sample/Tailor";
+			dependencies = (
+			);
+			name = GeneratedFiles;
+			passBuildSettingsInEnvironment = 1;
+			productName = GeneratedFiles;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		NT_148620552024 /* ios-app-main */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_148620552024 /* Build configuration list for PBXNativeTarget "ios-app-main" */;
+			buildPhases = (
+				SBP_14862055202 /* Sources */,
+				SSBP_1357698706 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app-main";
+			productName = "ios-app-main";
+			productReference = FR_148620552024 /* ios-app-main.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		NT_765521743216 /* ios-app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_765521743216 /* Build configuration list for PBXNativeTarget "ios-app" */;
+			buildPhases = (
+				SBP_76552174321 /* Sources */,
+				FBP_76552174321 /* Frameworks */,
+				SSBP_3090322349 /* Process IPA */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app";
+			productName = "ios-app";
+			productReference = FR_765521743216 /* ios-app.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		P_7202350529378 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0930;
+				TargetAttributes = {
+					NT_148620552024 = {
+						ProvisioningStyle = manual;
+					};
+					NT_765521743216 = {
+						ProvisioningStyle = manual;
+					};
+				};
+			};
+			buildConfigurationList = CL_720235052937 /* Build configuration list for PBXProject "Tailor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = G_5331449210359;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				LT_907828020914 /* GeneratedFiles */,
+				LT_828992211475 /* ResetLLDBInit */,
+				LT_734738077716 /* UpdateXcodeProject */,
+				NT_765521743216 /* ios-app */,
+				NT_148620552024 /* ios-app-main */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		SSBP_1357698706 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		SSBP_3090322349 /* Process IPA */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Process IPA";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "__PWD__/.build/debug/XCHammer process-ipa";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SBP_14862055202 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_653225681046 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_73473807771 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_76552174321 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_398660406203 /* Stub.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_82899221147 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_90782802091 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BC_186105618559 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/Tailor.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_188700936318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_197963319665 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_206560789660 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_290085585653 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_349690541029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_513219065781 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_626963372307 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_660726713110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_678207195161 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				
+			};
+			name = Debug;
+		};
+		BC_757227125900 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/Tailor.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_857525483724 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CL_148620552024 /* Build configuration list for PBXNativeTarget "ios-app-main" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_626963372307 /* Debug */,
+				BC_290085585653 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_720235052937 /* Build configuration list for PBXProject "Tailor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_678207195161 /* Debug */,
+				BC_513219065781 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CL_734738077716 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_857525483724 /* Debug */,
+				BC_188700936318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_765521743216 /* Build configuration list for PBXNativeTarget "ios-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_757227125900 /* Debug */,
+				BC_186105618559 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_828992211475 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_349690541029 /* Debug */,
+				BC_660726713110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_907828020914 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_197963319665 /* Debug */,
+				BC_206560789660 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = P_7202350529378 /* Project object */;
+}
