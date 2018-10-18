@@ -1,5 +1,5 @@
 targets:
-    - ":ios-app"
+    - "//:ios-app"
 
 projects:
     "WorkspaceSource":
