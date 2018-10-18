@@ -10,8 +10,8 @@ trap popd > /dev/null ERR EXIT
 # Go to bazel release page
 # These are typically posted in groups.google
 # https://groups.google.com/forum/#!forum/bazel-discuss
-BAZEL_VERSION="0.16.1"
-BAZEL_VERSION_SHA="07d5c753738c7186117168770f525b59c39b24103f714be2ffcaadd8e2c53a78"
+BAZEL_VERSION="0.18.0"
+BAZEL_VERSION_SHA="6f07346c72d9eaea0561386a1dc49ae0b8a60f39b180cbbab930e705f3d7a3c4"
 BAZEL_VERSION_URL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-darwin-x86_64.sh"
 
 BAZEL_ROOT="$HOME/.bazelenv/versions/$BAZEL_VERSION"

@@ -229,7 +229,7 @@ def xchammer_dependencies():
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/Tulsi.git",
-        commit = "e3c0dcb9dda0dc191034c061fdd4f0e4397ad527",
+        commit = "654784aa316a9ab936c18afe644fdf545e25d0a5",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
@@ -243,7 +243,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
-        commit = "6ae4a9fc3b54ae4205618f22b6a734558a76ca20",
+        commit = "8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeGenKit",
