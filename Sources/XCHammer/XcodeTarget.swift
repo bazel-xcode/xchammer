@@ -449,7 +449,9 @@ public class XcodeTarget: Hashable, Equatable {
         // - dedupe
         // - frameworks shouldn't be injested as a resource or a source
         return Array(Set(resources + structuredResources))
-                .filter { !$0.path.hasSuffix(".framework") }
+            .filter { !$0.path.hasSuffix(".framework") }
+             // FIXME: There is path issue with a subset of BUILD files.
+            .filter { !$0.path.hasSuffix("BUILD") }
     }()
 
     func extractBuiltProductName() -> String {
