@@ -1006,7 +1006,6 @@ public class XcodeTarget: Hashable, Equatable {
         ]
 
         guard let productType = BuildTypeToTargetType[self.type] else {
-            print("Unknown product type: \(self.type). Unable to extract xcode equivalent")
             return nil
         }
         return productType
