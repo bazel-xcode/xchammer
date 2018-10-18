@@ -161,12 +161,19 @@ goldmaster:
 		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
 	done
 
+run_swift: build
+	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	    $(ROOT_DIR)/sample/Tailor/XCHammer.yaml \
+	    --workspace_root $(ROOT_DIR)/sample/Tailor \
+	    --bazel $(ROOT_DIR)/sample/Tailor/tools/bazelwrapper \
+	    --force
+
 # On the CI we always load the deps
 run_perf_ci:
 	$(MAKE) -C sample/Frankenstein
 	$(MAKE) run_perf
 
-ci: test run_perf_ci
+ci: test run_perf_ci run_swift
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier

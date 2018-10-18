@@ -18,6 +18,7 @@ import PathKit
 import TulsiGenerator
 import ProjectSpec
 import xcproj
+import ShellOut
 
 private func shouldPropagateDeps(forTarget xcodeTarget: XcodeTarget) -> Bool {
     return xcodeTarget.needsRecursiveExtraction && xcodeTarget.label.packageName?.hasPrefix("@") == false
@@ -601,6 +602,31 @@ public class XcodeTarget: Hashable, Equatable {
                 break // These attrs are not related to XCConfigs
             case .binary:
                 break // Explicitly not handled since it is a implicit target we don't intend to handle
+            case .swift_language_version:
+                guard let swiftVersion = value as? String else {
+                    break
+                }
+                settings.swiftVersion <>=  First(swiftVersion)
+            case .has_swift_dependency, .has_swift_info:
+                guard let swiftVersion = try? ShellOut.shellOut(to: "xcrun swift package tools-version") else {
+                    break
+                }
+                settings.swiftVersion <>=  First(swiftVersion)
+            case .swiftc_opts:
+                if let coptsArray = value as? [String] {
+                    let processedOpts = coptsArray.map { opt -> String in
+                        if opt.hasPrefix("-I") {
+                            let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
+                            let path = opt[substringRangeStart...]
+                            let processedOpt =  "-I$(SRCROOT)/\(path)"
+                            return processedOpt
+                        } else {
+                            return opt
+                        }
+                    }
+
+                    settings.swiftCopts <>= processedOpts
+                }
             default:
                 print("TODO: Unimplemented attribute \(attr) \(value)")
             }
