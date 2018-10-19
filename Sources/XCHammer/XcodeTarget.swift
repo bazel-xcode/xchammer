@@ -245,6 +245,10 @@ public class XcodeTarget: Hashable, Equatable {
     }()
 
     func getXCSourceRootAbsolutePath(for fileInfo: BazelFileInfo) -> String {
+        // Rely on this symlink, which is created after a Bazel build
+        if fileInfo.fullPath.hasPrefix("_tulsi") {
+            return "$(SRCROOT)/tulsi-workspace/" + fileInfo.fullPath
+        }
 
         switch fileInfo.targetType {
         case .sourceFile:
@@ -255,7 +259,7 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     func getRelativePath(for fileInfo: BazelFileInfo) -> String {
-        // Reply on this symlink, which is created after a Bazel build
+        // Rely on this symlink, which is created after a Bazel build
         if fileInfo.fullPath.hasPrefix("_tulsi") {
             return "tulsi-workspace/" + fileInfo.fullPath
         }
@@ -548,12 +552,14 @@ public class XcodeTarget: Hashable, Equatable {
 
         var settings = XCBuildSettings()
         print("RULE", self.label)
-        print(self.label, "DEPS", self.dependencies)
-        print(self.label, "SOURCE", self.ruleEntry.sourceFiles)
-        print(self.label, "AF", self.ruleEntry.artifacts)
-        print(self.label, "NON-SOURCE_AF", self.ruleEntry.normalNonSourceArtifacts)
+        //print(self.label, "DEPS", self.dependencies)
+        //print(self.label, "SOURCE", self.ruleEntry.sourceFiles)
+        //print(self.label, "AF", self.ruleEntry.artifacts)
+        //print(self.label, "NON-SOURCE_AF", self.ruleEntry.normalNonSourceArtifacts)
+        //print(self.label, "SOURCE_AF", self.ruleEntry.normalNonSourceArtifacts)
+        //print("MODULEN", self.ruleEntry.moduleName)
         print(self.attributes)
-                self.attributes.forEach { attr, value in
+        self.attributes.forEach { attr, value in
             switch attr {
                 // TODO: Implement the rest of the attributes enum
             case .copts:
@@ -685,7 +691,8 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         settings.headerSearchPaths <>=
-                OrderedArray(["$(SRCROOT)/external/**"])
+                OrderedArray(["$(SRCROOT)/external/**",
+                        "$(SRCROOT)/tulsi-workspace/_tulsi_includes"])
 
         let transTargets = self.transitiveTargets(map: targetMap)
 
@@ -696,7 +703,7 @@ public class XcodeTarget: Hashable, Equatable {
             }
             // We may need to specify to the ClangImporter as well
             let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
-                "-iquote " + getRelativePath(for: $0)
+                "-iquote " + getXCSourceRootAbsolutePath(for: $0)
             }
             accum.append(contentsOf: maps)
         }
@@ -708,7 +715,7 @@ public class XcodeTarget: Hashable, Equatable {
                 accum.append("-Xcc -iquote -Xcc " + hmap)
             }
             let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
-                "-Xcc -iquote -Xcc " + getRelativePath(for: $0)
+                "-Xcc -fmodule-map-file=" + getXCSourceRootAbsolutePath(for: $0)
             }
             accum.append(contentsOf: maps)
             if xcodeTarget.ruleEntry.type == "swift_c_module" {
