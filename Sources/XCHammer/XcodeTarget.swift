@@ -333,6 +333,10 @@ public class XcodeTarget: Hashable, Equatable {
         let resources = self.xcResources
         let bundles = self.xcBundles
 
+        print("ALLR", resources)
+        print("ALLNS", nonArcFiles)
+        print("ALLS", sourceFiles)
+        print("ALLB", bundles)
         let all: [ProjectSpec.TargetSource] = resources + nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
             sourceFiles :
             [ProjectSpec.TargetSource(path: XCHammerAsset.stubImp.getPath(underProj:
@@ -423,6 +427,7 @@ public class XcodeTarget: Hashable, Equatable {
                 [.launch_storyboard, .supporting_files])
             .filter(self.isAllowableXcodeGenSource(path:))
             .compactMap { inputPath in
+            print("RESOURCEPATH", inputPath)
             let path = Path(self.resolveExternalPath(for: inputPath.string))
             let pathComponents = path.components
             if let specialIndex = (pathComponents.index { component in
@@ -445,6 +450,7 @@ public class XcodeTarget: Hashable, Equatable {
         let structuredResources: [ProjectSpec.TargetSource] =
             self.pathsForAttrs(attrs: [.structured_resources]).compactMap {
                 resourcePath -> ProjectSpec.TargetSource? in
+            print("SRESOURCEPATH", resourcePath)
             guard let buildFilePath = self.buildFilePath else { return nil }
             let basePath = Path(buildFilePath).parent().normalize()
             // now we can recover the relative path provided inside the build files
@@ -695,7 +701,7 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         settings.headerSearchPaths <>=
-                OrderedArray(["$(SRCROOT)/external/**",
+                OrderedArray(["$(SRCROOT)/external/",
                         "$(SRCROOT)/tulsi-workspace/_tulsi_includes"])
 
         let transTargets = self.transitiveTargets(map: targetMap)
@@ -732,7 +738,7 @@ public class XcodeTarget: Hashable, Equatable {
             }
         }
 
-        settings.swiftCopts <>= ["-Xcc -I -Xcc ."] + allSwiftCopts
+        settings.swiftCopts <>= ["-Xcc -I -Xcc $(SRCROOT)"] + allSwiftCopts
 
         // Delegate warnings and error config to xcconfig for targets that have
         // a diagnostics xcconfig.
@@ -1269,6 +1275,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
             .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
                     pathsPredicate) }
 
+        print("FDEPS", fusableDeps)
         // Use settings, sources, and deps from the fusable deps
         sources = fusableDeps.flatMap { $0.xcSources }
         settings = xcodeTarget.settings
@@ -1323,6 +1330,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
         }
     }(xcodeTarget)
 
+    print("ALLS", sources)
     return ProjectSpec.Target(
         name: xcodeTarget.xcTargetName,
         type: PBXProductType(rawValue: productType.rawValue)!,
