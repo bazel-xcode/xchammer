@@ -1,5 +1,5 @@
 targets:
-    - ":xchammer"
+    - "//:xchammer"
 
 projects:
     "xchammer-bazel":

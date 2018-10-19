@@ -35,3 +35,4 @@ tulsi-aspects
 bazel-*
 sample/*/*.xcodeproj
 external
+xchammer-bazel.xcodeproj
