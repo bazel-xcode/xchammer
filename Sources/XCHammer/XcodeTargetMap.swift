@@ -108,8 +108,10 @@ public class XcodeTargetMap {
         ruleEntryMap = entryMap
         self.genOptions = genOptions
         entryMap.allRuleEntries.forEach {
+            print("ENTRY", $0)
             let xcodeTarget = XcodeTarget(ruleEntry: $0, map: self, genOptions:
                     genOptions)
+            print("TARGET", xcodeTarget.label)
             insert(xcodeTarget: xcodeTarget)
         }
     }

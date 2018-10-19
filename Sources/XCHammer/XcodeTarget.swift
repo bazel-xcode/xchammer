@@ -255,16 +255,22 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     func getRelativePath(for fileInfo: BazelFileInfo) -> String {
+        // Reply on this symlink, which is created after a Bazel build
+        if fileInfo.fullPath.hasPrefix("_tulsi") {
+            return "tulsi-workspace/" + fileInfo.fullPath
+        }
+
         switch fileInfo.targetType {
         case .sourceFile:
             return resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
-            return "bazel-genfiles/" + fileInfo.subPath
+            return "bazel-genfiles/" + resolveExternalPath(for: fileInfo.subPath)
         }
     }
 
     func resolveExternalPath(for path: String) -> String {
-        if path.hasPrefix("external/") || self.label.packageName?.hasPrefix("@") ?? false {
+        if path.hasPrefix("external/")
+            || self.label.packageName?.hasPrefix("@") ?? false {
             return path.replacingOccurrences(of: "../", with: "external/")
         }
         return path
@@ -541,11 +547,18 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         var settings = XCBuildSettings()
-        self.attributes.forEach { attr, value in
+        print("RULE", self.label)
+        print(self.label, "DEPS", self.dependencies)
+        print(self.label, "SOURCE", self.ruleEntry.sourceFiles)
+        print(self.label, "AF", self.ruleEntry.artifacts)
+        print(self.label, "NON-SOURCE_AF", self.ruleEntry.normalNonSourceArtifacts)
+        print(self.attributes)
+                self.attributes.forEach { attr, value in
             switch attr {
                 // TODO: Implement the rest of the attributes enum
             case .copts:
                 if let coptsArray = value as? [String] {
+                    print("COpts", coptsArray)
                     let processedOpts = coptsArray.map { opt -> String in
                         if opt.hasPrefix("-I") {
                             let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
@@ -556,7 +569,9 @@ public class XcodeTarget: Hashable, Equatable {
                             return opt
                         }
                     }
+                    print("COPTSPRE", settings.copts)
                     settings.copts <>= processedOpts
+                    print("COPTSPOST", settings.copts)
                 }
             case .compiler_defines:
                 if let definesArray = value as? [String] {
@@ -616,6 +631,7 @@ public class XcodeTarget: Hashable, Equatable {
                 settings.swiftVersion <>=  First(swiftVersion)
             case .swiftc_opts:
                 if let coptsArray = value as? [String] {
+                    print("SwiftCOpts", coptsArray)
                     let processedOpts = coptsArray.map { opt -> String in
                         if opt.hasPrefix("-I") {
                             let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
@@ -634,8 +650,10 @@ public class XcodeTarget: Hashable, Equatable {
             }
         }
 
-        // Product Name
+        // FIXME: Propagate this.
+        settings.swiftCopts <>= ["-DSWIFT_PACKAGE"]
 
+        // Product Name
         settings.productName <>= self.bundleName.map { First($0) }
 
         if settings.productName == nil {
@@ -651,7 +669,6 @@ public class XcodeTarget: Hashable, Equatable {
             settings.headerSearchPaths <>=
                 OrderedArray(["$(inherited)"]) <>
                 headerSearchPaths
-                .filter { !$0.0.contains("tulsi-includes") }
                 .foldMap { (path: String, isRecursive: Bool) in
                 if path.hasSuffix("module_map") {
                     return ["$(SRCROOT)/bazel-genfiles/\(path)"]
@@ -664,12 +681,43 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         settings.headerSearchPaths <>=
-                OrderedArray(["external"])
+                OrderedArray(["$(SRCROOT)/external/**"])
 
-        // Add my own + transitive header maps to copts
-        settings.copts <>= ([self] + self.transitiveTargets(map: targetMap))
-            .compactMap { $0.self.extractHeaderMap() }
-            .map { "-iquote \($0)" }
+        let transTargets = self.transitiveTargets(map: targetMap)
+
+        let allCopts = ([self] + transTargets).reduce(into: [String]()) {
+            accum, xcodeTarget in
+            if let hmap = xcodeTarget.extractHeaderMap() {
+                accum.append("-iquote " + hmap)
+            }
+            // We may need to specify to the ClangImporter as well
+            let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
+                "-iquote " + getRelativePath(for: $0)
+            }
+            accum.append(contentsOf: maps)
+        }
+        settings.copts <>= allCopts
+
+        let allSwiftCopts = ([self] + transTargets).reduce(into: [String]()) {
+            accum, xcodeTarget in
+            if let hmap = xcodeTarget.extractHeaderMap() {
+                accum.append("-Xcc -iquote -Xcc " + hmap)
+            }
+            let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
+                "-Xcc -iquote -Xcc " + getRelativePath(for: $0)
+            }
+            accum.append(contentsOf: maps)
+            if xcodeTarget.ruleEntry.type == "swift_c_module" {
+                print("CMODULE", xcodeTarget.ruleEntry.type)
+                let maps = xcodeTarget.ruleEntry.artifacts.map {
+                    "-Xcc -fmodule-map-file=" + getXCSourceRootAbsolutePath(for: $0)
+                }
+                print("CMODULE-AF", maps)
+                accum.append(contentsOf: maps)
+            }
+        }
+
+        settings.swiftCopts <>= ["-Xcc -I -Xcc ."] + allSwiftCopts
 
         // Delegate warnings and error config to xcconfig for targets that have
         // a diagnostics xcconfig.
@@ -1038,6 +1086,7 @@ public class XcodeTarget: Hashable, Equatable {
             "objc_bundle_library": ProductType.Bundle,
             "objc_framework": ProductType.Framework,
             "swift_library": ProductType.StaticLibrary,
+            "swift_c_module": ProductType.StaticLibrary,
             "tvos_application": ProductType.Application,
             "tvos_extension": ProductType.TVAppExtension,
             "watchos_application": ProductType.Watch2App,
