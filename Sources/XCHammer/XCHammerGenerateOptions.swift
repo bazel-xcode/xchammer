@@ -28,7 +28,7 @@ struct XCHammerGenerateOptions {
 
     let xcworkspacePath: Path?
 
-    let generateBazelTargets: Bool
+    let generateXcodeSchemes: Bool
 
     var workspaceEnabled: Bool {
         return xcworkspacePath != nil
