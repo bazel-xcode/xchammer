@@ -660,6 +660,10 @@ public class XcodeTarget: Hashable, Equatable {
             settings.productName = First(self.extractBuiltProductName())
         }
 
+        // set the module name.
+        if let moduleName =  self.ruleEntry.moduleName {
+            settings.moduleName = First(moduleName)
+        }
 
         // Product Bundle Identifier
         settings.productBundleId <>= self.bundleID.map { First($0) }
