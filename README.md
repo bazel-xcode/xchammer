@@ -1,4 +1,6 @@
 # XCHammer
+> If all you've got is Xcode, your only tool is a 🔨
+
 [![Build Status](https://travis-ci.org/pinterest/xchammer.svg?branch=master)](https://travis-ci.org/pinterest/xchammer)
 
 XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace.
