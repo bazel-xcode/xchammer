@@ -4,6 +4,7 @@ targets:
     - "//ios-app:UnitTestsWithHost"
     - "//ios-app:ios-app"
     - "//ios-app:share-extension"
+    - "//ios-app:ios-app-bin"
 
 projects:
     "UrlGet":
