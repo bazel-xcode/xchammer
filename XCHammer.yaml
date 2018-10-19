@@ -1,5 +1,6 @@
 targets:
     - "//:xchammer"
+    - "@xchammer-Tulsi//src/tools/bazel_cache_reader:bazel_cache_reader"
 
 projects:
     "xchammer-bazel":
