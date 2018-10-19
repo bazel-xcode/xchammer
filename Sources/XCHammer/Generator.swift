@@ -423,7 +423,15 @@ enum Generator {
                 genOptions.outputProjectPath)
         guard FileManager.default.createFile(atPath: stubPath,
                 contents: "".data(using: .utf8), attributes: nil) else {
-             fatalError("Can't write temp stub")
+             fatalError("Can't write temp objc stub")
+        }
+
+
+        let stubPathSwift = XCHammerAsset.stubImpSwift.getPath(underProj:
+            genOptions.outputProjectPath)
+        guard FileManager.default.createFile(atPath: stubPathSwift,
+                                             contents: "".data(using: .utf8), attributes: nil) else {
+                                                fatalError("Can't write temp swift stub")
         }
 
         let allXCTargets: [String: XcodeGenTarget] = makeTargets(targetMap:

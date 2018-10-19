@@ -20,6 +20,9 @@ enum XCHammerAsset: String {
     /// An empty .m file
     case stubImp = "Stub.m"
 
+    /// An empty .swift file
+    case stubImpSwift = "Stub.swift"
+
     /// A code signing script used for Ad-Hoc code signing
     case codesigner = "codesigner.sh"
     
