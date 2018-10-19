@@ -100,16 +100,19 @@ public struct XcodeScheme: Equatable, Codable {
     public struct Run: Equatable, Codable {
         public var config: String
         public var commandLineArguments: [String: Bool]
+        public var environmentVariables: [String: String]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
+            environmentVariables : [String: String] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
+            self.environmentVariables = environmentVariables
             self.preActions = preActions
             self.postActions = postActions
         }
@@ -117,6 +120,7 @@ public struct XcodeScheme: Equatable, Codable {
         public static func == (lhs: Run, rhs: Run) -> Bool {
             return lhs.config == rhs.config &&
                 lhs.commandLineArguments == rhs.commandLineArguments &&
+                lhs.environmentVariables == rhs.environmentVariables &&
                 lhs.preActions == rhs.postActions &&
                 lhs.postActions == rhs.postActions
         }
@@ -126,6 +130,7 @@ public struct XcodeScheme: Equatable, Codable {
         public var config: String
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
+        public var environmentVariables: [String: String]
         public var targets: [String]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
@@ -133,6 +138,7 @@ public struct XcodeScheme: Equatable, Codable {
             config: String,
             gatherCoverageData: Bool = false,
             commandLineArguments: [String: Bool] = [:],
+            environmentVariables : [String: String] = [:],
             targets: [String] = [],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
@@ -140,6 +146,7 @@ public struct XcodeScheme: Equatable, Codable {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.commandLineArguments = commandLineArguments
+            self.environmentVariables = environmentVariables;
             self.targets = targets
             self.preActions = preActions
             self.postActions = postActions
@@ -148,6 +155,7 @@ public struct XcodeScheme: Equatable, Codable {
         public static func == (lhs: Test, rhs: Test) -> Bool {
             return lhs.config == rhs.config &&
                 lhs.commandLineArguments == rhs.commandLineArguments &&
+                lhs.environmentVariables == rhs.environmentVariables &&
                 lhs.gatherCoverageData == rhs.gatherCoverageData &&
                 lhs.targets == rhs.targets &&
                 lhs.preActions == rhs.postActions &&
@@ -169,14 +177,17 @@ public struct XcodeScheme: Equatable, Codable {
     public struct Profile: Equatable, Codable {
         public let config: String
         public let commandLineArguments: [String: Bool]
+        public var environmentVariables: [String: String]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(config: String,
                     commandLineArguments: [String: Bool] = [:],
+                    environmentVariables: [String: String] = [:],
                     preActions: [ExecutionAction] = [],
                     postActions: [ExecutionAction] = []) {
             self.config = config
             self.commandLineArguments = commandLineArguments
+            self.environmentVariables = environmentVariables
             self.preActions = preActions
             self.postActions = postActions
         }
@@ -184,6 +195,7 @@ public struct XcodeScheme: Equatable, Codable {
         public static func == (lhs: Profile, rhs: Profile) -> Bool {
             return lhs.config == rhs.config
                 && lhs.commandLineArguments == rhs.commandLineArguments
+                && lhs.environmentVariables == rhs.environmentVariables
                 && lhs.preActions == rhs.postActions
                 && lhs.postActions == rhs.postActions
         }
@@ -305,6 +317,10 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
     let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
     let launchCommandLineArgs = scheme.run.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
     let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
+    
+    let testEnvironmentVariables = scheme.test?.environmentVariables.compactMap{ XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
+    let launchEnvironmentVariables = scheme.run?.environmentVariables.compactMap{ XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
+    let profileEnvironmentVariables = scheme.profile?.environmentVariables.compactMap{ XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
 
     let testAction = XCScheme.TestAction(
         buildConfiguration: scheme.test?.config ?? "Debug",
@@ -315,6 +331,7 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
         shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
         codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
         commandlineArguments: testCommandLineArgs,
+        environmentVariables: testEnvironmentVariables,
         language: ""
     )
 
@@ -323,7 +340,8 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
         buildConfiguration: scheme.run?.config ?? "Debug",
         preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
         postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-        commandlineArguments: launchCommandLineArgs
+        commandlineArguments: launchCommandLineArgs,
+        environmentVariables: launchEnvironmentVariables
     )
 
     let profileAction = XCScheme.ProfileAction(
@@ -332,7 +350,8 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
         preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
         postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
         shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
-        commandlineArguments: profileCommandLineArgs
+        commandlineArguments: profileCommandLineArgs,
+        environmentVariables: profileEnvironmentVariables
     )
 
     let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? "Debug")

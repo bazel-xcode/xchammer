@@ -17,6 +17,9 @@ import Foundation
 struct XCHammerTargetConfig: Codable {
     /// Command line arguments for each target
     let commandLineArguments: [String]?
+    
+    /// Environment Variables for each target
+    let environmentVariables: [String: String]?
 
     /// Bazel Target options
 
