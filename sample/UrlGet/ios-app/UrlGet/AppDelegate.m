@@ -30,6 +30,8 @@
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.rootViewController = bar;
   [self.window makeKeyAndVisible];
+    
+    NSLog(@"Env Var: %@", [[[NSProcessInfo processInfo] environment] objectForKey:@"envVar"]);
   return YES;
 }
 

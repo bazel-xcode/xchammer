@@ -257,6 +257,7 @@ enum Generator {
                 let commandLineArguments =
                 Dictionary.from((targetConfig?.commandLineArguments ?? []).map {
                         ($0, true) })
+                let environmentVariables = targetConfig?.environmentVariables ?? [:]
 
                 let buildTargets = [
                     XcodeScheme.BuildTarget(target: UpdateXcodeProjectTargetName,
@@ -276,16 +277,16 @@ enum Generator {
                         targets: buildTargets, parallelizeBuild: false)
 
                 let runPhase = XcodeScheme.Run(config: "Debug",
-                        commandLineArguments: commandLineArguments)
+                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
 
                 let testTargets: [String] = allTests(for: xcodeTarget, map:
                         targetMap)
                 let testPhase = XcodeScheme.Test(config: "Debug",
-                        commandLineArguments: commandLineArguments, targets:
+                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables, targets:
                         testTargets)
 
                 let profilePhase = XcodeScheme.Profile(config: "Debug",
-                        commandLineArguments: commandLineArguments)
+                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
                 return XcodeScheme(name: name, build: buildPhase, run: runPhase,
                         test: testPhase, profile: profilePhase)
             }
@@ -305,7 +306,7 @@ enum Generator {
                 let commandLineArguments =
                 Dictionary.from((targetConfig?.commandLineArguments ?? []).map {
                         ($0, true) })
-
+                let environmentVariables = targetConfig?.environmentVariables ?? [:]
                 let buildTargets = [
                     XcodeScheme.BuildTarget(target: name,
                             project: genOptions.projectName, productName:
@@ -316,14 +317,14 @@ enum Generator {
                         targets: buildTargets, parallelizeBuild: false)
 
                 let runPhase = XcodeScheme.Run(config: "Debug",
-                        commandLineArguments: commandLineArguments)
+                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
 
                 let testPhase = XcodeScheme.Test(config: "Debug",
-                        commandLineArguments: commandLineArguments, targets:
+                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables, targets:
                         [])
 
                 let profilePhase = XcodeScheme.Profile(config: "Debug",
-                        commandLineArguments: commandLineArguments)
+                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
                 return XcodeScheme(name: name, build: buildPhase, run: runPhase,
                         test: testPhase, profile: profilePhase)
         }
