@@ -9,7 +9,6 @@
 # Additionally, it includes the actual test methods.
 
 ROOT_DIR=$PWD
-PRODUCT="XCHammer"
 
 SANDBOX="$ROOT_DIR/IntegrationTests/Sandbox"
 
@@ -29,23 +28,23 @@ function assertExitCode() {
 
 # Test Methods:
 
-function testBuild() {
+function test_build() {
     echo "Testing generate and build with Xcode"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
+    $XCHAMMER_BIN generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
     xcodebuild -scheme ios-app -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built successfully"
 }
 
-function testBazelBuild() {
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL --force
+function test_bazel_build() {
+    $XCHAMMER_BIN generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL --force
     xcodebuild -scheme ios-app-Bazel -project $TEST_PROJ -sdk iphonesimulator
     assertExitCode "Xcode built bazel targets successfully"
 }
 
-function testNooping() {
+function test_nooping() {
     echo "Testing noop generation"
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
-    RESULT=`$ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL`
+    $XCHAMMER_BIN generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
+    RESULT=`$XCHAMMER_BIN generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL`
 
     # We print Skipping update when we noop
     echo $RESULT | grep "Skipping"
@@ -53,8 +52,8 @@ function testNooping() {
 }
 
 # Create a new file, and make sure Xcode is doing a build with that file
-function testGenerateWhileBuilding() {
-    $ROOT_DIR/.build/debug/$PRODUCT generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
+function test_generate_while_building() {
+    $XCHAMMER_BIN generate $SANDBOX/$SAMPLE/XCHammer.yaml --bazel $BAZEL
 
     touch $TEST_NEW_IMPL_FILE
 
@@ -97,23 +96,22 @@ function preflightEnv() {
 function testsDidFinish() {
     echo "tests_completed with status $?"
     rm -rf $SANDBOX
+    rm -rf $ROOT_DIR/xchammer.app
 }
 
 # Run the tests. Order should not matter!
 function runTests() {
     set -e
-    testBuild
-    testBazelBuild
-    testGenerateWhileBuilding
-    testNooping
+    test_build
+    test_bazel_build
+    test_generate_while_building
+    test_nooping
 }
 
 ## Execution
 
 echo "Running tests"
 # Do a debug build
-make build || exit 1
-
 trap testsDidFinish EXIT
 preflightEnv
 runTests

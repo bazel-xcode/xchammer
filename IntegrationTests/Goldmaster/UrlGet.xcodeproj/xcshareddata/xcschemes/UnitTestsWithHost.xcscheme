@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "9.2"
-   version = "1.3">
+   version = "1.3"
+   LastUpgradeVersion = "9.2">
    <BuildAction
       parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_691292342913"
-               BuildableName = "UpdateXcodeProject"
+               BlueprintIdentifier = ""
+               BuildableName = ""
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -28,8 +28,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_816521859601"
-               BuildableName = "GeneratedFiles"
+               BlueprintIdentifier = ""
+               BuildableName = ""
                BlueprintName = "GeneratedFiles"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -42,8 +42,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "LT_456825327596"
-               BuildableName = "ResetLLDBInit"
+               BlueprintIdentifier = ""
+               BuildableName = ""
                BlueprintName = "ResetLLDBInit"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
@@ -56,7 +56,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_338352280519"
+               BlueprintIdentifier = ""
                BuildableName = "ios-app.app"
                BlueprintName = "ios-app"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -65,12 +65,12 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
+            buildForProfiling = "NO"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_448073995915"
+               BlueprintIdentifier = ""
                BuildableName = "UnitTestsWithHost.xctest"
                BlueprintName = "UnitTestsWithHost"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -82,13 +82,14 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_448073995915"
+               BlueprintIdentifier = ""
                BuildableName = "UnitTestsWithHost.xctest"
                BlueprintName = "UnitTestsWithHost"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -98,12 +99,16 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_448073995915"
+            BlueprintIdentifier = ""
             BuildableName = "UnitTestsWithHost.xctest"
             BlueprintName = "UnitTestsWithHost"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <CommandLineArguments>
+      </CommandLineArguments>
+      <EnvironmentVariables>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -121,12 +126,16 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_448073995915"
+            BlueprintIdentifier = ""
             BuildableName = "UnitTestsWithHost.xctest"
             BlueprintName = "UnitTestsWithHost"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
+      <EnvironmentVariables>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -140,12 +149,16 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_448073995915"
+            BlueprintIdentifier = ""
             BuildableName = "UnitTestsWithHost.xctest"
             BlueprintName = "UnitTestsWithHost"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
+      <EnvironmentVariables>
+      </EnvironmentVariables>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -1,13 +1,24 @@
-.PHONY : test workspace archive unsafe_install install compile_commands debug run run_force test build
+.PHONY : test workspace archive unsafe_install install compile_commands debug run run_force test build build build-release
 
 ASSETDIR=XCHammerAssets
 ASPECTDIR=tulsi-aspects
-PRODUCT=XCHammer
 
-PREFIX := /usr/local
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
+ifeq ($(BAZEL_BUILD),true)
+	PRODUCT=xchammer
+	XCHAMMER_BIN_BASE=$(ROOT_DIR)/xchammer.app/Contents/MacOS
+else
+	PRODUCT=XCHammer
+	XCHAMMER_BIN_BASE=$(PWD)/.build/debug
+endif
+
+XCHAMMER_BIN := $(XCHAMMER_BIN_BASE)/$(PRODUCT)
+
+PREFIX := /usr/local
+
 aspects:
+ifneq ($(BAZEL_BUILD),true)
 	swift package resolve
 	# Export the tulsi workspace to PWD. We need this for
 	# Xcode, because there is no way to correctly install
@@ -15,6 +26,7 @@ aspects:
 	# Note that the build process always exports from this directory to the
 	# bundle
 	./export_tulsi_aspect_dir.sh ${PWD}/$(ASPECTDIR)
+endif
 
 
 # Make a SPM generated Xcode project.
@@ -43,7 +55,7 @@ workspace_spm: aspects
 # - incremental builds are currently not working with Bazel
 # - run with `force` for development
 workspace_xchammer: build
-	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	$(XCHAMMER_BIN) generate \
 	    $(ROOT_DIR)/XCHammer.yaml \
 	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
 	    --force
@@ -53,6 +65,7 @@ workspace: workspace_spm
 clean:
 	rm -rf tmp_build_dir
 	xcrun swift package clean
+	$(ROOT_DIR)/tools/bazelwrapper clean
 
 # Create an archive package with a release binary and all bundle resources
 # Note, that this does not self update.
@@ -90,29 +103,38 @@ compile_commands.json:
 
 build-debug: CONFIG = debug
 build-debug: SWIFTBFLAGS = -Xswiftc -target -Xswiftc x86_64-apple-macosx10.13 --configuration $(CONFIG)
+build-release: BAZELFLAGS = --announce_rc
 build-debug: build-impl
 
 build-release: CONFIG = release
 build-release: SWIFTBFLAGS = -Xswiftc -target -Xswiftc x86_64-apple-macosx10.13 --configuration $(CONFIG) -Xswiftc -static-stdlib
+build-release: BAZELFLAGS = --announce_rc --compilation_mode opt
 build-release: build-impl
 
+
 build-impl:
+ifeq ($(BAZEL_BUILD),true)
+	$(ROOT_DIR)/tools/bazelwrapper build xchammer $(BAZELFLAGS)
+	rm -rf $(ROOT_DIR)/xchammer.app
+	unzip $(ROOT_DIR)/bazel-bin/xchammer.zip
+else
 	@mkdir -p .build
-	swift build $(SWIFTBFLAGS) | tee .build/last_build.log
+	@swift build $(SWIFTBFLAGS) | tee .build/last_build.log
 	# Install bundle resources
-	ditto $(ASSETDIR) .build/$(CONFIG)/$(ASSETDIR)
+	@ditto $(ASSETDIR) .build/$(CONFIG)/$(ASSETDIR)
 	# Install Tulsi resources
 	# Tulsi utilizes NSBundle heavily. All assets need to exist at the root of
 	# this directory in order for NSBundle and Tulsi's searching logic to work
 	# in the context of our custom release package.
-	ditto $(ASPECTDIR) .build/$(CONFIG)/
+	@ditto $(ASPECTDIR) .build/$(CONFIG)/
+endif
 
 # Build impl doesn't build aspects because it is slow.
-build: build-debug
+build: aspects build-debug
 	@ln -sf $(PWD)/.build/debug sample/UrlGet/tools/XCHammer
 
-test: aspects
-	SAMPLE=UrlGet $(ROOT_DIR)/IntegrationTests/run_tests.sh
+test: build
+	XCHAMMER_BIN=$(XCHAMMER_BIN) SAMPLE=UrlGet $(ROOT_DIR)/IntegrationTests/run_tests.sh
 
 debug: build
 	# Launches LLDB with XCHammer
@@ -120,7 +142,7 @@ debug: build
 	# The run
 	# br set -f Spec.swift -l 334
 	# r
-	lldb $(ROOT_DIR)/.build/debug/XCHammer
+	lldb $(XCHAMMER_BIN)
 
 
 # XCHammer Samples
@@ -138,21 +160,21 @@ SAMPLE ?= UrlGet
 # Development hack: don't actually install, just symlink the debug build
 # See README for usage in a normal project
 run: build
-	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	$(XCHAMMER_BIN) generate \
 	    $(ROOT_DIR)/sample/$(SAMPLE)/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/$(SAMPLE) \
 	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper
 
 # FIXME: add code to handle `xcworkspace` to `run`
 run_workspace: build
-	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	$(XCHAMMER_BIN) generate \
 		$(ROOT_DIR)/sample/SnapshotMe/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/SnapshotMe \
 	    --xcworkspace $(ROOT_DIR)/sample/SnapshotMe/SnapshotMe.xcworkspace \
 	    --bazel $(ROOT_DIR)/sample/SnapshotMe/tools/bazelwrapper
 
 run_force: build
-	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	$(XCHAMMER_BIN) generate \
 	    $(ROOT_DIR)/sample/$(SAMPLE)/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/$(SAMPLE) \
 	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper \
@@ -161,7 +183,7 @@ run_force: build
 run_perf: build-release
 	@[[ -d sample/Frankenstein/Vendor/rules_pods ]] \
 		|| (echo "Run 'make' in sample/Frankenstein" && exit 1)
-	$(ROOT_DIR)/.build/release/$(PRODUCT) generate \
+	$(XCHAMMER_BIN) generate \
 	    $(ROOT_DIR)/sample/Frankenstein/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/Frankenstein \
 	    --bazel $(ROOT_DIR)/sample/Frankenstein/tools/bazelwrapper \
@@ -188,8 +210,10 @@ goldmaster:
 		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
 	done
 
+
+
 run_swift: build
-	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+	$(XCHAMMER_BIN) generate \
 	    $(ROOT_DIR)/sample/Tailor/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/Tailor \
 	    --bazel $(ROOT_DIR)/sample/Tailor/tools/bazelwrapper \
@@ -197,10 +221,11 @@ run_swift: build
 
 # On the CI we always load the deps
 run_perf_ci:
+	rm -rf sample/Frankenstein/Vendor/rules_pods
 	$(MAKE) -C sample/Frankenstein
 	$(MAKE) run_perf
 
-ci: test run_perf_ci run_swift
+ci: clean test run_perf_ci run_swift
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier

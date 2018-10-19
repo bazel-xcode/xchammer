@@ -1,0 +1,728 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF_176734918964 = {isa = PBXBuildFile; fileRef = FR_809175072387 /* ios-app-Bazel.app */; };
+		BF_232865863116 = {isa = PBXBuildFile; fileRef = FR_236762361925 /* ios-app.app */; };
+		BF_558624455318 /* libios-app-main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_213277108087 /* libios-app-main.a */; };
+		BF_567361908666 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_475309967935 /* main.m */; };
+		BF_574809499347 = {isa = PBXBuildFile; fileRef = FR_162679830612 /* ios-app-main.a */; };
+		BF_626539152188 = {isa = PBXBuildFile; fileRef = FR_460641534196 /* UnitTests.xctest */; };
+		BF_648862842090 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_376207894502 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
+		BF_650702818016 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_263655108168 /* AppDelegate.m */; };
+		BF_760452161575 /* Tests2.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_913276428123 /* Tests2.m */; };
+		BF_812089772077 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_425869666354 /* Tests.m */; };
+		BF_914802105765 /* libiOSSnapshotTestCase-Core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_918847181843 /* libiOSSnapshotTestCase-Core.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FR_162679830612 /* ios-app-main.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = "ios-app-main.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_213277108087 /* libios-app-main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libios-app-main.a"; sourceTree = "<group>"; };
+		FR_236762361925 /* ios-app.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_245040708962 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR_262810003713 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FR_263655108168 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FR_376207894502 /* Stub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stub.m; sourceTree = "<group>"; };
+		FR_425869666354 /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
+		FR_460641534196 /* UnitTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_475309967935 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FR_809175072387 /* ios-app-Bazel.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app-Bazel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_913276428123 /* Tests2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests2.m; sourceTree = "<group>"; };
+		FR_918847181843 /* libiOSSnapshotTestCase-Core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libiOSSnapshotTestCase-Core.a"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FBP_23676236192 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_558624455318 /* libios-app-main.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBP_46064153419 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_914802105765 /* libiOSSnapshotTestCase-Core.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G_1548492089206 = {
+			isa = PBXGroup;
+			children = (
+				G_2367623619254 /* ios-app */,
+				G_7150104396987 /* SnapshotMe.xcodeproj */,
+				G_2332380321410 /* Frameworks */,
+				G_2054540523939 /* Products */,
+			);
+			indentWidth = 4;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
+		};
+		G_2054540523939 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FR_809175072387 /* ios-app-Bazel.app */,
+				FR_162679830612 /* ios-app-main.a */,
+				FR_236762361925 /* ios-app.app */,
+				FR_460641534196 /* UnitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		G_2332380321410 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FR_213277108087 /* libios-app-main.a */,
+				FR_918847181843 /* libiOSSnapshotTestCase-Core.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		G_2367623619254 /* ios-app */ = {
+			isa = PBXGroup;
+			children = (
+				FR_262810003713 /* AppDelegate.h */,
+				FR_263655108168 /* AppDelegate.m */,
+				FR_245040708962 /* Info.plist */,
+				FR_475309967935 /* main.m */,
+				G_2709888296093 /* UnitTests */,
+			);
+			path = "ios-app";
+			sourceTree = "<group>";
+		};
+		G_2709888296093 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				FR_425869666354 /* Tests.m */,
+				FR_913276428123 /* Tests2.m */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		G_4752293984528 /* XCHammerAssets */ = {
+			isa = PBXGroup;
+			children = (
+				FR_376207894502 /* Stub.m */,
+			);
+			path = XCHammerAssets;
+			sourceTree = "<group>";
+		};
+		G_7150104396987 /* SnapshotMe.xcodeproj */ = {
+			isa = PBXGroup;
+			children = (
+				G_4752293984528 /* XCHammerAssets */,
+			);
+			path = SnapshotMe.xcodeproj;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		LT_200296861195 /* ResetLLDBInit */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'";
+			buildConfigurationList = CL_200296861195 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */;
+			buildPhases = (
+				SBP_20029686119 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = __PWD__/sample/SnapshotMe;
+			dependencies = (
+			);
+			name = ResetLLDBInit;
+			passBuildSettingsInEnvironment = 1;
+			productName = ResetLLDBInit;
+		};
+		LT_276814399960 /* UpdateXcodeProject */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c __PWD__/sample/SnapshotMe/SnapshotMe.xcodeproj/XCHammerAssets/updateXcodeProj.sh";
+			buildConfigurationList = CL_276814399960 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */;
+			buildPhases = (
+				SBP_27681439996 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = __PWD__/sample/SnapshotMe;
+			dependencies = (
+			);
+			name = UpdateXcodeProject;
+			passBuildSettingsInEnvironment = 1;
+			productName = UpdateXcodeProject;
+		};
+		LT_827045797919 /* GeneratedFiles */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (__PWD__/sample/SnapshotMe/tools/bazelwrapper clean) || (__PWD__/sample/SnapshotMe/SnapshotMe.xcodeproj/XCHammerAssets/retry.sh __PWD__/sample/SnapshotMe/tools/bazelwrapper build --experimental_show_artifacts //Vendor/iOSSnapshotTestCase:Core_includes //SnapshotMe.xcodeproj/XCHammerAssets:ios-app-ios-app_entitlements)'";
+			buildConfigurationList = CL_827045797919 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
+			buildPhases = (
+				SBP_82704579791 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = __PWD__/sample/SnapshotMe;
+			dependencies = (
+			);
+			name = GeneratedFiles;
+			passBuildSettingsInEnvironment = 1;
+			productName = GeneratedFiles;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		NT_162679830612 /* ios-app-main */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_162679830612 /* Build configuration list for PBXNativeTarget "ios-app-main" */;
+			buildPhases = (
+				SBP_16267983061 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app-main";
+			productName = "ios-app-main";
+			productReference = FR_162679830612 /* ios-app-main.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		NT_236762361925 /* ios-app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_236762361925 /* Build configuration list for PBXNativeTarget "ios-app" */;
+			buildPhases = (
+				SBP_23676236192 /* Sources */,
+				FBP_23676236192 /* Frameworks */,
+				SSBP_3456136747 /* Process IPA */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app";
+			productName = "ios-app";
+			productReference = FR_236762361925 /* ios-app.app */;
+			productType = "com.apple.product-type.application";
+		};
+		NT_460641534196 /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_460641534196 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				SBP_46064153419 /* Sources */,
+				FBP_46064153419 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = FR_460641534196 /* UnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		NT_809175072387 /* ios-app-Bazel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_809175072387 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */;
+			buildPhases = (
+				SSBP_1128682098 /* Bazel build */,
+				SBP_80917507238 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app-Bazel";
+			productName = "ios-app-Bazel";
+			productReference = FR_809175072387 /* ios-app-Bazel.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		P_7184844754785 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0930;
+				TargetAttributes = {
+					NT_162679830612 = {
+						ProvisioningStyle = manual;
+					};
+					NT_236762361925 = {
+						ProvisioningStyle = manual;
+					};
+					NT_460641534196 = {
+						ProvisioningStyle = manual;
+					};
+					NT_809175072387 = {
+						ProvisioningStyle = manual;
+					};
+				};
+			};
+			buildConfigurationList = CL_718484475478 /* Build configuration list for PBXProject "SnapshotMe" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = G_1548492089206;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				LT_827045797919 /* GeneratedFiles */,
+				LT_200296861195 /* ResetLLDBInit */,
+				NT_460641534196 /* UnitTests */,
+				LT_276814399960 /* UpdateXcodeProject */,
+				NT_236762361925 /* ios-app */,
+				NT_809175072387 /* ios-app-Bazel */,
+				NT_162679830612 /* ios-app-main */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		SSBP_1128682098 /* Bazel build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bazel build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export TULSI_USE_HAMMER_DEBUG_CONFIG=YES\n__PWD__/.build/debug/bazel_build.py //ios-app:ios-app --bazel __PWD__/sample/SnapshotMe/tools/bazelwrapper";
+		};
+		SSBP_3456136747 /* Process IPA */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Process IPA";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "__PWD__/.build/debug/XCHammer process-ipa";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SBP_16267983061 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_650702818016 /* AppDelegate.m in Sources */,
+				BF_567361908666 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_20029686119 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_23676236192 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_648862842090 /* Stub.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_27681439996 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_46064153419 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_812089772077 /* Tests.m in Sources */,
+				BF_760452161575 /* Tests2.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_80917507238 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_82704579791 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BC_126930418192 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HEADER_SEARCH_PATHS = external;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-framework CoreGraphics -framework UIKit";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-framework CoreGraphics -framework UIKit";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_274924348235 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_386470745811 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HEADER_SEARCH_PATHS = external;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-framework CoreGraphics -framework UIKit";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-framework CoreGraphics -framework UIKit";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_476048374496 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HEADER_SEARCH_PATHS = external;
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC -framework CoreGraphics -framework UIKit";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework CoreGraphics -framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/SnapshotMe.xcodeproj/XCHammerAssets/ios-app-ios-app_entitlements.entitlements";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sample.snapshotme;
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_585027494330 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_595090115134 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				
+			};
+			name = Debug;
+		};
+		BC_629572459248 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_676540163500 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_697142494776 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/iOSSnapshotTestCase/pod_support/Headers/Public external";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework UIKit -framework Foundation -framework QuartzCore";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework UIKit -framework Foundation -framework QuartzCore";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bazelbuild.rulesapple.Tests;
+				PRODUCT_NAME = UnitTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_699370152446 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_749745473037 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/iOSSnapshotTestCase/pod_support/Headers/Public external";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC -framework XCTest -framework CoreGraphics -framework UIKit -framework Foundation -framework QuartzCore";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework XCTest -framework CoreGraphics -framework UIKit -framework Foundation -framework QuartzCore";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bazelbuild.rulesapple.Tests;
+				PRODUCT_NAME = UnitTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_772585034147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				TARGETED_DEVICE_FAMILY = "";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_810428303208 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HEADER_SEARCH_PATHS = external;
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC -framework CoreGraphics -framework UIKit";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -framework CoreGraphics -framework UIKit -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/SnapshotMe.xcodeproj/XCHammerAssets/ios-app-ios-app_entitlements.entitlements";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sample.snapshotme;
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_846225692277 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_887133859691 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_917030902355 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				TARGETED_DEVICE_FAMILY = "";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CL_162679830612 /* Build configuration list for PBXNativeTarget "ios-app-main" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_126930418192 /* Debug */,
+				BC_386470745811 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_200296861195 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_585027494330 /* Debug */,
+				BC_274924348235 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_236762361925 /* Build configuration list for PBXNativeTarget "ios-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_476048374496 /* Debug */,
+				BC_810428303208 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_276814399960 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_887133859691 /* Debug */,
+				BC_629572459248 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_460641534196 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_749745473037 /* Debug */,
+				BC_697142494776 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_718484475478 /* Build configuration list for PBXProject "SnapshotMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_595090115134 /* Debug */,
+				BC_846225692277 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CL_809175072387 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_772585034147 /* Debug */,
+				BC_917030902355 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_827045797919 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_676540163500 /* Debug */,
+				BC_699370152446 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = P_7184844754785 /* Project object */;
+}

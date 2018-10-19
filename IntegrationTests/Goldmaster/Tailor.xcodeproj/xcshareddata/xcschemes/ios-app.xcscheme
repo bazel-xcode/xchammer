@@ -83,6 +83,8 @@
       </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
+      <EnvironmentVariables>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -108,6 +110,8 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
       </CommandLineArguments>
+      <EnvironmentVariables>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -129,12 +133,14 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
       </CommandLineArguments>
+      <EnvironmentVariables>
+      </EnvironmentVariables>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      revealArchiveInOrganizer = "YES"
-      buildConfiguration = "Debug">
+      buildConfiguration = "Debug"
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

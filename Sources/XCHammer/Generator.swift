@@ -756,7 +756,7 @@ enum Generator {
     }
 
     private static func getTulsiAspectRepo() -> String {
-        return Bundle.main.bundlePath
+        return getAssetBase()
     }
 
     private static func getDepsHashSettingValue(projectPath: Path) throws ->

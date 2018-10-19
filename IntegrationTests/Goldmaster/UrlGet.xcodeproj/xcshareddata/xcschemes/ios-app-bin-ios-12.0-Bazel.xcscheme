@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
-               BuildableName = "share-extension.appex-Bazel"
-               BlueprintName = "share-extension-Bazel"
+               BuildableName = "ios-app-bin-ios-12.0-Bazel"
+               BlueprintName = "ios-app-bin-ios-12.0-Bazel"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
+            BuildableName = "ios-app-bin-ios-12.0-Bazel"
+            BlueprintName = "ios-app-bin-ios-12.0-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
+            BuildableName = "ios-app-bin-ios-12.0-Bazel"
+            BlueprintName = "ios-app-bin-ios-12.0-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -84,8 +84,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
+            BuildableName = "ios-app-bin-ios-12.0-Bazel"
+            BlueprintName = "ios-app-bin-ios-12.0-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

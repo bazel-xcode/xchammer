@@ -1096,10 +1096,9 @@ public class XcodeTarget: Hashable, Equatable {
 
         let targetConfig = genOptions.config.getTargetConfig(for: label.value)
 
-        // bazel_build.py is adjacent to the XCHammer bin
-        let buildInvocation = dirname(ProcessInfo.processInfo.arguments[0]) +
-            "/bazel_build.py " + label.value + " --bazel " +
-            genOptions.bazelPath.string
+        let assetBase = Bundle.main.resourcePath!
+        let buildInvocation = "\(assetBase)/bazel_build.py \(label.value) --bazel \(genOptions.bazelPath.string)"
+
 
         let getScriptContent: (() -> String) = {
             guard

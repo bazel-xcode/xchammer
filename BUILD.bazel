@@ -61,5 +61,6 @@ macos_application(
 )
 
 buildifier(
-    name = "buildifier",
+    name = "buildifier"
+)
 

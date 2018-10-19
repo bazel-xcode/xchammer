@@ -15,9 +15,51 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
-               BuildableName = "share-extension.appex-Bazel"
-               BlueprintName = "share-extension-Bazel"
-               ReferencedContainer = "container:UrlGet.xcodeproj">
+               BuildableName = ""
+               BlueprintName = "UpdateXcodeProject"
+               ReferencedContainer = "container:WorkspaceSource.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = ""
+               BlueprintName = "GeneratedFiles"
+               ReferencedContainer = "container:WorkspaceSource.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = ""
+               BlueprintName = "ResetLLDBInit"
+               ReferencedContainer = "container:WorkspaceSource.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = "ios-app.app"
+               BlueprintName = "ios-app"
+               ReferencedContainer = "container:WorkspaceSource.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
-            ReferencedContainer = "container:UrlGet.xcodeproj">
+            BuildableName = "ios-app.app"
+            BlueprintName = "ios-app"
+            ReferencedContainer = "container:WorkspaceSource.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
@@ -61,9 +103,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
-            ReferencedContainer = "container:UrlGet.xcodeproj">
+            BuildableName = "ios-app.app"
+            BlueprintName = "ios-app"
+            ReferencedContainer = "container:WorkspaceSource.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -84,9 +126,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
-            ReferencedContainer = "container:UrlGet.xcodeproj">
+            BuildableName = "ios-app.app"
+            BlueprintName = "ios-app"
+            ReferencedContainer = "container:WorkspaceSource.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -98,7 +140,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
-      revealArchiveInOrganizer = "YES">
+      revealArchiveInOrganizer = "YES"
+      buildConfiguration = "Debug">
    </ArchiveAction>
 </Scheme>
