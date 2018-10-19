@@ -402,12 +402,15 @@ public class XcodeTarget: Hashable, Equatable {
         }
     }()
 
+    // FIXME: correctly return `BazelFileInfo`s
     func pathsForAttrs(attrs: Set<RuleEntry.Attribute>) -> [Path] {
         return attrs.flatMap { attr in
             self.attributes[attr] as? [[String: Any]] ??
                 (self.attributes[attr] as? [String: Any]).map{ [$0] } ??
                 []
-            }.compactMap { $0["path"] as? String }.map { Path($0) }
+            }
+        .filter { ($0["src"] as? Bool) ?? false }
+        .compactMap { $0["path"] as? String }.map { Path($0) }
     }
 
     func isAllowableXcodeGenSource(path: Path) -> Bool {
@@ -679,6 +682,7 @@ public class XcodeTarget: Hashable, Equatable {
             settings.headerSearchPaths <>=
                 OrderedArray(["$(inherited)"]) <>
                 headerSearchPaths
+                // .filter { !$0.0.contains("tulsi-includes") }
                 .foldMap { (path: String, isRecursive: Bool) in
                 if path.hasSuffix("module_map") {
                     return ["$(SRCROOT)/bazel-genfiles/\(path)"]
