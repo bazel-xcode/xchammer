@@ -22,8 +22,8 @@ aspects:
 # Copy the tulsi-aspects and XCHammerAssets adjacent to the Xcode build
 # directory to allow loading of resources, since we can't express this in SPM
 #
-# Note: this is brittle and might not work as expected
-workspace_legacy: aspects
+# Note: this is brittle and may not work as expected
+workspace_spm: aspects
 	swift package generate-xcodeproj
 	$(eval BUILD_DIR=$(shell xcodebuild -showBuildSettings \
 			-project XCHammer.xcodeproj/ \
@@ -35,13 +35,19 @@ workspace_legacy: aspects
 	@ditto "$(ASPECTDIR)" "$(BUILD_DIR)/Release/TulsiGenerator.framework"
 	@ditto "$(ASSETDIR)" "$(BUILD_DIR)/Release/$(ASSETDIR)"
 
+
 # Make an XCHammer XCHammer Xcode project.
 #
-# Note: incremental builds are currently not working with Bazel
-workspace: build
+# Note:
+# - incremental builds are currently not working with Bazel
+# - run with `force` for development
+workspace_xchammer: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
 	    $(ROOT_DIR)/XCHammer.yaml \
-	    --bazel $(ROOT_DIR)/tools/bazelwrapper
+	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
+	    --force
+
+workspace: workspace_spm
 
 clean:
 	rm -rf tmp_build_dir
@@ -64,7 +70,7 @@ unsafe_install: archive
 	mkdir -p $(PREFIX)/bin
 	ditto tmp_build_dir/$(PRODUCT) $(PREFIX)/bin/
 
-install: clean archive
+install: archive
 	mkdir -p $(PREFIX)/bin
 	ditto tmp_build_dir/$(PRODUCT) $(PREFIX)/bin/
 
