@@ -323,9 +323,11 @@ public class XcodeTarget: Hashable, Equatable {
         let resources = self.xcResources
         let bundles = self.xcBundles
 
+
+        let stubAsset = self.settings.swiftVersion == nil ?  XCHammerAsset.stubImp : XCHammerAsset.stubImpSwift
         let all: [ProjectSpec.TargetSource] = resources + nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
             sourceFiles :
-            [ProjectSpec.TargetSource(path: XCHammerAsset.stubImp.getPath(underProj:
+            [ProjectSpec.TargetSource(path: stubAsset.getPath(underProj:
                     self.genOptions.outputProjectPath), compilerFlags: ["-x objective-c", "-std=gnu99"])]
         ) + bundles
         let s: Set<ProjectSpec.TargetSource> = Set(all)
