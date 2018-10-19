@@ -71,6 +71,34 @@ struct XCHammerProjectConfig: Codable {
     /// @note: this is written into a python program which is later
     /// serialized. Spaces and escapes matter.
     let buildBazelPlatformOptions: [String: [String]]?
+
+    /// Enable generation of transitive Xcode targets.
+    /// Defaults to `true`
+    /// @note this is _generally_ required for Xcode projects to build with
+    /// Xcode.
+    /// For Non Xcode enabled C++/C/ObjC projects, header search paths are
+    /// propagated so that / indexing, code completion, and other semantic
+    /// features work.
+    let generateTransitiveXcodeTargets: Bool
+
+    /// Enable generation of transitive Xcode schemes
+    /// Defaults to `true`
+    let generateXcodeSchemes: Bool
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        paths = try container.decode(
+                [String]?.self, forKey: .paths)
+
+        buildBazelPlatformOptions = try? container.decode(
+                [String: [String]].self, forKey: .paths)
+
+        generateXcodeSchemes = (try? container.decode(
+                Bool.self, forKey: .generateXcodeSchemes)) ?? true
+
+        generateTransitiveXcodeTargets = (try? container.decode(
+                Bool.self, forKey: .generateTransitiveXcodeTargets)) ?? true
+    }
 }
 
 struct XCHammerConfig: Codable {

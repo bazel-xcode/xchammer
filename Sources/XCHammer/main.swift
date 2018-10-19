@@ -40,6 +40,10 @@ func getHammerConfig(path: Path) throws -> XCHammerConfig {
     return config
 }
 
+/// XCHammer generate options
+/// 
+/// Options for generation only.
+/// Configuration options for Xcode projects are part of `XCHammerConfig`
 struct GenerateOptions: OptionsProtocol {
     typealias ClientError = CommandError
 
@@ -47,7 +51,6 @@ struct GenerateOptions: OptionsProtocol {
     let workspaceRootPath: Path
     let bazelPath: Path
     let forceRun: Bool
-    let generateBazelTargets: Bool
     let xcworkspacePath: Path?
 
     private static func getEnvBazelPath() throws -> Path {
@@ -55,9 +58,9 @@ struct GenerateOptions: OptionsProtocol {
         return Path(path)
     }
 
-    static func create(_ configPath: Path) -> (Path?) -> (Path?) -> (Bool) -> (Bool) -> (Path?) -> GenerateOptions {
+    static func create(_ configPath: Path) -> (Path?) -> (Path?) -> (Bool) -> (Path?) -> GenerateOptions {
         return { workspaceRootPathOpt in { bazelPathOpt in {
-            forceRunOpt in { generateBazelTargetsOpt in { xcworkspacePathOpt -> GenerateOptions in
+            forceRunOpt in { xcworkspacePathOpt -> GenerateOptions in
                 // Defaults to PWD
                 let workspaceRootPath: Path = workspaceRootPathOpt?.normalize() ??
                     Path(FileManager.default.currentDirectoryPath)
@@ -78,10 +81,9 @@ struct GenerateOptions: OptionsProtocol {
                 workspaceRootPath: workspaceRootPath,
                 bazelPath: bazelPath,
                 forceRun: forceRunOpt,
-                generateBazelTargets: generateBazelTargetsOpt,
                 xcworkspacePath: xcworkspacePathOpt?.normalize()
             )
-        } } } } }
+        } } } } 
     }
 
     static func evaluate(_ m: CommandMode) -> Result<GenerateOptions, CommandantError<ClientError>> {
@@ -93,8 +95,6 @@ struct GenerateOptions: OptionsProtocol {
                  usage: "Path to the bazel binary")
             <*> m <| Option(key: "force", defaultValue: false,
                  usage: "Force run the generator")
-            <*> m <| Option(key: "generate_bazel_targets", defaultValue: true,
-                 usage: "Experimental generate bazel targets")
             <*> m <| Option(key: "xcworkspace", defaultValue: nil,
                  usage: "Path to the xcworkspace")
     }
@@ -113,7 +113,7 @@ struct GenerateCommand: CommandProtocol {
                     options.workspaceRootPath, bazelPath: options.bazelPath,
                     configPath: options.configPath, config: config,
                     xcworkspacePath: options.xcworkspacePath, force:
-                    options.forceRun, generateBazelTargets: options.generateBazelTargets)
+                    options.forceRun)
             switch result {
             case .success:
                 return .success(())

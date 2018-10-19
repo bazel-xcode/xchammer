@@ -100,9 +100,9 @@ public class XcodeTargetMap {
 
     private var internalTargets = [XcodeTarget]()
 
-    public var allTargets: [XcodeTarget] {
-        return internalTargets
-    }
+    public lazy var allTargets: Set<XcodeTarget> = {
+        return Set(internalTargets)
+    }()
 
     init (entryMap: RuleEntryMap, genOptions: XCHammerGenerateOptions) {
         ruleEntryMap = entryMap
@@ -169,9 +169,40 @@ public class XcodeTargetMap {
         return targets
     }
 
-    public lazy var includedTargets: [XcodeTarget] = {
+    /// Included project targets are targets contained with in the Xcode 
+    /// project represented
+    /// In multi project mode, information from `xcworkspace` is propagated.
+    public lazy var includedProjectTargets: Set<XcodeTarget> = {
+        let specifiedLabels = Set(genOptions.config.buildTargetLabels)
+        let projectConfig = genOptions.config
+                .projects[genOptions.projectName]
+        let generateTransitiveXcodeTargets =
+                (projectConfig?.generateTransitiveXcodeTargets ?? true)
+
         let pathsPredicate = makePathFiltersPredicate(self.genOptions.pathsSet)
-        return self.allTargets.filter { includeTarget($0, pathPredicate: pathsPredicate) }
+        return Set(self.allTargets.filter {
+            target in
+            if !generateTransitiveXcodeTargets {
+                return specifiedLabels.contains(target.label)
+            }
+            return includeTarget(target, pathPredicate: pathsPredicate)
+        })
+    }()
+
+    /// All included targets regardless of specified paths.
+    public lazy var includedTargets: Set<XcodeTarget> = {
+        let specifiedLabels = Set(genOptions.config.buildTargetLabels)
+        let projectConfig = genOptions.config
+                .projects[genOptions.projectName]
+        let generateTransitiveXcodeTargets =
+                (projectConfig?.generateTransitiveXcodeTargets ?? true)
+        return Set(self.allTargets.filter {
+            target in
+            if !generateTransitiveXcodeTargets {
+                return specifiedLabels.contains(target.label)
+            }
+            return includeTarget(target, pathPredicate: alwaysIncludePathPredicate)
+        })
     }()
 }
 
