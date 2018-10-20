@@ -55,7 +55,7 @@ enum Generator {
             profiler.logEnd(true)
         }
 
-        let entries: [XcodeGenTarget] = targetMap.includedTargets.compactMap {
+        let entries: [XcodeGenTarget] = targetMap.includedProjectTargets.compactMap {
             xcodeTarget in
             guard let target = makeXcodeGenTarget(from: xcodeTarget) else {
                 return nil
@@ -197,7 +197,12 @@ enum Generator {
         return target
     }
 
-    private static func makeSchemes(for targets: [XcodeTarget], targetMap:
+    /// Generate schemes for Bazel targets
+    /// schemes:
+    /// - automatically build rules tagged `xchammer`
+    /// - automatically update the Xcode project during builds if needed
+    /// - include test dependencies
+    private static func makeXcodeSchemes(for targets: [XcodeTarget], targetMap:
             XcodeTargetMap, genOptions:
             XCHammerGenerateOptions) -> [XcodeScheme] {
         let profiler = XCHammerProfiler("make_schemes")
@@ -214,11 +219,10 @@ enum Generator {
                     outputProjectPath, bazelPath: genOptions.bazelPath,
                     configPath: genOptions.configPath, config:
                     genOptions.config, xcworkspacePath:
-                    genOptions.xcworkspacePath, generateBazelTargets:
-                    genOptions.generateBazelTargets)
+                    genOptions.xcworkspacePath)
             let targetMap = XcodeTargetMap(entryMap: targetMap.ruleEntryMap,
                 genOptions: projectGenOptions)
-            let allApps = targetMap.includedTargets.filter {
+            let allApps = targetMap.includedProjectTargets.filter {
                 $0.type == "ios_application"
             }
             
@@ -287,6 +291,8 @@ enum Generator {
             }
     }
     
+    /// Generate schemes for Bazel targets
+    /// These schemes simply run `bazel build`.
     private static func makeBazelTargetSchemes(for targets: [XcodeTarget], targetMap:
             XcodeTargetMap, genOptions:
             XCHammerGenerateOptions) ->
@@ -301,9 +307,6 @@ enum Generator {
                         ($0, true) })
 
                 let buildTargets = [
-                    XcodeScheme.BuildTarget(target: UpdateXcodeProjectTargetName,
-                            project: genOptions.projectName, productName: ""),
-                ] + [
                     XcodeScheme.BuildTarget(target: name,
                             project: genOptions.projectName, productName:
                             xcodeTarget.extractBuiltProductName() + "-Bazel")
@@ -527,9 +530,6 @@ enum Generator {
         // Get Bazel targets for the specified labels
         let getBazelBuildableTargets: (() -> [XcodeTarget]) = {
             () -> [XcodeTarget] in
-            guard genOptions.generateBazelTargets else {
-                return []
-            }
             let specifiedLabels = Set(genOptions.config.buildTargetLabels)
             return allXCTargets
                 .filter { specifiedLabels.contains($0.value.xcodeTarget.label) }
@@ -560,8 +560,11 @@ enum Generator {
             genOptions: genOptions,
             xcodeProjPath: tempProjectPath)
 
-        let xcSchemes = makeSchemes(for: allXCTargets.values.map { $0.xcodeTarget },
-                targetMap: targetMap, genOptions: genOptions)
+        let projectConfig = genOptions.config
+                .projects[genOptions.projectName]
+        let xcSchemes = (projectConfig?.generateXcodeSchemes ?? true) ?
+            makeXcodeSchemes(for: allXCTargets.values.map { $0.xcodeTarget },
+                    targetMap: targetMap, genOptions: genOptions) : []
 
         let bazelSchemes = makeBazelTargetSchemes(for:
                 bazelBuildableXcodeTargets, targetMap: targetMap, genOptions:
@@ -785,8 +788,7 @@ enum Generator {
     public static func generateProjects(workspaceRootPath: Path, bazelPath: Path,
                                         configPath: Path, config:
                                         XCHammerConfig, xcworkspacePath: Path?,
-                                        force: Bool = false,
-                                        generateBazelTargets: Bool = false) -> Result<(),
+                                        force: Bool = false) -> Result<(),
                 GenerateError> {
         // Listen to Tulsi logs. Assume this function is called 1 time
         NotificationCenter.default.addObserver(forName:
@@ -805,8 +807,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath, generateBazelTargets:
-                    generateBazelTargets)
+                    xcworkspacePath)
             guard let existingHash = try? getDepsHashSettingValue(projectPath:
                     genOptions.outputProjectPath) else {
                 return (projectName, (false, nil))
@@ -862,8 +863,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath, generateBazelTargets:
-                    generateBazelTargets)
+                    xcworkspacePath)
 
             let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees

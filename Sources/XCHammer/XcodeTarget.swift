@@ -67,8 +67,6 @@ let DirectoriesAsFileSuffixes: [String] = [
     "lproj",
 ]
 
-
-
 func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) -> Bool {
     guard let buildFilePath = xcodeTarget.buildFilePath else {
         return false
@@ -828,12 +826,16 @@ public class XcodeTarget: Hashable, Equatable {
             }
             return target
         }
-
         return xcodeTargetDeps
-            .filter { includeTarget($0, pathPredicate: alwaysIncludePathPredicate) }
-            .compactMap { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
-                    embed:
-                    $0.isExtension) } + self.frameworkDependencies
+            .compactMap {
+                xcodeTarget in
+                guard targetMap.includedTargets.contains(xcodeTarget) else {
+                    return nil
+                }
+                return ProjectSpec.Dependency(type: .target, reference:
+                        xcodeTarget.xcTargetName, embed:
+                        xcodeTarget.isExtension)
+            } + self.frameworkDependencies
     }()
 
     lazy var frameworkDependencies: [ProjectSpec.Dependency] = {
@@ -996,10 +998,20 @@ public class XcodeTarget: Hashable, Equatable {
     fileprivate var xcExtensionDeps: [ProjectSpec.Dependency] {
         // Assume extensions are contained in the same workspace
         return extensions
-            .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: self) }
-            .map {
-                var mutableDep = ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
-                                               embed: $0.isExtension)
+            .compactMap {
+                label -> XcodeTarget? in
+                guard let target = targetMap.xcodeTarget(buildLabel: label,
+                        depender: self) else {
+                    return nil 
+                }
+                guard targetMap.includedProjectTargets.contains(target) else {
+                    return nil  
+                }
+                return target
+            }.map {
+                xcodeTarget in
+                var mutableDep = ProjectSpec.Dependency(type: .target,
+                        reference: xcodeTarget.xcTargetName, embed: xcodeTarget.isExtension)
                 mutableDep.codeSign = false
                 return mutableDep
             }
