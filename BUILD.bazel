@@ -44,6 +44,7 @@ swift_library(
         "xcproj//:xcproj",
         "Yams//:Yams",
     ]],
+    copts = ["-whole-module-optimization"]
 )
 
 apple_bundle_version(
