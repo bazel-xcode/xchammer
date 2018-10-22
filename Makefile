@@ -18,7 +18,7 @@ aspects:
 
 
 # Make a SPM generated Xcode project.
-# cause problems.
+#
 # Copy the tulsi-aspects and XCHammerAssets adjacent to the Xcode build
 # directory to allow loading of resources, since we can't express this in SPM
 #
@@ -39,6 +39,7 @@ workspace_spm: aspects
 # Make an XCHammer XCHammer Xcode project.
 #
 # Note:
+# - this is under development and doesn't fully work
 # - incremental builds are currently not working with Bazel
 # - run with `force` for development
 workspace_xchammer: build
