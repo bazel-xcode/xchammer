@@ -16,7 +16,7 @@ apple_rules_dependencies()
 git_repository(
     name = "build_bazel_rules_swift",
     remote = "https://github.com/bazelbuild/rules_swift.git",
-    tag = "0.3.1",
+    commit = "8f594d9a9b39ce471064cc13d35c07ea77a24628",
 )
 
 load(
