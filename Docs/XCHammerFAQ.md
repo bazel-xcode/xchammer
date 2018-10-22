@@ -65,6 +65,9 @@ adding examples of edge cases and bugs here :). Pull requests welcome!*
 
 ### How can I develop XCHammer with Xcode?
 
+_The canonical, tested, build system of XCHammer is `make`. Xcode projects are
+currently under development._
+
 To generate an Xcode project, use the make command, `make workspace`. 
 
 *Running*
@@ -81,3 +84,33 @@ are required.
 ```
 _note: Currently, there are multiple issues using the SPM generated workspace,
 which will be fixed upon supporting XCHammer in XCHammer._ 
+
+
+## Misc
+
+### How can I build XCHammer with Bazel?
+
+_The canonical, tested, build system of XCHammer is `make`. Bazel support is
+currently under development._
+
+Add the following to `WORKSPACE` file
+```python
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "xchammer",
+    remote  = "https://github.com/pinterest/xchammer",
+    tag = "0.2"
+)
+
+load("@xchammer:third_party:repositories.bzl", "xchammer_dependencies")
+
+xchammer_dependencies()
+```
+
+Then, run `bazel build @xchammer//:xchammer` to compile from source to build a
+debug version.
+
+For release builds, build with compiler optimizations including setting
+`--compilation_mode=opt`.
+
