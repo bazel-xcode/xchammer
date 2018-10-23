@@ -129,9 +129,6 @@ struct Setting<T: XCSettingStringEncodeable & Semigroup>: Semigroup {
     }
 }
 
-
-
-
 struct XCBuildSettings: Encodable {
     var copts: [String] = []
     var productName: First<String>?
@@ -168,11 +165,6 @@ struct XCBuildSettings: Encodable {
     var swiftCopts: [String] = []
     var testTargetName: First<String>?
     var pythonPath: First<String>?
-    var sdkRoot: First<String>?
-    var targetedDeviceFamily: OrderedArray<String> = OrderedArray.empty
-
-
-
 
     enum CodingKeys: String, CodingKey {
         // Add to this list the known XCConfig keys
@@ -213,9 +205,6 @@ struct XCBuildSettings: Encodable {
         case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
         case mobileProvisionProfileFile = "HAMMER_PROFILE_FILE"
         case tulsiWR = "TULSI_WR"
-        case sdkRoot = "SDKROOT"
-        case targetedDeviceFamily = "TARGETED_DEVICE_FAMILY"
-        
     }
 
     func encode(to encoder: Encoder) throws {
@@ -260,8 +249,8 @@ struct XCBuildSettings: Encodable {
         try useHeaderMap.map { try container.encode($0.v, forKey: .useHeaderMap) }
         try testTargetName.map { try container.encode($0.v, forKey: .testTargetName) }
         try pythonPath.map { try container.encode($0.v, forKey: .pythonPath) }
-        try sdkRoot.map { try container.encode($0.v, forKey: .sdkRoot) }
-        try container.encode(targetedDeviceFamily.joined(separator: ","), forKey: .targetedDeviceFamily)
+        //try sdkRoot.map { try container.encode($0.v, forKey: .sdkRoot) }
+        //try container.encode(targetedDeviceFamily.joined(separator: ","), forKey: .targetedDeviceFamily)
         try swiftVersion.map { try container.encode($0.v, forKey: .swiftVersion) }
 
         // XCHammer only supports Xcode projects at the root directory
@@ -309,9 +298,7 @@ extension XCBuildSettings: Monoid {
             swiftVersion: lhs.swiftVersion <> rhs.swiftVersion,
             swiftCopts: lhs.swiftCopts <> rhs.swiftCopts,
             testTargetName: lhs.testTargetName <> rhs.testTargetName,
-            pythonPath: lhs.pythonPath <> rhs.pythonPath,
-            sdkRoot: lhs.sdkRoot <> rhs.sdkRoot,
-            targetedDeviceFamily: lhs.targetedDeviceFamily <> rhs.targetedDeviceFamily
+            pythonPath: lhs.pythonPath <> rhs.pythonPath
         )
     }
 

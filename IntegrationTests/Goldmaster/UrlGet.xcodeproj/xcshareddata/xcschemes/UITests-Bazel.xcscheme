@@ -14,7 +14,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/UITests-Bazel.xcscheme
                BlueprintIdentifier = "LT_691292342913"
+=======
+               BlueprintIdentifier = "LT_629454187867"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/UITests-Bazel.xcscheme
                BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">

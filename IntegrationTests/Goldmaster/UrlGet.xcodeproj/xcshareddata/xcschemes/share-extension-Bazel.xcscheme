@@ -14,7 +14,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
                BlueprintIdentifier = "LT_691292342913"
+=======
+               BlueprintIdentifier = "LT_629454187867"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
                BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -28,7 +32,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
                BlueprintIdentifier = "NT_599970967680"
+=======
+               BlueprintIdentifier = "NT_424996891355"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
                BuildableName = "share-extension-Bazel.appex"
                BlueprintName = "share-extension-Bazel"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -46,7 +54,11 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
             BlueprintIdentifier = "NT_599970967680"
+=======
+            BlueprintIdentifier = "NT_424996891355"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
             BuildableName = "share-extension-Bazel.appex"
             BlueprintName = "share-extension-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -69,7 +81,11 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
             BlueprintIdentifier = "NT_599970967680"
+=======
+            BlueprintIdentifier = "NT_424996891355"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
             BuildableName = "share-extension-Bazel.appex"
             BlueprintName = "share-extension-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -88,7 +104,11 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
             BlueprintIdentifier = "NT_599970967680"
+=======
+            BlueprintIdentifier = "NT_424996891355"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/share-extension-Bazel.xcscheme
             BuildableName = "share-extension-Bazel.appex"
             BlueprintName = "share-extension-Bazel"
             ReferencedContainer = "container:UrlGet.xcodeproj">

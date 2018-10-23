@@ -14,7 +14,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "LT_691292342913"
+=======
+               BlueprintIdentifier = "LT_629454187867"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BuildableName = "UpdateXcodeProject"
                BlueprintName = "UpdateXcodeProject"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -28,7 +32,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "LT_816521859601"
+=======
+               BlueprintIdentifier = "LT_879714440108"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BuildableName = "GeneratedFiles"
                BlueprintName = "GeneratedFiles"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -42,7 +50,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "LT_456825327596"
+=======
+               BlueprintIdentifier = "LT_535582595715"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BuildableName = "ResetLLDBInit"
                BlueprintName = "ResetLLDBInit"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -56,7 +68,11 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "NT_338352280519"
+=======
+               BlueprintIdentifier = "NT_757956135481"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BuildableName = "ios-app.app"
                BlueprintName = "ios-app"
                ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -74,9 +90,15 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "NT_851294388355"
                BuildableName = "UITests.xctest"
                BlueprintName = "UITests"
+=======
+               BlueprintIdentifier = "NT_162101825678"
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -84,9 +106,15 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "NT_448073995915"
                BuildableName = "UnitTestsWithHost.xctest"
                BlueprintName = "UnitTestsWithHost"
+=======
+               BlueprintIdentifier = "NT_863786754985"
+               BuildableName = "UITests.xctest"
+               BlueprintName = "UITests"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -94,9 +122,15 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                BlueprintIdentifier = "NT_552197308206"
                BuildableName = "UnitTests.xctest"
                BlueprintName = "UnitTests"
+=======
+               BlueprintIdentifier = "NT_394586624846"
+               BuildableName = "UnitTestsWithHost.xctest"
+               BlueprintName = "UnitTestsWithHost"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -104,7 +138,11 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
             BlueprintIdentifier = "NT_338352280519"
+=======
+            BlueprintIdentifier = "NT_757956135481"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
             BuildableName = "ios-app.app"
             BlueprintName = "ios-app"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -127,7 +165,11 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
             BlueprintIdentifier = "NT_338352280519"
+=======
+            BlueprintIdentifier = "NT_757956135481"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
             BuildableName = "ios-app.app"
             BlueprintName = "ios-app"
             ReferencedContainer = "container:UrlGet.xcodeproj">
@@ -146,7 +188,11 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:IntegrationTests/Goldmaster/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
             BlueprintIdentifier = "NT_338352280519"
+=======
+            BlueprintIdentifier = "NT_757956135481"
+>>>>>>> parent of ed81cc2... Don't require xcodegen settings preset files. All configuration should be (#84):sample/UrlGet/UrlGet.xcodeproj/xcshareddata/xcschemes/ios-app.xcscheme
             BuildableName = "ios-app.app"
             BlueprintName = "ios-app"
             ReferencedContainer = "container:UrlGet.xcodeproj">
