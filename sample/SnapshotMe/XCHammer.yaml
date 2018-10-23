@@ -1,8 +1,18 @@
 targets:
-    - "//:ios-app"
-    - "//:UnitTests"
+    - "//ios-app:ios-app"
+    - "//ios-app:UnitTests"
 
+targetConfig:
+    "//ios-app:UnitTests":
+        environmentVariables: 
+            var: "--some"
+        commandLineArguments: 
+            - "--Some"
 projects:
     "SnapshotMe":
         paths:
-            - "**"
+            - "ios-app/**"
+
+    "Deps":
+        paths:
+            - "Vendor/**"
