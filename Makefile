@@ -141,10 +141,13 @@ run: build
 	    $(ROOT_DIR)/sample/$(SAMPLE)/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/$(SAMPLE) \
 	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper
-run2: build
+
+# FIXME: add code to handle `xcworkspace` to `run`
+run_workspace: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
 		$(ROOT_DIR)/sample/SnapshotMe/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/SnapshotMe \
+	    --xcworkspace $(ROOT_DIR)/sample/SnapshotMe/SnapshotMe.xcworkspace \
 	    --bazel $(ROOT_DIR)/sample/SnapshotMe/tools/bazelwrapper
 
 run_force: build

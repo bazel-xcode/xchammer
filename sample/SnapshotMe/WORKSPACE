@@ -1,4 +1,4 @@
-load("@bazel_tools//tools/build_defs/repo:git.bzl", system_git_repository = "git_repository")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "build_bazel_rules_apple",
@@ -13,8 +13,23 @@ load(
 
 apple_rules_dependencies()
 
+git_repository(
+    name = "build_bazel_rules_swift",
+    remote = "https://github.com/bazelbuild/rules_swift.git",
+    tag = "0.3.1",
+)
+
+load(
+    "@build_bazel_rules_swift//swift:repositories.bzl",
+    "swift_rules_dependencies",
+)
+
+swift_rules_dependencies()
+
 http_file(
     name = "xctestrunner",
     executable = 1,
-    urls = ["https://github.com/google/xctestrunner/releases/download/0.2.3/ios_test_runner.par"],
+    urls = ["https://github.com/google/xctestrunner/releases/download/0.2.4/ios_test_runner.par"]
 )
+
+
