@@ -140,6 +140,11 @@ run: build
 	    $(ROOT_DIR)/sample/$(SAMPLE)/XCHammer.yaml \
 	    --workspace_root $(ROOT_DIR)/sample/$(SAMPLE) \
 	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper
+run2: build
+	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
+		$(ROOT_DIR)/sample/SnapshotMe/XCHammer.yaml \
+	    --workspace_root $(ROOT_DIR)/sample/SnapshotMe \
+	    --bazel $(ROOT_DIR)/sample/SnapshotMe/tools/bazelwrapper
 
 run_force: build
 	$(ROOT_DIR)/.build/debug/$(PRODUCT) generate \
@@ -194,4 +199,3 @@ ci: test run_perf_ci run_swift
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
-
