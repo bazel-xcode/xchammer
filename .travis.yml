@@ -5,3 +5,15 @@ before_install:
   - sudo gem install cocoapods
 osx_image: xcode10
 script: make ci
+
+before_deploy:
+  # TODO: build XCHammer
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: hej5zHKfNDioJl5CikbvcqVrGo7HKibSKlmX6M3V2c8vwwFxVR/i6JOJuL07n5wfeyZx5Bc8WgpA/4NWXsWH4wufwejGH8We4s20FkIFavzuj2sfMmSvXFr5ETktxv0gdTrjUlnYlkxyOvg5QhBYemWROC3FbI+Nq/aiwLrzTyvjCv2xAu+mdQTnDxKxS5IaPLnHC9GIGY904uSMV+1RnO1gBib6Z1WAtd1R0x+3agp5OpcGQ7h4LDKiZoimMlpAAg5f26tB2m/45zgvxfy5A3kgjybBMAmTRbGVdUJ1B0fwkIx4c8eT/ylmkLGWsVOvapreWwKVkBeGQDFo4PQl8GE6n+hEBYVEIgSHdHawCAG+PZT0tpMGnpC+y0SLdqcbYTgLhggGwIJiOw7tBWr3vLTQvarIx87trUfPP2wT1kSPyfBr9qfQbehOcZe6E0dvXUOt68YYy7UVm17rd3D2KefgSTfz29TWurAA6H60N/iKLGVIg4y5pIZaSSW3C9tVxRsDkCwsG91CqnMBD86jQKCp1SPB0jjcSCQ3F1/3EKIDBF/xYaX2YLm5dvFyxdGzEt2fTKj6KnVPqZIMF5Xqf0kQ8l51FgjODWhMpc94Mh+/d5c5CRveB4Lu6tRkqIQ6S+OtEfXwdscLLDxBTRsGNYxXc1eBU1/OTxDWZfr8pcA=
+  file: 'README.md' # TODO: use actual file
+  on:
+      repo: pinterest/xchammer #TODO: Tags
