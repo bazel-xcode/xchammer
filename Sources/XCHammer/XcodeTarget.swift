@@ -25,27 +25,18 @@ private func shouldPropagateDeps(forTarget xcodeTarget: XcodeTarget) -> Bool {
 }
 
 /// Return XCConfig files
-/// Currently we support `Diags.xcconfig`, the base for all
-/// warning flags.
-private func getDiagsXCConfigFiles(for target: XcodeTarget, genOptions: XCHammerGenerateOptions) -> [String: String] {
-    // Linear search a sequence of Maybe XCConfigs for the first XCConfig
-    // Bias towards a Diags.xcconfig closest to the BUILD file
-    let components = target.buildFilePath!.components(separatedBy: "/")
-    let maybeXCConfig = components
-        .lazy
-        .enumerated()
-        .reversed()
-        .map {
-            idx, _ -> String in
-           let ext = (idx == 0 ? "" : "/") + "Diags.xcconfig"
-           return components[0..<idx].joined(separator: "/") + ext
-        }.first { (genOptions.workspaceRootPath + Path($0)).isFile }
-    if let xcconfig = maybeXCConfig {
-        return ["Debug": xcconfig, "Release": xcconfig]
+private func getXCConfigFiles(for target: XcodeTarget) -> [String: String] {
+    let genOptions = target.genOptions
+    let targetConfig = genOptions.config.getTargetConfig(for: target.label.value)
+    if let overrides = targetConfig?.xcconfigOverrides ?? genOptions.projectConfig?.xcconfigOverrides {
+        return Dictionary.from(overrides.map {
+            k, v in
+            let path = genOptions.workspaceRootPath + Path(v)
+            return (k, (path.string))
+        })
     }
     return [String: String]()
 }
-
 
 let AppIconSet = "appiconset"
 
@@ -671,9 +662,9 @@ public class XcodeTarget: Hashable, Equatable {
             .compactMap { $0.self.extractHeaderMap() }
             .map { "-iquote \($0)" }
 
-        // Delegate warnings and error config to xcconfig for targets that have
-        // a diagnostics xcconfig.
-        let configs = getDiagsXCConfigFiles(for: self, genOptions: genOptions)
+        // Delegate warnings and error compiler options for targets that have a
+        // xcconfig.
+        let configs = getXCConfigFiles(for: self)
         if configs.keys.count > 0 {
             settings.copts = ["$(inherited)"] + settings.copts.filter { !$0.hasPrefix("-W") }
         }
@@ -1278,8 +1269,7 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
         type: PBXProductType(rawValue: productType.rawValue)!,
         platform: Platform(rawValue: platform)!,
         settings: makeXcodeGenSettings(from: getComposedSettings()),
-        configFiles: getDiagsXCConfigFiles(for: xcodeTarget, genOptions:
-            genOptions),
+        configFiles: getXCConfigFiles(for: xcodeTarget),
         sources: sources,
         dependencies: Array(Set(deps + linkedDeps)),
         prebuildScripts: prebuildScripts,

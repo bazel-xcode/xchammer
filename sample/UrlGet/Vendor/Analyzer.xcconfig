@@ -1,0 +1,2 @@
+// Don't analyze vendor code
+RUN_CLANG_STATIC_ANALYZER=NO

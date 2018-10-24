@@ -109,6 +109,8 @@ struct GenerateCommand: CommandProtocol {
     func run(_ options: Options) -> Result<(), CommandError> {
         do {
             let config = try getHammerConfig(path: options.configPath)
+            let _ = try validate(config: config, workspaceRootPath:
+                    options.workspaceRootPath)
             let result = Generator.generateProjects(workspaceRootPath:
                     options.workspaceRootPath, bazelPath: options.bazelPath,
                     configPath: options.configPath, config: config,

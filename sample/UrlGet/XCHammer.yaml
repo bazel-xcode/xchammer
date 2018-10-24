@@ -11,6 +11,11 @@ projects:
         paths:
             - "Vendor/**"
             - "ios-app/**"
+
+        xcconfigOverrides:
+            Debug: "ios-app/Diags.xcconfig"
+            Release: "ios-app/Diags.xcconfig"
+
         # Example of overriding the default platform options
         # Note,  this is not set, we put sensible defaults in.
         buildBazelPlatformOptions:
@@ -18,7 +23,6 @@ projects:
                 - "--config=ios_x86_64"
             ios_arm64:
                 - "--config=ios_arm64"
-
 targetConfig:
     "//ios-app:ios-app":
         buildBazelTemplate: "UrlGetXcodeBuildScript.sh"
@@ -27,4 +31,9 @@ targetConfig:
         # and dynamically configuring Bazel options at runtime.
         buildBazelOptions: "--action_env=X=Y --action_env=CLI_SDK=$(SDKROOT)"
         environmentVariables:
-                envVar : "blahblah($SRCROOT)"
+                envVar : "$SRCROOT"
+
+    "//Vendor/Stripe:Stripe":
+        xcconfigOverrides:
+            Release: "Vendor/Analyzer.xcconfig"
+            Debug: "Vendor/Analyzer.xcconfig"
