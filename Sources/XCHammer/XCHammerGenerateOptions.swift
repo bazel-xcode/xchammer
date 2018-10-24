@@ -40,5 +40,9 @@ struct XCHammerGenerateOptions {
     var projectName: String {
         return outputProjectPath.lastComponentWithoutExtension
     }
+
+    var projectConfig: XCHammerProjectConfig? {
+        return config.projects[projectName]
+    }
 }
 

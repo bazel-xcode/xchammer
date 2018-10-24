@@ -13,12 +13,13 @@
 // limitations under the License.
 
 import Foundation
+import PathKit
 
 struct XCHammerTargetConfig: Codable {
-    /// Command line arguments for each target
+    /// Scheme runtime command line arguments for each target
     let commandLineArguments: [String]?
     
-    /// Environment Variables for each target
+    /// Scheme runtime environment Variables for each target
     let environmentVariables: [String: String]?
 
     /// Bazel Target options
@@ -40,6 +41,10 @@ struct XCHammerTargetConfig: Codable {
     /// # Some scripting things..
     /// __BAZEL_COMMAND__
     let buildBazelTemplate: String?
+   
+    /// Like XCHammerProjectConfig.xcconfigOverrides but for targets
+    /// Target configs replace project configs
+    let xcconfigOverrides: [String: String]?
 }
 
 struct XCHammerProjectConfig: Codable {
@@ -88,19 +93,49 @@ struct XCHammerProjectConfig: Codable {
     /// Defaults to `true`
     let generateXcodeSchemes: Bool
 
+    /// xcconfig file overrides keyed by Xcode config name
+    /// 
+    /// Generally, "build settings", importantly compiler options, are
+    /// propagated to Xcode by XCHammer automatically.
+    ///
+    /// Generally, the default XCHammer Xcode build should match Bazel by
+    /// default ( if not it's a bug )
+    /// 
+    /// _Why would an xcconfig be needed then?_
+    ///
+    /// - Xcode's default settings may need to be overridden to make the Bazel
+    ///   build the same as the Xcode one.
+    ///
+    /// - Some Xcode idioms don't exist in Bazel and a user may need to control
+    ///   such options e.g. static analyzer settings.
+    ///
+    /// - It may be useful to have divergence in Bazel -> Xcode settings for
+    ///   some local development tasks.
+    ///
+    /// - Some people are more comfortable changing XCConfigs and they want to
+    ///   change them locally. 
+    ///  
+    /// note: by setting this, all diagnostic options are filtered out.
+    /// note: config names are case sensitive here e.g. 'Debug'
+    let xcconfigOverrides: [String: String]?
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        paths = try container.decode(
-                [String]?.self, forKey: .paths)
+        paths = try container.decodeIfPresent(
+                [String]?.self, forKey: .paths) as? [String]
 
-        buildBazelPlatformOptions = try? container.decode(
-                [String: [String]].self, forKey: .paths)
+        buildBazelPlatformOptions = try container.decodeIfPresent(
+                [String: [String]].self, forKey: .buildBazelPlatformOptions)
 
-        generateXcodeSchemes = (try? container.decode(
+        generateXcodeSchemes = (try container.decodeIfPresent(
                 Bool.self, forKey: .generateXcodeSchemes)) ?? true
 
-        generateTransitiveXcodeTargets = (try? container.decode(
+        generateTransitiveXcodeTargets = (try container.decodeIfPresent(
                 Bool.self, forKey: .generateTransitiveXcodeTargets)) ?? true
+
+        xcconfigOverrides = (try container.decodeIfPresent(
+                [String: String].self, forKey: .xcconfigOverrides)) ?? nil
+
     }
 }
 
@@ -110,10 +145,10 @@ struct XCHammerConfig: Codable {
     /// source filters.
     let targets: [String]
 
-    /// Optional config for each target
+    /// Optional config for each target keyed by Bazel Label
     let targetConfig: [String: XCHammerTargetConfig]?
 
-    /// All of the projects keyed by a config
+    /// All of the projects keyed by Project name
     let projects: [String: XCHammerProjectConfig]
 
     func getTargetConfig(for label: String) -> XCHammerTargetConfig? {
@@ -122,4 +157,37 @@ struct XCHammerConfig: Codable {
 
     static let empty: XCHammerConfig = XCHammerConfig(targets: [], targetConfig: [:], projects: [:])
 }
+
+enum XCHammerConfigValidationError : Error {
+    case invalidXCConfig(String)
+}
+
+/// Validate an XCHammerConfig in the context of a WORKSPACE
+func validate(config: XCHammerConfig, workspaceRootPath: Path) throws -> Bool {
+    /// TODO: Validate that full labels are passed in
+    func validateXCConfigInput(overrides: [String: String]) throws {
+        try overrides.forEach {
+            k, v in
+            let path = workspaceRootPath + Path(v)
+            if !path.isFile {
+                throw XCHammerConfigValidationError.invalidXCConfig(v)
+            }
+        }
+    }
+    try config.projects.forEach {
+        projectName, project in
+        if let overrides = project.xcconfigOverrides {
+            try validateXCConfigInput(overrides: overrides)
+        }
+    }
+    try config.targetConfig?.forEach {
+        targetName, target in
+        if let overrides = target.xcconfigOverrides {
+            try validateXCConfigInput(overrides: overrides)
+        }
+    }
+
+    return true
+}
+
 
