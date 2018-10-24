@@ -58,9 +58,13 @@ struct GenerateOptions: OptionsProtocol {
         return Path(path)
     }
 
-    static func create(_ configPath: Path) -> (Path?) -> (Path?) -> (Bool) -> (Path?) -> GenerateOptions {
+    static func create(_ configPathOpt: Path?) -> (Path?) -> (Path?) -> (Bool) -> (Path?) -> GenerateOptions {
         return { workspaceRootPathOpt in { bazelPathOpt in {
             forceRunOpt in { xcworkspacePathOpt -> GenerateOptions in
+                guard let configPath = configPathOpt ??
+                    [Path("XCHammer.yaml"), Path("XCHammer.yml")].first(where: { $0.exists }) else {
+                        fatalError("Missing XCHammerConfig yaml file")
+                }
                 // Defaults to PWD
                 let workspaceRootPath: Path = workspaceRootPathOpt?.normalize() ??
                     Path(FileManager.default.currentDirectoryPath)
@@ -88,7 +92,8 @@ struct GenerateOptions: OptionsProtocol {
 
     static func evaluate(_ m: CommandMode) -> Result<GenerateOptions, CommandantError<ClientError>> {
         return create
-            <*> m <| Argument(usage: "Path to the XCHammerConfig yaml file")
+            <*> m <| Argument(defaultValue: nil,
+                 usage: "Path to the XCHammerConfig yaml file")
             <*> m <| Option(key: "workspace_root", defaultValue: nil,
                  usage: "The source root of the repo")
             <*> m <| Option(key: "bazel", defaultValue: nil,
