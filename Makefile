@@ -97,6 +97,7 @@ build-release: SWIFTBFLAGS = -Xswiftc -target -Xswiftc x86_64-apple-macosx10.13 
 build-release: build-impl
 
 build-impl:
+	@mkdir -p .build
 	swift build $(SWIFTBFLAGS) | tee .build/last_build.log
 	# Install bundle resources
 	ditto $(ASSETDIR) .build/$(CONFIG)/$(ASSETDIR)
