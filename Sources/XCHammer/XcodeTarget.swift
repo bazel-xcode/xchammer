@@ -543,7 +543,6 @@ public class XcodeTarget: Hashable, Equatable {
         var settings = XCBuildSettings()
         self.attributes.forEach { attr, value in
             switch attr {
-                // TODO: Implement the rest of the attributes enum
             case .copts:
                 if let coptsArray = value as? [String] {
                     let processedOpts = coptsArray.map { opt -> String in
@@ -553,7 +552,8 @@ public class XcodeTarget: Hashable, Equatable {
                             let processedOpt =  "-I$(SRCROOT)/\(path)"
                             return processedOpt
                         } else {
-                            return opt
+                            return opt.replacingOccurrences(of: "__BAZEL_GEN_DIR__",
+                                with: "$(SRCROOT)/bazel-genfiles")
                         }
                     }
                     settings.copts <>= processedOpts
