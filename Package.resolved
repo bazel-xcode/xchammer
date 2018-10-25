@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/yonaskolb/JSONUtilities.git",
         "state": {
           "branch": null,
-          "revision": "d9f957b1b2a078c93f96c723040d4cbffcb7d3f9",
-          "version": "4.0.2"
+          "revision": "db238f4858ac2ac3fff228b5b71ce90488a6a9b3",
+          "version": "4.1.0"
         }
       },
       {
@@ -101,6 +101,15 @@
         }
       },
       {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell",
+        "state": {
+          "branch": null,
+          "revision": "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
+          "version": "4.1.2"
+        }
+      },
+      {
         "package": "Tulsi",
         "repositoryURL": "https://github.com/pinterest/Tulsi.git",
         "state": {
@@ -114,17 +123,17 @@
         "repositoryURL": "https://github.com/yonaskolb/XcodeGen.git",
         "state": {
           "branch": null,
-          "revision": "8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0",
+          "revision": "885d5fb8c112e83b19dc24925982b9b0adb6abce",
           "version": null
         }
       },
       {
-        "package": "xcproj",
+        "package": "xcodeproj",
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "5253c22f208558264e3a64a3a29f11537ca1b41a",
-          "version": "4.3.1"
+          "revision": "23da51abd3de3bedaad59a0afbb150b48504b5b0",
+          "version": "6.3.0"
         }
       },
       {

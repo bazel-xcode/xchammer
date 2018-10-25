@@ -26,7 +26,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/yonaskolb/XcodeGen.git",
-            .revision("8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0")),
+            .revision("885d5fb8c112e83b19dc24925982b9b0adb6abce")),
 
         // Changes reside in the xchammer branch
         .package(url: "https://github.com/pinterest/Tulsi.git",

@@ -243,7 +243,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
-        commit = "8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0",
+        commit = "885d5fb8c112e83b19dc24925982b9b0adb6abce",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeGenKit",
