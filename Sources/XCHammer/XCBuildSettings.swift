@@ -170,9 +170,7 @@ struct XCBuildSettings: Encodable {
     var pythonPath: First<String>?
     var sdkRoot: First<String>?
     var targetedDeviceFamily: OrderedArray<String> = OrderedArray.empty
-
-
-
+    var diagnosticFlags: [String] = []
 
     enum CodingKeys: String, CodingKey {
         // Add to this list the known XCConfig keys
@@ -212,6 +210,7 @@ struct XCBuildSettings: Encodable {
         // Hammer Rules
         case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
         case mobileProvisionProfileFile = "HAMMER_PROFILE_FILE"
+        case diagnosticFlags = "HAMMER_DIAGNOSTIC_FLAGS"
         case tulsiWR = "TULSI_WR"
         case sdkRoot = "SDKROOT"
         case targetedDeviceFamily = "TARGETED_DEVICE_FAMILY"
@@ -266,6 +265,7 @@ struct XCBuildSettings: Encodable {
 
         // XCHammer only supports Xcode projects at the root directory
         try container.encode("$SOURCE_ROOT", forKey: .tulsiWR)
+        try container.encode(diagnosticFlags.joined(separator: " "), forKey: .diagnosticFlags)
     }
 }
 
@@ -311,7 +311,9 @@ extension XCBuildSettings: Monoid {
             testTargetName: lhs.testTargetName <> rhs.testTargetName,
             pythonPath: lhs.pythonPath <> rhs.pythonPath,
             sdkRoot: lhs.sdkRoot <> rhs.sdkRoot,
-            targetedDeviceFamily: lhs.targetedDeviceFamily <> rhs.targetedDeviceFamily
+            targetedDeviceFamily: lhs.targetedDeviceFamily <>
+                rhs.targetedDeviceFamily,
+            diagnosticFlags: lhs.diagnosticFlags <> rhs.diagnosticFlags
         )
     }
 
