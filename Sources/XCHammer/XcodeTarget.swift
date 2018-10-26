@@ -681,26 +681,6 @@ public class XcodeTarget: Hashable, Equatable {
         let libraryDeps = self.extractLibraryDeps(map: targetMap)
         settings.librarySearchPaths <>= OrderedArray(libraryDeps.map(dirname))
 
-        // Set thes deployment target if available
-        if let deploymentTgt = self.deploymentTarget {
-            switch deploymentTgt.platform {
-            case .ios:
-                settings.iOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-                settings.sdkRoot <>= First("iphoneos")
-                settings.targetedDeviceFamily <>= ["1", "2"]
-            case .tvos:
-                settings.tvOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-                settings.sdkRoot <>= First("appletvos")
-                settings.targetedDeviceFamily <>= ["3"]
-            case .watchos:
-                settings.watchOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-                settings.sdkRoot <>= First("watchos")
-                settings.targetedDeviceFamily <>= ["4"]
-            case .macos:
-                settings.macOSDeploymentTarget <>= First(deploymentTgt.osVersion)
-                settings.sdkRoot <>= First("macosx")
-            }
-        }
         
         // Add defines as copts
         settings.copts <>= processDefines(defines: self.extractDefines(map: targetMap))
@@ -709,6 +689,8 @@ public class XcodeTarget: Hashable, Equatable {
             settings.moduleMapFile <>= First(moduleMapPath)
             settings.enableModules <>= First("YES")
         }
+
+        settings <>= getDeploymentTargetSettings()
 
         // Code Signing
         settings.codeSigningRequired <>= First("NO")
@@ -759,6 +741,31 @@ public class XcodeTarget: Hashable, Equatable {
                                        SDKiPhone: nil)
         return settings
     }()
+
+    func getDeploymentTargetSettings() -> XCBuildSettings {
+        var settings = XCBuildSettings()
+        // Set thes deployment target if available
+        if let deploymentTgt = self.deploymentTarget {
+            switch deploymentTgt.platform {
+            case .ios:
+                settings.iOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("iphoneos")
+                settings.targetedDeviceFamily <>= ["1", "2"]
+            case .tvos:
+                settings.tvOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("appletvos")
+                settings.targetedDeviceFamily <>= ["3"]
+            case .watchos:
+                settings.watchOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("watchos")
+                settings.targetedDeviceFamily <>= ["4"]
+            case .macos:
+                settings.macOSDeploymentTarget <>= First(deploymentTgt.osVersion)
+                settings.sdkRoot <>= First("macosx")
+            }
+        }
+        return settings
+    }
 
     // ProductType and Map are different than Tulsi's
     enum ProductType: String {
@@ -1118,6 +1125,7 @@ public class XcodeTarget: Hashable, Equatable {
         // A custom XCHammerAsset bazel_build_settings.py is loaded by bazel_build.py
         settings.pythonPath =
             First("${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets")
+        settings <>= getDeploymentTargetSettings()
 
         let bazelScript = ProjectSpec.BuildScript(path: nil, script: getScriptContent(),
                 name: "Bazel build")
