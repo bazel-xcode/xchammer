@@ -665,10 +665,11 @@ public class XcodeTarget: Hashable, Equatable {
         // Delegate warnings and error compiler options for targets that have a
         // xcconfig.
         let configs = getXCConfigFiles(for: self)
+
+        settings.diagnosticFlags <>=  settings.copts.filter { $0.hasPrefix("-W") }
         if configs.keys.count > 0 {
             settings.copts = ["$(inherited)"] + settings.copts.filter { !$0.hasPrefix("-W") }
         }
-
         // Framework Search Paths
         settings.frameworkSearchPaths <>= ["$(inherited)",
             "$(PLATFORM_DIR)/Developer/Library/Frameworks"] <>
