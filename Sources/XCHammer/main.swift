@@ -93,7 +93,7 @@ struct GenerateOptions: OptionsProtocol {
     static func evaluate(_ m: CommandMode) -> Result<GenerateOptions, CommandantError<ClientError>> {
         return create
             <*> m <| Argument(defaultValue: nil,
-                 usage: "Path to the XCHammerConfig yaml file")
+                 usage: "Path to the XCHammerConfig yaml file (default: XCHammer.yaml)")
             <*> m <| Option(key: "workspace_root", defaultValue: nil,
                  usage: "The source root of the repo")
             <*> m <| Option(key: "bazel", defaultValue: nil,
