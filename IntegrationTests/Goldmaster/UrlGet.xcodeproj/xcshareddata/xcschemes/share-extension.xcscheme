@@ -15,8 +15,50 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
-               BuildableName = "share-extension.appex-Bazel"
-               BlueprintName = "share-extension-Bazel"
+               BuildableName = ""
+               BlueprintName = "UpdateXcodeProject"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = ""
+               BlueprintName = "GeneratedFiles"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = ""
+               BlueprintName = "ResetLLDBInit"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = "share-extension.appex"
+               BlueprintName = "share-extension"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,13 +71,43 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = "UITests.xctest"
+               BlueprintName = "UITests"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = "UnitTestsWithHost.xctest"
+               BlueprintName = "UnitTestsWithHost"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
+            BuildableName = "share-extension.appex"
+            BlueprintName = "share-extension"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,8 +133,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
+            BuildableName = "share-extension.appex"
+            BlueprintName = "share-extension"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -84,8 +156,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "share-extension.appex-Bazel"
-            BlueprintName = "share-extension-Bazel"
+            BuildableName = "share-extension.appex"
+            BlueprintName = "share-extension"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

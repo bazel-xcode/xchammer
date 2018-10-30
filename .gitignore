@@ -21,6 +21,7 @@ compile_commands.json
 
 # Generate Projects
 XCHammer.xcodeproj/
+xchammer.app
 depsHash
 sample/UrlGet/IntegrationTests.xcodeproj/
 sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/HammerLog.txt

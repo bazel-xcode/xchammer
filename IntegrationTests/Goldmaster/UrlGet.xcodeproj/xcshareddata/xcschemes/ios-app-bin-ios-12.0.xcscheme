@@ -57,8 +57,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
-               BuildableName = "UnitTests.xctest"
-               BlueprintName = "UnitTests"
+               BuildableName = "ios-app-bin-ios-12.0"
+               BlueprintName = "ios-app-bin-ios-12.0"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -76,8 +76,28 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = ""
+               BuildableName = "UITests.xctest"
+               BlueprintName = "UITests"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
                BuildableName = "UnitTests.xctest"
                BlueprintName = "UnitTests"
+               ReferencedContainer = "container:UrlGet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = ""
+               BuildableName = "UnitTestsWithHost.xctest"
+               BlueprintName = "UnitTestsWithHost"
                ReferencedContainer = "container:UrlGet.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -86,8 +106,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "UnitTests.xctest"
-            BlueprintName = "UnitTests"
+            BuildableName = "ios-app-bin-ios-12.0"
+            BlueprintName = "ios-app-bin-ios-12.0"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -113,8 +133,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "UnitTests.xctest"
-            BlueprintName = "UnitTests"
+            BuildableName = "ios-app-bin-ios-12.0"
+            BlueprintName = "ios-app-bin-ios-12.0"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -136,8 +156,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = ""
-            BuildableName = "UnitTests.xctest"
-            BlueprintName = "UnitTests"
+            BuildableName = "ios-app-bin-ios-12.0"
+            BlueprintName = "ios-app-bin-ios-12.0"
             ReferencedContainer = "container:UrlGet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
