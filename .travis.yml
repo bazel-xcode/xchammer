@@ -7,6 +7,8 @@ os:
 cache:
   directories:
     - $HOME/.bazelenv
+    - $HOME/Library/Caches/Bazel
+    - $HOME/.bazel_pod_store
 before_install:
   - sudo gem install cocoapods
 osx_image: xcode10

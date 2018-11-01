@@ -102,21 +102,30 @@ compile_commands.json:
 
 
 build-debug: CONFIG = debug
-build-debug: SWIFTBFLAGS = -Xswiftc -target -Xswiftc x86_64-apple-macosx10.13 --configuration $(CONFIG)
-build-release: BAZELFLAGS = --announce_rc
+build-debug: SWIFTBFLAGS = -Xswiftc -target \
+	-Xswiftc x86_64-apple-macosx10.13 \
+	--configuration $(CONFIG)
+build-debug: BAZELFLAGS = --announce_rc \
+	--spawn_strategy=standalone \
+	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-debug: build-impl
 
 build-release: CONFIG = release
-build-release: SWIFTBFLAGS = -Xswiftc -target -Xswiftc x86_64-apple-macosx10.13 --configuration $(CONFIG) -Xswiftc -static-stdlib
-build-release: BAZELFLAGS = --announce_rc --compilation_mode opt
+build-release: SWIFTBFLAGS = -Xswiftc -target \
+	-Xswiftc x86_64-apple-macosx10.13 \
+	--configuration $(CONFIG) -Xswiftc -static-stdlib
+build-release: BAZELFLAGS = --announce_rc \
+	--compilation_mode opt \
+	--spawn_strategy=standalone \
+	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-release: build-impl
-
 
 build-impl:
 ifeq ($(BAZEL_BUILD),true)
-	$(ROOT_DIR)/tools/bazelwrapper build xchammer $(BAZELFLAGS)
-	rm -rf $(ROOT_DIR)/xchammer.app
-	unzip $(ROOT_DIR)/bazel-bin/xchammer.zip
+	$(ROOT_DIR)/tools/bazelwrapper build \
+		 $(BAZELFLAGS) xchammer
+	@rm -rf $(ROOT_DIR)/xchammer.app
+	@unzip -q $(ROOT_DIR)/bazel-bin/xchammer.zip
 else
 	@mkdir -p .build
 	@swift build $(SWIFTBFLAGS) | tee .build/last_build.log
@@ -225,7 +234,15 @@ run_perf_ci:
 	$(MAKE) -C sample/Frankenstein
 	$(MAKE) run_perf
 
-ci: clean test run_perf_ci run_swift
+# On the CI - we stick a .bazelrc into the home directory to control
+# how every single bazel build works. ( Any sample get's this )
+bazelrc_home:
+ifeq ($(BAZEL_BUILD),true)
+	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
+	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
+endif
+
+ci: clean bazelrc_home test run_perf_ci run_swift 
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
