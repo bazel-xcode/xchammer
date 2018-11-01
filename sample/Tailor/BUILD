@@ -29,5 +29,8 @@ swift_library(
     ],
     # TODO: Add the ability to customize a module name.
     # This works, but not in Xcode!
-    module_name = "tailor"
+    module_name = "tailor",
+    copts = [
+      "-swift-version 4.2"
+    ]
 )

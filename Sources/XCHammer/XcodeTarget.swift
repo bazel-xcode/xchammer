@@ -531,6 +531,33 @@ public class XcodeTarget: Hashable, Equatable {
                 .map { "-D\($0)" }
         }
 
+        func extractSwiftVersion() -> String? {
+            // First respect swift language version if explicitly defined
+            // This should be less common and i believe was only supported by old rules_apple rules
+            if let version = self.attributes[.swift_language_version] as? String {
+                return version
+            }
+            
+            // Second look through the swiftcopts to see if `-swift-version <version>` has been specified
+            if let coptsArray = self.attributes[.swiftc_opts] as? [String] {
+                let versionOpt = coptsArray.filter { $0.hasPrefix("-swift-version") }.first
+                let version = versionOpt.map { $0.split(separator: " ") }?.last.map(String.init)
+                if version != nil {
+                    return version
+                }
+            }
+
+            // Lastly if we have a swift dependency and can't determine the version, ask swiftc
+            if self.attributes[.has_swift_dependency] != nil || self.attributes[.has_swift_info] != nil {
+                // We don't have a guarantee the format will always be the same but it's unlikely to change
+                // ^^ I will regret these words (rmalik)
+                return try? (ShellOut.shellOut(to: "xcrun swiftc -version | cut -d ' ' -f4")).trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+
+            return nil
+        }
+
+
         var settings = XCBuildSettings()
         self.attributes.forEach { attr, value in
             switch attr {
@@ -595,16 +622,8 @@ public class XcodeTarget: Hashable, Equatable {
                 break // These attrs are not related to XCConfigs
             case .binary:
                 break // Explicitly not handled since it is a implicit target we don't intend to handle
-            case .swift_language_version:
-                guard let swiftVersion = value as? String else {
-                    break
-                }
-                settings.swiftVersion <>=  First(swiftVersion)
-            case .has_swift_dependency, .has_swift_info:
-                guard let swiftVersion = try? ShellOut.shellOut(to: "xcrun swift package tools-version") else {
-                    break
-                }
-                settings.swiftVersion <>=  First(swiftVersion)
+            case .swift_language_version,  .has_swift_dependency, .has_swift_info:
+                break // Logic handled in extractSwiftVersion function since there is a logical order of determining SWIFT_VERSION
             case .swiftc_opts:
                 if let coptsArray = value as? [String] {
                     let processedOpts = coptsArray.map { opt -> String in
@@ -624,6 +643,9 @@ public class XcodeTarget: Hashable, Equatable {
                 print("TODO: Unimplemented attribute \(attr) \(value)")
             }
         }
+
+        // Swift version
+        settings.swiftVersion <>= extractSwiftVersion().map(First.init)
 
         // Product Name
 
