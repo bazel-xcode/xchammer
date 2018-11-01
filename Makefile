@@ -237,8 +237,10 @@ run_perf_ci:
 # On the CI - we stick a .bazelrc into the home directory to control
 # how every single bazel build works. ( Any sample get's this )
 bazelrc_home:
+ifeq ($(BAZEL_BUILD),true)
 	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
+endif
 
 ci: clean bazelrc_home test run_perf_ci run_swift 
 
