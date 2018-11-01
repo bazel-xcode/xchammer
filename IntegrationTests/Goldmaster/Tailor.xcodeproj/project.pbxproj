@@ -7,155 +7,151 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF_312168298619 /* Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_164461626461 /* Stub.swift */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
-		BF_433848069429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_209587129221 /* AppDelegate.swift */; };
-		BF_738020867112 = {isa = PBXBuildFile; fileRef = FR_727585954021 /* ios-app-main.a */; };
-		BF_745439098229 /* libios-app-main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_339814870963 /* libios-app-main.a */; };
-		BF_816617878957 = {isa = PBXBuildFile; fileRef = FR_133574888244 /* ios-app.app */; };
+		BF_156323332845 = {isa = PBXBuildFile; fileRef = FR_322453544755 /* tailor.a */; };
+		BF_165280145802 /* Tailor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_278630634086 /* Tailor.swift */; };
+		BF_195567796029 = {isa = PBXBuildFile; fileRef = FR_297322858885 /* ios-app-main.a */; };
+		BF_249217343491 = {isa = PBXBuildFile; fileRef = FR_849461705440 /* ios-app-Bazel.app */; };
+		BF_295223633148 /* libios-app-main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_469890310621 /* libios-app-main.a */; };
+		BF_592948787377 /* libtailor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_414070879722 /* libtailor.a */; };
+		BF_632676901407 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_695775747785 /* AppDelegate.swift */; };
+		BF_718027952470 = {isa = PBXBuildFile; fileRef = FR_848403537843 /* ios-app.app */; };
+		BF_870326953016 /* Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_803640936590 /* Stub.swift */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FR_133574888244 /* ios-app.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_164461626461 /* Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stub.swift; sourceTree = "<group>"; };
-		FR_209587129221 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FR_215638080565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FR_339814870963 /* libios-app-main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libios-app-main.a"; sourceTree = "<group>"; };
-		FR_727585954021 /* ios-app-main.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = "ios-app-main.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_278630634086 /* Tailor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tailor.swift; sourceTree = "<group>"; };
+		FR_297322858885 /* ios-app-main.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = "ios-app-main.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_322453544755 /* tailor.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = tailor.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_414070879722 /* libtailor.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libtailor.a; sourceTree = "<group>"; };
+		FR_417215486089 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR_469890310621 /* libios-app-main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libios-app-main.a"; sourceTree = "<group>"; };
+		FR_695775747785 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FR_803640936590 /* Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stub.swift; sourceTree = "<group>"; };
+		FR_848403537843 /* ios-app.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_849461705440 /* ios-app-Bazel.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app-Bazel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FBP_13357488824 /* Frameworks */ = {
+		FBP_84840353784 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_745439098229 /* libios-app-main.a in Frameworks */,
+				BF_592948787377 /* libtailor.a in Frameworks */,
+				BF_295223633148 /* libios-app-main.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		G_4186524390481 = {
+		G_3774598610164 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FR_209587129221 /* AppDelegate.swift */,
-				FR_215638080565 /* Info.plist */,
-				G_6778937577640 /* Tailor.xcodeproj */,
-				G_8704390127787 /* Frameworks */,
-				G_8609345257264 /* Products */,
+				FR_469890310621 /* libios-app-main.a */,
+				FR_414070879722 /* libtailor.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		G_4467457135973 /* XCHammerAssets */ = {
+			isa = PBXGroup;
+			children = (
+				FR_803640936590 /* Stub.swift */,
+			);
+			path = XCHammerAssets;
+			sourceTree = "<group>";
+		};
+		G_6370919906467 = {
+			isa = PBXGroup;
+			children = (
+				FR_695775747785 /* AppDelegate.swift */,
+				FR_417215486089 /* Info.plist */,
+				FR_278630634086 /* Tailor.swift */,
+				G_6841361249121 /* Tailor.xcodeproj */,
+				G_3774598610164 /* Frameworks */,
+				G_7863792550212 /* Products */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
 			tabWidth = 4;
 			usesTabs = 0;
 		};
-		G_6778937577640 /* Tailor.xcodeproj */ = {
+		G_6841361249121 /* Tailor.xcodeproj */ = {
 			isa = PBXGroup;
 			children = (
-				G_7061369345538 /* XCHammerAssets */,
+				G_4467457135973 /* XCHammerAssets */,
 			);
 			path = Tailor.xcodeproj;
 			sourceTree = "<group>";
 		};
-		G_7061369345538 /* XCHammerAssets */ = {
+		G_7863792550212 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FR_164461626461 /* Stub.swift */,
-			);
-			path = XCHammerAssets;
-			sourceTree = "<group>";
-		};
-		G_8609345257264 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FR_727585954021 /* ios-app-main.a */,
-				FR_133574888244 /* ios-app.app */,
+				FR_849461705440 /* ios-app-Bazel.app */,
+				FR_297322858885 /* ios-app-main.a */,
+				FR_848403537843 /* ios-app.app */,
+				FR_322453544755 /* tailor.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		G_8704390127787 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				FR_339814870963 /* libios-app-main.a */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		LT_172539793472 /* GeneratedFiles */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (__PWD__/sample/Tailor/tools/bazelwrapper clean) || (__PWD__/sample/Tailor/Tailor.xcodeproj/XCHammerAssets/retry.sh __PWD__/sample/Tailor/tools/bazelwrapper build --experimental_show_artifacts //Tailor.xcodeproj/XCHammerAssets:-ios-app_entitlements)'";
-			buildConfigurationList = CL_172539793472 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
-			buildPhases = (
-				SBP_17253979347 /* Sources */,
-			);
-			buildToolPath = /bin/bash;
-			buildWorkingDirectory = __PWD__/sample/Tailor;
-			dependencies = (
-			);
-			name = GeneratedFiles;
-			passBuildSettingsInEnvironment = 1;
-			productName = GeneratedFiles;
-		};
-		LT_486714375943 /* ResetLLDBInit */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'";
-			buildConfigurationList = CL_486714375943 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */;
-			buildPhases = (
-				SBP_48671437594 /* Sources */,
-			);
-			buildToolPath = /bin/bash;
-			buildWorkingDirectory = __PWD__/sample/Tailor;
-			dependencies = (
-			);
-			name = ResetLLDBInit;
-			passBuildSettingsInEnvironment = 1;
-			productName = ResetLLDBInit;
-		};
-		LT_870745717790 /* UpdateXcodeProject */ = {
+		LT_773764077442 /* UpdateXcodeProject */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "-c __PWD__/sample/Tailor/Tailor.xcodeproj/XCHammerAssets/updateXcodeProj.sh";
-			buildConfigurationList = CL_870745717790 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */;
+			buildConfigurationList = CL_773764077442 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */;
 			buildPhases = (
-				SBP_87074571779 /* Sources */,
+				SBP_77376407744 /* Sources */,
 			);
 			buildToolPath = /bin/bash;
-			buildWorkingDirectory = __PWD__/sample/Tailor;
+			buildWorkingDirectory = "__PWD__/sample/Tailor";
 			dependencies = (
 			);
 			name = UpdateXcodeProject;
 			passBuildSettingsInEnvironment = 1;
 			productName = UpdateXcodeProject;
 		};
+		LT_831943585418 /* GeneratedFiles */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (__PWD__/sample/Tailor/tools/bazelwrapper clean) || (__PWD__/sample/Tailor/Tailor.xcodeproj/XCHammerAssets/retry.sh __PWD__/sample/Tailor/tools/bazelwrapper build --experimental_show_artifacts //Tailor.xcodeproj/XCHammerAssets:-ios-app_entitlements)'";
+			buildConfigurationList = CL_831943585418 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
+			buildPhases = (
+				SBP_83194358541 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = "__PWD__/sample/Tailor";
+			dependencies = (
+			);
+			name = GeneratedFiles;
+			passBuildSettingsInEnvironment = 1;
+			productName = GeneratedFiles;
+		};
+		LT_911624144531 /* ResetLLDBInit */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'";
+			buildConfigurationList = CL_911624144531 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */;
+			buildPhases = (
+				SBP_91162414453 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = "__PWD__/sample/Tailor";
+			dependencies = (
+			);
+			name = ResetLLDBInit;
+			passBuildSettingsInEnvironment = 1;
+			productName = ResetLLDBInit;
+		};
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		NT_133574888244 /* ios-app */ = {
+		NT_297322858885 /* ios-app-main */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CL_133574888244 /* Build configuration list for PBXNativeTarget "ios-app" */;
+			buildConfigurationList = CL_297322858885 /* Build configuration list for PBXNativeTarget "ios-app-main" */;
 			buildPhases = (
-				SBP_13357488824 /* Sources */,
-				FBP_13357488824 /* Frameworks */,
-				SSBP_3050673619 /* Process IPA */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "ios-app";
-			productName = "ios-app";
-			productReference = FR_133574888244 /* ios-app.app */;
-			productType = "com.apple.product-type.application";
-		};
-		NT_727585954021 /* ios-app-main */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CL_727585954021 /* Build configuration list for PBXNativeTarget "ios-app-main" */;
-			buildPhases = (
-				SBP_72758595402 /* Sources */,
-				SSBP_6049053643 /* Copy Swift Objective-C Interface Header */,
+				SBP_29732285888 /* Sources */,
+				SSBP_6859543988 /* Copy Swift Objective-C Interface Header */,
 			);
 			buildRules = (
 			);
@@ -163,61 +159,104 @@
 			);
 			name = "ios-app-main";
 			productName = "ios-app-main";
-			productReference = FR_727585954021 /* ios-app-main.a */;
+			productReference = FR_297322858885 /* ios-app-main.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		NT_322453544755 /* tailor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_322453544755 /* Build configuration list for PBXNativeTarget "tailor" */;
+			buildPhases = (
+				SBP_32245354475 /* Sources */,
+				SSBP_2538925287 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tailor;
+			productName = tailor;
+			productReference = FR_322453544755 /* tailor.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		NT_848403537843 /* ios-app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_848403537843 /* Build configuration list for PBXNativeTarget "ios-app" */;
+			buildPhases = (
+				SBP_84840353784 /* Sources */,
+				FBP_84840353784 /* Frameworks */,
+				SSBP_5582630014 /* Process IPA */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app";
+			productName = "ios-app";
+			productReference = FR_848403537843 /* ios-app.app */;
+			productType = "com.apple.product-type.application";
+		};
+		NT_849461705440 /* ios-app-Bazel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_849461705440 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */;
+			buildPhases = (
+				SSBP_7235941502 /* Bazel build */,
+				SBP_84946170544 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app-Bazel";
+			productName = "ios-app-Bazel";
+			productReference = FR_849461705440 /* ios-app-Bazel.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		P_7522770210799 /* Project object */ = {
+		P_6946296729134 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0930;
 				TargetAttributes = {
-					NT_133574888244 = {
+					NT_297322858885 = {
 						ProvisioningStyle = manual;
 					};
-					NT_727585954021 = {
+					NT_322453544755 = {
+						ProvisioningStyle = manual;
+					};
+					NT_848403537843 = {
+						ProvisioningStyle = manual;
+					};
+					NT_849461705440 = {
 						ProvisioningStyle = manual;
 					};
 				};
 			};
-			buildConfigurationList = CL_752277021079 /* Build configuration list for PBXProject "Tailor" */;
+			buildConfigurationList = CL_694629672913 /* Build configuration list for PBXProject "Tailor" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = G_4186524390481;
+			mainGroup = G_6370919906467;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				LT_172539793472 /* GeneratedFiles */,
-				LT_486714375943 /* ResetLLDBInit */,
-				LT_870745717790 /* UpdateXcodeProject */,
-				NT_133574888244 /* ios-app */,
-				NT_727585954021 /* ios-app-main */,
+				LT_831943585418 /* GeneratedFiles */,
+				LT_911624144531 /* ResetLLDBInit */,
+				LT_773764077442 /* UpdateXcodeProject */,
+				NT_848403537843 /* ios-app */,
+				NT_849461705440 /* ios-app-Bazel */,
+				NT_297322858885 /* ios-app-main */,
+				NT_322453544755 /* tailor */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		SSBP_3050673619 /* Process IPA */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Process IPA";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "__PWD__/.build/debug/XCHammer process-ipa";
-		};
-		SSBP_6049053643 /* Copy Swift Objective-C Interface Header */ = {
+		SSBP_2538925287 /* Copy Swift Objective-C Interface Header */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -233,40 +272,99 @@
 			shellPath = /bin/sh;
 			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
+		SSBP_5582630014 /* Process IPA */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Process IPA";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "__PWD__/.build/debug/XCHammer process-ipa";
+		};
+		SSBP_6859543988 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		SSBP_7235941502 /* Bazel build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bazel build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export TULSI_USE_HAMMER_DEBUG_CONFIG=YES\n__PWD__/.build/debug/bazel_build.py //:ios-app --bazel __PWD__/sample/Tailor/tools/bazelwrapper";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		SBP_13357488824 /* Sources */ = {
+		SBP_29732285888 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_312168298619 /* Stub.swift in Sources */,
+				BF_632676901407 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		SBP_17253979347 /* Sources */ = {
+		SBP_32245354475 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_165280145802 /* Tailor.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_77376407744 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		SBP_48671437594 /* Sources */ = {
+		SBP_83194358541 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		SBP_72758595402 /* Sources */ = {
+		SBP_84840353784 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_433848069429 /* AppDelegate.swift in Sources */,
+				BF_870326953016 /* Stub.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		SBP_87074571779 /* Sources */ = {
+		SBP_84946170544 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_91162414453 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -276,43 +374,40 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		BC_134451679473 /* Release */ = {
+		BC_107541815794 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = external;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = tailor;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		BC_125051483304 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Release;
 		};
-		BC_140427581068 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		BC_289861117045 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		BC_373620008642 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		BC_459765320219 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		BC_474346768168 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		BC_716036668538 /* Debug */ = {
+		BC_171819882366 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
@@ -326,6 +421,7 @@
 					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"\".\"",
 				);
+				HAMMER_DIAGNOSTIC_FLAGS = "";
 				HEADER_SEARCH_PATHS = external;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -345,40 +441,13 @@
 			};
 			name = Debug;
 		};
-		BC_752250485532 /* Release */ = {
+		BC_292803280144 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CODE_SIGN_STYLE = manual;
-				ENABLE_BITCODE = NO;
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"\".\"",
-				);
-				HEADER_SEARCH_PATHS = external;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LIBRARY_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
-				OTHER_LDFLAGS = "-ObjC";
-				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/Tailor.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
-				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
-				PRODUCT_NAME = "ios-app";
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 4.2.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TULSI_WR = $SOURCE_ROOT;
-				USE_HEADERMAP = NO;
 			};
-			name = Release;
+			name = Debug;
 		};
-		BC_760053511008 /* Release */ = {
+		BC_419920477088 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
@@ -389,13 +458,14 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
 				HEADER_SEARCH_PATHS = external;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_NAME = "ios-app-main";
+				PRODUCT_NAME = tailor;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.2.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -404,13 +474,30 @@
 			};
 			name = Release;
 		};
-		BC_761234494463 /* Release */ = {
+		BC_453334355034 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
 			};
-			name = Release;
+			name = Debug;
 		};
-		BC_766078007465 /* Debug */ = {
+		BC_501119956003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
@@ -421,6 +508,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
 				HEADER_SEARCH_PATHS = external;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = "";
@@ -436,71 +524,203 @@
 			};
 			name = Debug;
 		};
-		BC_918712838758 /* Debug */ = {
+		BC_505564253421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_507023677943 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_566203492366 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		BC_628039897056 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_669944254009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				
 			};
 			name = Debug;
 		};
+		BC_720274283359 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = external;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_724423420484 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"\".\"",
+				);
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = external;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = "-ObjC";
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/bazel-genfiles/Tailor.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		BC_752542982023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		BC_899702945955 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CL_133574888244 /* Build configuration list for PBXNativeTarget "ios-app" */ = {
+		CL_297322858885 /* Build configuration list for PBXNativeTarget "ios-app-main" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BC_716036668538 /* Debug */,
-				BC_752250485532 /* Release */,
+				BC_501119956003 /* Debug */,
+				BC_720274283359 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		CL_172539793472 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
+		CL_322453544755 /* Build configuration list for PBXNativeTarget "tailor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BC_474346768168 /* Debug */,
-				BC_134451679473 /* Release */,
+				BC_107541815794 /* Debug */,
+				BC_419920477088 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		CL_486714375943 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */ = {
+		CL_694629672913 /* Build configuration list for PBXProject "Tailor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BC_289861117045 /* Debug */,
-				BC_140427581068 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
-		CL_727585954021 /* Build configuration list for PBXNativeTarget "ios-app-main" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC_766078007465 /* Debug */,
-				BC_760053511008 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
-		CL_752277021079 /* Build configuration list for PBXProject "Tailor" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC_918712838758 /* Debug */,
-				BC_373620008642 /* Release */,
+				BC_669944254009 /* Debug */,
+				BC_752542982023 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		CL_870745717790 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */ = {
+		CL_773764077442 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BC_459765320219 /* Debug */,
-				BC_761234494463 /* Release */,
+				BC_566203492366 /* Debug */,
+				BC_125051483304 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_831943585418 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_505564253421 /* Debug */,
+				BC_507023677943 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_848403537843 /* Build configuration list for PBXNativeTarget "ios-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_171819882366 /* Debug */,
+				BC_724423420484 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_849461705440 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_453334355034 /* Debug */,
+				BC_628039897056 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_911624144531 /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_292803280144 /* Debug */,
+				BC_899702945955 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = P_7522770210799 /* Project object */;
+	rootObject = P_6946296729134 /* Project object */;
 }

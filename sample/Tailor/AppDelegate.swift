@@ -1,5 +1,8 @@
 import UIKit
 
+// FIXME: Module name here is automatically pinned to the name of the lib
+import tailor
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?

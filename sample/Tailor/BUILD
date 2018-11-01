@@ -11,12 +11,23 @@ ios_application(
     families = ["iphone"],
     infoplists = ["Info.plist"],
     visibility = ["//visibility:public"],
-    deps = ["ios-app-main"],
+    deps = [":ios-app-main"],
 )
 
 swift_library(
     name = "ios-app-main",
     srcs = [
         "AppDelegate.swift",
-    ]
+    ],
+    deps = [":tailor"]
+)
+
+swift_library(
+    name = "tailor",
+    srcs = [
+        "Tailor.swift",
+    ],
+    # TODO: Add the ability to customize a module name.
+    # This works, but not in Xcode!
+    module_name = "tailor"
 )
