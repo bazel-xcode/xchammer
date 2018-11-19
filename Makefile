@@ -28,6 +28,8 @@ ifneq ($(BAZEL_BUILD),true)
 	./export_tulsi_aspect_dir.sh ${PWD}/$(ASPECTDIR)
 endif
 
+generate_xcodeproj:
+	swift package generate-xcodeproj
 
 # Make a SPM generated Xcode project.
 #
@@ -35,8 +37,7 @@ endif
 # directory to allow loading of resources, since we can't express this in SPM
 #
 # Note: this is brittle and may not work as expected
-workspace_spm: aspects
-	swift package generate-xcodeproj
+workspace_spm: aspects generate_xcodeproj
 	$(eval BUILD_DIR=$(shell xcodebuild -showBuildSettings \
 			-project XCHammer.xcodeproj/ \
 			-scheme XCHammer \
