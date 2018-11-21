@@ -14,6 +14,7 @@
 
 import Foundation
 import PathKit
+import ShellOut
 
 /// Warning: this logger is not thread safe
 public class XCHammerLogger {
@@ -140,8 +141,22 @@ public class XCHammerProfiler {
 }
 
 extension XCHammerProfiler {
-    public func logEnd(_ dumpToStandardOutput: Bool = false) {
+    public func logEnd(_ dumpToStandardOutput: Bool = false, metricsExecutable:
+            String? = nil) {
         end()
+        if let metricsExecutable = metricsExecutable {
+            let currentTS = String(format: "%.0f", Date().timeIntervalSince1970)
+            let elapsedMS = String(format: "%.4f",
+                    endDate!.timeIntervalSince(startDate) * 1000)
+            // TODO: Add hostname
+            let tsd = "put xchammer.\(name) \(currentTS) \(elapsedMS)"
+            let command: String = ([
+                "/bin/bash",
+                "-c",
+                "'echo \(tsd) | \(metricsExecutable) &'" 
+            ]).joined(separator: " ")
+            let _ = try? ShellOut.shellOut(to: [command])
+        }
         XCHammerLogger.shared().log(loggableDescription(), dumpToStandardOutput: dumpToStandardOutput)
     }
 }

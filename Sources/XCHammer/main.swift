@@ -109,6 +109,23 @@ struct GenerateCommand: CommandProtocol {
     func run(_ options: Options) -> Result<(), CommandError> {
         do {
             let config = try getHammerConfig(path: options.configPath)
+            // Startup an end to end profiler - it needs the config to get the
+            // metrics command. Parsing should be trivial as far as metrics are
+            // concerned.
+            let profiler = XCHammerProfiler("generate")
+            defer {
+                 // TODO: default value/ replace with /dev/null?
+                let metricsExecutable = config.metricsExecutable ??
+                "cat >> /tmp/xchammer.log"
+
+                // TODO: consider
+                // - differentiating between CLI vs in build generation
+                // - putting projects / workspace names into the command
+                // - putting the exit code into statsd 
+                // - putting fine grained metrics ( e.g. aspects into statsd )
+                profiler.logEnd(true, metricsExecutable: metricsExecutable)
+            }
+
             let _ = try validate(config: config, workspaceRootPath:
                     options.workspaceRootPath)
             let result = Generator.generateProjects(workspaceRootPath:

@@ -273,8 +273,41 @@ enum Generator {
                             xcodeTarget.extractBuiltProductName())
                 ]
 
-                let buildPhase = XcodeScheme.Build(
-                        targets: buildTargets, parallelizeBuild: false)
+                // TODO: add this to Bazel schemes as well.
+                // Create the build start sentinel before building
+                let preBuildInstrumentAction = XcodeScheme.ExecutionAction(
+                        name: "Track build start time",
+                        script: "touch $TARGET_BUILD_DIR/xchammer.build_start",
+                        settingsTarget: name)
+
+                 // TODO: default value/ replace with /dev/null?
+                let metricsExecutable = genOptions.config.metricsExecutable ??
+                "cat >> /tmp/xchammer.log"
+
+                // Compare the M time of the sentinel to the current time
+                // Then pipe the event to the metrics command in the background
+                // Note: due to the way this is rendered in xcproj, this is
+                // currently a 1 liner.
+                // Build metrics are of the statsd form
+                // xchammer.build.${TARGETNAME}
+                let postBuildInstrumentScript = """
+                ELAPSED=$(python -c 
+                \"import os;
+                import time;
+                start_time_f = os.path.join(
+                    os.environ.get('TARGET_BUILD_DIR'),'xchammer.build_start');
+                start_time = os.path.getmtime(start_time_f);
+                print((time.time()-start_time)*1000);\" 2>&1);
+                echo "put xchammer.build.${TARGETNAME} $(date +%s) $ELAPSED host=$(hostname)" | \(metricsExecutable) &
+                """
+                let postBuildInstrumentAction = XcodeScheme.ExecutionAction(
+                        name: "Log build_end",
+                        script: postBuildInstrumentScript,
+                        settingsTarget: name)
+
+                let buildPhase = XcodeScheme.Build(targets: buildTargets,
+                        preActions: [preBuildInstrumentAction], postActions:
+                        [postBuildInstrumentAction],  parallelizeBuild: false)
 
                 let runPhase = XcodeScheme.Run(config: "Debug",
                         commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)

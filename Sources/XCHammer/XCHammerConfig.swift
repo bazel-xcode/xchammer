@@ -151,11 +151,23 @@ struct XCHammerConfig: Codable {
     /// All of the projects keyed by Project name
     let projects: [String: XCHammerProjectConfig]
 
+    /// A metrics executable.
+    /// XCHammer pipes metrics to this executable in the background to track
+    /// generation times. Additionally, Xcode schemes are setup to log build
+    /// times.
+    ///
+    /// @note It supports the statsd format.
+    /// To write to statsd on localhost, simply provide a
+    /// `metricsExecutable` via nc
+    /// nc -w1 localhost 1337
+    let metricsExecutable: String?
+
     func getTargetConfig(for label: String) -> XCHammerTargetConfig? {
         return targetConfig?[label]
     }
 
-    static let empty: XCHammerConfig = XCHammerConfig(targets: [], targetConfig: [:], projects: [:])
+    static let empty: XCHammerConfig = XCHammerConfig(targets: [], targetConfig:
+            [:], projects: [:], metricsExecutable: nil)
 }
 
 enum XCHammerConfigValidationError : Error {
