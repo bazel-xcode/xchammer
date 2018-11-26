@@ -30,8 +30,14 @@ targetConfig:
         # Note, that this is an example of an ability of tools/bazelwrapper
         # and dynamically configuring Bazel options at runtime.
         buildBazelOptions: "--action_env=X=Y --action_env=CLI_SDK=$(SDKROOT)"
-        environmentVariables:
-                envVar : "$SRCROOT"
+        schemeConfig:
+            Build:
+                preActions:
+                    - script: "echo 'warning: pre'"
+                environmentVariables:
+                    - variable: envVar
+                      value: "$SRCROOT"
+                      enabled: true
 
     "//Vendor/Stripe:Stripe":
         xcconfigOverrides:

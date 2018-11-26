@@ -4,10 +4,14 @@ targets:
 
 targetConfig:
     "//ios-app:UnitTests":
-        environmentVariables: 
-            var: "--some"
-        commandLineArguments: 
-            - "--Some"
+        schemeConfig:
+            Test:
+                environmentVariables:
+                    - variable: envVar
+                      value: "$SRCROOT"
+                      enabled: true
+                commandLineArguments: 
+                    "--Some": true
 projects:
     "SnapshotMe":
         paths:

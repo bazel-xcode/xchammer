@@ -21,6 +21,9 @@ public enum BuildType: String, Codable {
     public static var testOnly: [BuildType] = [.testing, .analyzing]
 }
 
+public typealias ExecutionAction = XCHammerSchemeActionConfig.ExecutionAction
+public typealias EnvironmentVariable = XCHammerSchemeActionConfig.EnvironmentVariable
+
 /// XcodeScheme
 /// We write schemes with xcproj directly
 public struct XcodeScheme: Equatable, Codable {
@@ -52,22 +55,6 @@ public struct XcodeScheme: Equatable, Codable {
                   archive: .init(config: releaseConfig))
     }
 
-    public struct ExecutionAction: Codable, Equatable {
-        public var script: String
-        public var name: String
-        public var settingsTarget: String?
-
-        public init(name: String, script: String, settingsTarget: String?) {
-            self.name = name
-            self.script = script
-            self.settingsTarget = settingsTarget
-        }
-
-        public static func == (lhs: ExecutionAction, rhs: ExecutionAction) -> Bool {
-            return lhs.name == rhs.name && lhs.script == rhs.script && lhs.settingsTarget == rhs.settingsTarget
-        }
-    }
-
     public struct Build: Codable, Equatable {
         public var targets: [BuildTarget]
         public var preActions: [ExecutionAction]
@@ -87,26 +74,18 @@ public struct XcodeScheme: Equatable, Codable {
             self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
         }
-
-        public static func == (lhs: Build, rhs: Build) -> Bool {
-            return lhs.targets == rhs.targets &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions &&
-                lhs.parallelizeBuild == rhs.parallelizeBuild &&
-                lhs.buildImplicitDependencies == rhs.buildImplicitDependencies
-        }
     }
 
     public struct Run: Equatable, Codable {
         public var config: String
         public var commandLineArguments: [String: Bool]
-        public var environmentVariables: [String: String]
+        public var environmentVariables: [EnvironmentVariable]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
-            environmentVariables : [String: String] = [:],
+            environmentVariables: [EnvironmentVariable] = [],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
@@ -116,21 +95,13 @@ public struct XcodeScheme: Equatable, Codable {
             self.preActions = preActions
             self.postActions = postActions
         }
-
-        public static func == (lhs: Run, rhs: Run) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.commandLineArguments == rhs.commandLineArguments &&
-                lhs.environmentVariables == rhs.environmentVariables &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
-        }
     }
 
     public struct Test: Equatable, Codable {
         public var config: String
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
-        public var environmentVariables: [String: String]
+        public var environmentVariables: [EnvironmentVariable]
         public var targets: [String]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
@@ -138,7 +109,7 @@ public struct XcodeScheme: Equatable, Codable {
             config: String,
             gatherCoverageData: Bool = false,
             commandLineArguments: [String: Bool] = [:],
-            environmentVariables : [String: String] = [:],
+            environmentVariables: [EnvironmentVariable] = [],
             targets: [String] = [],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
@@ -146,20 +117,10 @@ public struct XcodeScheme: Equatable, Codable {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.commandLineArguments = commandLineArguments
-            self.environmentVariables = environmentVariables;
+            self.environmentVariables = environmentVariables
             self.targets = targets
             self.preActions = preActions
             self.postActions = postActions
-        }
-
-        public static func == (lhs: Test, rhs: Test) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.commandLineArguments == rhs.commandLineArguments &&
-                lhs.environmentVariables == rhs.environmentVariables &&
-                lhs.gatherCoverageData == rhs.gatherCoverageData &&
-                lhs.targets == rhs.targets &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
         }
     }
 
@@ -168,21 +129,17 @@ public struct XcodeScheme: Equatable, Codable {
         public init(config: String) {
             self.config = config
         }
-
-        public static func == (lhs: Analyze, rhs: Analyze) -> Bool {
-            return lhs.config == rhs.config
-        }
     }
 
     public struct Profile: Equatable, Codable {
         public let config: String
         public let commandLineArguments: [String: Bool]
-        public var environmentVariables: [String: String]
+        public var environmentVariables: [EnvironmentVariable]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(config: String,
                     commandLineArguments: [String: Bool] = [:],
-                    environmentVariables: [String: String] = [:],
+                    environmentVariables: [EnvironmentVariable] = [],
                     preActions: [ExecutionAction] = [],
                     postActions: [ExecutionAction] = []) {
             self.config = config
@@ -190,14 +147,6 @@ public struct XcodeScheme: Equatable, Codable {
             self.environmentVariables = environmentVariables
             self.preActions = preActions
             self.postActions = postActions
-        }
-
-        public static func == (lhs: Profile, rhs: Profile) -> Bool {
-            return lhs.config == rhs.config
-                && lhs.commandLineArguments == rhs.commandLineArguments
-                && lhs.environmentVariables == rhs.environmentVariables
-                && lhs.preActions == rhs.postActions
-                && lhs.postActions == rhs.postActions
         }
     }
 
@@ -211,12 +160,6 @@ public struct XcodeScheme: Equatable, Codable {
             self.config = config
             self.preActions = preActions
             self.postActions = postActions
-        }
-
-        public static func == (lhs: Archive, rhs: Archive) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
         }
     }
 
@@ -239,22 +182,6 @@ public struct XcodeScheme: Equatable, Codable {
             self.productName = productName
             self.project = project
         }
-
-        public static func == (lhs: BuildTarget, rhs: BuildTarget) -> Bool {
-            return (lhs.target == rhs.target 
-                && lhs.buildTypes == rhs.buildTypes)
-                && (lhs.project == rhs.project
-                && lhs.productName == rhs.productName)
-        }
-    }
-
-    public static func == (lhs: XcodeScheme, rhs: XcodeScheme) -> Bool {
-        return lhs.build == rhs.build &&
-            lhs.run == rhs.run &&
-            lhs.test == rhs.test &&
-            lhs.analyze == rhs.analyze &&
-            lhs.profile == rhs.profile &&
-            lhs.archive == rhs.archive
     }
 }
 
@@ -285,7 +212,7 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
     let testBuildTargetEntries = testBuildTargets.map(getBuildEntry)
     let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry)
 
-    func getExecutionAction(_ action: XcodeScheme.ExecutionAction) -> XCScheme.ExecutionAction {
+    func getExecutionAction(_ action: ExecutionAction) -> XCScheme.ExecutionAction {
         // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
         let environmentBuildable = action.settingsTarget.flatMap { settingsTarget in
             return (buildActionEntries + testBuildTargetEntries)
@@ -319,14 +246,14 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
     let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
     
     let testEnvironmentVariables = scheme.test?.environmentVariables
-        .compactMap { XCScheme.EnvironmentVariable(variable: $0.key, value:
-                $0.value, enabled: true) }
+        .compactMap { XCScheme.EnvironmentVariable(variable: $0.variable, value:
+                $0.value, enabled: $0.enabled) }
     let launchEnvironmentVariables = scheme.run?.environmentVariables
-        .compactMap{ XCScheme.EnvironmentVariable(variable: $0.key, value:
-                $0.value, enabled: true) }
+        .compactMap{ XCScheme.EnvironmentVariable(variable: $0.variable, value:
+                $0.value, enabled: $0.enabled) }
     let profileEnvironmentVariables = scheme.profile?.environmentVariables
-        .compactMap{ XCScheme.EnvironmentVariable(variable: $0.key, value:
-                $0.value, enabled: true) }
+        .compactMap{ XCScheme.EnvironmentVariable(variable: $0.variable, value:
+                $0.value, enabled: $0.enabled) }
 
     let testAction = XCScheme.TestAction(
         buildConfiguration: scheme.test?.config ?? "Debug",
