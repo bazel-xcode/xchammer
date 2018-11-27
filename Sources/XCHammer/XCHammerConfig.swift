@@ -24,10 +24,10 @@ struct XCHammerTargetConfig: Codable {
 
     /// Bazel Target options
 
-    /// Build options passed to the Bazel invocation
+    /// Options passed to `bazel build`.
     let buildBazelOptions: String?
 
-    /// Startup options passed to the Bazel build invocation
+    /// Options passed to `bazel` itself. This applies to any subcommand.
     let buildBazelStartupOptions: String?
 
     /// Template for the `Bazel build` runscript relative to the
