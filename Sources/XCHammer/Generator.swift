@@ -254,11 +254,7 @@ enum Generator {
 
                 let targetConfig = genOptions.config.getTargetConfig(for:
                     xcodeTarget.label.value)
-                let commandLineArguments =
-                Dictionary.from((targetConfig?.commandLineArguments ?? []).map {
-                        ($0, true) })
-                let environmentVariables = targetConfig?.environmentVariables ?? [:]
-
+                let schemeConfig = targetConfig?.schemeConfig
                 let buildTargets = [
                     XcodeScheme.BuildTarget(target: UpdateXcodeProjectTargetName,
                             project: genOptions.projectName, productName: ""),
@@ -273,20 +269,39 @@ enum Generator {
                             xcodeTarget.extractBuiltProductName())
                 ]
 
+                let buildConfig = schemeConfig?[SchemeActionType.build.rawValue]
                 let buildPhase = XcodeScheme.Build(
-                        targets: buildTargets, parallelizeBuild: false)
+                        targets: buildTargets,
+                        preActions: buildConfig?.preActions ?? [],
+                        postActions: buildConfig?.postActions ?? [],
+                        parallelizeBuild: false)
 
+                let runConfig = schemeConfig?[SchemeActionType.run.rawValue]
                 let runPhase = XcodeScheme.Run(config: "Debug",
-                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
+                        commandLineArguments: runConfig?.commandLineArguments ??
+                        [:],
+                        environmentVariables: runConfig?.environmentVariables ?? [],
+                        preActions: runConfig?.preActions ?? [],
+                        postActions: runConfig?.postActions ?? [])
 
-                let testTargets: [String] = allTests(for: xcodeTarget, map:
-                        targetMap)
+                let testConfig = schemeConfig?[SchemeActionType.test.rawValue]
                 let testPhase = XcodeScheme.Test(config: "Debug",
-                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables, targets:
-                        testTargets)
+                        commandLineArguments: testConfig?.commandLineArguments
+                        ?? [:],
+                        environmentVariables: testConfig?.environmentVariables ?? [],
+                        targets: [],
+                        preActions: testConfig?.preActions ?? [],
+                        postActions: testConfig?.postActions ?? [])
 
+                let profileConfig = schemeConfig?[SchemeActionType.profile.rawValue]
                 let profilePhase = XcodeScheme.Profile(config: "Debug",
-                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
+                        commandLineArguments:
+                        profileConfig?.commandLineArguments ?? [:],
+                        environmentVariables:
+                        profileConfig?.environmentVariables ?? [],
+                        preActions: profileConfig?.preActions ?? [],
+                        postActions: profileConfig?.postActions ?? [])
+
                 return XcodeScheme(name: name, build: buildPhase, run: runPhase,
                         test: testPhase, profile: profilePhase)
             }
@@ -303,28 +318,46 @@ enum Generator {
                 let name = xcodeTarget.xcTargetName + "-Bazel"
                 let targetConfig = genOptions.config.getTargetConfig(for:
                     xcodeTarget.label.value)
-                let commandLineArguments =
-                Dictionary.from((targetConfig?.commandLineArguments ?? []).map {
-                        ($0, true) })
-                let environmentVariables = targetConfig?.environmentVariables ?? [:]
+                let schemeConfig = targetConfig?.schemeConfig
                 let buildTargets = [
                     XcodeScheme.BuildTarget(target: name,
                             project: genOptions.projectName, productName:
                             xcodeTarget.extractBuiltProductName() + "-Bazel")
                 ]
 
+                let buildConfig = schemeConfig?[SchemeActionType.build.rawValue]
                 let buildPhase = XcodeScheme.Build(
-                        targets: buildTargets, parallelizeBuild: false)
+                        targets: buildTargets,
+                        preActions: buildConfig?.preActions ?? [],
+                        postActions: buildConfig?.postActions ?? [],
+                        parallelizeBuild: false)
 
+                let runConfig = schemeConfig?[SchemeActionType.run.rawValue]
                 let runPhase = XcodeScheme.Run(config: "Debug",
-                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
+                        commandLineArguments: runConfig?.commandLineArguments ??
+                        [:],
+                        environmentVariables: runConfig?.environmentVariables ?? [],
+                        preActions: runConfig?.preActions ?? [],
+                        postActions: runConfig?.postActions ?? [])
 
+                let testConfig = schemeConfig?[SchemeActionType.test.rawValue]
                 let testPhase = XcodeScheme.Test(config: "Debug",
-                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables, targets:
-                        [])
+                        commandLineArguments: testConfig?.commandLineArguments
+                        ?? [:],
+                        environmentVariables: testConfig?.environmentVariables ?? [],
+                        targets: [],
+                        preActions: testConfig?.preActions ?? [],
+                        postActions: testConfig?.postActions ?? [])
 
+                let profileConfig = schemeConfig?[SchemeActionType.profile.rawValue]
                 let profilePhase = XcodeScheme.Profile(config: "Debug",
-                        commandLineArguments: commandLineArguments, environmentVariables: environmentVariables)
+                        commandLineArguments:
+                        profileConfig?.commandLineArguments ?? [:],
+                        environmentVariables:
+                        profileConfig?.environmentVariables ?? [],
+                        preActions: profileConfig?.preActions ?? [],
+                        postActions: profileConfig?.postActions ?? [])
+
                 return XcodeScheme(name: name, build: buildPhase, run: runPhase,
                         test: testPhase, profile: profilePhase)
         }

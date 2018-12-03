@@ -15,12 +15,69 @@
 import Foundation
 import PathKit
 
-struct XCHammerTargetConfig: Codable {
+/// Xcode Scheme configuration for each target.
+///
+/// @note in some conditions, it's useful to setup different runtime 
+/// configurations for a target with the Xcode GUI. Consider that these options
+/// will not apply to Bazel command line invocations. At the time of writing,
+/// there is no general primitives to express runtime arguments or env in Bazel
+/// in Bazel.
+///
+/// @note this data type _follows_ the format of XcodeGen's Target Scheme
+/// https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#target-scheme
+public struct XCHammerSchemeActionConfig: Codable {
+    public struct ExecutionAction: Codable, Equatable {
+        public let script: String
+        public let name: String
+        public let settingsTarget: String?
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            script = try container.decode(String.self, forKey: .script)
+            name = try container.decodeIfPresent(String.self, forKey: .name) ?? "Run Script"
+            settingsTarget = try container.decodeIfPresent(String.self, forKey: .settingsTarget)
+        }
+    }
+
+    public struct EnvironmentVariable: Codable, Equatable {
+        public let variable: String
+        public let value: String
+        public let enabled: Bool
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            variable = try container.decode(String.self, forKey: .variable)
+            value = try container.decode(String.self, forKey: .value)
+            enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
+        }
+    }
+
     /// Scheme runtime command line arguments for each target
-    let commandLineArguments: [String]?
-    
+    public let commandLineArguments: [String: Bool]?
+
     /// Scheme runtime environment Variables for each target
-    let environmentVariables: [String: String]?
+    public let environmentVariables: [XCHammerSchemeActionConfig.EnvironmentVariable]?
+
+    /// Xcode Scheme Pre-Actions
+    public let preActions: [ExecutionAction]?
+
+    /// Xcode Scheme Post-Actions
+    public let postActions: [ExecutionAction]?
+}
+
+/// The type of a scheme action.
+public enum SchemeActionType: String, Codable, Equatable {
+    case build = "Build"
+    case run = "Run"
+    case test = "Test"
+    case profile = "Profile"
+    case archive = "Archive"
+}
+
+public struct XCHammerTargetConfig: Codable {
+    /// Meta scheme configuration keyed by the action type
+    /// @note Defaults are empty otherwise.
+    public let schemeConfig: [String /*SchemeActionType*/ : XCHammerSchemeActionConfig]?
 
     /// Bazel Target options
 
@@ -40,14 +97,14 @@ struct XCHammerTargetConfig: Codable {
     /// # MyTemplate.sh.tpl
     /// # Some scripting things..
     /// __BAZEL_COMMAND__
-    let buildBazelTemplate: String?
+    public let buildBazelTemplate: String?
    
     /// Like XCHammerProjectConfig.xcconfigOverrides but for targets
     /// Target configs replace project configs
-    let xcconfigOverrides: [String: String]?
+    public let xcconfigOverrides: [String: String]?
 }
 
-struct XCHammerProjectConfig: Codable {
+public struct XCHammerProjectConfig: Codable {
     /// Paths for included source files and directories.
     /// These paths are relative to the workspace root.
     /// Recursive Directory: Path/**
@@ -63,7 +120,7 @@ struct XCHammerProjectConfig: Codable {
     ///
     /// @note XCHammer targets are configured to build and link dependencies
     /// across a given workspace.
-    let paths: [String]?
+    public let paths: [String]?
 
     /// Bazel Project Options
 
@@ -78,7 +135,7 @@ struct XCHammerProjectConfig: Codable {
     /// watchos_i386, watchos_armv7k, tvos_x86_64
     /// @note: this is written into a python program which is later
     /// serialized. Spaces and escapes matter.
-    let buildBazelPlatformOptions: [String: [String]]?
+    public let buildBazelPlatformOptions: [String: [String]]?
 
     /// Enable generation of transitive Xcode targets.
     /// Defaults to `true`
@@ -87,11 +144,11 @@ struct XCHammerProjectConfig: Codable {
     /// For Non Xcode enabled C++/C/ObjC projects, header search paths are
     /// propagated so that / indexing, code completion, and other semantic
     /// features work.
-    let generateTransitiveXcodeTargets: Bool
+    public let generateTransitiveXcodeTargets: Bool
 
     /// Enable generation of transitive Xcode schemes
     /// Defaults to `true`
-    let generateXcodeSchemes: Bool
+    public let generateXcodeSchemes: Bool
 
     /// xcconfig file overrides keyed by Xcode config name
     /// 
@@ -117,9 +174,9 @@ struct XCHammerProjectConfig: Codable {
     ///  
     /// note: by setting this, all diagnostic options are filtered out.
     /// note: config names are case sensitive here e.g. 'Debug'
-    let xcconfigOverrides: [String: String]?
+    public let xcconfigOverrides: [String: String]?
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paths = try container.decodeIfPresent(
                 [String]?.self, forKey: .paths) as? [String]
@@ -139,31 +196,32 @@ struct XCHammerProjectConfig: Codable {
     }
 }
 
-struct XCHammerConfig: Codable {
+public struct XCHammerConfig: Codable {
     /// Labels for all targets. 
     /// Transitve dependencies are converted into targets unless excluded by
     /// source filters.
-    let targets: [String]
+    public let targets: [String]
 
     /// Optional config for each target keyed by Bazel Label
-    let targetConfig: [String: XCHammerTargetConfig]?
+    public let targetConfig: [String: XCHammerTargetConfig]?
 
     /// All of the projects keyed by Project name
-    let projects: [String: XCHammerProjectConfig]
+    public let projects: [String: XCHammerProjectConfig]
 
-    func getTargetConfig(for label: String) -> XCHammerTargetConfig? {
+    public func getTargetConfig(for label: String) -> XCHammerTargetConfig? {
         return targetConfig?[label]
     }
 
-    static let empty: XCHammerConfig = XCHammerConfig(targets: [], targetConfig: [:], projects: [:])
+    static let empty: XCHammerConfig = XCHammerConfig(targets: [], targetConfig:
+            [:], projects: [:])
 }
 
-enum XCHammerConfigValidationError : Error {
+public enum XCHammerConfigValidationError : Error {
     case invalidXCConfig(String)
 }
 
 /// Validate an XCHammerConfig in the context of a WORKSPACE
-func validate(config: XCHammerConfig, workspaceRootPath: Path) throws -> Bool {
+public func validate(config: XCHammerConfig, workspaceRootPath: Path) throws -> Bool {
     /// TODO: Validate that full labels are passed in
     func validateXCConfigInput(overrides: [String: String]) throws {
         try overrides.forEach {
@@ -189,5 +247,4 @@ func validate(config: XCHammerConfig, workspaceRootPath: Path) throws -> Bool {
 
     return true
 }
-
 
