@@ -886,9 +886,7 @@ enum Generator {
             let profiler = XCHammerProfiler("generate_project")
             let outputProjectPath = workspaceRootPath + Path(projectName + ".xcodeproj")
             defer {
-                 // End profiling, flush logs
                  profiler.logEnd(true)
-                 try? logger.flush(projectPath: outputProjectPath)
             }
 
             logger.logInfo("Generating project " + projectName)
