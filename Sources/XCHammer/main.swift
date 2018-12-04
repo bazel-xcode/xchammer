@@ -36,7 +36,13 @@ enum CommandError: Error {
 
 func getHammerConfig(path: Path) throws -> XCHammerConfig {
     let data = try Data(contentsOf: URL(fileURLWithPath: path.string))
-    let config = try YAMLDecoder().decode(XCHammerConfig.self, from: String(data: data, encoding: .utf8)!)
+    let config: XCHammerConfig
+    if path.extension?.lowercased() == "json" {
+        config = try JSONDecoder().decode(XCHammerConfig.self, from: data)
+    } else {
+        config = try YAMLDecoder().decode(XCHammerConfig.self, from:
+                String(data: data, encoding: .utf8)!)
+    }
     return config
 }
 

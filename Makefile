@@ -55,9 +55,12 @@ workspace_spm: aspects generate_xcodeproj
 # - this is under development and doesn't fully work
 # - incremental builds are currently not working with Bazel
 # - run with `force` for development
+# - the DSL is not fully integrated into XCHammer - this make target needs to
+#   create the XCHammer.yaml out of band.
 workspace_xchammer: build
+	tools/bazelwrapper build :xchammer_config
 	$(XCHAMMER_BIN) generate \
-	    $(ROOT_DIR)/XCHammer.yaml \
+		bazel-genfiles/xchammer_config/XCHammer.json \
 	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
 	    --force
 
@@ -247,3 +250,7 @@ ci: clean bazelrc_home test run_perf_ci run_swift
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
+
+.PHONY:
+xchammer_config:
+	tools/bazelwrapper build xchammer_config
