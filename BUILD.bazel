@@ -23,6 +23,16 @@ load(
     "namespaced_name",
 )
 
+load(
+    "//tools:xchammerconfig.bzl",
+    "xchammer_config",
+    "gen_xchammer_config",
+    "project_config",
+    "target_config",
+    "execution_action",
+    "scheme_action_config",
+)
+
 swift_library(
     name = "Sources",
     srcs = glob(["Sources/**/*.swift"]),
@@ -63,4 +73,13 @@ macos_application(
 buildifier(
     name = "buildifier"
 )
+
+xchammer_config = xchammer_config(
+    targets=["//:xchammer"],
+    projects={ 
+        "xchammer-bazel":
+            project_config(paths=["**"])
+    })
+
+gen_xchammer_config(name="xchammer_config", config=xchammer_config)
 

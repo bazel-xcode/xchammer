@@ -214,10 +214,25 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcpro
 
     func getExecutionAction(_ action: ExecutionAction) -> XCScheme.ExecutionAction {
         // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
-        let environmentBuildable = action.settingsTarget.flatMap { settingsTarget in
-            return (buildActionEntries + testBuildTargetEntries)
-                .first { settingsTarget == $0.buildableReference.blueprintName }?
+        let entries = (buildActionEntries + testBuildTargetEntries)
+        var environmentBuildable = action.settingsTarget.flatMap {
+            settingsTarget -> XCScheme.BuildableReference? in
+            return entries.first { settingsTarget == $0.buildableReference.blueprintName }?
                 .buildableReference
+        }
+        // If there is no reasonable settingsTarget, then try to find a sensible
+        // default
+        if environmentBuildable == nil {
+            let name = scheme.name
+            environmentBuildable = entries.first { entry in
+                if name == entry.buildableReference.blueprintName {
+                    return true
+                }
+                if (name + "-bazel") == entry.buildableReference.blueprintName {
+                    return true
+                }
+                return false
+            }?.buildableReference
         }
         return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
     }
