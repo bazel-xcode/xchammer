@@ -74,8 +74,30 @@ buildifier(
     name = "buildifier"
 )
 
+script_base = "$SRCROOT/tools/instrumentation_helpers"
+
 xchammer_config = xchammer_config(
     targets=["//:xchammer"],
+    target_config={
+        "//:xchammer" : target_config(
+            scheme_config={
+                "Build": scheme_action_config(
+                    pre_actions=[
+                        execution_action(
+                            name="Track build start",
+                            script=script_base + "/statsd_pre_build_action.sh"
+                        )
+                    ],
+                    post_actions=[
+                        execution_action(
+                            name="Report build end",
+                            script=script_base + "/statsd_post_build_action.sh"
+                        )
+                    ]
+                )
+           }
+        )
+    },
     projects={ 
         "xchammer-bazel":
             project_config(paths=["**"])

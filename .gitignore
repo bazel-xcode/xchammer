@@ -37,3 +37,6 @@ bazel-*
 sample/*/*.xcodeproj
 external
 xchammer-bazel.xcodeproj
+
+# Statsd client
+tools/instrumentation_helpers/statsd_client
