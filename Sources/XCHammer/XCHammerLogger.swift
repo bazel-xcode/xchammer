@@ -18,6 +18,8 @@ import PathKit
 /// Warning: this logger is not thread safe
 public class XCHammerLogger {
     private static let name = "XCHammer"
+    private static var _shared: XCHammerLogger?
+    private let auxFileHandle: FileHandle?
 
     /// Log a message.
     /// `dumpToStandardOutput` is off by default since we use this logger
@@ -27,14 +29,29 @@ public class XCHammerLogger {
         if dumpToStandardOutput {
             print(formattedMessage)
         }
+        if let data = "SOME".data(using: .utf8) {
+            auxFileHandle?.write(data)
+        }
     }
+
     public func logInfo(_ message: String) {
         log(message, dumpToStandardOutput: true)
     }
 
-    private static let _shared = XCHammerLogger()
     public static func shared() -> XCHammerLogger {
-        return XCHammerLogger._shared
+        return XCHammerLogger._shared!
+    }
+
+    public init(auxPath: String) {
+        auxFileHandle = FileHandle(forWritingAtPath: auxPath)
+    }
+
+    public static func initialize(auxPath path: String) {
+        if FileManager.default.fileExists(atPath: path) {
+            try? FileManager.default.removeItem(atPath: path)
+        }
+
+        XCHammerLogger._shared = XCHammerLogger(auxPath: path)
     }
 }
 
