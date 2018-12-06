@@ -19,6 +19,7 @@ import ProjectSpec
 import XcodeGenKit
 import xcproj
 import TulsiGenerator
+import ShellOut
 
 /// Internal struct to help building out the `Spec`
 private struct XcodeGenTarget {
@@ -874,10 +875,15 @@ enum Generator {
         }
 
         let ruleEntryMap = workspaceInfo.ruleEntryMap
-        guard let genfileLabels = try? BazelQueryer.genFileQuery(targets:
-            config.buildTargetLabels, bazelPath: bazelPath,
-            workspaceRoot: workspaceRootPath) else {
-            fatalError("Can't get genfiles")
+        let genfileLabels: [BuildLabel]
+        do {
+            genfileLabels = try BazelQueryer.genFileQuery(targets:
+                config.buildTargetLabels, bazelPath: bazelPath,
+                workspaceRoot: workspaceRootPath)
+        } catch let e as ShellOutError {
+            fatalError("Bazel failure:\n\(e.message)")
+        } catch let e {
+            fatalError("Can't get genfiles: \(e)")
         }
 
         let generateResults = config.projects.map { $0.key }.parallelMap({
