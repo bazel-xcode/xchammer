@@ -864,8 +864,9 @@ enum Generator {
         logger.logInfo("Reading Bazel configurations")
         let workspaceInfoResult = doResult {
             return try TulsiHooks.getWorkspaceInfo(labels:
-                config.buildTargetLabels, bazelPath: bazelPath,
-                workspaceRootPath: workspaceRootPath)
+                config.buildTargetLabels, options:
+                config.targetConfig?.compactMap { $0.value.buildBazelOptions },
+                bazelPath: bazelPath, workspaceRootPath: workspaceRootPath)
         }
         entryMapProfiler.logEnd(true)
 

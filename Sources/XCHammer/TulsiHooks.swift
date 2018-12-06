@@ -17,15 +17,20 @@ import TulsiGenerator
 import PathKit
 
 enum TulsiHooks {
-    static func getWorkspaceInfo(labels: [BuildLabel], bazelPath: Path,
-            workspaceRootPath: Path) throws ->
+    static func getWorkspaceInfo(labels: [BuildLabel], options: [String]?,
+            bazelPath: Path, workspaceRootPath: Path) throws ->
         XCHammerBazelWorkspaceInfo {
         let ungeneratedProjectName = "Some"
+        let options = options.map {
+            [TulsiOptionKey.BazelBuildOptionsDebug.rawValue: [
+                TulsiOption.ProjectValueKey: $0.joined(separator: " ")
+            ]]
+        }
         let config = TulsiGeneratorConfig(projectName: ungeneratedProjectName,
                 buildTargetLabels: labels,
                 pathFilters: Set(),
                 additionalFilePaths: [],
-                options: TulsiOptionSet(),
+                options: TulsiOptionSet(fromDictionary: options ?? [:]),
                 bazelURL: TulsiParameter(value: bazelPath.url,
                     source: .options))
         return try TulsiRuleEntryMapExtractor.extract(config:
