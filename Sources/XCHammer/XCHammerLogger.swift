@@ -26,14 +26,25 @@ public class XCHammerLogger {
 
     public static func initialize() {
         // For now write to this one
-        let path = "/private/var/tmp/xchammer.log"
+        let basePath: String
+        if let buildDir =
+            ProcessInfo.processInfo.environment["OBJROOT"] {
+            basePath = buildDir
+        } else {
+            basePath = "/private/var/tmp"
+        }
+        let path = basePath + "/xchammer.log"
         if FileManager.default.fileExists(atPath: path) {
             try? FileManager.default.removeItem(atPath: path)
         }
 
+        try? FileManager.default.createDirectory(atPath: basePath,
+                withIntermediateDirectories: true,
+                attributes: [:])
+
         guard FileManager.default.createFile(atPath: path,
                 contents: "".data(using: .utf8), attributes: nil) else {
-             fatalError("Can't write log")
+             fatalError("Can't write log:" + path)
         }
 
         XCHammerLogger._shared = XCHammerLogger(auxPath: path)

@@ -33,7 +33,13 @@ def write_build_metric():
 
 
 def write_last_generation_metric():
-    last_generation_log = "/private/var/tmp/xchammer.log"
+    build_dir = os.environ.get('OBJROOT')
+    if build_dir:
+        base_path = build_dir
+    else:
+        base_path = "/private/var/tmp"
+
+    last_generation_log = os.path.join(base_path, 'xchammer.log')
     with open(last_generation_log, "r") as f:
         for l, i in enumerate(f):
             json_str = i.split("\n")[0]
