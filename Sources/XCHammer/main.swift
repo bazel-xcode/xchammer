@@ -168,6 +168,7 @@ struct VersionCommand: CommandProtocol {
 }
 
 func main() {
+    XCHammerLogger.initialize()
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
     commands.register(ProcessIpaCommand())

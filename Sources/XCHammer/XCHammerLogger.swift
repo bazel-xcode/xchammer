@@ -17,20 +17,42 @@ import PathKit
 
 /// Warning: this logger is not thread safe
 public class XCHammerLogger {
-    private static let name = "XCHammer"
-    private static var _shared: XCHammerLogger?
+    fileprivate static var _shared: XCHammerLogger?
     private let auxFileHandle: FileHandle?
+
+    public init(auxPath: String) {
+        auxFileHandle = FileHandle(forUpdatingAtPath: auxPath)
+    }
+
+    public static func initialize() {
+        // For now write to this one
+        let path = "/private/var/tmp/xchammer.log"
+        if FileManager.default.fileExists(atPath: path) {
+            try? FileManager.default.removeItem(atPath: path)
+        }
+
+        guard FileManager.default.createFile(atPath: path,
+                contents: "".data(using: .utf8), attributes: nil) else {
+             fatalError("Can't write log")
+        }
+
+        XCHammerLogger._shared = XCHammerLogger(auxPath: path)
+    }
+
+    public static func shared() -> XCHammerLogger {
+        guard let logger = XCHammerLogger._shared else {
+            fatalError("Logger isn't configured")
+        }
+        return logger
+    }
 
     /// Log a message.
     /// `dumpToStandardOutput` is off by default since we use this logger
     /// for diagnostic purposes
     public func log(_ message: String, dumpToStandardOutput: Bool = false) {
-        let formattedMessage = "\(XCHammerLogger.name): \(message)"
+        let formattedMessage = "XCHammer: \(message)"
         if dumpToStandardOutput {
             print(formattedMessage)
-        }
-        if let data = "SOME".data(using: .utf8) {
-            auxFileHandle?.write(data)
         }
     }
 
@@ -38,20 +60,16 @@ public class XCHammerLogger {
         log(message, dumpToStandardOutput: true)
     }
 
-    public static func shared() -> XCHammerLogger {
-        return XCHammerLogger._shared!
-    }
-
-    public init(auxPath: String) {
-        auxFileHandle = FileHandle(forWritingAtPath: auxPath)
-    }
-
-    public static func initialize(auxPath path: String) {
-        if FileManager.default.fileExists(atPath: path) {
-            try? FileManager.default.removeItem(atPath: path)
+    func logMetric(metric: String, time: TimeInterval) {
+        let userMessage = String(format: "** Completed %@ in %.4fs", metric,
+            time)
+        // Uses:
+        // https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview
+        let traceEntry = "{ \"name\": \"\(metric)\", \"ts\": \(time) }\n"
+        if let data = traceEntry.data(using: .utf8) {
+            auxFileHandle?.write(data)
         }
-
-        XCHammerLogger._shared = XCHammerLogger(auxPath: path)
+        logInfo(userMessage)
     }
 }
 
@@ -68,22 +86,16 @@ public class XCHammerProfiler {
         self.startDate = Date()
     }
 
-    /// Return a loggable description
-    public func loggableDescription() -> String {
-        return String(format: "** Completed %@ in %.4fs", name,
-                endDate!.timeIntervalSince(startDate))
-    }
-
     /// Requiore all ending of a profile to be logged.
     fileprivate func end() {
         endDate = Date()
     }
-}
 
-extension XCHammerProfiler {
     public func logEnd(_ dumpToStandardOutput: Bool = false) {
         end()
-        XCHammerLogger.shared().log(loggableDescription(), dumpToStandardOutput: dumpToStandardOutput)
+        if let endTime = endDate?.timeIntervalSince(startDate) {
+            XCHammerLogger.shared().logMetric(metric: self.name, time: endTime)
+        }
     }
 }
 
