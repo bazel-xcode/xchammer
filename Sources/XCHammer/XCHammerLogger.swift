@@ -76,7 +76,7 @@ public class XCHammerLogger {
             time)
         // Uses:
         // https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview
-        let traceEntry = "{ \"name\": \"\(metric)\", \"ts\": \(time) }\n"
+        let traceEntry = "{ \"name\": \"xchammer.\(metric)\", \"ts\": \(time) }\n"
         if let data = traceEntry.data(using: .utf8) {
             auxFileHandle?.write(data)
         }
