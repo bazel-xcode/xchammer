@@ -57,6 +57,7 @@ workspace_spm: aspects generate_xcodeproj
 # - run with `force` for development
 # - the DSL is not fully integrated into XCHammer - this make target needs to
 #   create the XCHammer.yaml out of band.
+# - Currently gen times are out of band as well.
 workspace_xchammer: build
 	tools/bazelwrapper build :xchammer_config
 	$(XCHAMMER_BIN) generate \

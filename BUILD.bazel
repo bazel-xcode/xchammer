@@ -96,7 +96,8 @@ xchammer_config = xchammer_config(
     targets=["//:xchammer"],
     target_config={
         "//:xchammer" : target_config(
-            #scheme_config=scheme_config
+            # Metrics are disabled by default
+            # scheme_config=scheme_config
         )
     },
     projects={ 
