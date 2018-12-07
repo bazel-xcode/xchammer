@@ -33,7 +33,7 @@ def scheme_action_config(
     pre_actions=None,  # [ExecutionAction]?
     post_actions=None  # [ExecutionAction]?
 ):
-    return struct(command_line_arguments=command_line_arguments, environment_variables=environment_variables, pre_actions=pre_actions, post_actions=post_actions)
+    return struct(commandLineArguments=command_line_arguments, environmentVariables=environment_variables, preActions=pre_actions, postActions=post_actions)
 
 
 def execution_action(
@@ -41,7 +41,7 @@ def execution_action(
     name=None,  # String
     settings_target=None  # String
 ):
-    return struct(script=script, name=name, settings_target=settings_target)
+    return struct(script=script, name=name, settingsTarget=settings_target)
 
 
 def environment_variable(
@@ -53,14 +53,14 @@ def environment_variable(
 
 
 def target_config(
-    scheme_config, # [String /*SchemeActionType*/ : XCHammerSchemeActionConfig]?
+    scheme_config=None, # [String /*SchemeActionType*/ : XCHammerSchemeActionConfig]?
     build_bazel_options=None,  # String?
     # Startup options passed to the Bazel build invocation
     build_bazel_startup_options=None,  # String?
     build_bazel_template=None,  # String?
     xcconfig_overrides=None  # [String: String]?
 ):
-    return struct(scheme_config=scheme_config, build_bazel_options=build_bazel_options, build_bazel_startup_options=build_bazel_startup_options,build_bazel_template=build_bazel_template, xcconfig_overrides=xcconfig_overrides)
+    return struct(schemeConfig=scheme_config, buildBazelOptions=build_bazel_options, buildBazelStartupOptions=build_bazel_startup_options,buildBazelTemplate=build_bazel_template, xcconfigOverrides=xcconfig_overrides)
 
 
 def project_config(
@@ -70,7 +70,7 @@ def project_config(
     generate_xcode_schemes=None,  # Bool
     xcconfig_overrides=None  # : [String: String]?
 ):
-    return struct(paths=paths, build_bazel_platform_options=build_bazel_platform_options, generate_transitive_xcode_targets=generate_transitive_xcode_targets, generate_xcode_schemes=generate_xcode_schemes, xcconfig_overrides=xcconfig_overrides)
+    return struct(paths=paths, buildBazelPlatformOptions=build_bazel_platform_options, generateTransitiveXcodeTargets=generate_transitive_xcode_targets, generateXcodeSchemes=generate_xcode_schemes, xcconfigOverrides=xcconfig_overrides)
 
 
 def xchammer_config(
@@ -78,4 +78,4 @@ def xchammer_config(
     projects,  # [String: XCHammerProjectConfig]
     target_config=None  # [String: XCHammerTargetConfig]?
 ):
-    return struct(targets=targets, target_config=target_config, projects=projects)
+    return struct(targets=targets, targetConfig=target_config, projects=projects)

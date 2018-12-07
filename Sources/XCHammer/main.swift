@@ -113,6 +113,10 @@ struct GenerateCommand: CommandProtocol {
     typealias Options = GenerateOptions
 
     func run(_ options: Options) -> Result<(), CommandError> {
+        let profiler = XCHammerProfiler("generate")
+        defer {
+            profiler.logEnd(true)
+        }
         do {
             let config = try getHammerConfig(path: options.configPath)
             let _ = try validate(config: config, workspaceRootPath:
@@ -164,6 +168,7 @@ struct VersionCommand: CommandProtocol {
 }
 
 func main() {
+    XCHammerLogger.initialize()
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
     commands.register(ProcessIpaCommand())
