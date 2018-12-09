@@ -52,7 +52,6 @@ entitlements_writer = rule(
     attrs = {
         "entitlements": attr.label(mandatory = True),
     },
-    output_to_genfiles = True,
 )
 
 def export_entitlements(

@@ -141,7 +141,6 @@ def _make_module_map_impl(ctx):
 
 _gen_module_map = rule(
     implementation = _make_module_map_impl,
-    output_to_genfiles = True,
     attrs = {
         "pod_name": attr.string(mandatory = True),
         "hdrs": attr.label_list(mandatory = True),

@@ -239,7 +239,7 @@ public class XcodeTarget: Hashable, Equatable {
         case .sourceFile:
             return "$(SRCROOT)/" + resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
-            return "$(SRCROOT)/bazel-genfiles/" + fileInfo.subPath
+            return "$(SRCROOT)/bazel-bin/" + fileInfo.subPath
         }
     }
 
@@ -248,7 +248,7 @@ public class XcodeTarget: Hashable, Equatable {
         case .sourceFile:
             return resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
-            return "bazel-genfiles/" + fileInfo.subPath
+            return "bazel-bin/" + fileInfo.subPath
         }
     }
 
@@ -571,7 +571,7 @@ public class XcodeTarget: Hashable, Equatable {
                             return processedOpt
                         } else {
                             return opt.replacingOccurrences(of: "__BAZEL_GEN_DIR__",
-                                with: "$(SRCROOT)/bazel-genfiles")
+                                with: "$(SRCROOT)/bazel-bin")
                         }
                     }
                     settings.copts <>= processedOpts
@@ -667,7 +667,7 @@ public class XcodeTarget: Hashable, Equatable {
                 .filter { !$0.0.contains("tulsi-includes") }
                 .foldMap { (path: String, isRecursive: Bool) in
                 if path.hasSuffix("module_map") {
-                    return ["$(SRCROOT)/bazel-genfiles/\(path)"]
+                    return ["$(SRCROOT)/bazel-bin/\(path)"]
                 } else if isRecursive {
                     return ["$(SRCROOT)/\(path)/**"]
                 } else {
@@ -951,7 +951,7 @@ public class XcodeTarget: Hashable, Equatable {
                 .replacingOccurrences(of: genOptions.workspaceRootPath.string,
                                     with: "")
         let targetName = label.asFullPBXTargetName!
-        return "$(SRCROOT)/bazel-genfiles" + relativeProjDir + "/XCHammerAssets/" + targetName + ".entitlements"
+        return "$(SRCROOT)/bazel-bin" + relativeProjDir + "/XCHammerAssets/" + targetName + ".entitlements"
     }
 
     var mobileProvisionProfileFile: String? {
@@ -1050,7 +1050,7 @@ public class XcodeTarget: Hashable, Equatable {
             .map {
                 return getXCSourceRootAbsolutePath(for: $0)
                     // __BAZEL_GEN_DIR__ is a custom toolchain make variable
-                    // resolve that to $(SRCROOT)/bazel-genfiles.
+                    // resolve that to $(SRCROOT)/bazel-bin.
                     .replacingOccurrences(of: "__BAZEL_GEN_DIR__", with: "")
              }
     }

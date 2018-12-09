@@ -104,6 +104,7 @@ genrule(
     # builds, during build time. If you don't use Xcode build, this tag doesn't
     # matter. ( See Docs/XCHammerFAQ.md for more info )
     tags = ["xchammer"],
+    output_to_bindir = True,
 )
 
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")

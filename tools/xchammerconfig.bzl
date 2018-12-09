@@ -9,7 +9,6 @@ def _gen_dsl_impl(ctx):
 
 _gen_dsl = rule(
     implementation=_gen_dsl_impl,
-    output_to_genfiles=True,
     attrs={
         "ast": attr.string(mandatory=True),
     },
