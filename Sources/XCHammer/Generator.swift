@@ -285,11 +285,17 @@ enum Generator {
                         postActions: runConfig?.postActions ?? [])
 
                 let testConfig = schemeConfig?[SchemeActionType.test.rawValue]
+
+                // For tests, grab all of the tests:
+                // TODO: Add this to XCHammerConfig
+                // https://github.com/pinterest/xchammer/issues/141
+                let testTargets: [String] = xcodeTarget.isTopLevelTestTarget ?
+                        allTests(for: xcodeTarget, map: targetMap) : []
                 let testPhase = XcodeScheme.Test(config: "Debug",
                         commandLineArguments: testConfig?.commandLineArguments
                         ?? [:],
                         environmentVariables: testConfig?.environmentVariables ?? [],
-                        targets: [],
+                        targets: testTargets,
                         preActions: testConfig?.preActions ?? [],
                         postActions: testConfig?.postActions ?? [])
 
