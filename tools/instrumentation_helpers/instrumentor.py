@@ -69,12 +69,7 @@ def get_tsd(tags_dict):
 
 def write_tsd(metric, delta):
     timestamp = int(round(time.time()))
-
     tags_dict = get_system_profile()
-    build_target = os.environ.get("TARGET_NAME")
-    if build_target:
-        tags_dict["target"] = build_target
-
     tags = get_tsd(tags_dict)
     tsd = "put {metric} {timestamp} {delta} {tags}\n".format(
         metric=metric,
@@ -96,7 +91,12 @@ def write_build_metric():
         os.environ.get("TARGET_BUILD_DIR"), "xchammer.build_start")
     start_time = os.path.getmtime(start_time_f)
     delta = ((time.time()-start_time)*1000)
-    write_tsd("xchammer.build", delta)
+    metric = "xchammer.build"
+    build_target = os.environ.get("TARGET_NAME")
+    if build_target:
+        metric += "." + build_target
+
+    write_tsd(metric, delta)
 
 
 def write_last_generation_metric():
