@@ -24,8 +24,14 @@ def extract_profile_line(line, item):
             return result[1]
     return None
 
+# Memoize calls to system_profiler
+PROFILE_INFO = None
 
 def get_system_profile():
+    global PROFILE_INFO
+    if PROFILE_INFO:
+        return PROFILE_INFO
+
     process = os.popen("system_profiler SPHardwareDataType")
     result = process.read()
     lines = result.split("\n")
@@ -47,15 +53,16 @@ def get_system_profile():
         if processor_name:
             output["processor_name"] = processor_name
 
-        # Get some stats about the host
-        output["os_version"] = platform.mac_ver()[0]
+    # Get some stats about the host
+    output["os_version"] = platform.mac_ver()[0]
 
-        # This will optionally print the number of virtual cores - see docs for more info
-        output["cpu_count"] = multiprocessing.cpu_count()
+    # This will optionally print the number of virtual cores - see docs for more info
+    output["cpu_count"] = multiprocessing.cpu_count()
 
-        output["host"] = socket.gethostname()
+    output["host"] = socket.gethostname()
 
-        output["username"] = getpass.getuser()
+    output["username"] = getpass.getuser()
+    PROFILE_INFO = output
     return output
 
 
