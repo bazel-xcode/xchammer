@@ -142,9 +142,11 @@ else
 	@ditto $(ASPECTDIR) .build/$(CONFIG)/
 endif
 
-# Build impl doesn't build aspects because it is slow.
 build: aspects build-debug
-	@ln -sf $(PWD)/.build/debug sample/UrlGet/tools/XCHammer
+	@# Hacks for SPM build
+	@rm -rf .build/debug/debug || true # This creates a cycle
+	@[[ "$(SAMPLE)" ]] && \
+	    (ditto $(PWD)/.build/debug sample/$(SAMPLE)/tools/XCHammer || true)
 
 test: build
 	XCHAMMER_BIN=$(XCHAMMER_BIN) SAMPLE=UrlGet $(ROOT_DIR)/IntegrationTests/run_tests.sh
