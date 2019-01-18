@@ -41,6 +41,7 @@ public enum TulsiRuleEntryMapExtractor {
                 platformConfigOption:
                 config.options[.ProjectGenerationPlatformConfiguration],
                 prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift],
+                useArm64_32Option: config.options[.UseArm64_32],
                 features: features)
         return XCHammerBazelWorkspaceInfo(bazelExecRoot: execRoot, ruleEntryMap:
                 ruleEntryMap)
