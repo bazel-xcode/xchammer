@@ -40,18 +40,22 @@ def get_system_profile():
         memory = extract_profile_line(line, "Memory")
         if memory:
             output["memory"] = memory
+            continue
 
         model_identifier = extract_profile_line(line, "Model Identifier")
         if model_identifier:
             output["model_identifier"] = model_identifier
+            continue
 
         processor_speed  = extract_profile_line(line, "Processor Speed")
         if processor_speed:
             output["processor_speed"] = processor_speed
+            continue
 
         processor_name  = extract_profile_line(line, "Processor Name")
         if processor_name:
             output["processor_name"] = processor_name
+            continue
 
     # Get some stats about the host
     output["os_version"] = platform.mac_ver()[0]
