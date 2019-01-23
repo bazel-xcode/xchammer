@@ -11,6 +11,6 @@ objc_library(
              """)
 
 gen_repo = repository_rule(
-    implementation=_impl,
-    local=False,
+    implementation = _impl,
+    local = False,
 )

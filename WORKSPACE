@@ -10,6 +10,7 @@ load(
     "@build_bazel_rules_apple//apple:repositories.bzl",
     "apple_rules_dependencies",
 )
+
 apple_rules_dependencies()
 
 load(
@@ -59,5 +60,3 @@ go_rules_dependencies()
 go_register_toolchains()
 
 buildifier_dependencies()
-
-

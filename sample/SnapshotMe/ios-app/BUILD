@@ -16,12 +16,12 @@ ios_application(
 
 objc_library(
     name = "ios-app-main",
-    hdrs = glob(["*.h"]),
     srcs = glob(["*.m"]),
+    hdrs = glob(["*.h"]),
     sdk_frameworks = [
         "CoreGraphics",
-        "UIKit", # FIXME: this isn't linking by defaut in the Xcode project ( but it is in Bazel )
-    ]
+        "UIKit",  # FIXME: this isn't linking by defaut in the Xcode project ( but it is in Bazel )
+    ],
 )
 
 ios_unit_test(
@@ -34,15 +34,15 @@ ios_unit_test(
 
 objc_library(
     name = "TestsLib",
-    hdrs = glob(["UnitTests/*.h"]),
     srcs = glob(["UnitTests/*.m"]),
-    visibility = ["//visibility:public"],
-    deps = [
-      "//Vendor/iOSSnapshotTestCase:Core",
-    ],
+    hdrs = glob(["UnitTests/*.h"]),
     sdk_frameworks = [
         "XCTest",
         "CoreGraphics",
         "UIKit",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//Vendor/iOSSnapshotTestCase:Core",
     ],
 )

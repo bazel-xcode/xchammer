@@ -1,5 +1,5 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
-load('@build_bazel_rules_swift//swift:swift.bzl', 'swift_library')
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 
 # This is needed for implicit entitlement rules created for
 # files.
@@ -19,7 +19,7 @@ swift_library(
     srcs = [
         "AppDelegate.swift",
     ],
-    deps = [":tailor"]
+    deps = [":tailor"],
 )
 
 swift_library(
@@ -27,10 +27,10 @@ swift_library(
     srcs = [
         "Tailor.swift",
     ],
+    copts = [
+        "-swift-version 4.2",
+    ],
     # TODO: Add the ability to customize a module name.
     # This works, but not in Xcode!
     module_name = "tailor",
-    copts = [
-      "-swift-version 4.2"
-    ]
 )
