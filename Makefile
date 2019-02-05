@@ -74,12 +74,11 @@ clean:
 # Create an archive package with a release binary and all bundle resources
 # Note, that this does not self update.
 archive: CONFIG = release
-archive: build-release aspects
+archive: aspects build-release
 	rm -rf tmp_build_dir
 	mkdir -p tmp_build_dir/$(PRODUCT)
 	ditto .build/$(CONFIG)/$(PRODUCT) tmp_build_dir/$(PRODUCT)/
-	./export_tulsi_aspect_dir.sh ${PWD}/$(ASPECTDIR)
-	# Copy bundle resources
+	@# Copy bundle resources
 	ditto $(ASPECTDIR) tmp_build_dir/$(PRODUCT)/
 	ditto .build/$(CONFIG)/$(ASSETDIR) tmp_build_dir/$(PRODUCT)/$(ASSETDIR)
 
