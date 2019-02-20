@@ -39,3 +39,4 @@ external
 xchammer-bazel.xcodeproj
 
 *.pyc
+*.swp
