@@ -7,6 +7,10 @@ load(
     "macos_application",
 )
 load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_resource_group",
+)
+load(
     "@build_bazel_rules_swift//swift:swift.bzl",
     "swift_library",
 )
@@ -22,23 +26,29 @@ load(
     "//third_party:repositories.bzl",
     "namespaced_name",
 )
-
 load(
     "//tools:xchammerconfig.bzl",
-    "xchammer_config",
+    "execution_action",
     "gen_xchammer_config",
     "project_config",
-    "target_config",
-    "execution_action",
     "scheme_action_config",
+    "target_config",
+    "xchammer_config",
+)
+
+apple_resource_group(
+    name = "XCHammerAssets",
+    structured_resources = glob([
+        "XCHammerAssets/**",
+    ]),
 )
 
 swift_library(
     name = "Sources",
     srcs = glob(["Sources/**/*.swift"]),
-    structured_resources = glob([
-        "XCHammerAssets/**",
-    ]),
+    data = [
+        ":XCHammerAssets",
+    ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",
         "Commandant//:Commandant",
@@ -71,39 +81,42 @@ macos_application(
 )
 
 buildifier(
-    name = "buildifier"
+    name = "buildifier",
 )
 
 script_base = "$SRCROOT/tools/instrumentation_helpers"
-scheme_config={
+
+scheme_config = {
     "Build": scheme_action_config(
-        pre_actions=[
+        post_actions = [
             execution_action(
-                name="Track build start",
-                script=script_base + "/statsd_pre_build_action.sh"
-            )
+                name = "Report build end",
+                script = "python " + script_base + "/statsd_post_build_action.py",
+            ),
         ],
-        post_actions=[
+        pre_actions = [
             execution_action(
-                name="Report build end",
-                script="python " + script_base + "/statsd_post_build_action.py"
-            )
-        ]
-    )
+                name = "Track build start",
+                script = script_base + "/statsd_pre_build_action.sh",
+            ),
+        ],
+    ),
 }
 
 xchammer_config = xchammer_config(
-    targets=["//:xchammer"],
-    target_config={
-        "//:xchammer" : target_config(
+    projects = {
+        "xchammer-bazel": project_config(paths = ["**"]),
+    },
+    target_config = {
+        "//:xchammer": target_config(
             # Metrics are disabled by default
             # scheme_config=scheme_config
-        )
+        ),
     },
-    projects={ 
-        "xchammer-bazel":
-            project_config(paths=["**"])
-    })
+    targets = ["//:xchammer"],
+)
 
-gen_xchammer_config(name="xchammer_config", config=xchammer_config)
-
+gen_xchammer_config(
+    name = "xchammer_config",
+    config = xchammer_config,
+)
