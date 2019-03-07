@@ -1,9 +1,9 @@
 load(
-    "@build_bazel_rules_apple//apple/bundling:entitlements.bzl",
+    "@build_bazel_rules_apple//apple/internal:entitlement_rules.bzl",
     entitlements_rule = "entitlements",
 )
 load(
-    "@build_bazel_rules_apple//apple/bundling:entitlements.bzl",
+    "@build_bazel_rules_apple//apple/internal:entitlement_rules.bzl",
     "AppleEntitlementsInfo",
 )
 
