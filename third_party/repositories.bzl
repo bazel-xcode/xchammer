@@ -64,9 +64,8 @@ swift_c_module(
         module_map = module_map,
     ))
 
-def namespaced_swift_library(name, srcs, deps = None, cc_libs = None, defines = None):
+def namespaced_swift_library(name, srcs, deps = None, defines = None):
     deps = [] if deps == None else deps
-    cc_libs = [] if cc_libs == None else cc_libs
     defines = [] if defines == None else defines
     return """
 swift_library(
@@ -75,13 +74,11 @@ swift_library(
     module_name = "{name}",
     deps = [{deps}],
     defines = [{defines}],
-    cc_libs = [{cc_libs}]
 )""".format(**dict(
         name = name,
         srcs = ",\n".join(['"%s"' % x for x in srcs]),
         defines = ",\n".join(['"%s"' % x for x in defines]),
         deps = ",\n".join(['"%s"' % namespaced_dep_name(x) for x in deps]),
-        cc_libs = ",\n".join(['"%s"' % namespaced_dep_name(x) for x in cc_libs]),
     ))
 
 def xchammer_dependencies():
@@ -312,8 +309,7 @@ module CYaml {
             namespaced_swift_library(
                 name = "Yams",
                 srcs = ["Sources/Yams/*.swift"],
-                deps = [":CYaml"],
-                cc_libs = [":CYamlLib"],
+                deps = [":CYaml", ":CYamlLib"],
                 defines = ["SWIFT_PACKAGE"],
             ),
         ]),
