@@ -35,10 +35,10 @@ load("@build_bazel_rules_swift//swift:swift.bzl", "swift_c_module",
 "swift_library")
 """ + "\n\n".join(libs)
 
-def namespaced_swift_c_library(name, srcs, hdrs, includes, module_map):
+def namespaced_cc_library(name, srcs, hdrs, includes, copts):
     return """
 cc_library(
-  name = "{name}Lib",
+  name = "{name}",
   srcs = glob([
     {srcs}
   ]),
@@ -48,20 +48,17 @@ cc_library(
   includes = [
     {includes}
   ],
+  copts = [
+    {copts}
+  ],
   linkstatic = True
-)
-
-swift_c_module(
-  name = "{name}",
-  deps = [":{name}Lib"],
-  module_map = "{module_map}",
 )
 """.format(**dict(
         name = name,
         srcs = ",\n".join(['"%s"' % x for x in srcs]),
         hdrs = ",\n".join(['"%s"' % x for x in hdrs]),
         includes = ",\n".join(['"%s"' % x for x in includes]),
-        module_map = module_map,
+        copts = ",\n".join(['"%s"' % x for x in copts]),
     ))
 
 def namespaced_swift_library(name, srcs, deps = None, defines = None):
@@ -283,18 +280,8 @@ def xchammer_dependencies():
         name = "Yams",
         remote = "https://github.com/jpsim/Yams.git",
         commit = "26ab35f50ea891e8edefcc9d975db2f6b67e1d68",
-        patch_cmds = [
-            """
-echo '
-module CYaml {
-    umbrella header "CYaml.h"
-    export *
-}
-' > Sources/CYaml/include/Yams.modulemap
-""",
-        ],
         build_file_content = namespaced_build_file([
-            namespaced_swift_c_library(
+            namespaced_cc_library(
                 name = "CYaml",
                 srcs = [
                     "Sources/CYaml/src/*.c",
@@ -304,12 +291,12 @@ module CYaml {
                     "Sources/CYaml/include/*.h",
                 ],
                 includes = ["Sources/CYaml/include"],
-                module_map = "Sources/CYaml/include/Yams.modulemap",
+                copts = ["-fPIC"],
             ),
             namespaced_swift_library(
                 name = "Yams",
                 srcs = ["Sources/Yams/*.swift"],
-                deps = [":CYaml", ":CYamlLib"],
+                deps = [":CYaml"],
                 defines = ["SWIFT_PACKAGE"],
             ),
         ]),
