@@ -300,7 +300,7 @@ enum Generator {
                         postActions: testConfig?.postActions ?? [])
 
                 let profileConfig = schemeConfig?[SchemeActionType.profile.rawValue]
-                let profilePhase = XcodeScheme.Profile(config: "Debug",
+                let profilePhase = XcodeScheme.Profile(config: "Profile",
                         commandLineArguments:
                         profileConfig?.commandLineArguments ?? [:],
                         environmentVariables:
@@ -356,7 +356,7 @@ enum Generator {
                         postActions: testConfig?.postActions ?? [])
 
                 let profileConfig = schemeConfig?[SchemeActionType.profile.rawValue]
-                let profilePhase = XcodeScheme.Profile(config: "Debug",
+                let profilePhase = XcodeScheme.Profile(config: "Profile",
                         commandLineArguments:
                         profileConfig?.commandLineArguments ?? [:],
                         environmentVariables:
@@ -588,6 +588,11 @@ enum Generator {
         let project = ProjectSpec.Project(
             basePath: genOptions.workspaceRootPath,
             name: name,
+            configs: [
+                ProjectSpec.Config(name: "Debug", type: .debug),
+                ProjectSpec.Config(name: "Release", type: .release),
+                ProjectSpec.Config(name: "Profile", type: .release)
+            ],
             targets: allTargets.sorted { $0.name < $1.name },
             settings: settings,
             settingGroups: [:],
