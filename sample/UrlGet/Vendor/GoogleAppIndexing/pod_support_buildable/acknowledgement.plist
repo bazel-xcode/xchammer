@@ -3,8 +3,8 @@
 <string>GoogleAppIndexing</string>
 <key>Type</key>
 <string>PSGroupSpecifier</string>
-<key>FooterText</key>
-<string>Copyright 2015 Google Inc.</string>
 <key>License</key>
 <string>Copyright</string>
+<key>FooterText</key>
+<string>Copyright 2015 Google Inc.</string>
 </dict>

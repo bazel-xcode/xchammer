@@ -12,6 +12,7 @@ ios_extension(
     infoplists = ["ShareExtension/ShareExtension-Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["ios-ext-bin"],
+    minimum_os_version = "9.3"
 )
 
 objc_library(
@@ -26,6 +27,7 @@ ios_extension(
     infoplists = ["SiriExtension/Resources/SiriExtension-Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["siri-ext-bin"],
+    minimum_os_version = "9.3"
 )
 
 filegroup(
@@ -50,6 +52,7 @@ ios_extension(
     infoplists = ["StringsExtension/Resources/StringsExtension-Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["strings-ext-bin"],
+    minimum_os_version = "9.3"
 )
 
 filegroup(
@@ -79,6 +82,7 @@ ios_application(
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["ios-app-bin"],
+    minimum_os_version = "9.3"
 )
 
 objc_library(

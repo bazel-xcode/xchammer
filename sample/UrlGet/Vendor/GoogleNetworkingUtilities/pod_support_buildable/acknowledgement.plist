@@ -3,8 +3,8 @@
 <string>GoogleNetworkingUtilities</string>
 <key>Type</key>
 <string>PSGroupSpecifier</string>
-<key>FooterText</key>
-<string>Copyright 2016 Google</string>
 <key>License</key>
 <string>Copyright</string>
+<key>FooterText</key>
+<string>Copyright 2016 Google</string>
 </dict>

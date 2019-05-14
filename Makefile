@@ -107,7 +107,7 @@ compile_commands.json:
 
 build-debug: CONFIG = debug
 build-debug: SWIFTBFLAGS = -Xswiftc -target \
-	-Xswiftc x86_64-apple-macosx10.13 \
+	-Xswiftc x86_64-apple-macosx10.14 \
 	--configuration $(CONFIG)
 build-debug: BAZELFLAGS = --announce_rc \
 	--spawn_strategy=standalone \
@@ -116,8 +116,8 @@ build-debug: build-impl
 
 build-release: CONFIG = release
 build-release: SWIFTBFLAGS = -Xswiftc -target \
-	-Xswiftc x86_64-apple-macosx10.13 \
-	--configuration $(CONFIG) -Xswiftc -static-stdlib
+	-Xswiftc x86_64-apple-macosx10.14 \
+	--configuration $(CONFIG)
 build-release: BAZELFLAGS = --announce_rc \
 	--compilation_mode opt \
 	--spawn_strategy=standalone \
