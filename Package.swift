@@ -26,19 +26,22 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/yonaskolb/XcodeGen.git",
-            .revision("8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0")),
+            .revision("275e1580915df8c94079dfad44d4b012c3b44360")),
 
         // Changes reside in the xchammer branch
         .package(url: "https://github.com/pinterest/Tulsi.git",
-            .revision("bd3132735414ce30650a622aed5399c02105cc14")),
+            .revision("0e17ac96f76a64c014785f9fdf1a49e8bc8dc006")),
 
         // Note: XcodeGen now transitively depends on this one, so the versions
         // must match!
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from:
             "2.1.0"),
 
-        .package(url: "https://github.com/Carthage/Commandant.git", from:
-            "0.12.0"),
+        .package(url: "https://github.com/Carthage/Commandant.git",
+            .exact("0.16.0")),
+        .package(url: "https://github.com/antitypical/Result.git", from:
+            "4.1.0"),
+        .package(url: "https://github.com/tuist/xcodeproj.git", .exact("6.7.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -50,7 +53,9 @@ let package = Package(
               "ProjectSpec",
               "TulsiGenerator",
               "Commandant",
-              "ShellOut"
+              "ShellOut",
+              "Result",
+              "xcodeproj",
          ])
     ]
 )

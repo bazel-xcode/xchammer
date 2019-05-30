@@ -17,7 +17,7 @@ import PathKit
 import Result
 import ProjectSpec
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import TulsiGenerator
 
 /// Internal struct to help building out the `Spec`
@@ -79,12 +79,6 @@ enum Generator {
             type: PBXProductType.none,
             platform: Platform.iOS,
             settings: ProjectSpec.Settings(dictionary: [String: Any]()),
-            configFiles: [:],
-            sources: [],
-            dependencies: [],
-            prebuildScripts: [],
-            postbuildScripts: [],
-            scheme: nil,
             // TODO: (jerry) Fix missing initializer visibility
             legacy: try! ProjectSpec.LegacyTarget(jsonDictionary: [
                 "toolPath": "/bin/bash",
@@ -104,11 +98,6 @@ enum Generator {
             type: PBXProductType.none,
             platform: Platform.iOS,
             settings: ProjectSpec.Settings(dictionary: [String: Any]()),
-            configFiles: [:],
-            sources: [],
-            dependencies: [],
-            prebuildScripts: [],
-            postbuildScripts: [],
             scheme: nil,
             // TODO: (jerry) Fix missing initializer visibility
             legacy: try! ProjectSpec.LegacyTarget(jsonDictionary: [
@@ -180,12 +169,6 @@ enum Generator {
             type: PBXProductType.none,
             platform: Platform.iOS,
             settings: ProjectSpec.Settings(dictionary: [String: Any]()),
-            configFiles: [:],
-            sources: [],
-            dependencies: [],
-            prebuildScripts: [],
-            postbuildScripts: [],
-            scheme: nil,
             // TODO: (jerry) Fix missing initializer visibility
             legacy: try! ProjectSpec.LegacyTarget(jsonDictionary: [
                 "toolPath": "/bin/bash",

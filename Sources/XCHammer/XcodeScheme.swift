@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import xcproj
+import xcodeproj
 
 public enum BuildType: String, Codable {
     case running, testing, profiling, archiving, analyzing, all
@@ -187,13 +187,12 @@ public struct XcodeScheme: Equatable, Codable {
 
 // Mark - xcproj support
 
-public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcproj.XCScheme {
+public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcodeproj.XCScheme {
     func getBuildEntry(_ buildTarget: XcodeScheme.BuildTarget) -> XCScheme.BuildAction.Entry {
         // It seems like Xcode doesn't actually need this
-        let emptyTargetReference = ""
         let buildableReference = XCScheme.BuildableReference(
             referencedContainer: "container:\( buildTarget.project).xcodeproj",
-            blueprintIdentifier: emptyTargetReference,
+            blueprint: PBXTarget(name: buildTarget.target),
             buildableName: buildTarget.productName,
             blueprintName: buildTarget.target
         )

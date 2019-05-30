@@ -16,7 +16,7 @@ import Foundation
 import XcodeGenKit
 import ProjectSpec
 import PathKit
-import xcproj
+import xcodeproj
 
 enum ProjectWriter {
 
@@ -49,7 +49,7 @@ enum ProjectWriter {
 
         // generate the project from the spec
         let generator = ProjectGenerator(project: xcodeGenSpec)
-        let xcproj = try generator.generateXcodeProject(validate: false)
+        let xcproj = try generator.generateXcodeProject()
         try xcproj.write(path: xcodeProjPath)
 
 

@@ -27,11 +27,19 @@ extension Path: ArgumentProtocol {
     }
 }
 
-enum CommandError: Error {
+enum CommandError: Error, Equatable {
     case swiftException(Error)
-    case tulsiException(Error)
-    case missingEnvVars(String)
-    case io(Error)
+    case basic(String)
+
+    static func == (lhs: CommandError, rhs: CommandError) -> Bool {
+        if case let swiftException(lhsE) = lhs, case let swiftException(rhsE) = rhs {
+            return lhsE.localizedDescription == rhsE.localizedDescription
+        }
+        if case let basic(lhsE) = lhs, case let basic(rhsE) = rhs {
+            return lhsE == rhsE
+        }
+        return false
+    }
 }
 
 func getHammerConfig(path: Path) throws -> XCHammerConfig {
@@ -50,7 +58,7 @@ func getHammerConfig(path: Path) throws -> XCHammerConfig {
 /// 
 /// Options for generation only.
 /// Configuration options for Xcode projects are part of `XCHammerConfig`
-struct GenerateOptions: OptionsProtocol {
+struct GenerateOptions: OptionsProtocol, Equatable {
     typealias ClientError = CommandError
 
     let configPath: Path
@@ -92,7 +100,7 @@ struct GenerateOptions: OptionsProtocol {
         } } } } 
     }
 
-    static func evaluate(_ m: CommandMode) -> Result<GenerateOptions, CommandantError<ClientError>> {
+    static func evaluate(_ m: Commandant.CommandMode) -> Result<GenerateOptions, Commandant.CommandantError<CommandError>> {
         return create
             <*> m <| Argument(usage: "Path to the XCHammerConfig yaml file")
             <*> m <| Option(key: "workspace_root", defaultValue: nil,
@@ -146,10 +154,10 @@ struct ProcessIpaCommand: CommandProtocol {
 
     func run(_: Options) -> Result<(), CommandError> {
         guard let builtProductsDir = ProcessInfo.processInfo.environment["BUILT_PRODUCTS_DIR"] else {
-            return .failure(.missingEnvVars("$BUILD_PRODUCTS_DIR not found in the env"))
+            return .failure(.basic("$BUILD_PRODUCTS_DIR not found in the env"))
         }
         guard let codesigningFolderPath = ProcessInfo.processInfo.environment["CODESIGNING_FOLDER_PATH"] else {
-            return .failure(.missingEnvVars("$CODESIGNING_FOLDER_PATH not found in the env"))
+            return .failure(.basic("$CODESIGNING_FOLDER_PATH not found in the env"))
         }
 
         return processIpa(builtProductsDir: Path(builtProductsDir), codesigningFolderPath: Path(codesigningFolderPath))

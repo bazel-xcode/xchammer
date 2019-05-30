@@ -56,6 +56,6 @@ func processIpa(builtProductsDir: Path, codesigningFolderPath: Path) -> Result<(
         try processIpaExn(builtProductsDir: builtProductsDir, codesigningFolderPath: codesigningFolderPath)
         return .success(())
     } catch {
-        return .failure(.io(error))
+        return .failure(.swiftException(error))
     }
 }

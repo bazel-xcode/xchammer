@@ -5,11 +5,12 @@
 py_binary(
     name = "acknowledgement_merger",
     srcs = ["acknowledgement_merger.py"],
-    visibility = ["//visibility:public"],
+    visibility = ["//visibility:public"]
 )
 
 filegroup(
     name = "acknowledgement_fragment",
     srcs = ["acknowledgement.plist"],
-    visibility = ["//visibility:public"],
+    visibility = ["//visibility:public"]
 )
+
