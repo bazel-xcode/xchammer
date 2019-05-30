@@ -6,68 +6,78 @@ new_pod_repository(
   generate_module_map = False,
   install_script = """
     __INIT_REPO__
-    # TODO: We need to add the ability to not generate this dir.
-    rm -rf pod_support/Headers/Public/boost
+    # This isn't actually necessary but nice.
+    rm -rf pod_support/Headers/Public/*
   """,
 )
 
-new_pod_repository(
-  name = "Folly",
-  podspec_url = "Vendor/PodSpecs/react-0.57/third-party-podspecs/Folly.podspec",
-  url = "https://github.com/facebook/folly/archive/v2016.09.26.00.zip",
-  # header_visibility = "everything",
-  generate_module_map = False
-)
-
-new_pod_repository(
-  name = "DoubleConversion",
-  url = 'https://github.com/google/double-conversion/archive/v1.1.5.zip',
-  podspec_url = 'Vendor/PodSpecs/react-0.57/third-party-podspecs/DoubleConversion.podspec',
-  install_script = """
-    # prepare_command
-    mv src double-conversion
-    __INIT_REPO__
-  """,
-
-  generate_module_map = False
-)
-
-new_pod_repository(
-  name = "glog",
-  url = 'https://github.com/google/glog/archive/v0.3.4.zip',
-  podspec_url = 'Vendor/PodSpecs/react-0.57/third-party-podspecs/GLog.podspec',
-  install_script = """
-    # prepare_command
-  	sh ../PodSpecs/glog-0.3.4/ios-configure-glog.sh || exit 1
-  	__INIT_REPO__
-  """,
-  generate_module_map = False
-)
-
-# LEAVEME: Prior hacks for podspecs
+# Prior hacks for podspecs
 # - Copy over third-party-podspecs to Vendor/Podspecs
 # - Comment out busted prepare commands
 new_pod_repository(
   name = "React",
   owner = "@schneider",
-  url = 'https://github.com/facebook/react-native/archive/v0.57.0.zip',
+  url = 'https://github.com/facebook/react-native/archive/v0.59.2.zip',
   user_options = [
     # TODO: If Xcode is compiling CppLike with this standard, P2B should too.
+    "CxxBridge_cxx.copts += -std=c++14",
+    "cxxreact.copts += -std=c++14",
     "jsinspector.copts += -std=c++14",
+    "jsiexecutor.copts += -std=c++14",
+    "jsi.copts += -std=c++14",
+    "Core_cxx.deps += //Vendor/Folly:Folly",
   ],
 
   # Module map doesn't work because it seems to be expecting the folly library
   generate_module_map = False,
   inhibit_warnings = True,
-
-  # This is a workaround for a bug and warning emitted in `ObjcLibrary`
-  # where we include non propagated headers in headers.
-  header_visibility = "everything"
 )
+
+new_pod_repository(
+  name = "Folly",
+  podspec_url = "Vendor/PodSpecs/react-0.59/third-party-podspecs/Folly.podspec",
+  url = 'https://github.com/facebook/folly/archive/v2018.10.22.00.zip',
+  install_script = """
+    # Force folly demangler off, we don't need it and it's being incorrectly enabled causing compile errors.
+    /usr/bin/sed -i '' 's/FOLLY_DETAIL_HAVE_DEMANGLE_H 1/FOLLY_DETAIL_HAVE_DEMANGLE_H 0 \/\/ PINTEREST HACK, SEE Pods.WORKSPACE/g' folly/detail/Demangle.h
+    # Rename 'build' directory temporarily as its name conflicts with bazel generated BUILD file.
+    # Better future solution is to update P2B to export BUILD.bazel files.
+    mv build build.orig
+    __INIT_REPO__
+    mv BUILD BUILD.bazel
+    mv build.orig build
+  """,
+  generate_module_map = False
+)
+
+new_pod_repository(
+  name = "DoubleConversion",
+  url = 'https://github.com/google/double-conversion/archive/v1.1.6.zip',
+  podspec_url = 'Vendor/PodSpecs/react-0.59/third-party-podspecs/DoubleConversion.podspec',
+  install_script = """
+    # prepare_command
+    mv src double-conversion
+    __INIT_REPO__
+  """,
+  generate_module_map = False
+)
+
+new_pod_repository(
+  name = "glog",
+  url = 'https://github.com/google/glog/archive/v0.3.5.zip',
+  podspec_url = 'Vendor/PodSpecs/react-0.59/third-party-podspecs/glog.podspec',
+  install_script = """
+    # prepare_command
+  	sh ../PodSpecs/glog-0.3.5/ios-configure-glog.sh
+  	__INIT_REPO__
+  """,
+  generate_module_map = False
+)
+
 
 # WARNING: the version of react-native here doesn't match up with yoga.
 new_pod_repository(
-  name = "Yoga",
+  name = "yoga",
   owner = "@schneider",
   url = 'https://github.com/facebook/react-native/archive/v0.55.4.zip',
   strip_prefix = 'react-native-0.55.4/ReactCommon/yoga',
@@ -76,15 +86,7 @@ new_pod_repository(
     # because the evaluation of the podspec in Ruby will fail. The package parameter
     # points to a JSON.parse of a file outside the yoga sandbox.
     /usr/bin/sed -i "" "s,^package.*,package = { 'version' => '0.46.3' },g" Yoga.podspec
-
-    
-    # The canonical version of Yoga uses the Podspec.name, 'Yoga'
-    # React uses the name of 'yoga'. To use this with Texture, we need to
-    # uppercase the name. This is an issue with React <-> Texture integration in
-    # Pods.
-    /usr/bin/sed -i "" "s,spec.module_name.*yoga,spec.module_name = 'Yoga,g" Yoga.podspec
     __INIT_REPO__
   """,
-
   generate_module_map = False
 )
