@@ -21,13 +21,16 @@ import xcodeproj
 import ShellOut
 
 private func shouldPropagateDeps(forTarget xcodeTarget: XcodeTarget) -> Bool {
-    return xcodeTarget.needsRecursiveExtraction && xcodeTarget.label.packageName?.hasPrefix("@") == false
+    if xcodeTarget.genOptions.workspaceEnabled {
+        return xcodeTarget.needsRecursiveExtraction
+    }
+    return true
 }
 
 /// Return XCConfig files
-private func getXCConfigFiles(for target: XcodeTarget) -> [String: String] {
-    let genOptions = target.genOptions
-    let targetConfig = genOptions.config.getTargetConfig(for: target.label.value)
+private func getXCConfigFiles(for xcodeTarget: XcodeTarget) -> [String: String] {
+    let genOptions = xcodeTarget.genOptions
+    let targetConfig = genOptions.config.getTargetConfig(for: xcodeTarget.label.value)
     if let overrides = targetConfig?.xcconfigOverrides ?? genOptions.projectConfig?.xcconfigOverrides {
         return Dictionary.from(overrides.map {
             k, v in
@@ -73,6 +76,9 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
         return false
     }
     guard pathPredicate(buildFilePath) else {
+        return false
+    }
+    if xcodeTarget.type == "swift_runtime_linkopts" {
         return false
     }
     if shouldPropagateDeps(forTarget: xcodeTarget) {
@@ -244,7 +250,6 @@ public class XcodeTarget: Hashable, Equatable {
     }()
 
     func getXCSourceRootAbsolutePath(for fileInfo: BazelFileInfo) -> String {
-
         switch fileInfo.targetType {
         case .sourceFile:
             return "$(SRCROOT)/" + resolveExternalPath(for: fileInfo.subPath)
@@ -253,17 +258,24 @@ public class XcodeTarget: Hashable, Equatable {
         }
     }
 
-    func getRelativePath(for fileInfo: BazelFileInfo) -> String {
+    func getRelativePath(for fileInfo: BazelFileInfo, useTulsiPath: Bool = false) -> String {
         switch fileInfo.targetType {
         case .sourceFile:
             return resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
-            return "bazel-genfiles/" + fileInfo.subPath
+            // Tulsi sticks some generated source file types in _tulsi-includes
+            // and the aspect is aware of this.
+            if useTulsiPath && fileInfo.fullPath.hasPrefix("_tulsi-includes") {
+                return "tulsi-workspace/" + fileInfo.fullPath
+            } else {
+                return "bazel-genfiles/" + resolveExternalPath(for: fileInfo.subPath)
+            }
         }
     }
 
     func resolveExternalPath(for path: String) -> String {
-        if path.hasPrefix("external/") || self.label.packageName?.hasPrefix("@") ?? false {
+        if path.hasPrefix("external/")
+            || self.label.packageName?.hasPrefix("@") ?? false {
             return path.replacingOccurrences(of: "../", with: "external/")
         }
         return path
@@ -321,7 +333,6 @@ public class XcodeTarget: Hashable, Equatable {
 
         let resources = self.xcResources
         let bundles = self.xcBundles
-
 
         let stubAsset = self.settings.swiftVersion == nil ?  XCHammerAsset.stubImp : XCHammerAsset.stubImpSwift
         let all: [ProjectSpec.TargetSource] = resources + nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
@@ -393,12 +404,15 @@ public class XcodeTarget: Hashable, Equatable {
         }
     }()
 
+    // TODO: consider refactoring this code to return `BazelFileInfo`s if possible
     func pathsForAttrs(attrs: Set<RuleEntry.Attribute>) -> [Path] {
         return attrs.flatMap { attr in
             self.attributes[attr] as? [[String: Any]] ??
                 (self.attributes[attr] as? [String: Any]).map{ [$0] } ??
                 []
-            }.compactMap { $0["path"] as? String }.map { Path($0) }
+            }
+        .filter { ($0["src"] as? Bool) ?? false }
+        .compactMap { $0["path"] as? String }.map { Path($0) }
     }
 
     func isAllowableXcodeGenSource(path: Path) -> Bool {
@@ -522,10 +536,25 @@ public class XcodeTarget: Hashable, Equatable {
                     break
                 }
 
-                // make an explicit dep if it's valid
-                return [ProjectSpec.Dependency(type: .framework, reference: linkableProductName,
-                        embed: xcodeTarget.isExtension)]
-                    + xcodeTarget.xcDependencies
+                if xcodeTarget.genOptions.workspaceEnabled
+                        || xcodeTarget.type == "apple_static_framework_import"
+                        || xcodeTarget.type == "apple_dynamic_framework_import"
+                        || xcodeTarget.type == "objc_import" {
+                    // Dep's aren't really frameworks.
+                    // The idea here is to drop these deps in "Link With Libs"
+                    // phase, so that Xcode can implicitly resolve them
+                    return [ProjectSpec.Dependency(type: .framework, reference: linkableProductName,
+                            embed: xcodeTarget.isExtension)]
+                        + xcodeTarget.xcDependencies
+                } else {
+                    // For some target types ( e.g. Swift static libs on Xcode
+                    // 10.2 ) Xcode's implicit resolution doesn't seem to add a
+                    // dependency on the Swift module
+                    let productName = xcodeTarget.extractBuiltProductName()
+                    return [ProjectSpec.Dependency(type: .target, reference: productName,
+                            embed: xcodeTarget.isExtension)]
+                        + xcodeTarget.xcDependencies
+                }
             }
         return Set(deps)
     }()
@@ -566,7 +595,6 @@ public class XcodeTarget: Hashable, Equatable {
 
             return nil
         }
-
 
         var settings = XCBuildSettings()
         self.attributes.forEach { attr, value in
@@ -655,13 +683,19 @@ public class XcodeTarget: Hashable, Equatable {
         settings.swiftVersion <>= extractSwiftVersion().map(First.init)
 
         // Product Name
-
         settings.productName <>= self.bundleName.map { First($0) }
 
         if settings.productName == nil {
             settings.productName = First(self.extractBuiltProductName())
         }
 
+        // Set the module name - this is needed for some use cases
+        // consider passing this as a compiler flagoption directly
+        if let definedModuleName =  self.ruleEntry.moduleName {
+            settings.moduleName = First(definedModuleName)
+        } else {
+            settings.moduleName = First(xcTargetName)
+        }
 
         // Product Bundle Identifier
         settings.productBundleId <>= self.bundleID.map { First($0) }
@@ -684,12 +718,41 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         settings.headerSearchPaths <>=
-                OrderedArray(["external"])
+                OrderedArray(["$(SRCROOT)/external/"])
 
-        // Add my own + transitive header maps to copts
-        settings.copts <>= ([self] + self.transitiveTargets(map: targetMap))
-            .compactMap { $0.self.extractHeaderMap() }
-            .map { "-iquote \($0)" }
+        let transTargets = self.transitiveTargets(map: targetMap)
+
+        let allCopts = ([self] + transTargets).reduce(into: [String]()) {
+            accum, xcodeTarget in
+            if let hmap = xcodeTarget.extractHeaderMap() {
+                accum.append("-iquote " + hmap)
+            }
+            // We may need to specify to the ClangImporter as well
+            let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
+                "-iquote " + getRelativePath(for: $0)
+            }
+            accum.append(contentsOf: maps)
+        }
+        settings.copts <>= allCopts
+
+        let allSwiftCopts = ([self] + transTargets).reduce(into: [String]()) {
+            accum, xcodeTarget in
+            if let hmap = xcodeTarget.extractHeaderMap() {
+                accum.append("-Xcc -iquote -Xcc " + hmap)
+            }
+            let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
+                "-Xcc -fmodule-map-file=" + getRelativePath(for: $0, useTulsiPath: true)
+            }
+            accum.append(contentsOf: maps)
+            if xcodeTarget.ruleEntry.type == "swift_c_module" {
+                let maps = xcodeTarget.ruleEntry.artifacts.map {
+                    "-Xcc -fmodule-map-file=" + getRelativePath(for: $0, useTulsiPath: true)
+                }
+                accum.append(contentsOf: maps)
+            }
+        }
+
+        settings.swiftCopts <>= allSwiftCopts
 
         // Delegate warnings and error compiler options for targets that have a
         // xcconfig.
@@ -1084,6 +1147,7 @@ public class XcodeTarget: Hashable, Equatable {
             "objc_framework": ProductType.Framework,
             "apple_static_framework_import": ProductType.Framework,
             "swift_library": ProductType.StaticLibrary,
+            "swift_c_module": ProductType.StaticLibrary,
             "tvos_application": ProductType.Application,
             "tvos_extension": ProductType.TVAppExtension,
             "watchos_application": ProductType.Watch2App,
@@ -1262,7 +1326,6 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
     } else {
         sources = xcodeTargetSources
         settings = xcodeTarget.settings
-
         if shouldPropagateDeps(forTarget: xcodeTarget) {
             deps = Array(xcodeTarget.transitiveDeps) +
                 xcodeTarget.xcExtensionDeps

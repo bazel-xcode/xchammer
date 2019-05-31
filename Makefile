@@ -2,10 +2,8 @@
 
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-PRODUCT=xchammer
-XCHAMMER_BIN_BASE=$(ROOT_DIR)/xchammer.app/Contents/MacOS
-
-XCHAMMER_BIN := $(XCHAMMER_BIN_BASE)/$(PRODUCT)
+PRODUCT := xchammer.app
+XCHAMMER_BIN := $(ROOT_DIR)/$(PRODUCT)/Contents/MacOS/XCHammer
 
 PREFIX := /usr/local
 
@@ -22,7 +20,6 @@ workspace: build
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean
 
-archive: CONFIG = release
 archive: build-release
 
 # Brew support
@@ -43,7 +40,6 @@ compile_commands.json:
 	cat .build/commands_build.log | spm-vim compile_commands
 
 
-build-debug: CONFIG = debug
 build-debug: BAZELFLAGS = --announce_rc \
 	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-debug: build-impl
@@ -96,10 +92,10 @@ run: build
 # FIXME: add code to handle `xcworkspace` to `run`
 run_workspace: build
 	$(XCHAMMER_BIN) generate \
-		$(ROOT_DIR)/sample/SnapshotMe/XCHammer.yaml \
-	    --workspace_root $(ROOT_DIR)/sample/SnapshotMe \
-	    --xcworkspace $(ROOT_DIR)/sample/SnapshotMe/SnapshotMe.xcworkspace \
-	    --bazel $(ROOT_DIR)/sample/SnapshotMe/tools/bazelwrapper
+               $(ROOT_DIR)/sample/SnapshotMe/XCHammer.yaml \
+           --workspace_root $(ROOT_DIR)/sample/SnapshotMe \
+           --xcworkspace $(ROOT_DIR)/sample/SnapshotMe/SnapshotMe.xcworkspace \
+           --bazel $(ROOT_DIR)/sample/SnapshotMe/tools/bazelwrapper
 
 run_force: build
 	$(XCHAMMER_BIN) generate \
