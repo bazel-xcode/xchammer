@@ -61,9 +61,13 @@ swift_library(
         "Tulsi//src/TulsiGenerator:tulsi_generator_lib",
         "XcodeGen//:XcodeGenKit",
         "XcodeGen//:ProjectSpec",
-        "xcproj//:xcproj",
+        "xcodeproj//:xcodeproj",
         "Yams//:Yams",
     ]],
+    copts = [
+        "-swift-version",
+        "4.2"
+    ],
 )
 
 apple_bundle_version(
@@ -75,7 +79,7 @@ macos_application(
     name = "xchammer",
     bundle_id = "com.pinterest.xchammer",
     infoplists = ["Info.plist"],
-    minimum_os_version = "10.13",
+    minimum_os_version = "10.14",
     version = ":XCHammerVersion",
     deps = [":Sources"],
 )
@@ -105,7 +109,7 @@ scheme_config = {
 
 xchammer_config = xchammer_config(
     projects = {
-        "xchammer-bazel": project_config(paths = ["**"]),
+        "xchammer": project_config(paths = ["**"]),
     },
     target_config = {
         "//:xchammer": target_config(

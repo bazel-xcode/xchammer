@@ -1,0 +1,3 @@
+build \
+ --spawn_strategy=standalone \
+ --strategy=SwiftCompile=worker

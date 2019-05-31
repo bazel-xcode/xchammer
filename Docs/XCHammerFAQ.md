@@ -65,8 +65,7 @@ adding examples of edge cases and bugs here :). Pull requests welcome!*
 
 ### How can I develop XCHammer with Xcode?
 
-_The canonical, tested, build system of XCHammer is `make`. Xcode projects are
-currently under development._
+_note: Swift XCHammer Xcode projects are currently under development._
 
 To generate an Xcode project, use the make command, `make workspace`. 
 
@@ -82,8 +81,6 @@ are required.
 3)  --workspace_root /path/to/UrlGet/
 4)  --bazel /path/to/bazel/binary
 ```
-_note: Currently, there are multiple issues using the SPM generated workspace,
-which will be fixed upon supporting XCHammer in XCHammer._ 
 
 
 ## Misc

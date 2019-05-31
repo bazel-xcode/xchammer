@@ -20,7 +20,7 @@ ios-building
 compile_commands.json
 
 # Generate Projects
-XCHammer.xcodeproj/
+xchammer.xcodeproj/
 xchammer.app
 depsHash
 sample/UrlGet/IntegrationTests.xcodeproj/
@@ -36,7 +36,6 @@ tulsi-aspects
 bazel-*
 sample/*/*.xcodeproj
 external
-xchammer-bazel.xcodeproj
 
 *.pyc
 *.swp

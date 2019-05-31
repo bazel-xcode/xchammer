@@ -64,9 +64,8 @@ swift_c_module(
         module_map = module_map,
     ))
 
-def namespaced_swift_library(name, srcs, deps = None, cc_libs = None, defines = None):
+def namespaced_swift_library(name, srcs, deps = None, defines = None, copts=[]):
     deps = [] if deps == None else deps
-    cc_libs = [] if cc_libs == None else cc_libs
     defines = [] if defines == None else defines
     return """
 swift_library(
@@ -75,13 +74,13 @@ swift_library(
     module_name = "{name}",
     deps = [{deps}],
     defines = [{defines}],
-    cc_libs = [{cc_libs}]
+    copts = [{copts}],
 )""".format(**dict(
         name = name,
         srcs = ",\n".join(['"%s"' % x for x in srcs]),
         defines = ",\n".join(['"%s"' % x for x in defines]),
         deps = ",\n".join(['"%s"' % namespaced_dep_name(x) for x in deps]),
-        cc_libs = ",\n".join(['"%s"' % namespaced_dep_name(x) for x in cc_libs]),
+        copts = ",\n".join(['"%s"' % x for x in copts]),
     ))
 
 def xchammer_dependencies():
@@ -115,7 +114,7 @@ def xchammer_dependencies():
                 ],
             ),
         ]),
-        commit = "07cad52573bad19d95844035bf0b25acddf6b0f6",
+        commit = "2cd0210f897fe46c6ce42f52ccfa72b3bbb621a0",
     )
 
     namespaced_new_git_repository(
@@ -133,11 +132,15 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "JSONUtilities",
         remote = "https://github.com/yonaskolb/JSONUtilities.git",
-        commit = "d9f957b1b2a078c93f96c723040d4cbffcb7d3f9",
+        commit = "128d2ffc22467f69569ef8ff971683e2393191a0",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "JSONUtilities",
                 srcs = ["Sources/**/*.swift"],
+                copts = [
+                    "-swift-version",
+                    "4.2"
+                ],
             ),
         ]),
     )
@@ -145,7 +148,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "Nimble",
         remote = "https://github.com/Quick/Nimble.git",
-        commit = "cd6dfb86f496fcd96ce0bc6da962cd936bf41903",
+        commit = "43304bf2b1579fd555f2fdd51742771c1e4f2b98",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "Nimble",
@@ -169,7 +172,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "Quick",
         remote = "https://github.com/Quick/Quick.git",
-        commit = "5fbf13871d185526993130c3a1fad0b70bfe37ce",
+        commit = "cd6dfb86f496fcd96ce0bc6da962cd936bf41903",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "Quick",
@@ -181,7 +184,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "Rainbow",
         remote = "https://github.com/onevcat/Rainbow.git",
-        commit = "797a68d0a642609424b08f11eb56974a54d5f6e2",
+        commit = "9c52c1952e9b2305d4507cf473392ac2d7c9b155",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "Rainbow",
@@ -193,7 +196,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "Result",
         remote = "https://github.com/antitypical/Result.git",
-        commit = "8fc088dcf72802801efeecba76ea8fb041fb773d",
+        commit = "2ca499ba456795616fbc471561ff1d963e6ae160",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "Result",
@@ -205,7 +208,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "ShellOut",
         remote = "https://github.com/JohnSundell/ShellOut.git",
-        commit = "f1c253a34a40df4bfd268b09fdb101b059f6d52d",
+        commit = "d3d54ce662dfee7fef619330b71d251b8d4869f9",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "ShellOut",
@@ -226,10 +229,39 @@ def xchammer_dependencies():
         ]),
     )
 
+    namespaced_new_git_repository(
+        name = "SwiftCLI",
+        remote = "https://github.com/jakeheis/SwiftCLI.git",
+        commit = "5318c37d3cacc8780f50b87a8840a6774320ebdf",
+        build_file_content = namespaced_build_file([
+            namespaced_swift_library(
+                name = "SwiftCLI",
+                srcs = ["Sources/**/*.swift"],
+            ),
+        ]),
+    )
+
+    namespaced_new_git_repository(
+        name = "SwiftShell",
+        remote = "https://github.com/kareman/SwiftShell",
+        commit = "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
+        build_file_content = namespaced_build_file([
+            namespaced_swift_library(
+                name = "SwiftShell",
+                srcs = ["Sources/**/*.swift"],
+                copts = [
+                    "-swift-version",
+                    "4.2"
+                ],
+            ),
+        ]),
+    )
+
+
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/Tulsi.git",
-        commit = "1dd551137cdb70ce3645d1cc5293be3b981d50bb",
+        commit = "0e17ac96f76a64c014785f9fdf1a49e8bc8dc006",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
@@ -243,7 +275,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
-        commit = "8fcd90367962a9a5c98fcfd3e9981f6a50b1a3e0",
+        commit = "275e1580915df8c94079dfad44d4b012c3b44360",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeGenKit",
@@ -253,6 +285,7 @@ def xchammer_dependencies():
                     "@JSONUtilities//:JSONUtilities",
                     "@PathKit//:PathKit",
                     "@Yams//:Yams",
+                    "@SwiftCLI//:SwiftCLI",
                 ],
             ),
             namespaced_swift_library(
@@ -260,23 +293,28 @@ def xchammer_dependencies():
                 srcs = ["Sources/ProjectSpec/**/*.swift"],
                 deps = [
                     "@JSONUtilities//:JSONUtilities",
-                    "@xcproj//:xcproj",
+                    "@xcodeproj//:xcodeproj",
                     "@Yams//:Yams",
                 ],
             ),
         ]),
     )
     namespaced_new_git_repository(
-        name = "xcproj",
+        name = "xcodeproj",
         remote = "https://github.com/tuist/xcodeproj.git",
-        commit = "5253c22f208558264e3a64a3a29f11537ca1b41a",
+        commit = "065f348754b6155b8037dc43876a8f2ee354b95d",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
-                name = "xcproj",
+                name = "xcodeproj",
                 srcs = ["Sources/**/*.swift"],
                 deps = [
                     "@AEXML//:AEXML",
                     "@PathKit//:PathKit",
+                    "@SwiftShell//:SwiftShell",
+                ],
+                copts = [
+                    "-swift-version",
+                    "4.2"
                 ],
             ),
         ]),
@@ -285,7 +323,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "Yams",
         remote = "https://github.com/jpsim/Yams.git",
-        commit = "26ab35f50ea891e8edefcc9d975db2f6b67e1d68",
+        commit = "c947a306d2e80ecb2c0859047b35c73b8e1ca27f",
         patch_cmds = [
             """
 echo '
@@ -312,8 +350,7 @@ module CYaml {
             namespaced_swift_library(
                 name = "Yams",
                 srcs = ["Sources/Yams/*.swift"],
-                deps = [":CYaml"],
-                cc_libs = [":CYamlLib"],
+                deps = [":CYaml", ":CYamlLib"],
                 defines = ["SWIFT_PACKAGE"],
             ),
         ]),

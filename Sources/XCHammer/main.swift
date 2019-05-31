@@ -184,18 +184,40 @@ func main() {
     commands.register(HelpCommand(registry: commands))
 
     var arguments = CommandLine.arguments
-    // Remove executable name
     arguments.remove(at: 0)
 
-    func handle(error: CommandError) {
-        print("------")
-        print("--- EXCEPTION ---")
-        print(error)
-        print(error.localizedDescription)
-        print("------")
+    // Remove Xcode running arguments. Xcode adds these unsupported arguments
+    // for an undocumented reason. Most likely, because XCHammer is treated as
+    // an macOS application rather than a command line binary.
+    arguments = arguments.reduce(into: [], {
+        result, next in
+        if next == "-NSDocumentRevisionsDebugMode" {
+            return
+        }
+        if result.count == 0 && next == "YES" {
+            return
+        }
+        result.append(next)
+    })
+
+    let verb: String
+    if let first = arguments.first {
+        // Remove the command name.
+        arguments.remove(at: 0)
+        verb = first
+    } else {
+        verb = "help"
     }
 
-    commands.main(defaultVerb: "help", errorHandler: handle(error:))
+    if let result = commands.run(command: verb, arguments: arguments) {
+        switch result {
+        case .success:
+            break
+        case .failure(let error):
+            print(error)
+            print(error.localizedDescription)
+        }
+    }
 }
 
 main()

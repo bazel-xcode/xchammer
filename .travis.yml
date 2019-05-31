@@ -1,7 +1,4 @@
 language: generic
-env:
-  - BAZEL_BUILD=true
-  - BAZEL_BUILD=false
 os:
   - osx
 cache:
