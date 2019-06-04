@@ -24,7 +24,7 @@ func flattenedInner(targetMap: XcodeTargetMap) -> [XcodeTarget] {
     return targetMap.allTargets
         .filter(shouldFlatten)
         .flatMap { $0.unfilteredDependencies }
-        .filter { $0.type.contains("ios_application") == false }
+        .filter { $0.type.contains("application") == false }
         .filter { !$0.label.value.hasPrefix("//Vendor") }
 }
 

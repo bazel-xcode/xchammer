@@ -162,6 +162,7 @@ struct XCBuildSettings: Encodable {
     var mobileProvisionProfileFile: First<String>?
     var codeSignEntitlementsFile: First<String>?
     var moduleMapFile: First<String>?
+    var moduleName: First<String>?
     // Disable Xcode derived headermaps, be explicit to avoid divergence
     var useHeaderMap: First<String>? = First("NO")
     var swiftVersion: First<String>?
@@ -176,6 +177,7 @@ struct XCBuildSettings: Encodable {
         // Add to this list the known XCConfig keys
         case copts = "OTHER_CFLAGS"
         case productName = "PRODUCT_NAME"
+        case moduleName = "PRODUCT_MODULE_NAME"
         case enableModules = "CLANG_ENABLE_MODULES"
         case headerSearchPaths = "HEADER_SEARCH_PATHS"
         case frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
@@ -256,6 +258,7 @@ struct XCBuildSettings: Encodable {
         try mobileProvisionProfileFile.map { try container.encode($0.v, forKey: .mobileProvisionProfileFile) }
         try codeSignEntitlementsFile.map { try container.encode($0.v, forKey: .codeSignEntitlementsFile) }
         try moduleMapFile.map { try container.encode($0.v, forKey: .moduleMapFile) }
+        try moduleName.map { try container.encode($0.v, forKey: .moduleName) }
         try useHeaderMap.map { try container.encode($0.v, forKey: .useHeaderMap) }
         try testTargetName.map { try container.encode($0.v, forKey: .testTargetName) }
         try pythonPath.map { try container.encode($0.v, forKey: .pythonPath) }
@@ -305,6 +308,7 @@ extension XCBuildSettings: Monoid {
             mobileProvisionProfileFile: lhs.mobileProvisionProfileFile <> rhs.mobileProvisionProfileFile,
             codeSignEntitlementsFile: lhs.codeSignEntitlementsFile <> rhs.codeSignEntitlementsFile,
             moduleMapFile: lhs.moduleMapFile <> rhs.moduleMapFile,
+            moduleName: lhs.moduleName <> rhs.moduleName,
             useHeaderMap: lhs.useHeaderMap <> rhs.useHeaderMap,
             swiftVersion: lhs.swiftVersion <> rhs.swiftVersion,
             swiftCopts: lhs.swiftCopts <> rhs.swiftCopts,

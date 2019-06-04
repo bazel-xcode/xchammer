@@ -37,7 +37,7 @@ load("@build_bazel_rules_swift//swift:swift.bzl", "swift_c_module",
 
 def namespaced_swift_c_library(name, srcs, hdrs, includes, module_map):
     return """
-cc_library(
+objc_library(
   name = "{name}Lib",
   srcs = glob([
     {srcs}
@@ -47,8 +47,7 @@ cc_library(
   ]),
   includes = [
     {includes}
-  ],
-  linkstatic = True
+  ]
 )
 
 swift_c_module(
@@ -74,7 +73,7 @@ swift_library(
     module_name = "{name}",
     deps = [{deps}],
     defines = [{defines}],
-    copts = [{copts}],
+    copts = ["-DSWIFT_PACKAGE", {copts}],
 )""".format(**dict(
         name = name,
         srcs = ",\n".join(['"%s"' % x for x in srcs]),
@@ -261,7 +260,7 @@ def xchammer_dependencies():
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/Tulsi.git",
-        commit = "0e17ac96f76a64c014785f9fdf1a49e8bc8dc006",
+        commit = "badd7b512abde05524a620c466e9acc17a7268a5",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD

@@ -1,9 +1,12 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 git_repository(
     name = "build_bazel_rules_apple",
     remote = "https://github.com/bazelbuild/rules_apple.git",
-    tag = "0.13.0",
+    # This is 1 commit behind 0.16.1 which upgraded to a broken verison of
+    # rules_swift on Bazel 0.24.1
+    commit = "eaf5817105d1aa8c473b4e5c3ddfdc34b36b071f",
 )
 
 load(

@@ -36,12 +36,6 @@ http_file(
     urls = ["https://github.com/google/xctestrunner/releases/download/0.2.6/ios_test_runner.par"],
 )
 
-## SPM Dependencies
-
-load("//third_party:repositories.bzl", "xchammer_dependencies")
-
-xchammer_dependencies()
-
 ## Buildifier deps (Bazel file formatting)
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")

@@ -5,13 +5,23 @@ set -e
 # Make sure we're in the project root directory.
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 pushd "$SCRIPTPATH/.." > /dev/null
-trap popd > /dev/null ERR EXIT
+
+function exit_trap() {
+  popd 2 &> /dev/null
+  if [[ ! -z $BAZEL_DEBUG_ACTION_CACHE ]]; then
+    echo "INFO: dumping action cache post"
+    mkdir -p bazel-diags
+    $BAZEL dump --action_cache > bazel-diags/bazel-action-cache-post.txt
+  fi
+}
+
+trap exit_trap EXIT
 
 # Go to bazel release page
 # These are typically posted in groups.google
 # https://groups.google.com/forum/#!forum/bazel-discuss
-BAZEL_VERSION="0.21.0"
-BAZEL_VERSION_SHA="5e40dcf12a18990ffe5830fb5c83297aed090fd6e6c7c5b2eb720c19a33044fc"
+BAZEL_VERSION="0.24.1"
+BAZEL_VERSION_SHA="5fe570423945424a8c44b35c6d171fdde92e9ed90c3c321b83f2e380bcc966b9"
 BAZEL_VERSION_URL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-darwin-x86_64.sh"
 
 BAZEL_ROOT="$HOME/.bazelenv/versions/$BAZEL_VERSION"
