@@ -597,7 +597,8 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         var settings = XCBuildSettings()
-        self.attributes.forEach { attr, value in
+        self.attributes.keys.sorted(by: { $0.rawValue < $1.rawValue }).forEach { attr in
+            let value = self.attributes[attr]!
             switch attr {
             case .copts:
                 if let coptsArray = value as? [String] {
@@ -721,6 +722,7 @@ public class XcodeTarget: Hashable, Equatable {
                 OrderedArray(["$(SRCROOT)/external/"])
 
         let transTargets = self.transitiveTargets(map: targetMap)
+             .sorted(by: { $0.label < $1.label })
 
         let allCopts = ([self] + transTargets).reduce(into: [String]()) {
             accum, xcodeTarget in
@@ -941,6 +943,7 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         return Array(Set<ProjectSpec.Dependency>(frameworkImports + childFrameworkImports))
+             .sorted(by: { $0.reference < $1.reference })
     }()
 
     lazy var xcType: String? = {
@@ -1060,7 +1063,7 @@ public class XcodeTarget: Hashable, Equatable {
                     return nil
                 }
                 return archives.map { $0["path"] as! String }
-            }.flatMap { $0 }
+            }.flatMap { $0 }.sorted()
     }
 
 
@@ -1075,15 +1078,18 @@ public class XcodeTarget: Hashable, Equatable {
 
     lazy var SDKFrameworks: [String] = {
         return self.extractAttributeArray(attr: .sdk_frameworks, map: self.targetMap)
+            .sorted()
     }()
 
     lazy var SDKDylibs: [String] = {
         return self.extractAttributeArray(attr: .sdk_dylibs, map: self.targetMap)
             .map { $0.hasPrefix("lib") ? String($0.dropFirst(3)) : $0 }
+            .sorted()
     }()
 
     lazy var weakSDKFrameworks: [String] = {
         return self.extractAttributeArray(attr: .weak_sdk_frameworks, map: self.targetMap)
+            .sorted()
     }()
 
     fileprivate var xcExtensionDeps: [ProjectSpec.Dependency] {
@@ -1373,7 +1379,8 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
         settings: makeXcodeGenSettings(from: getComposedSettings()),
         configFiles: getXCConfigFiles(for: xcodeTarget),
         sources: sources,
-        dependencies: Array(Set(deps + linkedDeps)),
+        dependencies: Array(Set(deps + linkedDeps))
+             .sorted(by:{ $0.reference  < $1.reference }),
         preBuildScripts: prebuildScripts,
         postBuildScripts: postbuildScripts
     )
