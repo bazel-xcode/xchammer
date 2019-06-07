@@ -111,6 +111,7 @@ genrule(
 )
 
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_ui_test")
 
 # Unit Test Target
 objc_library(
@@ -144,7 +145,7 @@ ios_unit_test(
     deps = [":TestsLib"],
 )
 
-ios_unit_test(
+ios_ui_test(
     name = "UITests",
     size = "medium",
     minimum_os_version = "9.0",
