@@ -220,7 +220,8 @@ public class XcodeTarget: Hashable, Equatable {
         let needsRecursiveTypes: Set<String> = [
             "application",
             "app-extension",
-            "apple_ui_test"
+            "apple_ui_test",
+            "ios_ui_test"
         ]
         let value = self.isTopLevelTestTarget || (
             type.map { needsRecursiveTypes.contains($0) } ?? false
@@ -644,7 +645,7 @@ public class XcodeTarget: Hashable, Equatable {
                     break
                 }
                 let xcTargetName = entry.xcTargetName
-                if self.type == "apple_ui_test" {
+                if self.type == "apple_ui_test" || self.type == "ios_ui_test" {
                     // USES_XCTRUNNER is set by Xcode automatically so we just need to set the test target name
                     settings.testTargetName <>= First(xcTargetName)
                 } else {
@@ -1274,7 +1275,10 @@ private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGener
     if xcodeTarget.needsRecursiveExtraction,
         xcodeTarget.mobileProvisionProfileFile != nil,
         xcodeTarget.extractCodeSignEntitlementsFile(genOptions: genOptions) != nil {
-        basePostScripts = xcodeTarget.type.contains("application") ? [getProcessScript(), getCodeSignerScript()] : [getCodeSignerScript()]
+        basePostScripts = xcodeTarget.type.contains("application") ||
+        xcodeTarget.type == "apple_ui_test" ||
+        xcodeTarget.type == "ios_ui_test"
+            ? [getProcessScript(), getCodeSignerScript()] : [getCodeSignerScript()]
     } else {
         basePostScripts = xcodeTarget.type.contains("application") ? [getProcessScript()] : []
     }
