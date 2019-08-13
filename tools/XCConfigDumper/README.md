@@ -1,18 +1,11 @@
 # XCConfigDumper
 
 dumps diagnostic settings from `Xcode` build
+This tool us useful when you need to get compiler settings from new version of `Xcode`
 
 ## Usage
 
-```shell
-OVERVIEW: Xcode diagnostic parameters dumper
+1. Create new `Xcode` project.
+2. Run `xcodebuild --project /path/to/project/Test.xcodeproj clean && xcodebuild -configuration Debug -project /path/to/project/Test.xcodeproj | swift run xcconfigdumper --output-bazel-config Diag.bzl`
 
-USAGE: dumper <options>
-
-EXAMPLE: xcodebuild -configuration Debug -project Test.xcodeproj | swift run dumper --output-bazel-config Diag.bzl
-
-OPTIONS:
-  --output-bazel-config   A bazel output config. Prints to stdin if not provided
-  --xcode-log             An xcode build log. Reads from stdin if not provided
-  --help                  Display available options
-  ```
+> You should clean the project before running `xcconfigdumper`
