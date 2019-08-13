@@ -1,0 +1,639 @@
+2-Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX018-06-30 08:43:58.974 xcodebuild[27129:5232875] [MT] DVTToolchain: Failed to load toolchain: <DVTFilePath:0x7fa0b7452740:'/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain'>: Error Domain=DVTToolchainErrorDomain Code=6 "Info.plist:OverrideBuildSettings:{SWIFT_LINK_OBJC_RUNTIME,SWIFT_DISABLE_REQUIRED_ARCLITE,ENABLE_BITCODE} must contain a string or array of strings" UserInfo={NSFilePath=/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain, NSLocalizedDescription=Info.plist:OverrideBuildSettings:{SWIFT_LINK_OBJC_RUNTIME,SWIFT_DISABLE_REQUIRED_ARCLITE,ENABLE_BITCODE} must contain a string or array of strings}
+2018-06-30 08:43:59.278 xcodebuild[27129:5232875] [MT] PluginLoading: Required plug-in compatibility UUID 426A087B-D3AA-431A-AFDF-F135EC00DE1C for plug-in at path '~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/Refactorator.xcplugin' not present in DVTPlugInCompatibilityUUIDs
+2018-06-30 08:43:59.279 xcodebuild[27129:5232875] [MT] PluginLoading: Required plug-in compatibility UUID 426A087B-D3AA-431A-AFDF-F135EC00DE1C for plug-in at path '~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/Alcatraz.xcplugin' not present in DVTPlugInCompatibilityUUIDs
+=== BUILD TARGET BasicOSX OF PROJECT BasicOSX WITH CONFIGURATION Debug ===
+
+Check dependencies
+
+Write auxiliary files
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-all-non-framework-target-headers.hmap
+/bin/mkdir -p /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX-OutputFileMap.json
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.LinkFileList
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-project-headers.hmap
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Script-1017BB0F1ED90EA700A52952.sh
+chmod 0755 /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Script-1017BB0F1ED90EA700A52952.sh
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-all-target-headers.hmap
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX.hmap
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/swift-overrides.hmap
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-own-target-headers.hmap
+write-file /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-generated-files.hmap
+
+Create product structure
+/bin/mkdir -p /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents
+/bin/mkdir -p /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/MacOS
+/bin/mkdir -p /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources
+
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -incremental -module-name BasicOSX -Onone -enforce-exclusivity=checked -DDEBUG -sdk /Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -target x86_64-apple-macosx10.12 -g -module-cache-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Index/DataStore -swift-version 3 -I /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -F /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -c -j8 /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/ViewController.swift /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/AppDelegate.swift -output-file-map /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX-OutputFileMap.json -parseable-output -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftmodule -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-generated-files.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-own-target-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-all-target-headers.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-project-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/include -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources/x86_64 -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources -Xcc -DDEBUG=1 -emit-objc-header -emit-objc-header-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX-Swift.h -Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+
+CompileSwift normal x86_64 /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/ViewController.swift
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -c -primary-file /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/ViewController.swift /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/AppDelegate.swift -target x86_64-apple-macosx10.12 -enable-objc-interop -sdk /Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -I /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -F /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -enable-testing -g -module-cache-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -swift-version 3 -enforce-exclusivity=checked -Onone -D DEBUG -serialize-debugging-options -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-generated-files.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-own-target-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-all-target-headers.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-project-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/include -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources/x86_64 -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX -emit-module-doc-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController~partial.swiftdoc -serialize-diagnostics-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController.dia -module-name BasicOSX -emit-module-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController~partial.swiftmodule -emit-dependencies-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController.d -emit-reference-dependencies-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController.swiftdeps -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController.o -index-store-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Index/DataStore -index-system-modules
+
+CompileSwift normal x86_64 /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/AppDelegate.swift
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -c /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/ViewController.swift -primary-file /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/AppDelegate.swift -target x86_64-apple-macosx10.12 -enable-objc-interop -sdk /Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -I /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -F /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -enable-testing -g -module-cache-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -swift-version 3 -enforce-exclusivity=checked -Onone -D DEBUG -serialize-debugging-options -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-generated-files.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-own-target-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-all-target-headers.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-project-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/include -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources/x86_64 -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX -emit-module-doc-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate~partial.swiftdoc -serialize-diagnostics-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate.dia -module-name BasicOSX -emit-module-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate~partial.swiftmodule -emit-dependencies-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate.d -emit-reference-dependencies-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate.swiftdeps -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate.o -index-store-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Index/DataStore -index-system-modules
+
+MergeSwiftModule normal x86_64 /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftmodule
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -merge-modules -emit-module /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/ViewController~partial.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/AppDelegate~partial.swiftmodule -parse-as-library -sil-merge-partial-modules -disable-diagnostic-passes -disable-sil-perf-optzns -target x86_64-apple-macosx10.12 -enable-objc-interop -sdk /Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -I /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -F /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -enable-testing -g -module-cache-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -swift-version 3 -enforce-exclusivity=checked -Onone -D DEBUG -serialize-debugging-options -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-generated-files.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-own-target-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-all-target-headers.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-project-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/include -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources/x86_64 -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX -emit-module-doc-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftdoc -module-name BasicOSX -emit-objc-header-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX-Swift.h -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftmodule
+
+Ditto /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources/BasicOSX-Swift.h /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX-Swift.h
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /usr/bin/ditto -rsrc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX-Swift.h /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources/BasicOSX-Swift.h
+
+Ld /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/MacOS/BasicOSX normal x86_64
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export MACOSX_DEPLOYMENT_TARGET=10.12
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -isysroot /Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -L/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -F/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug -filelist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.LinkFileList -Xlinker -rpath -Xlinker @executable_path/../Frameworks -mmacosx-version-min=10.12 -Xlinker -object_path_lto -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -L/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -Xlinker -add_ast_path -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftmodule -Xlinker -dependency_info -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX_dependency_info.dat -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/MacOS/BasicOSX
+
+Ditto /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.swiftmodule/x86_64.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftmodule
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /usr/bin/ditto -rsrc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.swiftmodule/x86_64.swiftmodule
+
+Ditto /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.swiftmodule/x86_64.swiftdoc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftdoc
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /usr/bin/ditto -rsrc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.swiftdoc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.swiftmodule/x86_64.swiftdoc
+
+CompileAssetCatalog /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources BasicOSX/Assets.xcassets
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/actool --output-format human-readable-text --notices --warnings --export-dependency-info /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/assetcatalog_dependencies --output-partial-info-plist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/assetcatalog_generated_info.plist --app-icon AppIcon --enable-on-demand-resources NO --sticker-pack-identifier-prefix ssvim.BasicOSX.sticker-pack. --target-device mac --minimum-deployment-target 10.12 --platform macosx --product-type com.apple.product-type.application --compile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/Assets.xcassets
+/* com.apple.actool.compilation-results */
+/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/assetcatalog_generated_info.plist
+
+
+CompileStoryboard BasicOSX/Base.lproj/Main.storyboard
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export XCODE_DEVELOPER_USR_PATH=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin/..
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module BasicOSX --output-partial-info-plist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Main-SBPartialInfo.plist --auto-activate-custom-fonts --target-device mac --minimum-deployment-target 10.12 --output-format human-readable-text --compilation-directory /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Base.lproj /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/Base.lproj/Main.storyboard
+
+ProcessInfoPlistFile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Info.plist BasicOSX/Info.plist
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    builtin-infoPlistUtility /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/Info.plist -genpkginfo /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/PkgInfo -expandbuildsettings -platform macosx -additionalcontentfile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/assetcatalog_generated_info.plist -additionalcontentfile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Main-SBPartialInfo.plist -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Info.plist
+
+LinkStoryboards
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export XCODE_DEVELOPER_USR_PATH=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin/..
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module BasicOSX --target-device mac --minimum-deployment-target 10.12 --output-format human-readable-text --link /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Base.lproj/Main.storyboardc
+
+PhaseScriptExecution Run\ Script /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Script-1017BB0F1ED90EA700A52952.sh
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export ACTION=build
+    export ALTERNATE_GROUP=staff
+    export ALTERNATE_MODE=u+w,go-w,a+rX
+    export ALTERNATE_OWNER=jerrymarino
+    export ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO
+    export ALWAYS_SEARCH_USER_PATHS=NO
+    export ALWAYS_USE_SEPARATE_HEADERMAPS=NO
+    export APPLE_INTERNAL_DEVELOPER_DIR=/AppleInternal/Developer
+    export APPLE_INTERNAL_DIR=/AppleInternal
+    export APPLE_INTERNAL_DOCUMENTATION_DIR=/AppleInternal/Documentation
+    export APPLE_INTERNAL_LIBRARY_DIR=/AppleInternal/Library
+    export APPLE_INTERNAL_TOOLS=/AppleInternal/Developer/Tools
+    export APPLICATION_EXTENSION_API_ONLY=NO
+    export APPLY_RULES_IN_COPY_FILES=NO
+    export ARCHS=x86_64
+    export ARCHS_STANDARD=x86_64
+    export ARCHS_STANDARD_32_64_BIT="x86_64 i386"
+    export ARCHS_STANDARD_32_BIT=i386
+    export ARCHS_STANDARD_64_BIT=x86_64
+    export ARCHS_STANDARD_INCLUDING_64_BIT=x86_64
+    export ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon
+    export AVAILABLE_PLATFORMS="appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator"
+    export BITCODE_GENERATION_MODE=marker
+    export BUILD_ACTIVE_RESOURCES_ONLY=NO
+    export BUILD_COMPONENTS="headers build"
+    export BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products
+    export BUILD_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products
+    export BUILD_STYLE=
+    export BUILD_VARIANTS=normal
+    export BUILT_PRODUCTS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug
+    export CACHE_ROOT=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/C/com.apple.DeveloperTools/9.4-9F1027a/Xcode
+    export CCHROOT=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/C/com.apple.DeveloperTools/9.4-9F1027a/Xcode
+    export CHMOD=/bin/chmod
+    export CHOWN=/usr/sbin/chown
+    export CLANG_ANALYZER_NONNULL=YES
+    export CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION=YES_AGGRESSIVE
+    export CLANG_CXX_LANGUAGE_STANDARD=gnu++0x
+    export CLANG_CXX_LIBRARY=libc++
+    export CLANG_ENABLE_MODULES=YES
+    export CLANG_ENABLE_OBJC_ARC=YES
+    export CLANG_MODULES_BUILD_SESSION_FILE=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation
+    export CLANG_WARN_BOOL_CONVERSION=YES
+    export CLANG_WARN_CONSTANT_CONVERSION=YES
+    export CLANG_WARN_DIRECT_OBJC_ISA_USAGE=YES_ERROR
+    export CLANG_WARN_DOCUMENTATION_COMMENTS=YES
+    export CLANG_WARN_EMPTY_BODY=YES
+    export CLANG_WARN_ENUM_CONVERSION=YES
+    export CLANG_WARN_INFINITE_RECURSION=YES
+    export CLANG_WARN_INT_CONVERSION=YES
+    export CLANG_WARN_OBJC_ROOT_CLASS=YES_ERROR
+    export CLANG_WARN_SUSPICIOUS_MOVE=YES
+    export CLANG_WARN_UNREACHABLE_CODE=YES
+    export CLANG_WARN__DUPLICATE_METHOD_MATCH=YES
+    export CLASS_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/JavaClasses
+    export CLEAN_PRECOMPS=YES
+    export CLONE_HEADERS=NO
+    export CODESIGNING_FOLDER_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+    export CODE_SIGNING_ALLOWED=YES
+    export CODE_SIGN_IDENTITY=-
+    export CODE_SIGN_INJECT_BASE_ENTITLEMENTS=YES
+    export COLOR_DIAGNOSTICS=YES
+    export COMBINE_HIDPI_IMAGES=YES
+    export COMMAND_MODE=legacy
+    export COMPILER_INDEX_STORE_ENABLE=Default
+    export COMPOSITE_SDK_DIRS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/CompositeSDKs
+    export COMPRESS_PNG_FILES=NO
+    export CONFIGURATION=Debug
+    export CONFIGURATION_BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug
+    export CONFIGURATION_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug
+    export CONTENTS_FOLDER_PATH=BasicOSX.app/Contents
+    export COPYING_PRESERVES_HFS_DATA=NO
+    export COPY_HEADERS_RUN_UNIFDEF=NO
+    export COPY_PHASE_STRIP=NO
+    export COPY_RESOURCES_FROM_STATIC_FRAMEWORKS=YES
+    export CP=/bin/cp
+    export CREATE_INFOPLIST_SECTION_IN_BINARY=NO
+    export CURRENT_ARCH=x86_64
+    export CURRENT_VARIANT=normal
+    export DEAD_CODE_STRIPPING=NO
+    export DEBUGGING_SYMBOLS=YES
+    export DEBUG_INFORMATION_FORMAT=dwarf
+    export DEFAULT_COMPILER=com.apple.compilers.llvm.clang.1_0
+    export DEFAULT_KEXT_INSTALL_PATH=/Library/Extensions
+    export DEFINES_MODULE=NO
+    export DEPLOYMENT_LOCATION=NO
+    export DEPLOYMENT_POSTPROCESSING=NO
+    export DEPLOYMENT_TARGET_CLANG_ENV_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_CLANG_FLAG_NAME=mmacosx-version-min
+    export DEPLOYMENT_TARGET_SETTING_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DERIVED_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources
+    export DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources
+    export DERIVED_SOURCES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/DerivedSources
+    export DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+    export DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+    export DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export DEVELOPER_FRAMEWORKS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_FRAMEWORKS_DIR_QUOTED=/Applications/Xcode-9.4.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_LIBRARY_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library
+    export DEVELOPER_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export DEVELOPER_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+    export DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+    export DEVELOPMENT_LANGUAGE=English
+    export DOCUMENTATION_FOLDER_PATH=BasicOSX.app/Contents/Resources/English.lproj/Documentation
+    export DO_HEADER_SCANNING_IN_JAM=NO
+    export DSTROOT=/tmp/BasicOSX.dst
+    export DT_TOOLCHAIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export DWARF_DSYM_FILE_NAME=BasicOSX.app.dSYM
+    export DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT=NO
+    export DWARF_DSYM_FOLDER_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug
+    export EMBEDDED_CONTENT_CONTAINS_SWIFT=NO
+    export EMBEDDED_PROFILE_NAME=embedded.provisionprofile
+    export EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE=NO
+    export ENABLE_BITCODE=NO
+    export ENABLE_DEFAULT_HEADER_SEARCH_PATHS=YES
+    export ENABLE_HEADER_DEPENDENCIES=YES
+    export ENABLE_ON_DEMAND_RESOURCES=NO
+    export ENABLE_STRICT_OBJC_MSGSEND=YES
+    export ENABLE_TESTABILITY=YES
+    export EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS=".DS_Store .svn .git .hg CVS"
+    export EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES="*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj"
+    export EXECUTABLES_FOLDER_PATH=BasicOSX.app/Contents/Executables
+    export EXECUTABLE_FOLDER_PATH=BasicOSX.app/Contents/MacOS
+    export EXECUTABLE_NAME=BasicOSX
+    export EXECUTABLE_PATH=BasicOSX.app/Contents/MacOS/BasicOSX
+    export EXPANDED_CODE_SIGN_IDENTITY=-
+    export EXPANDED_CODE_SIGN_IDENTITY_NAME=-
+    export EXPANDED_PROVISIONING_PROFILE=
+    export FILE_LIST=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects/LinkFileList
+    export FIXED_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/FixedFiles
+    export FRAMEWORKS_FOLDER_PATH=BasicOSX.app/Contents/Frameworks
+    export FRAMEWORK_FLAG_PREFIX=-framework
+    export FRAMEWORK_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug "
+    export FRAMEWORK_VERSION=A
+    export FULL_PRODUCT_NAME=BasicOSX.app
+    export GCC3_VERSION=3.3
+    export GCC_C_LANGUAGE_STANDARD=gnu99
+    export GCC_DYNAMIC_NO_PIC=NO
+    export GCC_INLINES_ARE_PRIVATE_EXTERN=YES
+    export GCC_NO_COMMON_BLOCKS=YES
+    export GCC_OPTIMIZATION_LEVEL=0
+    export GCC_PFE_FILE_C_DIALECTS="c objective-c c++ objective-c++"
+    export GCC_PREPROCESSOR_DEFINITIONS="DEBUG=1 "
+    export GCC_SYMBOLS_PRIVATE_EXTERN=NO
+    export GCC_TREAT_WARNINGS_AS_ERRORS=NO
+    export GCC_VERSION=com.apple.compilers.llvm.clang.1_0
+    export GCC_VERSION_IDENTIFIER=com_apple_compilers_llvm_clang_1_0
+    export GCC_WARN_64_TO_32_BIT_CONVERSION=YES
+    export GCC_WARN_ABOUT_RETURN_TYPE=YES_ERROR
+    export GCC_WARN_UNDECLARED_SELECTOR=YES
+    export GCC_WARN_UNINITIALIZED_AUTOS=YES_AGGRESSIVE
+    export GCC_WARN_UNUSED_FUNCTION=YES
+    export GCC_WARN_UNUSED_VARIABLE=YES
+    export GENERATE_MASTER_OBJECT_FILE=NO
+    export GENERATE_PKGINFO_FILE=YES
+    export GENERATE_PROFILING_CODE=NO
+    export GENERATE_TEXT_BASED_STUBS=NO
+    export GID=20
+    export GROUP=staff
+    export HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT=YES
+    export HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES=YES
+    export HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS=YES
+    export HEADERMAP_INCLUDES_PROJECT_HEADERS=YES
+    export HEADERMAP_USES_FRAMEWORK_PREFIX_ENTRIES=YES
+    export HEADERMAP_USES_VFS=NO
+    export HEADER_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/include "
+    export HIDE_BITCODE_SYMBOLS=YES
+    export HOME=/Users/jerrymarino
+    export ICONV=/usr/bin/iconv
+    export INFOPLIST_EXPAND_BUILD_SETTINGS=YES
+    export INFOPLIST_FILE=BasicOSX/Info.plist
+    export INFOPLIST_OUTPUT_FORMAT=same-as-input
+    export INFOPLIST_PATH=BasicOSX.app/Contents/Info.plist
+    export INFOPLIST_PREPROCESS=NO
+    export INFOSTRINGS_PATH=BasicOSX.app/Contents/Resources/English.lproj/InfoPlist.strings
+    export INLINE_PRIVATE_FRAMEWORKS=NO
+    export INSTALLHDRS_COPY_PHASE=NO
+    export INSTALLHDRS_SCRIPT_PHASE=NO
+    export INSTALL_DIR=/tmp/BasicOSX.dst/Applications
+    export INSTALL_GROUP=staff
+    export INSTALL_MODE_FLAG=u+w,go-w,a+rX
+    export INSTALL_OWNER=jerrymarino
+    export INSTALL_PATH=/Applications
+    export INSTALL_ROOT=/tmp/BasicOSX.dst
+    export JAVAC_DEFAULT_FLAGS="-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"
+    export JAVA_APP_STUB=/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+    export JAVA_ARCHIVE_CLASSES=YES
+    export JAVA_ARCHIVE_TYPE=JAR
+    export JAVA_COMPILER=/usr/bin/javac
+    export JAVA_FOLDER_PATH=BasicOSX.app/Contents/Resources/Java
+    export JAVA_FRAMEWORK_RESOURCES_DIRS=Resources
+    export JAVA_JAR_FLAGS=cv
+    export JAVA_SOURCE_SUBDIR=.
+    export JAVA_USE_DEPENDENCIES=YES
+    export JAVA_ZIP_FLAGS=-urg
+    export JIKES_DEFAULT_FLAGS="+E +OLDCSO"
+    export KASAN_DEFAULT_CFLAGS="-DKASAN=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow"
+    export KEEP_PRIVATE_EXTERNS=NO
+    export LD_DEPENDENCY_INFO_FILE=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX_dependency_info.dat
+    export LD_GENERATE_MAP_FILE=NO
+    export LD_MAP_FILE_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX-LinkMap-normal-x86_64.txt
+    export LD_NO_PIE=NO
+    export LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER=YES
+    export LD_RUNPATH_SEARCH_PATHS=" @executable_path/../Frameworks"
+    export LEGACY_DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
+    export LEX=lex
+    export LIBRARY_FLAG_NOSPACE=YES
+    export LIBRARY_FLAG_PREFIX=-l
+    export LIBRARY_KEXT_INSTALL_PATH=/Library/Extensions
+    export LIBRARY_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug "
+    export LINKER_DISPLAYS_MANGLED_NAMES=NO
+    export LINK_FILE_LIST_normal_x86_64=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal/x86_64/BasicOSX.LinkFileList
+    export LINK_WITH_STANDARD_LIBRARIES=YES
+    export LOCALIZABLE_CONTENT_DIR=
+    export LOCALIZED_RESOURCES_FOLDER_PATH=BasicOSX.app/Contents/Resources/English.lproj
+    export LOCALIZED_STRING_MACRO_NAMES="NSLocalizedString CFLocalizedString"
+    export LOCAL_ADMIN_APPS_DIR=/Applications/Utilities
+    export LOCAL_APPS_DIR=/Applications
+    export LOCAL_DEVELOPER_DIR=/Library/Developer
+    export LOCAL_LIBRARY_DIR=/Library
+    export LOCROOT=
+    export LOCSYMROOT=
+    export MACH_O_TYPE=mh_execute
+    export MACOSX_DEPLOYMENT_TARGET=10.12
+    export MAC_OS_X_PRODUCT_BUILD_VERSION=17D47
+    export MAC_OS_X_VERSION_ACTUAL=101303
+    export MAC_OS_X_VERSION_MAJOR=101300
+    export MAC_OS_X_VERSION_MINOR=1303
+    export METAL_LIBRARY_FILE_BASE=default
+    export METAL_LIBRARY_OUTPUT_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources
+    export MODULE_CACHE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex
+    export MTL_ENABLE_DEBUG_INFO=YES
+    export NATIVE_ARCH=i386
+    export NATIVE_ARCH_32_BIT=i386
+    export NATIVE_ARCH_64_BIT=x86_64
+    export NATIVE_ARCH_ACTUAL=x86_64
+    export NO_COMMON=YES
+    export OBJECT_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects
+    export OBJECT_FILE_DIR_normal=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Objects-normal
+    export OBJROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex
+    export ONLY_ACTIVE_ARCH=YES
+    export OS=MACOS
+    export OSAC=/usr/bin/osacompile
+    export PACKAGE_TYPE=com.apple.package-type.wrapper.application
+    export PASCAL_STRINGS=YES
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Tools:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:/Users/jerrymarino/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    export PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES="/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks /Applications/Xcode-9.4.app/Contents/Developer/Headers /Applications/Xcode-9.4.app/Contents/Developer/SDKs /Applications/Xcode-9.4.app/Contents/Developer/Platforms"
+    export PBDEVELOPMENTPLIST_PATH=BasicOSX.app/Contents/pbdevelopment.plist
+    export PKGINFO_FILE_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/PkgInfo
+    export PKGINFO_PATH=BasicOSX.app/Contents/PkgInfo
+    export PLATFORM_DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+    export PLATFORM_DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+    export PLATFORM_DEVELOPER_LIBRARY_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library
+    export PLATFORM_DEVELOPER_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export PLATFORM_DEVELOPER_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+    export PLATFORM_DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+    export PLATFORM_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform
+    export PLATFORM_DISPLAY_NAME=macOS
+    export PLATFORM_NAME=macosx
+    export PLATFORM_PREFERRED_ARCH=x86_64
+    export PLATFORM_PRODUCT_BUILD_VERSION=9F1027a
+    export PLIST_FILE_OUTPUT_FORMAT=same-as-input
+    export PLUGINS_FOLDER_PATH=BasicOSX.app/Contents/PlugIns
+    export PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR=YES
+    export PRECOMP_DESTINATION_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/PrefixHeaders
+    export PRESERVE_DEAD_CODE_INITS_AND_TERMS=NO
+    export PRIVATE_HEADERS_FOLDER_PATH=BasicOSX.app/Contents/PrivateHeaders
+    export PRODUCT_BUNDLE_IDENTIFIER=ssvim.BasicOSX
+    export PRODUCT_MODULE_NAME=BasicOSX
+    export PRODUCT_NAME=BasicOSX
+    export PRODUCT_SETTINGS_PATH=/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX/Info.plist
+    export PRODUCT_TYPE=com.apple.product-type.application
+    export PROFILING_CODE=NO
+    export PROJECT=BasicOSX
+    export PROJECT_DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/DerivedSources
+    export PROJECT_DIR=/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export PROJECT_FILE_PATH=/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX/BasicOSX.xcodeproj
+    export PROJECT_NAME=BasicOSX
+    export PROJECT_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build
+    export PROJECT_TEMP_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex
+    export PUBLIC_HEADERS_FOLDER_PATH=BasicOSX.app/Contents/Headers
+    export RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS=YES
+    export REMOVE_CVS_FROM_RESOURCES=YES
+    export REMOVE_GIT_FROM_RESOURCES=YES
+    export REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES=YES
+    export REMOVE_HG_FROM_RESOURCES=YES
+    export REMOVE_SVN_FROM_RESOURCES=YES
+    export REZ_COLLECTOR_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/ResourceManagerResources
+    export REZ_OBJECTS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/ResourceManagerResources/Objects
+    export REZ_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug "
+    export SCAN_ALL_SOURCE_FILES_FOR_INCLUDES=NO
+    export SCRIPTS_FOLDER_PATH=BasicOSX.app/Contents/Resources/Scripts
+    export SCRIPT_INPUT_FILE_COUNT=0
+    export SCRIPT_OUTPUT_FILE_COUNT=0
+    export SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    export SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    export SDK_DIR_macosx10_13=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    export SDK_NAME=macosx10.13
+    export SDK_NAMES=macosx10.13
+    export SDK_PRODUCT_BUILD_VERSION=17E189
+    export SDK_VERSION=10.13
+    export SDK_VERSION_ACTUAL=101300
+    export SDK_VERSION_MAJOR=101300
+    export SDK_VERSION_MINOR=1300
+    export SED=/usr/bin/sed
+    export SEPARATE_STRIP=NO
+    export SEPARATE_SYMBOL_EDIT=NO
+    export SET_DIR_MODE_OWNER_GROUP=YES
+    export SET_FILE_MODE_OWNER_GROUP=NO
+    export SHALLOW_BUNDLE=NO
+    export SHARED_DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/DerivedSources
+    export SHARED_FRAMEWORKS_FOLDER_PATH=BasicOSX.app/Contents/SharedFrameworks
+    export SHARED_PRECOMPS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/PrecompiledHeaders
+    export SHARED_SUPPORT_FOLDER_PATH=BasicOSX.app/Contents/SharedSupport
+    export SKIP_INSTALL=NO
+    export SOURCE_ROOT=/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export SRCROOT=/Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export STRINGS_FILE_OUTPUT_ENCODING=UTF-16
+    export STRIP_BITCODE_FROM_COPIED_FILES=NO
+    export STRIP_INSTALLED_PRODUCT=YES
+    export STRIP_PNG_TEXT=NO
+    export STRIP_STYLE=all
+    export STRIP_SWIFT_SYMBOLS=YES
+    export SUPPORTED_PLATFORMS=macosx
+    export SUPPORTS_TEXT_BASED_API=NO
+    export SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG
+    export SWIFT_OPTIMIZATION_LEVEL=-Onone
+    export SWIFT_PLATFORM_TARGET_PREFIX=macosx
+    export SWIFT_VERSION=3.0
+    export SYMROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products
+    export SYSTEM_ADMIN_APPS_DIR=/Applications/Utilities
+    export SYSTEM_APPS_DIR=/Applications
+    export SYSTEM_CORE_SERVICES_DIR=/System/Library/CoreServices
+    export SYSTEM_DEMOS_DIR=/Applications/Extras
+    export SYSTEM_DEVELOPER_APPS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+    export SYSTEM_DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+    export SYSTEM_DEVELOPER_DEMOS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Utilities/Built Examples"
+    export SYSTEM_DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export SYSTEM_DEVELOPER_DOC_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library"
+    export SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Graphics Tools"
+    export SYSTEM_DEVELOPER_JAVA_TOOLS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Java Tools"
+    export SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Performance Tools"
+    export SYSTEM_DEVELOPER_RELEASENOTES_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/releasenotes"
+    export SYSTEM_DEVELOPER_TOOLS=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+    export SYSTEM_DEVELOPER_TOOLS_DOC_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/documentation/DeveloperTools"
+    export SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/releasenotes/DeveloperTools"
+    export SYSTEM_DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+    export SYSTEM_DEVELOPER_UTILITIES_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Utilities
+    export SYSTEM_DOCUMENTATION_DIR=/Library/Documentation
+    export SYSTEM_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export SYSTEM_LIBRARY_DIR=/System/Library
+    export TAPI_VERIFY_MODE=ErrorsOnly
+    export TARGETNAME=BasicOSX
+    export TARGET_BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug
+    export TARGET_NAME=BasicOSX
+    export TARGET_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build
+    export TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build
+    export TEMP_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build
+    export TEMP_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build
+    export TEMP_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex
+    export TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
+    export TOOLCHAIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export TREAT_MISSING_BASELINES_AS_TEST_FAILURES=NO
+    export UID=501
+    export UNLOCALIZED_RESOURCES_FOLDER_PATH=BasicOSX.app/Contents/Resources
+    export UNSTRIPPED_PRODUCT=NO
+    export USER=jerrymarino
+    export USER_APPS_DIR=/Users/jerrymarino/Applications
+    export USER_LIBRARY_DIR=/Users/jerrymarino/Library
+    export USE_DYNAMIC_NO_PIC=YES
+    export USE_HEADERMAP=YES
+    export USE_HEADER_SYMLINKS=NO
+    export VALIDATE_PRODUCT=NO
+    export VALID_ARCHS="i386 x86_64"
+    export VERBOSE_PBXCP=NO
+    export VERSIONPLIST_PATH=BasicOSX.app/Contents/version.plist
+    export VERSION_INFO_BUILDER=jerrymarino
+    export VERSION_INFO_FILE=BasicOSX_vers.c
+    export VERSION_INFO_STRING="\"@(#)PROGRAM:BasicOSX  PROJECT:BasicOSX-\""
+    export WRAPPER_EXTENSION=app
+    export WRAPPER_NAME=BasicOSX.app
+    export WRAPPER_SUFFIX=.app
+    export WRAP_ASSET_PACKS_IN_SEPARATE_DIRECTORIES=NO
+    export XCODE_APP_SUPPORT_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library/Xcode
+    export XCODE_PRODUCT_BUILD_VERSION=9F1027a
+    export XCODE_VERSION_ACTUAL=0940
+    export XCODE_VERSION_MAJOR=0900
+    export XCODE_VERSION_MINOR=0940
+    export XPCSERVICES_FOLDER_PATH=BasicOSX.app/Contents/XPCServices
+    export YACC=yacc
+    export arch=x86_64
+    export diagnostic_message_length=165
+    export variant=normal
+    /bin/sh -c /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/Script-1017BB0F1ED90EA700A52952.sh
+/usr/local/bin/XCCompilationDB
+
+CopySwiftLibs /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export CODESIGN_ALLOCATE=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+    export DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/MacOS/BasicOSX --scan-folder /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks --scan-folder /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/PlugIns --platform macosx --toolchain /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks --strip-bitcode --resource-destination /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources --resource-library libswiftRemoteMirror.dylib
+Requested Swift ABI version based on scanned binaries: 6
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftAppKit.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftAppKit.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCore.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCore.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreData.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreData.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreFoundation.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreFoundation.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreGraphics.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreGraphics.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreImage.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreImage.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftDarwin.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftDarwin.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftDispatch.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftDispatch.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftFoundation.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftFoundation.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftIOKit.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftIOKit.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftMetal.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftMetal.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftObjectiveC.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftObjectiveC.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftQuartzCore.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftQuartzCore.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftXPC.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftXPC.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftos.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib
+  /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftos.dylib' '-r' '-o' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib'
+Copying /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftRemoteMirror.dylib to /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Resources/libswiftRemoteMirror.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftAppKit.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylibProbing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib
+
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib'  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib'
+
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylibProbing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib
+
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftos.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreData.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreGraphics.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftQuartzCore.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreImage.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDispatch.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftFoundation.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCore.dylib'
+2018-06-30 08:44:13.147 xcodebuild[27129:5233366]  DVTToolchain: Failed to load toolchain: <DVTFilePath:0x7fa0b7452740:'/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain'>: Error Domain=DVTToolchainErrorDomain Code=6 "Info.plist:OverrideBuildSettings:{SWIFT_LINK_OBJC_RUNTIME,SWIFT_DISABLE_REQUIRED_ARCLITE,ENABLE_BITCODE} must contain a string or array of strings" UserInfo={NSFilePath=/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain, NSLocalizedDescription=Info.plist:OverrideBuildSettings:{SWIFT_LINK_OBJC_RUNTIME,SWIFT_DISABLE_REQUIRED_ARCLITE,ENABLE_BITCODE} must contain a string or array of strings}
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftMetal.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftObjectiveC.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftDarwin.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftCoreFoundation.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftXPC.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app/Contents/Frameworks/libswiftIOKit.dylib'
+
+Touch /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    /usr/bin/touch -c /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+
+ProcessProductPackaging "" /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX.app.xcent
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+
+
+Entitlements:
+
+{
+    "com.apple.security.get-task-allow" = 1;
+}
+
+
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX.app.xcent
+
+CodeSign /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    export CODESIGN_ALLOCATE=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+
+Signing Identity:     "-"
+
+    /usr/bin/codesign --force --sign - --entitlements /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Intermediates.noindex/BasicOSX.build/Debug/BasicOSX.build/BasicOSX.app.xcent --timestamp=none /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+
+RegisterWithLaunchServices /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasicOSX
+    builtin-lsRegisterURL /Users/jerrymarino/Library/Developer/Xcode/DerivedData/BasicOSX-ewknyqiuzzuhnyahwszezoamdooo/Build/Products/Debug/BasicOSX.app
+
+** BUILD SUCCEEDED **

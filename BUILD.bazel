@@ -43,9 +43,10 @@ apple_resource_group(
     ]),
 )
 
+# TODO: Consider moving this to Sources/XCHammer
 swift_library(
     name = "Sources",
-    srcs = glob(["Sources/**/*.swift"]),
+    srcs = glob(["Sources/XCHammer/*.swift"]),
     data = [
         ":XCHammerAssets",
     ],
@@ -116,8 +117,9 @@ xchammer_config = xchammer_config(
             # Metrics are disabled by default
             # scheme_config=scheme_config
         ),
+        "//tools/XCConfigExporter:xcconfig-exporter": target_config(),
     },
-    targets = ["//:xchammer"],
+    targets = ["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
 )
 
 gen_xchammer_config(

@@ -129,6 +129,18 @@ def xchammer_dependencies():
     )
 
     namespaced_new_git_repository(
+        name = "XcodeCompilationDatabase",
+        remote = "https://github.com/jerrymarino/XcodeCompilationDatabase.git",
+        commit = "598725fdcb37138e9b4ec8379653cbb99f2605dd",
+        build_file_content = namespaced_build_file([
+            namespaced_swift_library(
+                name = "XcodeCompilationDatabaseCore",
+                srcs = ["Sources/**/*.swift"],
+            ),
+        ]),
+    )
+
+    namespaced_new_git_repository(
         name = "JSONUtilities",
         remote = "https://github.com/yonaskolb/JSONUtilities.git",
         commit = "128d2ffc22467f69569ef8ff971683e2393191a0",

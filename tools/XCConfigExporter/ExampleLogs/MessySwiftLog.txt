@@ -1,0 +1,1062 @@
+2018-06-29 08:21:00.634 xcodebuild[15914:5068114] [MT] DVTToolchain: Failed to load toolchain: <DVTFilePath:0x7ff54ec48fa0:'/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain'>: Error Domain=DVTToolchainErrorDomain Code=6 "Info.plist:OverrideBuildSettings:{SWIFT_LINK_OBJC_RUNTIME,SWIFT_DISABLE_REQUIRED_ARCLITE,ENABLE_BITCODE} must contain a string or array of strings" UserInfo={NSFilePath=/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a.xctoolchain, NSLocalizedDescription=Info.plist:OverrideBuildSettings:{SWIFT_LINK_OBJC_RUNTIME,SWIFT_DISABLE_REQUIRED_ARCLITE,ENABLE_BITCODE} must contain a string or array of strings}
+2018-06-29 08:21:00.951 xcodebuild[15914:5068114] [MT] PluginLoading: Required plug-in compatibility UUID 426A087B-D3AA-431A-AFDF-F135EC00DE1C for plug-in at path '~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/Refactorator.xcplugin' not present in DVTPlugInCompatibilityUUIDs
+2018-06-29 08:21:00.951 xcodebuild[15914:5068114] [MT] PluginLoading: Required plug-in compatibility UUID 426A087B-D3AA-431A-AFDF-F135EC00DE1C for plug-in at path '~/Library/Application Support/Developer/Shared/Xcode/Plug-ins/Alcatraz.xcplugin' not present in DVTPlugInCompatibilityUUIDs
+Build settings from command line:
+    SDKROOT = iphonesimulator11.4
+
+=== BUILD TARGET Basic OF PROJECT Basic WITH CONFIGURATION Debug ===
+
+Check dependencies
+
+ProcessProductPackaging "" /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic.app-Simulated.xcent
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+
+
+Entitlements:
+
+{
+    "application-identifier" = "FAKETEAMID.ssvim.Basic";
+    "keychain-access-groups" =     (
+        "FAKETEAMID.ssvim.Basic"
+    );
+}
+
+
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic.app-Simulated.xcent
+
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    export SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -incremental -module-name Basic -Onone -enforce-exclusivity=checked -DDEBUG -parseable-output -sdk /Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk -target x86_64-apple-ios10.3 -g -module-cache-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Index/DataStore -swift-version 3 -I /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator -F /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator -c -j8 /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/ViewController.swift /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/AppDelegate.swift /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Wizzard.swift -output-file-map /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic-OutputFileMap.json -parseable-output -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftmodule -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-generated-files.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-own-target-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-all-target-headers.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-project-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources/x86_64 -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources -Xcc -DDEBUG=1 -emit-objc-header -emit-objc-header-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic-Swift.h -Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+
+MergeSwiftModule normal x86_64 /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftmodule
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -merge-modules -emit-module /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/ViewController~partial.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/AppDelegate~partial.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Wizzard~partial.swiftmodule -parse-as-library -sil-merge-partial-modules -disable-diagnostic-passes -disable-sil-perf-optzns -target x86_64-apple-ios10.3 -enable-objc-interop -sdk /Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk -I /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator -F /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator -enable-testing -g -module-cache-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -swift-version 3 -enforce-exclusivity=checked -Onone -D DEBUG -serialize-debugging-options -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-generated-files.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-own-target-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-all-target-headers.hmap -Xcc -iquote -Xcc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-project-headers.hmap -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources/x86_64 -Xcc -I/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS -emit-module-doc-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftdoc -module-name Basic -emit-objc-header-path /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic-Swift.h -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftmodule
+
+Ditto /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources/Basic-Swift.h /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic-Swift.h
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    /usr/bin/ditto -rsrc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic-Swift.h /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources/Basic-Swift.h
+
+Ditto /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.swiftmodule/x86_64.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftmodule
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    /usr/bin/ditto -rsrc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftmodule /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.swiftmodule/x86_64.swiftmodule
+
+Ditto /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.swiftmodule/x86_64.swiftdoc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftdoc
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    /usr/bin/ditto -rsrc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftdoc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.swiftmodule/x86_64.swiftdoc
+
+Ld /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Basic normal x86_64
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export IPHONEOS_DEPLOYMENT_TARGET=10.3
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -isysroot /Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk -L/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator -F/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator -filelist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.LinkFileList -Xlinker -rpath -Xlinker @executable_path/Frameworks -mios-simulator-version-min=10.3 -dead_strip -Xlinker -object_path_lto -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -fobjc-link-runtime -L/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -Xlinker -add_ast_path -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.swiftmodule -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic.app-Simulated.xcent -Xlinker -dependency_info -Xlinker /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic_dependency_info.dat -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Basic
+
+CompileStoryboard Basic/Base.lproj/Main.storyboard
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    export XCODE_DEVELOPER_USR_PATH=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin/..
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module Basic --output-partial-info-plist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Main-SBPartialInfo.plist --auto-activate-custom-fonts --target-device iphone --target-device ipad --minimum-deployment-target 10.3 --output-format human-readable-text --compilation-directory /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Base.lproj /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Base.lproj/Main.storyboard
+
+CompileAssetCatalog /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app Basic/Assets.xcassets
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/actool --output-format human-readable-text --notices --warnings --export-dependency-info /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/assetcatalog_dependencies --output-partial-info-plist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --sticker-pack-identifier-prefix ssvim.Basic.sticker-pack. --target-device iphone --target-device ipad --minimum-deployment-target 10.3 --platform iphonesimulator --product-type com.apple.product-type.application --compile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Assets.xcassets
+/* com.apple.actool.compilation-results */
+/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/assetcatalog_generated_info.plist
+
+
+CompileStoryboard Basic/Base.lproj/LaunchScreen.storyboard
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    export XCODE_DEVELOPER_USR_PATH=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin/..
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module Basic --output-partial-info-plist /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/LaunchScreen-SBPartialInfo.plist --auto-activate-custom-fonts --target-device iphone --target-device ipad --minimum-deployment-target 10.3 --output-format human-readable-text --compilation-directory /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Base.lproj /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Base.lproj/LaunchScreen.storyboard
+
+ProcessInfoPlistFile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Info.plist Basic/Info.plist
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    builtin-infoPlistUtility /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Info.plist -genpkginfo /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/LaunchScreen-SBPartialInfo.plist -additionalcontentfile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/assetcatalog_generated_info.plist -additionalcontentfile /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Main-SBPartialInfo.plist -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Info.plist
+
+LinkStoryboards
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    export XCODE_DEVELOPER_USR_PATH=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin/..
+    /Applications/Xcode-9.4.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --module Basic --target-device iphone --target-device ipad --minimum-deployment-target 10.3 --output-format human-readable-text --link /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Base.lproj/LaunchScreen.storyboardc /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Base.lproj/Main.storyboardc
+
+PhaseScriptExecution Run\ Script /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Script-100DC0F41ED1F7DE001C2E5A.sh
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export ACTION=build
+    export AD_HOC_CODE_SIGNING_ALLOWED=YES
+    export ALTERNATE_GROUP=staff
+    export ALTERNATE_MODE=u+w,go-w,a+rX
+    export ALTERNATE_OWNER=jerrymarino
+    export ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO
+    export ALWAYS_SEARCH_USER_PATHS=NO
+    export ALWAYS_USE_SEPARATE_HEADERMAPS=NO
+    export APPLE_INTERNAL_DEVELOPER_DIR=/AppleInternal/Developer
+    export APPLE_INTERNAL_DIR=/AppleInternal
+    export APPLE_INTERNAL_DOCUMENTATION_DIR=/AppleInternal/Documentation
+    export APPLE_INTERNAL_LIBRARY_DIR=/AppleInternal/Library
+    export APPLE_INTERNAL_TOOLS=/AppleInternal/Developer/Tools
+    export APPLICATION_EXTENSION_API_ONLY=NO
+    export APPLY_RULES_IN_COPY_FILES=NO
+    export ARCHS=x86_64
+    export ARCHS_STANDARD="i386 x86_64"
+    export ARCHS_STANDARD_32_64_BIT="i386 x86_64"
+    export ARCHS_STANDARD_32_BIT=i386
+    export ARCHS_STANDARD_64_BIT=x86_64
+    export ARCHS_STANDARD_INCLUDING_64_BIT="i386 x86_64"
+    export ARCHS_UNIVERSAL_IPHONE_OS="i386 x86_64"
+    export ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon
+    export AVAILABLE_PLATFORMS="appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator"
+    export BITCODE_GENERATION_MODE=marker
+    export BUILD_ACTIVE_RESOURCES_ONLY=YES
+    export BUILD_COMPONENTS="headers build"
+    export BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products
+    export BUILD_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products
+    export BUILD_STYLE=
+    export BUILD_VARIANTS=normal
+    export BUILT_PRODUCTS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+    export CACHE_ROOT=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/C/com.apple.DeveloperTools/9.4-9F1027a/Xcode
+    export CCHROOT=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/C/com.apple.DeveloperTools/9.4-9F1027a/Xcode
+    export CHMOD=/bin/chmod
+    export CHOWN=/usr/sbin/chown
+    export CLANG_ANALYZER_NONNULL=YES
+    export CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION=YES_AGGRESSIVE
+    export CLANG_CXX_LANGUAGE_STANDARD=gnu++0x
+    export CLANG_CXX_LIBRARY=libc++
+    export CLANG_ENABLE_MODULES=YES
+    export CLANG_ENABLE_OBJC_ARC=YES
+    export CLANG_MODULES_BUILD_SESSION_FILE=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation
+    export CLANG_WARN_BOOL_CONVERSION=YES
+    export CLANG_WARN_CONSTANT_CONVERSION=YES
+    export CLANG_WARN_DIRECT_OBJC_ISA_USAGE=YES_ERROR
+    export CLANG_WARN_DOCUMENTATION_COMMENTS=YES
+    export CLANG_WARN_EMPTY_BODY=YES
+    export CLANG_WARN_ENUM_CONVERSION=YES
+    export CLANG_WARN_INFINITE_RECURSION=YES
+    export CLANG_WARN_INT_CONVERSION=YES
+    export CLANG_WARN_OBJC_ROOT_CLASS=YES_ERROR
+    export CLANG_WARN_SUSPICIOUS_MOVE=YES
+    export CLANG_WARN_UNREACHABLE_CODE=YES
+    export CLANG_WARN__DUPLICATE_METHOD_MATCH=YES
+    export CLASS_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/JavaClasses
+    export CLEAN_PRECOMPS=YES
+    export CLONE_HEADERS=NO
+    export CODESIGNING_FOLDER_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+    export CODE_SIGNING_ALLOWED=YES
+    export CODE_SIGNING_REQUIRED=YES
+    export CODE_SIGN_CONTEXT_CLASS=XCiPhoneSimulatorCodeSignContext
+    export CODE_SIGN_IDENTITY=-
+    export CODE_SIGN_INJECT_BASE_ENTITLEMENTS=YES
+    export COLOR_DIAGNOSTICS=YES
+    export COMBINE_HIDPI_IMAGES=NO
+    export COMMAND_MODE=legacy
+    export COMPILER_INDEX_STORE_ENABLE=Default
+    export COMPOSITE_SDK_DIRS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/CompositeSDKs
+    export COMPRESS_PNG_FILES=YES
+    export CONFIGURATION=Debug
+    export CONFIGURATION_BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+    export CONFIGURATION_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator
+    export CONTENTS_FOLDER_PATH=Basic.app
+    export COPYING_PRESERVES_HFS_DATA=NO
+    export COPY_HEADERS_RUN_UNIFDEF=NO
+    export COPY_PHASE_STRIP=NO
+    export COPY_RESOURCES_FROM_STATIC_FRAMEWORKS=YES
+    export CORRESPONDING_DEVICE_PLATFORM_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneOS.platform
+    export CORRESPONDING_DEVICE_PLATFORM_NAME=iphoneos
+    export CORRESPONDING_DEVICE_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk
+    export CORRESPONDING_DEVICE_SDK_NAME=iphoneos11.4
+    export CP=/bin/cp
+    export CREATE_INFOPLIST_SECTION_IN_BINARY=NO
+    export CURRENT_ARCH=x86_64
+    export CURRENT_VARIANT=normal
+    export DEAD_CODE_STRIPPING=YES
+    export DEBUGGING_SYMBOLS=YES
+    export DEBUG_INFORMATION_FORMAT=dwarf
+    export DEFAULT_COMPILER=com.apple.compilers.llvm.clang.1_0
+    export DEFAULT_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export DEFINES_MODULE=NO
+    export DEPLOYMENT_LOCATION=NO
+    export DEPLOYMENT_POSTPROCESSING=NO
+    export DEPLOYMENT_TARGET_CLANG_ENV_NAME=IPHONEOS_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_CLANG_FLAG_NAME=mios-simulator-version-min
+    export DEPLOYMENT_TARGET_CLANG_FLAG_PREFIX=-mios-simulator-version-min=
+    export DEPLOYMENT_TARGET_SETTING_NAME=IPHONEOS_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_SUGGESTED_VALUES="8.0 8.1 8.2 8.3 8.4 9.0 9.1 9.2 9.3 10.0 10.1 10.2 10.3 11.0 11.1 11.2 11.3 11.4"
+    export DERIVED_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources
+    export DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources
+    export DERIVED_SOURCES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources
+    export DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+    export DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+    export DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export DEVELOPER_FRAMEWORKS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_FRAMEWORKS_DIR_QUOTED=/Applications/Xcode-9.4.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_LIBRARY_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library
+    export DEVELOPER_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export DEVELOPER_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+    export DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+    export DEVELOPMENT_LANGUAGE=English
+    export DOCUMENTATION_FOLDER_PATH=Basic.app/English.lproj/Documentation
+    export DO_HEADER_SCANNING_IN_JAM=NO
+    export DSTROOT=/tmp/Basic.dst
+    export DT_TOOLCHAIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export DWARF_DSYM_FILE_NAME=Basic.app.dSYM
+    export DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT=NO
+    export DWARF_DSYM_FOLDER_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+    export EFFECTIVE_PLATFORM_NAME=-iphonesimulator
+    export EMBEDDED_CONTENT_CONTAINS_SWIFT=NO
+    export EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE=NO
+    export ENABLE_BITCODE=NO
+    export ENABLE_DEFAULT_HEADER_SEARCH_PATHS=YES
+    export ENABLE_HEADER_DEPENDENCIES=YES
+    export ENABLE_ON_DEMAND_RESOURCES=YES
+    export ENABLE_STRICT_OBJC_MSGSEND=YES
+    export ENABLE_TESTABILITY=YES
+    export ENTITLEMENTS_REQUIRED=YES
+    export EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS=".DS_Store .svn .git .hg CVS"
+    export EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES="*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj"
+    export EXECUTABLES_FOLDER_PATH=Basic.app/Executables
+    export EXECUTABLE_FOLDER_PATH=Basic.app
+    export EXECUTABLE_NAME=Basic
+    export EXECUTABLE_PATH=Basic.app/Basic
+    export EXPANDED_CODE_SIGN_IDENTITY=-
+    export EXPANDED_CODE_SIGN_IDENTITY_NAME=-
+    export EXPANDED_PROVISIONING_PROFILE=
+    export FILE_LIST=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects/LinkFileList
+    export FIXED_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/FixedFiles
+    export FRAMEWORKS_FOLDER_PATH=Basic.app/Frameworks
+    export FRAMEWORK_FLAG_PREFIX=-framework
+    export FRAMEWORK_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator "
+    export FRAMEWORK_VERSION=A
+    export FULL_PRODUCT_NAME=Basic.app
+    export GCC3_VERSION=3.3
+    export GCC_C_LANGUAGE_STANDARD=gnu99
+    export GCC_DYNAMIC_NO_PIC=NO
+    export GCC_INLINES_ARE_PRIVATE_EXTERN=YES
+    export GCC_NO_COMMON_BLOCKS=YES
+    export GCC_OBJC_LEGACY_DISPATCH=YES
+    export GCC_OPTIMIZATION_LEVEL=0
+    export GCC_PFE_FILE_C_DIALECTS="c objective-c c++ objective-c++"
+    export GCC_PREPROCESSOR_DEFINITIONS="DEBUG=1 "
+    export GCC_SYMBOLS_PRIVATE_EXTERN=NO
+    export GCC_TREAT_WARNINGS_AS_ERRORS=NO
+    export GCC_VERSION=com.apple.compilers.llvm.clang.1_0
+    export GCC_VERSION_IDENTIFIER=com_apple_compilers_llvm_clang_1_0
+    export GCC_WARN_64_TO_32_BIT_CONVERSION=YES
+    export GCC_WARN_ABOUT_RETURN_TYPE=YES_ERROR
+    export GCC_WARN_UNDECLARED_SELECTOR=YES
+    export GCC_WARN_UNINITIALIZED_AUTOS=YES_AGGRESSIVE
+    export GCC_WARN_UNUSED_FUNCTION=YES
+    export GCC_WARN_UNUSED_VARIABLE=YES
+    export GENERATE_MASTER_OBJECT_FILE=NO
+    export GENERATE_PKGINFO_FILE=YES
+    export GENERATE_PROFILING_CODE=NO
+    export GENERATE_TEXT_BASED_STUBS=NO
+    export GID=20
+    export GROUP=staff
+    export HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT=YES
+    export HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES=YES
+    export HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS=YES
+    export HEADERMAP_INCLUDES_PROJECT_HEADERS=YES
+    export HEADERMAP_USES_FRAMEWORK_PREFIX_ENTRIES=YES
+    export HEADERMAP_USES_VFS=NO
+    export HEADER_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/include "
+    export HIDE_BITCODE_SYMBOLS=YES
+    export HOME=/Users/jerrymarino
+    export ICONV=/usr/bin/iconv
+    export INFOPLIST_EXPAND_BUILD_SETTINGS=YES
+    export INFOPLIST_FILE=Basic/Info.plist
+    export INFOPLIST_OUTPUT_FORMAT=binary
+    export INFOPLIST_PATH=Basic.app/Info.plist
+    export INFOPLIST_PREPROCESS=NO
+    export INFOSTRINGS_PATH=Basic.app/English.lproj/InfoPlist.strings
+    export INLINE_PRIVATE_FRAMEWORKS=NO
+    export INSTALLHDRS_COPY_PHASE=NO
+    export INSTALLHDRS_SCRIPT_PHASE=NO
+    export INSTALL_DIR=/tmp/Basic.dst/Applications
+    export INSTALL_GROUP=staff
+    export INSTALL_MODE_FLAG=u+w,go-w,a+rX
+    export INSTALL_OWNER=jerrymarino
+    export INSTALL_PATH=/Applications
+    export INSTALL_ROOT=/tmp/Basic.dst
+    export IPHONEOS_DEPLOYMENT_TARGET=10.3
+    export JAVAC_DEFAULT_FLAGS="-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"
+    export JAVA_APP_STUB=/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+    export JAVA_ARCHIVE_CLASSES=YES
+    export JAVA_ARCHIVE_TYPE=JAR
+    export JAVA_COMPILER=/usr/bin/javac
+    export JAVA_FOLDER_PATH=Basic.app/Java
+    export JAVA_FRAMEWORK_RESOURCES_DIRS=Resources
+    export JAVA_JAR_FLAGS=cv
+    export JAVA_SOURCE_SUBDIR=.
+    export JAVA_USE_DEPENDENCIES=YES
+    export JAVA_ZIP_FLAGS=-urg
+    export JIKES_DEFAULT_FLAGS="+E +OLDCSO"
+    export KEEP_PRIVATE_EXTERNS=NO
+    export LD_DEPENDENCY_INFO_FILE=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic_dependency_info.dat
+    export LD_GENERATE_MAP_FILE=NO
+    export LD_MAP_FILE_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-LinkMap-normal-x86_64.txt
+    export LD_NO_PIE=NO
+    export LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER=YES
+    export LD_RUNPATH_SEARCH_PATHS=" @executable_path/Frameworks"
+    export LEGACY_DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
+    export LEX=lex
+    export LIBRARY_FLAG_NOSPACE=YES
+    export LIBRARY_FLAG_PREFIX=-l
+    export LIBRARY_KEXT_INSTALL_PATH=/Library/Extensions
+    export LIBRARY_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator "
+    export LINKER_DISPLAYS_MANGLED_NAMES=NO
+    export LINK_FILE_LIST_normal_x86_64=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.LinkFileList
+    export LINK_WITH_STANDARD_LIBRARIES=YES
+    export LOCALIZABLE_CONTENT_DIR=
+    export LOCALIZED_RESOURCES_FOLDER_PATH=Basic.app/English.lproj
+    export LOCALIZED_STRING_MACRO_NAMES="NSLocalizedString CFLocalizedString"
+    export LOCAL_ADMIN_APPS_DIR=/Applications/Utilities
+    export LOCAL_APPS_DIR=/Applications
+    export LOCAL_DEVELOPER_DIR=/Library/Developer
+    export LOCAL_LIBRARY_DIR=/Library
+    export LOCROOT=
+    export LOCSYMROOT=
+    export MACH_O_TYPE=mh_execute
+    export MAC_OS_X_PRODUCT_BUILD_VERSION=17D47
+    export MAC_OS_X_VERSION_ACTUAL=101303
+    export MAC_OS_X_VERSION_MAJOR=101300
+    export MAC_OS_X_VERSION_MINOR=1303
+    export METAL_LIBRARY_FILE_BASE=default
+    export METAL_LIBRARY_OUTPUT_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+    export MODULE_CACHE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex
+    export MTL_ENABLE_DEBUG_INFO=YES
+    export NATIVE_ARCH=i386
+    export NATIVE_ARCH_32_BIT=i386
+    export NATIVE_ARCH_64_BIT=x86_64
+    export NATIVE_ARCH_ACTUAL=x86_64
+    export NO_COMMON=YES
+    export OBJC_ABI_VERSION=2
+    export OBJECT_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects
+    export OBJECT_FILE_DIR_normal=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal
+    export OBJROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex
+    export ONLY_ACTIVE_ARCH=YES
+    export OS=MACOS
+    export OSAC=/usr/bin/osacompile
+    export OTHER_SWIFT_FLAGS=-parseable-output
+    export PACKAGE_TYPE=com.apple.package-type.wrapper.application
+    export PASCAL_STRINGS=YES
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Tools:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:/Users/jerrymarino/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    export PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES="/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks /Applications/Xcode-9.4.app/Contents/Developer/Headers /Applications/Xcode-9.4.app/Contents/Developer/SDKs /Applications/Xcode-9.4.app/Contents/Developer/Platforms"
+    export PBDEVELOPMENTPLIST_PATH=Basic.app/pbdevelopment.plist
+    export PKGINFO_FILE_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/PkgInfo
+    export PKGINFO_PATH=Basic.app/PkgInfo
+    export PLATFORM_DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications
+    export PLATFORM_DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin
+    export PLATFORM_DEVELOPER_LIBRARY_DIR=/Applications/Xcode-9.4.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library
+    export PLATFORM_DEVELOPER_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs
+    export PLATFORM_DEVELOPER_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Tools
+    export PLATFORM_DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr
+    export PLATFORM_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform
+    export PLATFORM_DISPLAY_NAME="iOS Simulator"
+    export PLATFORM_NAME=iphonesimulator
+    export PLATFORM_PREFERRED_ARCH=x86_64
+    export PLIST_FILE_OUTPUT_FORMAT=binary
+    export PLUGINS_FOLDER_PATH=Basic.app/PlugIns
+    export PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR=YES
+    export PRECOMP_DESTINATION_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/PrefixHeaders
+    export PRESERVE_DEAD_CODE_INITS_AND_TERMS=NO
+    export PRIVATE_HEADERS_FOLDER_PATH=Basic.app/PrivateHeaders
+    export PRODUCT_BUNDLE_IDENTIFIER=ssvim.Basic
+    export PRODUCT_MODULE_NAME=Basic
+    export PRODUCT_NAME=Basic
+    export PRODUCT_SETTINGS_PATH=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Info.plist
+    export PRODUCT_TYPE=com.apple.product-type.application
+    export PROFILING_CODE=NO
+    export PROJECT=Basic
+    export PROJECT_DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/DerivedSources
+    export PROJECT_DIR=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PROJECT_FILE_PATH=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic.xcodeproj
+    export PROJECT_NAME=Basic
+    export PROJECT_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build
+    export PROJECT_TEMP_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex
+    export PUBLIC_HEADERS_FOLDER_PATH=Basic.app/Headers
+    export RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS=YES
+    export REMOVE_CVS_FROM_RESOURCES=YES
+    export REMOVE_GIT_FROM_RESOURCES=YES
+    export REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES=YES
+    export REMOVE_HG_FROM_RESOURCES=YES
+    export REMOVE_SVN_FROM_RESOURCES=YES
+    export REZ_COLLECTOR_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/ResourceManagerResources
+    export REZ_OBJECTS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/ResourceManagerResources/Objects
+    export REZ_SEARCH_PATHS="/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator "
+    export SCAN_ALL_SOURCE_FILES_FOR_INCLUDES=NO
+    export SCRIPTS_FOLDER_PATH=Basic.app/Scripts
+    export SCRIPT_INPUT_FILE_COUNT=0
+    export SCRIPT_OUTPUT_FILE_COUNT=0
+    export SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+    export SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+    export SDK_DIR_iphonesimulator11_4=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+    export SDK_NAME=iphonesimulator11.4
+    export SDK_NAMES=iphonesimulator11.4
+    export SDK_PRODUCT_BUILD_VERSION=15F79
+    export SDK_VERSION=11.4
+    export SDK_VERSION_ACTUAL=110400
+    export SDK_VERSION_MAJOR=110000
+    export SDK_VERSION_MINOR=400
+    export SED=/usr/bin/sed
+    export SEPARATE_STRIP=NO
+    export SEPARATE_SYMBOL_EDIT=NO
+    export SET_DIR_MODE_OWNER_GROUP=YES
+    export SET_FILE_MODE_OWNER_GROUP=NO
+    export SHALLOW_BUNDLE=YES
+    export SHARED_DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/DerivedSources
+    export SHARED_FRAMEWORKS_FOLDER_PATH=Basic.app/SharedFrameworks
+    export SHARED_PRECOMPS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/PrecompiledHeaders
+    export SHARED_SUPPORT_FOLDER_PATH=Basic.app/SharedSupport
+    export SKIP_INSTALL=NO
+    export SOURCE_ROOT=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export SRCROOT=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export STRINGS_FILE_OUTPUT_ENCODING=binary
+    export STRIP_BITCODE_FROM_COPIED_FILES=NO
+    export STRIP_INSTALLED_PRODUCT=YES
+    export STRIP_STYLE=all
+    export STRIP_SWIFT_SYMBOLS=YES
+    export SUPPORTED_DEVICE_FAMILIES=1,2
+    export SUPPORTED_PLATFORMS="iphonesimulator iphoneos"
+    export SUPPORTS_TEXT_BASED_API=NO
+    export SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG
+    export SWIFT_OPTIMIZATION_LEVEL=-Onone
+    export SWIFT_PLATFORM_TARGET_PREFIX=ios
+    export SWIFT_VERSION=3.0
+    export SYMROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products
+    export SYSTEM_ADMIN_APPS_DIR=/Applications/Utilities
+    export SYSTEM_APPS_DIR=/Applications
+    export SYSTEM_CORE_SERVICES_DIR=/System/Library/CoreServices
+    export SYSTEM_DEMOS_DIR=/Applications/Extras
+    export SYSTEM_DEVELOPER_APPS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+    export SYSTEM_DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+    export SYSTEM_DEVELOPER_DEMOS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Utilities/Built Examples"
+    export SYSTEM_DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export SYSTEM_DEVELOPER_DOC_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library"
+    export SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Graphics Tools"
+    export SYSTEM_DEVELOPER_JAVA_TOOLS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Java Tools"
+    export SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR="/Applications/Xcode-9.4.app/Contents/Developer/Applications/Performance Tools"
+    export SYSTEM_DEVELOPER_RELEASENOTES_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/releasenotes"
+    export SYSTEM_DEVELOPER_TOOLS=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+    export SYSTEM_DEVELOPER_TOOLS_DOC_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/documentation/DeveloperTools"
+    export SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR="/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/releasenotes/DeveloperTools"
+    export SYSTEM_DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+    export SYSTEM_DEVELOPER_UTILITIES_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Utilities
+    export SYSTEM_DOCUMENTATION_DIR=/Library/Documentation
+    export SYSTEM_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export SYSTEM_LIBRARY_DIR=/System/Library
+    export TAPI_VERIFY_MODE=ErrorsOnly
+    export TARGETED_DEVICE_FAMILY=1,2
+    export TARGETNAME=Basic
+    export TARGET_BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+    export TARGET_DEVICE_IDENTIFIER="dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder"
+    export TARGET_NAME=Basic
+    export TARGET_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+    export TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+    export TEMP_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+    export TEMP_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+    export TEMP_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex
+    export TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
+    export TOOLCHAIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export TREAT_MISSING_BASELINES_AS_TEST_FAILURES=NO
+    export UID=501
+    export UNLOCALIZED_RESOURCES_FOLDER_PATH=Basic.app
+    export UNSTRIPPED_PRODUCT=NO
+    export USER=jerrymarino
+    export USER_APPS_DIR=/Users/jerrymarino/Applications
+    export USER_LIBRARY_DIR=/Users/jerrymarino/Library
+    export USE_DYNAMIC_NO_PIC=YES
+    export USE_HEADERMAP=YES
+    export USE_HEADER_SYMLINKS=NO
+    export VALIDATE_PRODUCT=NO
+    export VALID_ARCHS="i386 x86_64"
+    export VERBOSE_PBXCP=NO
+    export VERSIONPLIST_PATH=Basic.app/version.plist
+    export VERSION_INFO_BUILDER=jerrymarino
+    export VERSION_INFO_FILE=Basic_vers.c
+    export VERSION_INFO_STRING="\"@(#)PROGRAM:Basic  PROJECT:Basic-\""
+    export WRAPPER_EXTENSION=app
+    export WRAPPER_NAME=Basic.app
+    export WRAPPER_SUFFIX=.app
+    export WRAP_ASSET_PACKS_IN_SEPARATE_DIRECTORIES=NO
+    export XCODE_APP_SUPPORT_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library/Xcode
+    export XCODE_PRODUCT_BUILD_VERSION=9F1027a
+    export XCODE_VERSION_ACTUAL=0940
+    export XCODE_VERSION_MAJOR=0900
+    export XCODE_VERSION_MINOR=0940
+    export XPCSERVICES_FOLDER_PATH=Basic.app/XPCServices
+    export YACC=yacc
+    export arch=x86_64
+    export diagnostic_message_length=165
+    export variant=normal
+    /bin/sh -c /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Script-100DC0F41ED1F7DE001C2E5A.sh
+/usr/local/bin/XCCompilationDB
+HEADERMAP_INCLUDES_PROJECT_HEADERS=YES
+COPY_PHASE_STRIP=NO
+JAVA_ZIP_FLAGS=-urg
+ENABLE_STRICT_OBJC_MSGSEND=YES
+LOCAL_APPS_DIR=/Applications
+SDK_PRODUCT_BUILD_VERSION=15F79
+SWIFT_OPTIMIZATION_LEVEL=-Onone
+REMOVE_CVS_FROM_RESOURCES=YES
+SED=/usr/bin/sed
+EXECUTABLES_FOLDER_PATH=Basic.app/Executables
+SYSTEM_DEVELOPER_UTILITIES_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Utilities
+ENABLE_ON_DEMAND_RESOURCES=YES
+PRESERVE_DEAD_CODE_INITS_AND_TERMS=NO
+SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR=/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/releasenotes/DeveloperTools
+PRODUCT_NAME=Basic
+UNLOCALIZED_RESOURCES_FOLDER_PATH=Basic.app
+TEMP_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+OTHER_SWIFT_FLAGS=-parseable-output
+SWIFT_PLATFORM_TARGET_PREFIX=ios
+LD_GENERATE_MAP_FILE=NO
+DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+USE_DYNAMIC_NO_PIC=YES
+LIBRARY_FLAG_NOSPACE=YES
+REZ_COLLECTOR_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/ResourceManagerResources
+TERM_PROGRAM=iTerm.app
+DEVELOPER_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+MAC_OS_X_PRODUCT_BUILD_VERSION=17D47
+CLANG_WARN_EMPTY_BODY=YES
+LD_DEPENDENCY_INFO_FILE=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic_dependency_info.dat
+GCC_SYMBOLS_PRIVATE_EXTERN=NO
+GCC_C_LANGUAGE_STANDARD=gnu99
+TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
+GCC_WARN_UNUSED_FUNCTION=YES
+APPLE_INTERNAL_TOOLS=/AppleInternal/Developer/Tools
+DEVELOPER_FRAMEWORKS_DIR_QUOTED=/Applications/Xcode-9.4.app/Contents/Developer/Library/Frameworks
+NATIVE_ARCH_64_BIT=x86_64
+LIBRARY_FLAG_PREFIX=-l
+PRIVATE_HEADERS_FOLDER_PATH=Basic.app/PrivateHeaders
+SHELL=/bin/bash
+CONFIGURATION=Debug
+GCC_WARN_ABOUT_RETURN_TYPE=YES_ERROR
+TAPI_VERIFY_MODE=ErrorsOnly
+TERM=screen-256color
+ENABLE_BITCODE=NO
+PROJECT=Basic
+VERSION_INFO_BUILDER=jerrymarino
+PLUGINS_FOLDER_PATH=Basic.app/PlugIns
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO
+OBJROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex
+COPY_RESOURCES_FROM_STATIC_FRAMEWORKS=YES
+SYSTEM_DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+DT_TOOLCHAIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+SYSTEM_DEVELOPER_TOOLS=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+PRODUCT_TYPE=com.apple.product-type.application
+MACH_O_TYPE=mh_execute
+DEVELOPMENT_LANGUAGE=English
+TMPDIR=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/T/
+SYSTEM_DOCUMENTATION_DIR=/Library/Documentation
+INSTALL_DIR=/tmp/Basic.dst/Applications
+PLATFORM_DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr
+Apple_PubSub_Socket_Render=/private/tmp/com.apple.launchd.gLH2KYDSVg/Render
+CLANG_WARN_ENUM_CONVERSION=YES
+CLASS_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/JavaClasses
+TARGET_BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+CLANG_WARN_DOCUMENTATION_COMMENTS=YES
+METAL_LIBRARY_FILE_BASE=default
+CONFIGURATION_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator
+JAVA_APP_STUB=/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+PBDEVELOPMENTPLIST_PATH=Basic.app/pbdevelopment.plist
+WRAPPER_EXTENSION=app
+CLEAN_PRECOMPS=YES
+variant=normal
+PLIST_FILE_OUTPUT_FORMAT=binary
+GENERATE_TEXT_BASED_STUBS=NO
+SYSTEM_DEVELOPER_DOC_DIR=/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library
+SHARED_SUPPORT_FOLDER_PATH=Basic.app/SharedSupport
+ARCHS_STANDARD_32_64_BIT=i386 x86_64
+TARGETED_DEVICE_FAMILY=1,2
+SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE=NO
+GCC_WARN_UNDECLARED_SELECTOR=YES
+NATIVE_ARCH_32_BIT=i386
+MAC_OS_X_VERSION_MINOR=1303
+APPLE_INTERNAL_DIR=/AppleInternal
+AVAILABLE_PLATFORMS=appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator
+DSTROOT=/tmp/Basic.dst
+CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION=YES_AGGRESSIVE
+REMOVE_HG_FROM_RESOURCES=YES
+LIBRARY_SEARCH_PATHS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+USER_LIBRARY_DIR=/Users/jerrymarino/Library
+PLATFORM_NAME=iphonesimulator
+BUILD_VARIANTS=normal
+SYSTEM_DEVELOPER_RELEASENOTES_DIR=/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/releasenotes
+INFOPLIST_PREPROCESS=NO
+OS=MACOS
+SDK_NAME=iphonesimulator11.4
+TARGET_DEVICE_IDENTIFIER=dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder
+GCC_INLINES_ARE_PRIVATE_EXTERN=YES
+LOCALIZED_RESOURCES_FOLDER_PATH=Basic.app/English.lproj
+SDK_VERSION_ACTUAL=110400
+TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+LD_MAP_FILE_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic-LinkMap-normal-x86_64.txt
+DERIVED_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources
+CONFIGURATION_BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+DEFINES_MODULE=NO
+XCODE_PRODUCT_BUILD_VERSION=9F1027a
+APPLE_INTERNAL_DEVELOPER_DIR=/AppleInternal/Developer
+EFFECTIVE_PLATFORM_NAME=-iphonesimulator
+CLANG_WARN_UNREACHABLE_CODE=YES
+WRAPPER_SUFFIX=.app
+GCC_PFE_FILE_C_DIALECTS=c objective-c c++ objective-c++
+PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES=/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks /Applications/Xcode-9.4.app/Contents/Developer/Headers /Applications/Xcode-9.4.app/Contents/Developer/SDKs /Applications/Xcode-9.4.app/Contents/Developer/Platforms
+DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+DEPLOYMENT_TARGET_SUGGESTED_VALUES=8.0 8.1 8.2 8.3 8.4 9.0 9.1 9.2 9.3 10.0 10.1 10.2 10.3 11.0 11.1 11.2 11.3 11.4
+OBJECT_FILE_DIR_normal=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal
+VERSION_INFO_STRING="@(#)PROGRAM:Basic  PROJECT:Basic-"
+USER=jerrymarino
+GROUP=staff
+DOCUMENTATION_FOLDER_PATH=Basic.app/English.lproj/Documentation
+CLANG_MODULES_BUILD_SESSION_FILE=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation
+EXECUTABLE_PATH=Basic.app/Basic
+OSAC=/usr/bin/osacompile
+INSTALLHDRS_SCRIPT_PHASE=NO
+JAVA_JAR_FLAGS=cv
+COMPILER_INDEX_STORE_ENABLE=Default
+CURRENT_ARCH=x86_64
+TARGET_NAME=Basic
+DEPLOYMENT_POSTPROCESSING=NO
+SDK_VERSION_MAJOR=110000
+CLANG_ANALYZER_NONNULL=YES
+COMMAND_MODE=legacy
+WRAP_ASSET_PACKS_IN_SEPARATE_DIRECTORIES=NO
+CLONE_HEADERS=NO
+TREAT_MISSING_BASELINES_AS_TEST_FAILURES=NO
+CLANG_WARN_SUSPICIOUS_MOVE=YES
+STRIP_STYLE=all
+EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES=*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj
+YACC=yacc
+GCC3_VERSION=3.3
+DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+CLANG_ENABLE_OBJC_ARC=YES
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.x7i8XcDaUC/Listeners
+TARGETNAME=Basic
+VERSIONPLIST_PATH=Basic.app/version.plist
+SYSTEM_APPS_DIR=/Applications
+PLATFORM_PREFERRED_ARCH=x86_64
+VALIDATE_PRODUCT=NO
+OBJECT_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects
+BUILT_PRODUCTS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG
+__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0
+MODULE_CACHE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/ModuleCache.noindex
+XCODE_VERSION_ACTUAL=0940
+HEADER_SEARCH_PATHS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/include
+ICONV=/usr/bin/iconv
+STRIP_BITCODE_FROM_COPIED_FILES=NO
+XCODE_APP_SUPPORT_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library/Xcode
+CORRESPONDING_DEVICE_SDK_NAME=iphoneos11.4
+PACKAGE_TYPE=com.apple.package-type.wrapper.application
+PKGINFO_PATH=Basic.app/PkgInfo
+GCC_VERSION=com.apple.compilers.llvm.clang.1_0
+GCC_OPTIMIZATION_LEVEL=0
+GCC_WARN_64_TO_32_BIT_CONVERSION=YES
+DO_HEADER_SCANNING_IN_JAM=NO
+LOCAL_ADMIN_APPS_DIR=/Applications/Utilities
+DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources
+USER_APPS_DIR=/Users/jerrymarino/Applications
+DERIVED_SOURCES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/DerivedSources
+SCRIPT_OUTPUT_FILE_COUNT=0
+REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES=YES
+ARCHS_STANDARD=i386 x86_64
+ENABLE_HEADER_DEPENDENCIES=YES
+SDK_VERSION=11.4
+SET_FILE_MODE_OWNER_GROUP=NO
+ENABLE_DEFAULT_HEADER_SEARCH_PATHS=YES
+DWARF_DSYM_FOLDER_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+SDK_NAMES=iphonesimulator11.4
+DEAD_CODE_STRIPPING=YES
+COPYING_PRESERVES_HFS_DATA=NO
+EXPANDED_CODE_SIGN_IDENTITY_NAME=-
+PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR=YES
+ARCHS_STANDARD_INCLUDING_64_BIT=i386 x86_64
+GCC_VERSION_IDENTIFIER=com_apple_compilers_llvm_clang_1_0
+SYSTEM_DEMOS_DIR=/Applications/Extras
+PRODUCT_BUNDLE_IDENTIFIER=ssvim.Basic
+TMUX=/private/tmp/tmux-501/default,483,5
+SHARED_DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/DerivedSources
+BUILD_COMPONENTS=headers build
+GCC_TREAT_WARNINGS_AS_ERRORS=NO
+DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT=NO
+REZ_SEARCH_PATHS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+CLANG_WARN_OBJC_ROOT_CLASS=YES_ERROR
+ALTERNATE_MODE=u+w,go-w,a+rX
+JAVA_USE_DEPENDENCIES=YES
+GCC_OBJC_LEGACY_DISPATCH=YES
+DEPLOYMENT_TARGET_CLANG_FLAG_PREFIX=-mios-simulator-version-min=
+INSTALL_GROUP=staff
+PATH=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/local/bin:/Applications/Xcode-9.4.app/Contents/Developer/Tools:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:/Users/jerrymarino/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin:/usr/bin:/bin:/usr/sbin:/sbin
+CLANG_ENABLE_MODULES=YES
+ACTION=build
+COPY_HEADERS_RUN_UNIFDEF=NO
+INSTALL_MODE_FLAG=u+w,go-w,a+rX
+DEVELOPER_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Tools
+ONLY_ACTIVE_ARCH=YES
+CORRESPONDING_DEVICE_PLATFORM_NAME=iphoneos
+CODE_SIGNING_ALLOWED=YES
+INFOPLIST_OUTPUT_FORMAT=binary
+BITCODE_GENERATION_MODE=marker
+STRINGS_FILE_OUTPUT_ENCODING=binary
+CORRESPONDING_DEVICE_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk
+FULL_PRODUCT_NAME=Basic.app
+PROJECT_NAME=Basic
+LOCSYMROOT=
+HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES=YES
+SHARED_PRECOMPS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/PrecompiledHeaders
+DEPLOYMENT_TARGET_SETTING_NAME=IPHONEOS_DEPLOYMENT_TARGET
+SEPARATE_STRIP=NO
+COMPRESS_PNG_FILES=YES
+BUILD_ACTIVE_RESOURCES_ONLY=YES
+INSTALLHDRS_COPY_PHASE=NO
+EXPANDED_CODE_SIGN_IDENTITY=-
+SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+STRIP_SWIFT_SYMBOLS=YES
+GID=20
+JAVAC_DEFAULT_FLAGS=-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8
+PLATFORM_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform
+SDK_DIR_iphonesimulator11_4=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+PWD=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+STRIP_INSTALLED_PRODUCT=YES
+INSTALL_OWNER=jerrymarino
+CONTENTS_FOLDER_PATH=Basic.app
+FILE_LIST=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects/LinkFileList
+FRAMEWORK_SEARCH_PATHS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator
+CCHROOT=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/C/com.apple.DeveloperTools/9.4-9F1027a/Xcode
+JAVA_FRAMEWORK_RESOURCES_DIRS=Resources
+REMOVE_GIT_FROM_RESOURCES=YES
+PROJECT_FILE_PATH=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic.xcodeproj
+APPLICATION_EXTENSION_API_ONLY=NO
+PRODUCT_MODULE_NAME=Basic
+GCC_DYNAMIC_NO_PIC=NO
+EXECUTABLE_NAME=Basic
+SUPPORTED_DEVICE_FAMILIES=1,2
+NO_COMMON=YES
+LD_RUNPATH_SEARCH_PATHS= @executable_path/Frameworks
+CREATE_INFOPLIST_SECTION_IN_BINARY=NO
+HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS=YES
+UNSTRIPPED_PRODUCT=NO
+SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Graphics Tools
+PLATFORM_DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications
+VERSION_INFO_FILE=Basic_vers.c
+LANG=en_US.UTF-8
+DEFAULT_KEXT_INSTALL_PATH=/System/Library/Extensions
+JAVA_COMPILER=/usr/bin/javac
+JAVA_SOURCE_SUBDIR=.
+DEFAULT_COMPILER=com.apple.compilers.llvm.clang.1_0
+DEPLOYMENT_LOCATION=NO
+CODE_SIGNING_REQUIRED=YES
+AD_HOC_CODE_SIGNING_ALLOWED=YES
+CLANG_CXX_LIBRARY=libc++
+SEPARATE_SYMBOL_EDIT=NO
+ITERM_PROFILE=Default
+INFOPLIST_PATH=Basic.app/Info.plist
+LOCAL_DEVELOPER_DIR=/Library/Developer
+SRCROOT=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+LOCALIZABLE_CONTENT_DIR=
+DEVELOPER_FRAMEWORKS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library/Frameworks
+REZ_OBJECTS_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/ResourceManagerResources/Objects
+PROJECT_DIR=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+PASCAL_STRINGS=YES
+CHOWN=/usr/sbin/chown
+SYSTEM_DEVELOPER_JAVA_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Java Tools
+JAVA_FOLDER_PATH=Basic.app/Java
+TMUX_PANE=%115
+PUBLIC_HEADERS_FOLDER_PATH=Basic.app/Headers
+TEMP_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+COMPOSITE_SDK_DIRS=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/CompositeSDKs
+XPC_FLAGS=0x0
+METAL_LIBRARY_OUTPUT_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+EMBEDDED_CONTENT_CONTAINS_SWIFT=NO
+DEPLOYMENT_TARGET_CLANG_FLAG_NAME=mios-simulator-version-min
+CODE_SIGN_CONTEXT_CLASS=XCiPhoneSimulatorCodeSignContext
+MAC_OS_X_VERSION_MAJOR=101300
+PROJECT_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build
+GCC_NO_COMMON_BLOCKS=YES
+SKIP_INSTALL=NO
+SCRIPT_INPUT_FILE_COUNT=0
+LOCALIZED_STRING_MACRO_NAMES=NSLocalizedString CFLocalizedString
+SYMROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products
+CP=/bin/cp
+ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon
+JAVA_ARCHIVE_CLASSES=YES
+PLATFORM_DEVELOPER_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Tools
+XPC_SERVICE_NAME=0
+SYSTEM_DEVELOPER_APPS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications
+DWARF_DSYM_FILE_NAME=Basic.app.dSYM
+PROJECT_TEMP_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex
+APPLE_INTERNAL_DOCUMENTATION_DIR=/AppleInternal/Documentation
+MAC_OS_X_VERSION_ACTUAL=101303
+LEX=lex
+CLANG_WARN_BOOL_CONVERSION=YES
+INSTALL_ROOT=/tmp/Basic.dst
+PLATFORM_DISPLAY_NAME=iOS Simulator
+MTL_ENABLE_DEBUG_INFO=YES
+CLANG_WARN_INFINITE_RECURSION=YES
+FRAMEWORK_FLAG_PREFIX=-framework
+SHLVL=5
+HIDE_BITCODE_SYMBOLS=YES
+COLORFGBG=7;0
+HOME=/Users/jerrymarino
+RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS=YES
+LINK_FILE_LIST_normal_x86_64=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Objects-normal/x86_64/Basic.LinkFileList
+SET_DIR_MODE_OWNER_GROUP=YES
+EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS=.DS_Store .svn .git .hg CVS
+GENERATE_PROFILING_CODE=NO
+APPLY_RULES_IN_COPY_FILES=NO
+PROFILING_CODE=NO
+PLATFORM_DEVELOPER_LIBRARY_DIR=/Applications/Xcode-9.4.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library
+SYSTEM_LIBRARY_DIR=/System/Library
+SDK_VERSION_MINOR=400
+CLANG_WARN_INT_CONVERSION=YES
+REMOVE_SVN_FROM_RESOURCES=YES
+DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+SWIFT_VERSION=3.0
+FRAMEWORKS_FOLDER_PATH=Basic.app/Frameworks
+XCODE_VERSION_MINOR=0940
+VERBOSE_PBXCP=NO
+SYSTEM_KEXT_INSTALL_PATH=/System/Library/Extensions
+CORRESPONDING_DEVICE_PLATFORM_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneOS.platform
+VALID_ARCHS=i386 x86_64
+OBJC_ABI_VERSION=2
+LD_NO_PIE=NO
+COMBINE_HIDPI_IMAGES=NO
+CACHE_ROOT=/var/folders/x3/p1grs9_x7cd5m4dkpp33mw2m0000gn/C/com.apple.DeveloperTools/9.4-9F1027a/Xcode
+SYSTEM_DEVELOPER_DEMOS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Utilities/Built Examples
+INSTALL_PATH=/Applications
+CODE_SIGN_IDENTITY=-
+JAVA_ARCHIVE_TYPE=JAR
+SYSTEM_DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr/bin
+LEGACY_DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
+ITERM_SESSION_ID=w1t0p0
+GCC_PREPROCESSOR_DEFINITIONS=DEBUG=1
+ALWAYS_USE_SEPARATE_HEADERMAPS=NO
+DEBUGGING_SYMBOLS=YES
+PROJECT_DERIVED_FILE_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/DerivedSources
+EXPANDED_PROVISIONING_PROFILE=
+PKGINFO_FILE_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/PkgInfo
+CLANG_WARN__DUPLICATE_METHOD_MATCH=YES
+CODESIGNING_FOLDER_PATH=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+PRECOMP_DESTINATION_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/PrefixHeaders
+LOGNAME=jerrymarino
+SHALLOW_BUNDLE=YES
+CLANG_WARN_DIRECT_OBJC_ISA_USAGE=YES_ERROR
+PLATFORM_DEVELOPER_BIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin
+BUILD_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products
+GCC_WARN_UNUSED_VARIABLE=YES
+ARCHS_UNIVERSAL_IPHONE_OS=i386 x86_64
+APPLE_INTERNAL_LIBRARY_DIR=/AppleInternal/Library
+JIKES_DEFAULT_FLAGS=+E +OLDCSO
+COLOR_DIAGNOSTICS=YES
+XCODE_VERSION_MAJOR=0900
+HEADERMAP_USES_VFS=NO
+ALWAYS_SEARCH_USER_PATHS=NO
+TOOLCHAIN_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER=YES
+LOCAL_LIBRARY_DIR=/Library
+LINK_WITH_STANDARD_LIBRARIES=YES
+INFOPLIST_FILE=Basic/Info.plist
+DEPLOYMENT_TARGET_CLANG_ENV_NAME=IPHONEOS_DEPLOYMENT_TARGET
+CURRENT_VARIANT=normal
+UID=501
+ALTERNATE_GROUP=staff
+ENABLE_TESTABILITY=YES
+USE_HEADER_SYMLINKS=NO
+CLANG_CXX_LANGUAGE_STANDARD=gnu++0x
+LOCROOT=
+SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Applications/Performance Tools
+SCAN_ALL_SOURCE_FILES_FOR_INCLUDES=NO
+IPHONEOS_DEPLOYMENT_TARGET=10.3
+SYSTEM_DEVELOPER_TOOLS_DOC_DIR=/Applications/Xcode-9.4.app/Contents/Developer/ADC Reference Library/documentation/DeveloperTools
+PLATFORM_DEVELOPER_SDK_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs
+SYSTEM_DEVELOPER_USR_DIR=/Applications/Xcode-9.4.app/Contents/Developer/usr
+SCRIPTS_FOLDER_PATH=Basic.app/Scripts
+KEEP_PRIVATE_EXTERNS=NO
+SUPPORTED_PLATFORMS=iphonesimulator iphoneos
+arch=x86_64
+XPCSERVICES_FOLDER_PATH=Basic.app/XPCServices
+INFOSTRINGS_PATH=Basic.app/English.lproj/InfoPlist.strings
+CODE_SIGN_INJECT_BASE_ENTITLEMENTS=YES
+GENERATE_MASTER_OBJECT_FILE=NO
+NATIVE_ARCH_ACTUAL=x86_64
+GCC_WARN_UNINITIALIZED_AUTOS=YES_AGGRESSIVE
+INLINE_PRIVATE_FRAMEWORKS=NO
+DEVELOPER_LIBRARY_DIR=/Applications/Xcode-9.4.app/Contents/Developer/Library
+BUILD_STYLE=
+SHARED_FRAMEWORKS_FOLDER_PATH=Basic.app/SharedFrameworks
+SYSTEM_CORE_SERVICES_DIR=/System/Library/CoreServices
+ALTERNATE_OWNER=jerrymarino
+INFOPLIST_EXPAND_BUILD_SETTINGS=YES
+ARCHS_STANDARD_64_BIT=x86_64
+HEADERMAP_USES_FRAMEWORK_PREFIX_ENTRIES=YES
+GENERATE_PKGINFO_FILE=YES
+LINKER_DISPLAYS_MANGLED_NAMES=NO
+ARCHS_STANDARD_32_BIT=i386
+CHMOD=/bin/chmod
+ARCHS=x86_64
+diagnostic_message_length=165
+DEBUG_INFORMATION_FORMAT=dwarf
+NATIVE_ARCH=i386
+TARGET_TEMP_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build
+CLANG_WARN_CONSTANT_CONVERSION=YES
+ENTITLEMENTS_REQUIRED=YES
+SECURITYSESSIONID=186a7
+WRAPPER_NAME=Basic.app
+HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT=YES
+FRAMEWORK_VERSION=A
+TEMP_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex
+SYSTEM_ADMIN_APPS_DIR=/Applications/Utilities
+FIXED_FILES_DIR=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/FixedFiles
+LIBRARY_KEXT_INSTALL_PATH=/Library/Extensions
+SOURCE_ROOT=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+EXECUTABLE_FOLDER_PATH=Basic.app
+SUPPORTS_TEXT_BASED_API=NO
+PRODUCT_SETTINGS_PATH=/Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS/Basic/Info.plist
+BUILD_ROOT=/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products
+USE_HEADERMAP=YES
+_=/usr/bin/printenv
+
+CopySwiftLibs /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export CODESIGN_ALLOCATE=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+    export DEVELOPER_DIR=/Applications/Xcode-9.4.app/Contents/Developer
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    export SDKROOT=/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator11.4.sdk
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Basic --scan-folder /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks --scan-folder /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/PlugIns --platform iphonesimulator --toolchain /Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks --strip-bitcode --resource-destination /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app --resource-library libswiftRemoteMirror.dylib
+Requested Swift ABI version based on scanned binaries: 6
+libswiftCore.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib
+libswiftCoreFoundation.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib
+libswiftCoreGraphics.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib
+libswiftCoreImage.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib
+libswiftDarwin.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib
+libswiftDispatch.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib
+libswiftFoundation.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib
+libswiftMetal.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib
+libswiftObjectiveC.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib
+libswiftQuartzCore.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib
+libswiftUIKit.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib
+libswiftos.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib
+libswiftRemoteMirror.dylib is up to date at /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/libswiftRemoteMirror.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCore.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib'Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib
+
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib'
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib'Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib
+
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib'
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDarwin.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftQuartzCore.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreFoundation.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftUIKit.dylib is unchanged; keeping original
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftMetal.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftObjectiveC.dylib is unchanged; keeping original
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreGraphics.dylib is unchanged; keeping original
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib'
+Codesigning /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib
+  /usr/bin/codesign '--force' '--sign' '-' '--verbose' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftDispatch.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib'
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftCoreImage.dylib is unchanged; keeping original
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftos.dylib is unchanged; keeping original
+Probing signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib
+  /usr/bin/codesign '-r-' '--display' '/Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib'
+Code signature of /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app/Frameworks/libswiftFoundation.dylib is unchanged; keeping original
+
+Touch /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+    /usr/bin/touch -c /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+
+ProcessProductPackaging "" /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic.app.xcent
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+
+
+Entitlements:
+
+{
+    "com.apple.security.get-task-allow" = 1;
+}
+
+
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic.app.xcent
+
+CodeSign /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+    cd /Users/jerrymarino/Projects/SwiftVimTestHost/BasiciOS
+    export CODESIGN_ALLOCATE=/Applications/Xcode-9.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+    export PATH="/Applications/Xcode-9.4.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode-9.4.app/Contents/Developer/usr/bin:/usr/local/opt/openssl/bin:/usr/local/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/opt/openssl/bin:/usr/local/share/npm/bin:~/.local/bin:/Users/jerrymarino/Library/Python/2.7/bin/"
+
+Signing Identity:     "-"
+
+    /usr/bin/codesign --force --sign - --entitlements /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Intermediates.noindex/Basic.build/Debug-iphonesimulator/Basic.build/Basic.app.xcent --timestamp=none /Users/jerrymarino/Library/Developer/Xcode/DerivedData/Basic-ftyuwprhnlvzhlgycfoadvbuycfe/Build/Products/Debug-iphonesimulator/Basic.app
+
+** BUILD SUCCEEDED **
