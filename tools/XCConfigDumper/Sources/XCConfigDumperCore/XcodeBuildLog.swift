@@ -1,5 +1,5 @@
 //
-//  XCodeBuildParser.swift
+//  XcodeBuildParser.swift
 //  XCConfigDumper
 //
 //  Created by Vlad Solomenchuk on 8/9/19.
@@ -12,7 +12,7 @@ private func parse(log: String) -> [Record] {
     return lines.map { Record(line: String($0)) }
 }
 
-public struct XCodeBuildLog {
+public struct XcodeBuildLog {
     let records: [Record]
 
     public init(log: String) {
@@ -20,7 +20,7 @@ public struct XCodeBuildLog {
     }
 }
 
-public extension XCodeBuildLog {
+public extension XcodeBuildLog {
     func getAllDiagnosticParameters() -> Set<Field> {
         Set(records.filter { $0.isObjcCompiler }.map { $0.fields }.flatMap { $0 }.filter {
             if case Field.w = $0 {

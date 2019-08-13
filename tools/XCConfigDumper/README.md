@@ -1,11 +1,11 @@
 # XCConfigDumper
 
-dumps diagnostic settings from `XCode` build
+dumps diagnostic settings from `Xcode` build
 
 ## Usage
 
 ```shell
-OVERVIEW: XCode diagnostic parameters dumper
+OVERVIEW: Xcode diagnostic parameters dumper
 
 USAGE: dumper <options>
 

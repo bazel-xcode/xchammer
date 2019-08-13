@@ -10,8 +10,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "XCConfigDumper",
-            targets: ["XCConfigDumper"]
+            name: "XCConfigDumperCore",
+            targets: ["XCConfigDumperCore"]
         ),
     ],
     dependencies: [
@@ -20,16 +20,16 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "XCConfigDumper",
+            name: "XCConfigDumperCore",
             dependencies: []
         ),
         .target(
-            name: "dumper",
-            dependencies: ["XCConfigDumper", "SPMUtility", "SwiftShell"]
+            name: "xcconfigdumper",
+            dependencies: ["XCConfigDumperCore", "SPMUtility", "SwiftShell"]
         ),
         .testTarget(
             name: "XCConfigDumperTests",
-            dependencies: ["XCConfigDumper"]
+            dependencies: ["XCConfigDumperCore"]
         ),
     ]
 )

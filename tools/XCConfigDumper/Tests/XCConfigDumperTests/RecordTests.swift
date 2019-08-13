@@ -1,4 +1,4 @@
-@testable import XCConfigDumper
+@testable import XCConfigDumperCore
 import XCTest
 
 final class RecordTests: XCTestCase {
@@ -18,8 +18,8 @@ final class RecordTests: XCTestCase {
     }
 
     func testMixed() {
-        let line = "a \"b b\" 'c c    c' '\t\t' ' '"
-        XCTAssertEqual(Record(line: line).fields, [Field(rawValue: "a"), Field(rawValue: "b b"), Field(rawValue: "c c    c"), Field(rawValue: "\t\t"), Field(rawValue: " ")])
+        let line = "a \"b b\" 'c c    c' d\\ d '\t\t' ' '"
+        XCTAssertEqual(Record(line: line).fields, [Field(rawValue: "a"), Field(rawValue: "b b"), Field(rawValue: "c c    c"), Field(rawValue: "d d"), Field(rawValue: "\t\t"), Field(rawValue: " ")])
     }
 
     static var allTests = [

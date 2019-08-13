@@ -12,51 +12,57 @@ private func tokenize(text: String) -> [String] {
     var accumulator = ""
     var quote: Character = "\0"
     var escape = false
+    
+    // evict accumulator
+    func cleanup() {
+        guard !accumulator.isEmpty else { return }
+        
+        result.append(accumulator)
+        accumulator = ""
+    }
 
     for c in text {
         if escape {
             // start escape
             escape = false
             accumulator.append(c)
-        } else if c == "\\" {
-            escape = true
-        } else if (quote == "\0" && c == "\'") ||
-            (quote == "\0" && c == "\"") {
-            // start quoted sequence
-            quote = c
-        } else if (quote == "\'" && c == "\'") ||
-            (quote == "\"" && c == "\"") {
-            // end quoted sequence
-            quote = "\0"
-        } else if !c.isWhitespace || quote != "\0" {
-            // accumulate character (which is either non-whitespace or quoted)
-            accumulator.append(c)
         } else {
-            // evict accumulator
-            if !accumulator.isEmpty {
-                result.append(accumulator)
-                accumulator = ""
+            switch c {
+            case "\\":
+                escape = true
+            case "\'" where quote == "\0",
+                 "\"" where quote == "\0":
+                // start quoted sequence
+                quote = c
+            case "\'" where quote == "\'",
+                 "\"" where quote == "\"":
+                // end quoted sequence
+                quote = "\0"
+            default:
+                if !c.isWhitespace || quote != "\0" {
+                    // accumulate character (which is either non-whitespace or quoted)
+                    accumulator.append(c)
+                } else {
+                    cleanup()
+                }
             }
         }
     }
 
-    if !accumulator.isEmpty {
-        result.append(accumulator)
-        accumulator = ""
-    }
+    cleanup()
     return result
 }
 
 public enum Field {
     case unknown(String)
-    case compiler(String)
+    case clang(String)
     case x(String)
     case objc(String)
     case w(String)
 
     init(rawValue: String) {
         if rawValue.hasSuffix("clang") {
-            self = .compiler(rawValue)
+            self = .clang(rawValue)
         } else if rawValue.hasPrefix("-W") {
             self = .w(rawValue)
         } else {
@@ -85,23 +91,24 @@ public struct Record {
 
 public extension Record {
     var isCompiler: Bool {
-        if case Field.compiler = fields.first ?? .unknown("") {
+        switch fields.first {
+        case .clang:
             return true
-        } else {
+        default:
             return false
         }
     }
 
     var isObjcCompiler: Bool {
-        guard case Field.compiler = fields.first ?? .unknown("") else { return false }
+        guard isCompiler else { return false }
         var isXFound = false
         for f in fields {
-            if isXFound, case Field.objc = f {
+            switch f {
+            case .objc where isXFound:
                 return true
-            }
-            if case Field.x = f {
+            case .x:
                 isXFound = true
-            } else {
+            default:
                 isXFound = false
             }
         }
