@@ -16,7 +16,7 @@ struct Config {
 }
 
 func getConfig(arguments: [String]) throws -> Config {
-    let parser = ArgumentParser(usage: "<options>\n\nEXAMPLE: xcodebuild -configuration Debug -project Test.xcodeproj | swift run dumper --output-bazel-config Diag.bzl", overview: "Xcode diagnostic parameters dumper")
+    let parser = ArgumentParser(usage: "<options>\n\nEXAMPLE: xcodebuild -configuration Debug -project Test.xcodeproj | swift run dumper --output-bazel-config Diag.bzl", overview: "Xcode diagnostic flags dumper")
     let inputLog: OptionArgument<String> = parser.add(option: "--xcode-log", kind: String.self, usage: "An xcode build log. Reads from stdin if not provided")
     let outputBazelConfig: OptionArgument<String> = parser.add(option: "--output-bazel-config", kind: String.self, usage: "A bazel output config. Prints to stdin if not provided")
 

@@ -1,6 +1,6 @@
 # XCConfigDumper
 
-dumps diagnostic settings from `Xcode` build
+dumps diagnostic flags from `Xcode` build
 This tool us useful when you need to get compiler settings from new version of `Xcode`
 
 ## Usage
