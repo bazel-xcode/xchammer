@@ -43,10 +43,9 @@ apple_resource_group(
     ]),
 )
 
-# TODO: Consider moving this to Sources/XCHammer
 swift_library(
     name = "Sources",
-    srcs = glob(["Sources/XCHammer/*.swift"]),
+    srcs = glob(["Sources/**/*.swift"]),
     data = [
         ":XCHammerAssets",
     ],
