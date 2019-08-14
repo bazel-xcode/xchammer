@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C45F55B31FD2199000A6C9F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C45F55B21FD2199000A6C9F8 /* AppDelegate.m */; };
-		C45F55B61FD2199000A6C9F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C45F55B51FD2199000A6C9F8 /* ViewController.m */; };
 		C45F55BB1FD2199000A6C9F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C45F55BA1FD2199000A6C9F8 /* Assets.xcassets */; };
 		C45F55C11FD2199000A6C9F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C45F55C01FD2199000A6C9F8 /* main.m */; };
 		C45F55CA1FD21C8200A6C9F8 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C45F55C91FD21C8200A6C9F8 /* Config.xcconfig */; };
@@ -16,10 +14,6 @@
 
 /* Begin PBXFileReference section */
 		C45F55AE1FD2199000A6C9F8 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C45F55B11FD2199000A6C9F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		C45F55B21FD2199000A6C9F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C45F55B41FD2199000A6C9F8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		C45F55B51FD2199000A6C9F8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C45F55BA1FD2199000A6C9F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C45F55BF1FD2199000A6C9F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C45F55C01FD2199000A6C9F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -57,10 +51,6 @@
 		C45F55B01FD2199000A6C9F8 /* iOSApp */ = {
 			isa = PBXGroup;
 			children = (
-				C45F55B11FD2199000A6C9F8 /* AppDelegate.h */,
-				C45F55B21FD2199000A6C9F8 /* AppDelegate.m */,
-				C45F55B41FD2199000A6C9F8 /* ViewController.h */,
-				C45F55B51FD2199000A6C9F8 /* ViewController.m */,
 				C45F55BA1FD2199000A6C9F8 /* Assets.xcassets */,
 				C45F55BF1FD2199000A6C9F8 /* Info.plist */,
 				C45F55C01FD2199000A6C9F8 /* main.m */,
@@ -138,9 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C45F55B61FD2199000A6C9F8 /* ViewController.m in Sources */,
 				C45F55C11FD2199000A6C9F8 /* main.m in Sources */,
-				C45F55B31FD2199000A6C9F8 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
