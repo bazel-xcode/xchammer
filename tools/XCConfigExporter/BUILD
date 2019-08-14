@@ -1,6 +1,5 @@
 package(default_visibility = ["//visibility:public"])
 
-load('@build_bazel_rules_apple//apple:resources.bzl', 'apple_bundle_import')
 licenses(["notice"])
 
 load(
@@ -9,7 +8,7 @@ load(
 )
 load(
     "@build_bazel_rules_apple//apple:resources.bzl",
-    "apple_resource_group",
+    "apple_bundle_import",
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
@@ -20,23 +19,9 @@ load(
     "apple_bundle_version",
 )
 load(
-    "@com_github_bazelbuild_buildtools//buildifier:def.bzl",
-    "buildifier",
-)
-load(
     "//third_party:repositories.bzl",
     "namespaced_name",
 )
-load(
-    "//tools:xchammerconfig.bzl",
-    "execution_action",
-    "gen_xchammer_config",
-    "project_config",
-    "scheme_action_config",
-    "target_config",
-    "xchammer_config",
-)
-
 
 apple_bundle_import(
     name = "Fixtures",

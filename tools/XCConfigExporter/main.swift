@@ -10,7 +10,7 @@ guard CommandLine.arguments.count > 1 else {
 }
 
 /// This program works by doing a build of an iOS application with a user
-/// specified xcconfig, and exportering the flags that Xcode passed various
+/// specified xcconfig, and exporting the flags that Xcode passed to various
 /// compilers
 do {
     guard let fixtureRoot = Bundle.main.path(forResource: "Fixtures", ofType:
@@ -23,8 +23,8 @@ do {
     // users .xccconfig. The xcode project isn't writeable, and will require
     // templating or some other mechanism to set the path
     try? FileManager.default.createDirectory(atPath: "/tmp/XCConfigExporter",
-            withIntermediateDirectories: true,
-            attributes: [:])
+        withIntermediateDirectories: true,
+        attributes: [:])
     try? FileManager.default.removeItem(atPath: "/tmp/XCConfigExporter/Config.xcconfig")
     try? FileManager.default.copyItem(atPath: xcconfig,
         toPath: "/tmp/XCConfigExporter/Config.xcconfig")
