@@ -13,23 +13,23 @@ guard CommandLine.arguments.count > 1 else {
 /// specified xcconfig, and exporting the flags that Xcode passed to various
 /// compilers
 do {
-    guard let fixtureRoot = Bundle.main.path(forResource: "Fixtures", ofType:
+    guard let fixtureBundle = Bundle.main.path(forResource: "Fixtures", ofType:
                                              "bundle") else {
         fatalError("Missing fixtures")
     }
     let xcconfig = CommandLine.arguments[1]
 
-    // HACK! We need a way to sync up the codepath in the Xcode project with the
-    // users .xccconfig. The xcode project isn't writeable, and will require
-    // templating or some other mechanism to set the path
-    try? FileManager.default.createDirectory(atPath: "/tmp/XCConfigExporter",
+    let tmpDir = NSTemporaryDirectory() + "/" + UUID().uuidString
+    try FileManager.default.createDirectory(atPath: tmpDir,
         withIntermediateDirectories: true,
         attributes: [:])
-    try? FileManager.default.removeItem(atPath: "/tmp/XCConfigExporter/Config.xcconfig")
-    try? FileManager.default.copyItem(atPath: xcconfig,
-        toPath: "/tmp/XCConfigExporter/Config.xcconfig")
+    try FileManager.default.copyItem(atPath: fixtureBundle,
+        toPath: tmpDir + "/Fixtures")
+    try FileManager.default.copyItem(atPath: xcconfig,
+        toPath: tmpDir + "/Config.xcconfig")
 
-    let iOSDir = fixtureRoot + "/iOSApp"
+
+    let iOSDir = tmpDir + "/Fixtures/iOSApp"
     let buildCommand = ["/bin/bash -c 'xcodebuild -project iOSApp.xcodeproj -scheme iOSApp -sdk iphonesimulator12.2 -configuration Debug 2>&1'"]
     let log = try ShellOut.shellOut(to: buildCommand, at: iOSDir)
     let parsed = parse(log: log)
