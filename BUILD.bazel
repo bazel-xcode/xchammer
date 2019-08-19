@@ -116,8 +116,9 @@ xchammer_config = xchammer_config(
             # Metrics are disabled by default
             # scheme_config=scheme_config
         ),
+        "//tools/XCConfigExporter:xcconfig-exporter": target_config(),
     },
-    targets = ["//:xchammer"],
+    targets = ["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
 )
 
 gen_xchammer_config(
