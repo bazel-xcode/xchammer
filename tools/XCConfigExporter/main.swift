@@ -9,6 +9,11 @@ guard CommandLine.arguments.count > 1 else {
     exit(0)
 }
 
+/// The above access is guarded by the check that arguments is greater
+/// than 1. Consider moving this to Commandant or deleting the need for it
+/// altogether.
+let xcconfig = CommandLine.arguments[1]
+
 /// This program works by doing a build of an iOS application with a user
 /// specified xcconfig, and exporting the flags that Xcode passed to various
 /// compilers
@@ -17,8 +22,6 @@ do {
                                              "bundle") else {
         fatalError("Missing fixtures")
     }
-    let xcconfig = CommandLine.arguments[1]
-
     // Create a temp directory for the template project, then copy it over
     let attributes: [FileAttributeKey: Any] = [FileAttributeKey.posixPermissions: 0o777]
     let tmpDir = NSTemporaryDirectory() + "/" + UUID().uuidString
