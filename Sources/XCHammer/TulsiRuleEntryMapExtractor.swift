@@ -35,13 +35,13 @@ public enum TulsiRuleEntryMapExtractor {
 
         let ruleEntryMap = try extractor.ruleEntriesForLabels(
                 config.buildTargetLabels, startupOptions:
-                config.options[.BazelBuildStartupOptionsDebug], buildOptions:
+                config.options[.BazelBuildStartupOptionsDebug],
+                extraStartupOptions: config.options[.ProjectGenerationBazelStartupOptions], buildOptions:
                 config.options[.BazelBuildOptionsDebug], compilationModeOption:
                 config.options[.ProjectGenerationCompilationMode],
                 platformConfigOption:
                 config.options[.ProjectGenerationPlatformConfiguration],
                 prioritizeSwiftOption: config.options[.ProjectPrioritizesSwift],
-                useArm64_32Option: config.options[.UseArm64_32],
                 features: features)
         return XCHammerBazelWorkspaceInfo(bazelExecRoot: execRoot, ruleEntryMap:
                 ruleEntryMap)

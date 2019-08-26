@@ -1,3 +1,4 @@
 build \
  --spawn_strategy=standalone \
- --strategy=SwiftCompile=worker
+ --strategy=SwiftCompile=worker \
+ --incompatible_new_actions_api=false

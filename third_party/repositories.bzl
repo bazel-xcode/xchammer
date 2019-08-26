@@ -35,6 +35,33 @@ load("@build_bazel_rules_swift//swift:swift.bzl", "swift_c_module",
 "swift_library")
 """ + "\n\n".join(libs)
 
+# swift_c_module is broken altogether
+# https://github.com/bazelbuild/rules_swift/issues/286
+yams_build_file = """
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+
+cc_library(
+    name = "CYaml",
+    srcs = glob([
+        "Sources/CYaml/src/*.c",
+        "Sources/CYaml/src/*.h",
+    ]),
+    hdrs = glob([
+        "Sources/CYaml/include/*.h",
+    ]),
+    includes = ["Sources/CYaml/include"],
+)
+
+swift_library(
+    name = "Yams",
+    srcs = glob(["Sources/Yams/*.swift"]),
+    defines = ["SWIFT_PACKAGE"],
+    visibility = ["//visibility:public"],
+    deps = [":CYaml"],
+)
+"""
+
+
 def namespaced_swift_c_library(name, srcs, hdrs, includes, module_map):
     return """
 objc_library(
@@ -271,8 +298,8 @@ def xchammer_dependencies():
 
     namespaced_git_repository(
         name = "Tulsi",
-        remote = "https://github.com/pinterest/Tulsi.git",
-        commit = "badd7b512abde05524a620c466e9acc17a7268a5",
+        remote = "https://github.com/pinterest/tulsi.git",
+        commit = "ccf24338ebf802d52ed6eb8c14bbd65a5b31379f",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD

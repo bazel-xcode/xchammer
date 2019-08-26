@@ -38,9 +38,9 @@ filegroup(
 
 objc_library(
     name = "siri-ext-bin",
-    srcs = native.glob(["SiriExtension/Sources/**/*.m"]),
-    hdrs = native.glob(["SiriExtension/Sources/**/*.h"]),
-    resources = [
+    srcs = glob(["SiriExtension/Sources/**/*.m"]),
+    hdrs = glob(["SiriExtension/Sources/**/*.h"]),
+    data = [
         ":AppIntentVocabulary",
     ],
 )
@@ -63,9 +63,9 @@ filegroup(
 
 objc_library(
     name = "strings-ext-bin",
-    srcs = native.glob(["StringsExtension/Sources/**/*.m"]),
-    hdrs = native.glob(["StringsExtension/Sources/**/*.h"]),
-    resources = [
+    srcs = glob(["StringsExtension/Sources/**/*.m"]),
+    hdrs = glob(["StringsExtension/Sources/**/*.h"]),
+    data = [
         ":StringsIntentVocabulary",
     ],
 )
@@ -89,7 +89,7 @@ objc_library(
     name = "ios-app-bin",
     srcs = [
         "UrlGet/main.m",
-        ":GeneratedSource",
+        #":GeneratedSource",
     ],
     defines = [
         "EXAMPLE_DEF=1",
@@ -116,8 +116,8 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_ui_test")
 # Unit Test Target
 objc_library(
     name = "TestsLib",
-    srcs = native.glob(["UnitTests/**/*.m"]),
-    hdrs = native.glob(["UnitTests/**/*.h"]),
+    srcs = glob(["UnitTests/**/*.m"]),
+    hdrs = glob(["UnitTests/**/*.h"]),
     sdk_frameworks = [
         "XCTest",
         "CoreGraphics",
@@ -186,7 +186,7 @@ objc_library(
     ],
 
     # Not added
-    xibs = ["UrlGet/UrlGetViewController.xib"],
+    data = ["UrlGet/UrlGetViewController.xib"],
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",
