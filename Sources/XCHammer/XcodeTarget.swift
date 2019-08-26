@@ -17,7 +17,7 @@ import Foundation
 import PathKit
 import TulsiGenerator
 import ProjectSpec
-import xcodeproj
+import XcodeProj
 import ShellOut
 
 private func shouldPropagateDeps(forTarget xcodeTarget: XcodeTarget) -> Bool {

@@ -17,7 +17,7 @@ import PathKit
 import Result
 import ProjectSpec
 import XcodeGenKit
-import xcodeproj
+import XcodeProj
 import TulsiGenerator
 
 /// Internal struct to help building out the `Spec`

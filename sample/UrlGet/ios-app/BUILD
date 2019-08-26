@@ -1,6 +1,6 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_extension")
-load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group")
+load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group", "apple_bundle_import")
 
 # This is needed for implicit entitlement rules created for
 # files.
@@ -13,7 +13,7 @@ ios_extension(
     infoplists = ["ShareExtension/ShareExtension-Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["ios-ext-bin"],
-    minimum_os_version = "9.3"
+    minimum_os_version = "10.0"
 )
 
 objc_library(
@@ -41,6 +41,11 @@ filegroup(
 apple_resource_group(
     name = "StructuredResources",
     structured_resources = glob(["StructuredResources/**"])
+)
+
+apple_bundle_import(
+    name = "ImportedResources",
+    bundle_imports = glob(["ImportedResources.bundle/**"])
 )
 
 objc_library(
@@ -96,7 +101,7 @@ objc_library(
     name = "ios-app-bin",
     srcs = [
         "UrlGet/main.m",
-        ":GeneratedSource",
+        #":GeneratedSource",
     ],
     defines = [
         "EXAMPLE_DEF=1",
@@ -105,7 +110,8 @@ objc_library(
         ":UrlGetClasses",
     ],
     data = [
-        ":StructuredResources"
+        ":StructuredResources",
+        ":ImportedResources",
     ]
 )
 
@@ -196,7 +202,10 @@ objc_library(
     ],
 
     # Not added
-    data = ["UrlGet/UrlGetViewController.xib", ":StructuredResources"],
+    data = [
+        "UrlGet/UrlGetViewController.xib",
+        ":StructuredResources"
+    ],
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",
