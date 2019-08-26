@@ -61,7 +61,7 @@ swift_library(
         "Tulsi//src/TulsiGenerator:tulsi_generator_lib",
         "XcodeGen//:XcodeGenKit",
         "XcodeGen//:ProjectSpec",
-        "xcodeproj//:xcodeproj",
+        "XcodeProj//:XcodeProj",
         "Yams//:Yams",
     ]],
     copts = [

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import xcodeproj
+import XcodeProj
 
 public enum BuildType: String, Codable {
     case running, testing, profiling, archiving, analyzing, all
@@ -187,7 +187,7 @@ public struct XcodeScheme: Equatable, Codable {
 
 // Mark - xcproj support
 
-public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcodeproj.XCScheme {
+public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> XCScheme {
     func getBuildEntry(_ buildTarget: XcodeScheme.BuildTarget) -> XCScheme.BuildAction.Entry {
         // It seems like Xcode doesn't actually need this
         let buildableReference = XCScheme.BuildableReference(
@@ -283,7 +283,7 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> xcode
     )
 
     let launchAction = XCScheme.LaunchAction(
-        buildableProductRunnable: productRunable,
+        runnable: productRunable,
         buildConfiguration: scheme.run?.config ?? "Debug",
         preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
         postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],

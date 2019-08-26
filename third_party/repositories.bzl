@@ -272,7 +272,7 @@ def xchammer_dependencies():
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/tulsi.git",
-        commit = "13cb921656d1429bcd420a3bf074809194b94ceb",
+        commit = "dc6ccce2bf9e7b6144ac22f8b4f7bbc84519eaf3",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
@@ -286,7 +286,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
-        commit = "275e1580915df8c94079dfad44d4b012c3b44360",
+        commit = "0f903227d18b9ceb902fe893e118a2c0084b5d3c",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeGenKit",
@@ -304,19 +304,19 @@ def xchammer_dependencies():
                 srcs = ["Sources/ProjectSpec/**/*.swift"],
                 deps = [
                     "@JSONUtilities//:JSONUtilities",
-                    "@xcodeproj//:xcodeproj",
+                    "@XcodeProj//:XcodeProj",
                     "@Yams//:Yams",
                 ],
             ),
         ]),
     )
     namespaced_new_git_repository(
-        name = "xcodeproj",
+        name = "XcodeProj",
         remote = "https://github.com/tuist/xcodeproj.git",
-        commit = "065f348754b6155b8037dc43876a8f2ee354b95d",
+        commit = "0f563e2d7d604499e7b57a28c78ff23d5c545acd",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
-                name = "xcodeproj",
+                name = "XcodeProj",
                 srcs = ["Sources/**/*.swift"],
                 deps = [
                     "@AEXML//:AEXML",
@@ -325,7 +325,7 @@ def xchammer_dependencies():
                 ],
                 copts = [
                     "-swift-version",
-                    "4.2"
+                    "5"
                 ],
             ),
         ]),

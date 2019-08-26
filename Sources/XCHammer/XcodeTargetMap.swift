@@ -17,7 +17,7 @@ import Foundation
 import PathKit
 import TulsiGenerator
 import ProjectSpec
-import xcodeproj
+import XcodeProj
 
 /// Return flattened inner entries
 func flattenedInner(targetMap: XcodeTargetMap) -> [XcodeTarget] {

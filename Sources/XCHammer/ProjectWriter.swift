@@ -16,7 +16,7 @@ import Foundation
 import XcodeGenKit
 import ProjectSpec
 import PathKit
-import xcodeproj
+import XcodeProj
 
 enum ProjectWriter {
 
