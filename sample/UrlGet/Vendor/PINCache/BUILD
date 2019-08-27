@@ -4,29 +4,29 @@ load(
   "acknowledged_target",
   "gen_module_map",
   "gen_includes"
-  )
+)
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
-# https://bazel.build/versions/master/docs/bazel-user-manual.html
-native.config_setting(
+# https://docs.bazel.build/versions/master/be/general.html#config_setting
+config_setting(
   name = "release",
   values = {
     "compilation_mode": "opt"
   }
-  )
+)
 config_setting(
   name = "iosCase",
   values = {
     "cpu": "powerpc1"
   }
-  )
+)
 config_setting(
   name = "osxCase",
   values = {
     "cpu": "powerpc2"
   }
-  )
+)
 filegroup(
   name = "PINCache_hdrs",
   srcs = glob(
@@ -34,22 +34,20 @@ filegroup(
       "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
-    ) + [
-
-  ] + [
+  ) + [
     ":Core_hdrs",
     ":Arc-exception-safe_hdrs"
   ],
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "PINCache_includes",
   include = [
     "Vendor/PINCache/pod_support/Headers/Public/"
   ]
-  )
+)
 gen_module_map(
   "PINCache",
   "PINCache_module_map",
@@ -57,7 +55,7 @@ gen_module_map(
   [
     "PINCache_hdrs"
   ]
-  )
+)
 objc_library(
   name = "PINCache",
   enable_modules = 1,
@@ -67,10 +65,8 @@ objc_library(
   ],
   pch = pch_with_name_hint(
     "PINCache",
-    [
-
-    ]
-    ),
+    []
+  ),
   includes = [
     "PINCache_module_map"
   ],
@@ -86,11 +82,10 @@ objc_library(
         "AppKit"
       ]
     }
-    ),
+  ),
   deps = [
     ":Arc-exception-safe",
-    ":Core"
-  ] + [
+    ":Core",
     ":PINCache_includes"
   ],
   copts = [
@@ -116,7 +111,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/PINCache/pod_support/Headers/Public/PINCache/"
   ] + [
     "-fmodule-name=PINCache_pod_module"
@@ -124,14 +119,12 @@ objc_library(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "PINCache_acknowledgement",
-  deps = [
-
-  ],
+  deps = [],
   value = "//Vendor/PINCache/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 filegroup(
   name = "Core_hdrs",
   srcs = glob(
@@ -139,11 +132,11 @@ filegroup(
       "Source/*.h"
     ],
     exclude_directories = 1
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 filegroup(
   name = "Core_union_hdrs",
   srcs = [
@@ -153,13 +146,13 @@ filegroup(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "Core_includes",
   include = [
     "Vendor/PINCache/pod_support/Headers/Public/"
   ]
-  )
+)
 objc_library(
   name = "Core",
   enable_modules = 1,
@@ -171,7 +164,7 @@ objc_library(
       "Source/PINDiskCache.m"
     ],
     exclude_directories = 1
-    ),
+  ),
   hdrs = [
     ":Core_union_hdrs",
     ":PINCache_module_map_module_map_file"
@@ -181,7 +174,7 @@ objc_library(
     [
       "Source/**/*.pch"
     ]
-    ),
+  ),
   includes = [
     "PINCache_module_map"
   ],
@@ -197,10 +190,9 @@ objc_library(
         "AppKit"
       ]
     }
-    ),
+  ),
   deps = [
-    "//Vendor/PINOperation:PINOperation"
-  ] + [
+    "//Vendor/PINOperation:PINOperation",
     ":Core_includes"
   ],
   copts = [
@@ -226,7 +218,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/PINCache/pod_support/Headers/Public/PINCache/"
   ] + [
     "-fmodule-name=PINCache_pod_module"
@@ -234,23 +226,21 @@ objc_library(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "Core_acknowledgement",
   deps = [
     "//Vendor/PINOperation:PINOperation_acknowledgement"
   ],
   value = "//Vendor/PINCache/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 filegroup(
   name = "Arc-exception-safe_hdrs",
-  srcs = [
-
-  ],
+  srcs = [],
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 filegroup(
   name = "Arc-exception-safe_union_hdrs",
   srcs = [
@@ -260,13 +250,13 @@ filegroup(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "Arc-exception-safe_includes",
   include = [
     "Vendor/PINCache/pod_support/Headers/Public/"
   ]
-  )
+)
 objc_library(
   name = "Arc-exception-safe",
   enable_modules = 1,
@@ -275,7 +265,7 @@ objc_library(
       "Source/PINDiskCache.m"
     ],
     exclude_directories = 1
-    ),
+  ),
   hdrs = [
     ":Arc-exception-safe_union_hdrs",
     ":PINCache_module_map_module_map_file"
@@ -285,7 +275,7 @@ objc_library(
     [
       "Source/**/*.pch"
     ]
-    ),
+  ),
   includes = [
     "PINCache_module_map"
   ],
@@ -301,10 +291,9 @@ objc_library(
         "AppKit"
       ]
     }
-    ),
+  ),
   deps = [
-    ":Core"
-  ] + [
+    ":Core",
     ":Arc-exception-safe_includes"
   ],
   copts = [
@@ -331,7 +320,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/PINCache/pod_support/Headers/Public/PINCache/"
   ] + [
     "-fmodule-name=PINCache_pod_module"
@@ -339,11 +328,9 @@ objc_library(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "Arc-exception-safe_acknowledgement",
-  deps = [
-
-  ],
+  deps = [],
   value = "//Vendor/PINCache/pod_support_buildable:acknowledgement_fragment"
-  )
+)

@@ -5,17 +5,17 @@ load(
   "acknowledged_target",
   "gen_module_map",
   "gen_includes"
-  )
+)
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
-# https://bazel.build/versions/master/docs/bazel-user-manual.html
-native.config_setting(
+# https://docs.bazel.build/versions/master/be/general.html#config_setting
+config_setting(
   name = "release",
   values = {
     "compilation_mode": "opt"
   }
-  )
+)
 filegroup(
   name = "GoogleNetworkingUtilities_hdrs",
   srcs = glob(
@@ -23,21 +23,17 @@ filegroup(
       "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
-    ) + [
-
-  ] + [
-
-  ],
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "GoogleNetworkingUtilities_includes",
   include = [
     "Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public/"
   ]
-  )
+)
 gen_module_map(
   "GoogleNetworkingUtilities",
   "GoogleNetworkingUtilities_module_map",
@@ -45,7 +41,7 @@ gen_module_map(
   [
     "GoogleNetworkingUtilities_hdrs"
   ]
-  )
+)
 objc_library(
   name = "GoogleNetworkingUtilities",
   enable_modules = 1,
@@ -55,10 +51,8 @@ objc_library(
   ],
   pch = pch_with_name_hint(
     "GoogleNetworkingUtilities",
-    [
-
-    ]
-    ),
+    []
+  ),
   includes = [
     "GoogleNetworkingUtilities_module_map"
   ],
@@ -67,8 +61,7 @@ objc_library(
   ],
   deps = [
     "//Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities",
-    ":GoogleNetworkingUtilities_VendoredFrameworks"
-  ] + [
+    ":GoogleNetworkingUtilities_VendoredFrameworks",
     ":GoogleNetworkingUtilities_includes"
   ],
   copts = [
@@ -95,7 +88,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/GoogleNetworkingUtilities/pod_support/Headers/Public/GoogleNetworkingUtilities/"
   ] + [
     "-fmodule-name=GoogleNetworkingUtilities_pod_module"
@@ -103,14 +96,14 @@ objc_library(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "GoogleNetworkingUtilities_acknowledgement",
   deps = [
     "//Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities_acknowledgement"
   ],
   value = "//Vendor/GoogleNetworkingUtilities/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 apple_static_framework_import(
   name = "GoogleNetworkingUtilities_VendoredFrameworks",
   framework_imports = glob(
@@ -118,8 +111,8 @@ apple_static_framework_import(
       "Frameworks/frameworks/GoogleNetworkingUtilities.framework/**"
     ],
     exclude_directories = 1
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
