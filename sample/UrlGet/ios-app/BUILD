@@ -1,5 +1,6 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_extension")
+load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group")
 
 # This is needed for implicit entitlement rules created for
 # files.
@@ -34,6 +35,12 @@ filegroup(
     name = "AppIntentVocabulary",
     srcs = glob(["SiriExtension/Resources/Localization/*.lproj/AppIntentVocabulary.plist"]),
     visibility = ["//visibility:public"],
+)
+
+
+apple_resource_group(
+    name = "StructuredResources",
+    structured_resources = glob(["StructuredResources/**"])
 )
 
 objc_library(
@@ -89,7 +96,7 @@ objc_library(
     name = "ios-app-bin",
     srcs = [
         "UrlGet/main.m",
-        #":GeneratedSource",
+        ":GeneratedSource",
     ],
     defines = [
         "EXAMPLE_DEF=1",
@@ -97,6 +104,9 @@ objc_library(
     deps = [
         ":UrlGetClasses",
     ],
+    data = [
+        ":StructuredResources"
+    ]
 )
 
 genrule(
@@ -186,7 +196,7 @@ objc_library(
     ],
 
     # Not added
-    data = ["UrlGet/UrlGetViewController.xib"],
+    data = ["UrlGet/UrlGetViewController.xib", ":StructuredResources"],
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",
