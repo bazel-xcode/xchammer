@@ -44,7 +44,7 @@ apple_resource_group(
 )
 
 swift_library(
-    name = "Sources",
+    name = "XCHammerSources",
     srcs = glob(["Sources/**/*.swift"]),
     data = [
         ":XCHammerAssets",
@@ -81,7 +81,7 @@ macos_application(
     infoplists = ["Info.plist"],
     minimum_os_version = "10.14",
     version = ":XCHammerVersion",
-    deps = [":Sources"],
+    deps = [":XCHammerSources"],
 )
 
 buildifier(
