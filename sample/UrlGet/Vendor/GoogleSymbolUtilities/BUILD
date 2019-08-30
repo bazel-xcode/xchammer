@@ -5,17 +5,17 @@ load(
   "acknowledged_target",
   "gen_module_map",
   "gen_includes"
-  )
+)
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
-# https://bazel.build/versions/master/docs/bazel-user-manual.html
-native.config_setting(
+# https://docs.bazel.build/versions/master/be/general.html#config_setting
+config_setting(
   name = "release",
   values = {
     "compilation_mode": "opt"
   }
-  )
+)
 filegroup(
   name = "GoogleSymbolUtilities_hdrs",
   srcs = glob(
@@ -23,21 +23,17 @@ filegroup(
       "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
-    ) + [
-
-  ] + [
-
-  ],
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "GoogleSymbolUtilities_includes",
   include = [
     "Vendor/GoogleSymbolUtilities/pod_support/Headers/Public/"
   ]
-  )
+)
 gen_module_map(
   "GoogleSymbolUtilities",
   "GoogleSymbolUtilities_module_map",
@@ -45,7 +41,7 @@ gen_module_map(
   [
     "GoogleSymbolUtilities_hdrs"
   ]
-  )
+)
 objc_library(
   name = "GoogleSymbolUtilities",
   enable_modules = 1,
@@ -55,16 +51,13 @@ objc_library(
   ],
   pch = pch_with_name_hint(
     "GoogleSymbolUtilities",
-    [
-
-    ]
-    ),
+    []
+  ),
   includes = [
     "GoogleSymbolUtilities_module_map"
   ],
   deps = [
-    ":GoogleSymbolUtilities_VendoredFrameworks"
-  ] + [
+    ":GoogleSymbolUtilities_VendoredFrameworks",
     ":GoogleSymbolUtilities_includes"
   ],
   copts = [
@@ -91,7 +84,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/GoogleSymbolUtilities/pod_support/Headers/Public/GoogleSymbolUtilities/"
   ] + [
     "-fmodule-name=GoogleSymbolUtilities_pod_module"
@@ -99,14 +92,12 @@ objc_library(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "GoogleSymbolUtilities_acknowledgement",
-  deps = [
-
-  ],
+  deps = [],
   value = "//Vendor/GoogleSymbolUtilities/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 apple_static_framework_import(
   name = "GoogleSymbolUtilities_VendoredFrameworks",
   framework_imports = glob(
@@ -114,8 +105,8 @@ apple_static_framework_import(
       "Frameworks/frameworks/GoogleSymbolUtilities.framework/**"
     ],
     exclude_directories = 1
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)

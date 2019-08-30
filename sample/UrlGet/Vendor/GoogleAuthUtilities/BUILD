@@ -5,17 +5,17 @@ load(
   "acknowledged_target",
   "gen_module_map",
   "gen_includes"
-  )
+)
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
-# https://bazel.build/versions/master/docs/bazel-user-manual.html
-native.config_setting(
+# https://docs.bazel.build/versions/master/be/general.html#config_setting
+config_setting(
   name = "release",
   values = {
     "compilation_mode": "opt"
   }
-  )
+)
 filegroup(
   name = "GoogleAuthUtilities_hdrs",
   srcs = glob(
@@ -23,21 +23,17 @@ filegroup(
       "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
-    ) + [
-
-  ] + [
-
-  ],
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "GoogleAuthUtilities_includes",
   include = [
     "Vendor/GoogleAuthUtilities/pod_support/Headers/Public/"
   ]
-  )
+)
 gen_module_map(
   "GoogleAuthUtilities",
   "GoogleAuthUtilities_module_map",
@@ -45,7 +41,7 @@ gen_module_map(
   [
     "GoogleAuthUtilities_hdrs"
   ]
-  )
+)
 objc_library(
   name = "GoogleAuthUtilities",
   enable_modules = 1,
@@ -55,10 +51,8 @@ objc_library(
   ],
   pch = pch_with_name_hint(
     "GoogleAuthUtilities",
-    [
-
-    ]
-    ),
+    []
+  ),
   includes = [
     "GoogleAuthUtilities_module_map"
   ],
@@ -69,8 +63,7 @@ objc_library(
   deps = [
     "//Vendor/GoogleNetworkingUtilities:GoogleNetworkingUtilities",
     "//Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities",
-    ":GoogleAuthUtilities_VendoredFrameworks"
-  ] + [
+    ":GoogleAuthUtilities_VendoredFrameworks",
     ":GoogleAuthUtilities_includes"
   ],
   copts = [
@@ -97,7 +90,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/GoogleAuthUtilities/pod_support/Headers/Public/GoogleAuthUtilities/"
   ] + [
     "-fmodule-name=GoogleAuthUtilities_pod_module"
@@ -107,11 +100,11 @@ objc_library(
       "Frameworks/frameworks/GoogleAuthUtilities.framework/Resources/GTMOAuth2ViewTouch.xib"
     ],
     exclude_directories = 1
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "GoogleAuthUtilities_acknowledgement",
   deps = [
@@ -119,7 +112,7 @@ acknowledged_target(
     "//Vendor/GoogleSymbolUtilities:GoogleSymbolUtilities_acknowledgement"
   ],
   value = "//Vendor/GoogleAuthUtilities/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 apple_static_framework_import(
   name = "GoogleAuthUtilities_VendoredFrameworks",
   framework_imports = glob(
@@ -127,8 +120,8 @@ apple_static_framework_import(
       "Frameworks/frameworks/GoogleAuthUtilities.framework/**"
     ],
     exclude_directories = 1
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)

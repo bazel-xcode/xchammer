@@ -5,23 +5,23 @@ load(
   "acknowledged_target",
   "gen_module_map",
   "gen_includes"
-  )
+)
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
-# https://bazel.build/versions/master/docs/bazel-user-manual.html
-native.config_setting(
+# https://docs.bazel.build/versions/master/be/general.html#config_setting
+config_setting(
   name = "release",
   values = {
     "compilation_mode": "opt"
   }
-  )
+)
 config_setting(
   name = "iosCase",
   values = {
     "cpu": "powerpc1"
   }
-  )
+)
 filegroup(
   name = "Stripe_hdrs",
   srcs = glob(
@@ -29,25 +29,23 @@ filegroup(
       "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
-    ) + glob(
+  ) + glob(
     [
       "Stripe/*.h",
       "Stripe/PublicHeaders/*.h"
     ],
     exclude_directories = 1
-    ) + [
-
-  ],
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "Stripe_includes",
   include = [
     "Vendor/Stripe/pod_support/Headers/Public/"
   ]
-  )
+)
 gen_module_map(
   "Stripe",
   "Stripe_module_map",
@@ -55,7 +53,7 @@ gen_module_map(
   [
     "Stripe_hdrs"
   ]
-  )
+)
 objc_library(
   name = "Stripe",
   enable_modules = 1,
@@ -64,7 +62,7 @@ objc_library(
       "Stripe/*.m"
     ],
     exclude_directories = 1
-    ),
+  ),
   hdrs = [
     ":Stripe_hdrs"
   ],
@@ -73,7 +71,7 @@ objc_library(
     [
       "Stripe/**/*.pch"
     ]
-    ),
+  ),
   sdk_frameworks = [
     "Foundation",
     "Security",
@@ -83,8 +81,7 @@ objc_library(
     "CoreLocation"
   ],
   deps = [
-    ":Stripe_Bundle_Stripe"
-  ] + [
+    ":Stripe_Bundle_Stripe",
     ":Stripe_includes"
   ],
   copts = [
@@ -111,7 +108,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/Stripe/pod_support/Headers/Public/Stripe/"
   ] + [
     "-fmodule-name=Stripe_pod_module"
@@ -122,18 +119,16 @@ objc_library(
         ":Stripe_Bundle_Stripe"
       ]
     }
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "Stripe_acknowledgement",
-  deps = [
-
-  ],
+  deps = [],
   value = "//Vendor/Stripe/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 apple_resource_bundle(
   name = "Stripe_Bundle_Stripe",
   resources = select(
@@ -143,7 +138,7 @@ apple_resource_bundle(
           "Stripe/Resources/**/*"
         ],
         exclude_directories = 1
-        )
+      )
     }
-    )
   )
+)

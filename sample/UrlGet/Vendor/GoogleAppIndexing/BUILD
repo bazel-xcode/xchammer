@@ -6,17 +6,17 @@ load(
   "acknowledged_target",
   "gen_module_map",
   "gen_includes"
-  )
+)
 # Add a config setting release for compilation mode
 # Assume that people are using `opt` for release mode
 # see the bazel user manual for more information
-# https://bazel.build/versions/master/docs/bazel-user-manual.html
-native.config_setting(
+# https://docs.bazel.build/versions/master/be/general.html#config_setting
+config_setting(
   name = "release",
   values = {
     "compilation_mode": "opt"
   }
-  )
+)
 filegroup(
   name = "GoogleAppIndexing_hdrs",
   srcs = glob(
@@ -24,26 +24,24 @@ filegroup(
       "pod_support/Headers/Public/**/*"
     ],
     exclude_directories = 1
-    ) + glob(
+  ) + glob(
     [
       "Changelog/**/*.h",
       "Changelog/**/*.hpp",
       "Changelog/**/*.hxx"
     ],
     exclude_directories = 1
-    ) + [
-
-  ],
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 gen_includes(
   name = "GoogleAppIndexing_includes",
   include = [
     "Vendor/GoogleAppIndexing/pod_support/Headers/Public/"
   ]
-  )
+)
 gen_module_map(
   "GoogleAppIndexing",
   "GoogleAppIndexing_module_map",
@@ -51,7 +49,7 @@ gen_module_map(
   [
     "GoogleAppIndexing_hdrs"
   ]
-  )
+)
 objc_library(
   name = "GoogleAppIndexing",
   enable_modules = 1,
@@ -61,10 +59,8 @@ objc_library(
   ],
   pch = pch_with_name_hint(
     "GoogleAppIndexing",
-    [
-
-    ]
-    ),
+    []
+  ),
   includes = [
     "GoogleAppIndexing_module_map"
   ],
@@ -74,8 +70,7 @@ objc_library(
   ],
   deps = [
     ":GoogleAppIndexing_Bundle_GoogleAppIndexingResources",
-    ":GoogleAppIndexing_VendoredFrameworks"
-  ] + [
+    ":GoogleAppIndexing_VendoredFrameworks",
     ":GoogleAppIndexing_includes"
   ],
   copts = [
@@ -102,7 +97,7 @@ objc_library(
         "-DNS_BLOCK_ASSERTIONS=1"
       ]
     }
-    ) + [
+  ) + [
     "-IVendor/GoogleAppIndexing/pod_support/Headers/Public/GoogleAppIndexing/"
   ] + [
     "-fmodule-name=GoogleAppIndexing_pod_module"
@@ -113,14 +108,12 @@ objc_library(
   visibility = [
     "//visibility:public"
   ]
-  )
+)
 acknowledged_target(
   name = "GoogleAppIndexing_acknowledgement",
-  deps = [
-
-  ],
+  deps = [],
   value = "//Vendor/GoogleAppIndexing/pod_support_buildable:acknowledgement_fragment"
-  )
+)
 apple_bundle_import(
   name = "GoogleAppIndexing_Bundle_GoogleAppIndexingResources",
   bundle_imports = glob(
@@ -128,8 +121,8 @@ apple_bundle_import(
       "Resources/GoogleAppIndexingResources.bundle/**"
     ],
     exclude_directories = 1
-    )
   )
+)
 apple_static_framework_import(
   name = "GoogleAppIndexing_VendoredFrameworks",
   framework_imports = glob(
@@ -137,8 +130,8 @@ apple_static_framework_import(
       "Frameworks/GoogleAppIndexing.framework/**"
     ],
     exclude_directories = 1
-    ),
+  ),
   visibility = [
     "//visibility:public"
   ]
-  )
+)

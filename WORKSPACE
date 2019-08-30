@@ -4,9 +4,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 git_repository(
     name = "build_bazel_rules_apple",
     remote = "https://github.com/bazelbuild/rules_apple.git",
-    # This is 1 commit behind 0.16.1 which upgraded to a broken verison of
-    # rules_swift on Bazel 0.24.1
-    commit = "eaf5817105d1aa8c473b4e5c3ddfdc34b36b071f",
+    tag = "0.18.0",
 )
 
 load(
@@ -14,7 +12,11 @@ load(
     "apple_rules_dependencies",
 )
 
-apple_rules_dependencies()
+git_repository(
+    name = "build_bazel_rules_swift",
+    remote = "https://github.com/bazelbuild/rules_swift.git",
+    commit = "0192f16b82b2998d846c45187545e38548a6671a",
+)
 
 load(
     "@build_bazel_rules_swift//swift:repositories.bzl",
@@ -23,13 +25,23 @@ load(
 
 swift_rules_dependencies()
 
+apple_rules_dependencies()
+
+
+
+load(
+    "@com_google_protobuf//:protobuf_deps.bzl",
+    "protobuf_deps",
+)
+
+protobuf_deps()
+
 load(
     "@build_bazel_apple_support//lib:repositories.bzl",
     "apple_support_dependencies",
 )
 
 apple_support_dependencies()
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_file(

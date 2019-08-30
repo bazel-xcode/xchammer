@@ -266,7 +266,7 @@ public class XcodeTarget: Hashable, Equatable {
         case .generatedFile:
             // Tulsi sticks some generated source file types in _tulsi-includes
             // and the aspect is aware of this.
-            if useTulsiPath && fileInfo.fullPath.hasPrefix("_tulsi-includes") {
+            if useTulsiPath && fileInfo.fullPath.hasPrefix("bazel-tulsi-includes") {
                 return "tulsi-workspace/" + fileInfo.fullPath
             } else {
                 return "bazel-genfiles/" + resolveExternalPath(for: fileInfo.subPath)
@@ -732,7 +732,7 @@ public class XcodeTarget: Hashable, Equatable {
             }
             // We may need to specify to the ClangImporter as well
             let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
-                "-iquote " + getRelativePath(for: $0)
+                "-iquote " + getRelativePath(for: $0,  useTulsiPath: true)
             }
             accum.append(contentsOf: maps)
         }

@@ -1,5 +1,6 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_extension")
+load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group")
 
 # This is needed for implicit entitlement rules created for
 # files.
@@ -36,11 +37,17 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+
+apple_resource_group(
+    name = "StructuredResources",
+    structured_resources = glob(["StructuredResources/**"])
+)
+
 objc_library(
     name = "siri-ext-bin",
-    srcs = native.glob(["SiriExtension/Sources/**/*.m"]),
-    hdrs = native.glob(["SiriExtension/Sources/**/*.h"]),
-    resources = [
+    srcs = glob(["SiriExtension/Sources/**/*.m"]),
+    hdrs = glob(["SiriExtension/Sources/**/*.h"]),
+    data = [
         ":AppIntentVocabulary",
     ],
 )
@@ -63,9 +70,9 @@ filegroup(
 
 objc_library(
     name = "strings-ext-bin",
-    srcs = native.glob(["StringsExtension/Sources/**/*.m"]),
-    hdrs = native.glob(["StringsExtension/Sources/**/*.h"]),
-    resources = [
+    srcs = glob(["StringsExtension/Sources/**/*.m"]),
+    hdrs = glob(["StringsExtension/Sources/**/*.h"]),
+    data = [
         ":StringsIntentVocabulary",
     ],
 )
@@ -97,6 +104,9 @@ objc_library(
     deps = [
         ":UrlGetClasses",
     ],
+    data = [
+        ":StructuredResources"
+    ]
 )
 
 genrule(
@@ -116,8 +126,8 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_ui_test")
 # Unit Test Target
 objc_library(
     name = "TestsLib",
-    srcs = native.glob(["UnitTests/**/*.m"]),
-    hdrs = native.glob(["UnitTests/**/*.h"]),
+    srcs = glob(["UnitTests/**/*.m"]),
+    hdrs = glob(["UnitTests/**/*.h"]),
     sdk_frameworks = [
         "XCTest",
         "CoreGraphics",
@@ -186,7 +196,7 @@ objc_library(
     ],
 
     # Not added
-    xibs = ["UrlGet/UrlGetViewController.xib"],
+    data = ["UrlGet/UrlGetViewController.xib", ":StructuredResources"],
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",
