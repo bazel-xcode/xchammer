@@ -12,7 +12,4 @@ jobs:
     - name: Setup dependencies 
       run: sudo gem install cocoapods 
     - name: Run Tests
-      run: BAZEL_BUILD=${{ matrix.bazel_enabled }} make ci
-    strategy:
-      matrix:
-        bazel_enabled: [true, false]
+      run: make ci
