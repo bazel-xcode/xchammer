@@ -25,10 +25,10 @@ archive: build-release
 # Brew support
 install: archive
 	mkdir -p $(PREFIX)/bin
-	ditto $(PRODUCT) $(PREFIX)/bin/
+	ditto $(PRODUCT) $(PREFIX)/bin/$(PRODUCT)
 
 uninstall:
-	rm -rf $(PREFIX)/bin/*
+	rm -rf $(PREFIX)/bin/$(PRODUCT)
 
 .PHONY: compile_commands.json
 # https://github.com/swift-vim/SwiftPackageManager.vim
@@ -155,7 +155,7 @@ bazelrc_home:
 	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
 
-ci: bazelrc_home test run_perf_ci run_swift 
+ci: bazelrc_home test run_perf_ci run_swift
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
