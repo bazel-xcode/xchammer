@@ -26,8 +26,10 @@ archive: build-release
 install: archive
 	mkdir -p $(PREFIX)/bin
 	ditto $(PRODUCT) $(PREFIX)/bin/$(PRODUCT)
+	ln -s $(PREFIX)/bin/$(PRODUCT)/Contents/MacOS/xchammer $(PREFIX)/bin/xchammer
 
 uninstall:
+	unlink $(PREFIX)/bin/xchammer
 	rm -rf $(PREFIX)/bin/$(PRODUCT)
 
 .PHONY: compile_commands.json
