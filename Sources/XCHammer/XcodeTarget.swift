@@ -107,6 +107,18 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
 private let stopAfterNeedsRecursive: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { $0.needsRecursiveExtraction ? .justOnceMore : .keepGoing }
 private let stopAtBundles: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { isBundleLibrary($0.type) ? .stop : .keepGoing }
 
+let GenDirSubSRCRoot = "$(SRCROOT)/bazel-genfiles"
+let GenDirSub = "$(SRCROOT)/bazel-genfiles"
+
+// __BAZEL_GEN_DIR__ is a custom toolchain make variable
+// resolve that to $(SRCROOT)/bazel-genfiles.
+// TODO: remove this when it works in every case in Bazel and is no longer used
+func subBazelMakeVariables(_ str: String, useSRCRoot: Bool = false) -> String {
+    let sub = useSRCRoot ? GenDirSubSRCRoot : GenDirSub
+    return str.replacingOccurrences(of: "__BAZEL_GEN_DIR__", with:
+        sub).replacingOccurrences(of: "$(GENDIR)", with: sub)
+}
+
 public class XcodeTarget: Hashable, Equatable {
     private let ruleEntry: RuleEntry
 
@@ -604,14 +616,15 @@ public class XcodeTarget: Hashable, Equatable {
             case .copts:
                 if let coptsArray = value as? [String] {
                     let processedOpts = coptsArray.map { opt -> String in
-                        if opt.hasPrefix("-I") {
+                        if opt == "-I." {
+                             return opt
+                        } else if opt.hasPrefix("-I") {
                             let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
                             let path = opt[substringRangeStart...]
                             let processedOpt =  "-I$(SRCROOT)/\(path)"
-                            return processedOpt
+                            return subBazelMakeVariables(processedOpt, useSRCRoot: false)
                         } else {
-                            return opt.replacingOccurrences(of: "__BAZEL_GEN_DIR__",
-                                with: "$(SRCROOT)/bazel-genfiles")
+                            return subBazelMakeVariables(opt)
                         }
                     }
                     settings.copts <>= processedOpts
@@ -664,7 +677,7 @@ public class XcodeTarget: Hashable, Equatable {
             case .swiftc_opts:
                 if let coptsArray = value as? [String] {
                     let processedOpts = coptsArray.map { opt -> String in
-                        if opt.hasPrefix("-I") {
+                        if opt.hasPrefix("-I") && opt != "-I." {
                             let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
                             let path = opt[substringRangeStart...]
                             let processedOpt =  "-I$(SRCROOT)/\(path)"
@@ -727,9 +740,6 @@ public class XcodeTarget: Hashable, Equatable {
 
         let allCopts = ([self] + transTargets).reduce(into: [String]()) {
             accum, xcodeTarget in
-            if let hmap = xcodeTarget.extractHeaderMap() {
-                accum.append("-iquote " + hmap)
-            }
             // We may need to specify to the ClangImporter as well
             let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
                 "-iquote " + getRelativePath(for: $0,  useTulsiPath: true)
@@ -1125,10 +1135,8 @@ public class XcodeTarget: Hashable, Equatable {
         return (self.sourceFiles + self.nonARCSourceFiles)
             .first(where: { $0.subPath.hasSuffix(".hmap") })
             .map {
-                return getXCSourceRootAbsolutePath(for: $0)
-                    // __BAZEL_GEN_DIR__ is a custom toolchain make variable
-                    // resolve that to $(SRCROOT)/bazel-genfiles.
-                    .replacingOccurrences(of: "__BAZEL_GEN_DIR__", with: "")
+                return subBazelMakeVariables(getRelativePath(for: $0),
+                    useSRCRoot: false)
              }
     }
 
