@@ -48,10 +48,16 @@ enum ProjectWriter {
         }
 
         // generate the project from the spec
+        // The time to convert from XcodeGen -> xcproj
+        let genProfiler = XCHammerProfiler("xcode_gen.generate_xcproj")
         let generator = ProjectGenerator(project: xcodeGenSpec)
         let xcproj = try generator.generateXcodeProject()
-        try xcproj.write(path: xcodeProjPath)
+        genProfiler.logEnd(true)
 
+        // The time to actually write an xcproj
+        let writeProfiler = XCHammerProfiler("xcproj.write")
+        try xcproj.write(path: xcodeProjPath)
+        writeProfiler.logEnd(true)
 
         /*
              MyProject.xcodeproj
