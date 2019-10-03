@@ -108,7 +108,7 @@ private let stopAfterNeedsRecursive: TraversalTransitionPredicate<XcodeTarget> =
 private let stopAtBundles: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { isBundleLibrary($0.type) ? .stop : .keepGoing }
 
 let GenDirSubSRCRoot = "$(SRCROOT)/bazel-genfiles"
-let GenDirSub = "$(SRCROOT)/bazel-genfiles"
+let GenDirSub = "bazel-genfiles"
 
 // __BAZEL_GEN_DIR__ is a custom toolchain make variable
 // resolve that to $(SRCROOT)/bazel-genfiles.
