@@ -32,6 +32,18 @@ extension XCHammerConfig {
     }
 }
 
+extension String {
+    /// At the time of writing, String hashValue is no longer
+    /// producing a stable output
+    /// http://www.cse.yorku.ca/~oz/hash.html
+    var djb2hash: Int {
+        let unicodeScalars = self.unicodeScalars.map { $0.value }
+        return unicodeScalars.reduce(5381) {
+            ($0 << 5) &+ $0 &+ Int($1)
+        }
+    }
+}
+
 enum Generator {
     static let BazelPreBuildTargetName = "GeneratedFiles"
     static let ClearSourceMapTargetName = "ResetLLDBInit"
@@ -637,7 +649,7 @@ enum Generator {
     private static func hashEntryIncludingTimestamp(for url: URL) -> String {
         let resourceValues = try? url.resourceValues(forKeys:
                 Set([.contentModificationDateKey])) 
-        return "\(url.hashValue)-\(Int(resourceValues?.contentModificationDate?.timeIntervalSince1970 ?? 0))"
+        return "\(url.relativeString.djb2hash)-\(Int(resourceValues?.contentModificationDate?.timeIntervalSince1970 ?? 0))"
     }
 
     private static func computeHashEntries<T: Sequence>(urls: T) -> [String] {
@@ -675,7 +687,7 @@ enum Generator {
                 url.lastPathComponent == "BUILD" {
                 return hashEntryIncludingTimestamp(for: url)
             }
-            return String(url.hashValue)
+            return String(url.relativeString.djb2hash)
         }
         return dirHashEntries
     }
