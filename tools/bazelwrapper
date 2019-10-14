@@ -95,7 +95,7 @@ if [[ -x "${BAZEL}" ]]; then
       fi
   done
 
-  exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH=$PATH HOME=$HOME "${BAZEL}" "${ARGS[@]}"
+  exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH="${PATH}" HOME=$HOME "${BAZEL}" "${ARGS[@]}"
 else
   echo "WARNING: Missing installation of bazel" >&2;
   exit 1
