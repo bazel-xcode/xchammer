@@ -8,5 +8,5 @@ cache:
     - $HOME/.bazel_pod_store
 before_install:
   - sudo gem install cocoapods
-osx_image: xcode10.2
+osx_image: xcode11
 script: make ci
