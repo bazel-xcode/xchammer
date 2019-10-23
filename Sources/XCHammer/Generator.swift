@@ -783,9 +783,10 @@ enum Generator {
 
     private static func getAssetBase() -> String {
         let assetDir = "/XCHammerAssets"
-        let assetBase = Bundle.main.resourcePath!
+        // FIXME:(V2) this is really broken/weird
+        let assetBase = Bundle.main.resourcePath! + "/../Resources"
         guard FileManager.default.fileExists(atPath: assetBase + assetDir) else {
-            fatalError("Missing XCHammerAssets")
+            fatalError("Missing XCHammerAssets: " + assetBase + assetDir)
         }
         return assetBase
     }
@@ -817,6 +818,112 @@ enum Generator {
     struct GenerateState {
         let genOptions: XCHammerGenerateOptions
         let skipped: Bool
+    }
+
+    /// Main entry point of generation.
+    public static func generateProjectsV2(workspaceRootPath: Path, bazelPath: Path,
+                                        configPath: Path, config:
+                                        XCHammerConfig, xcworkspacePath: Path?,
+                                        xcodeProjectRuleInfo: XcodeProjectRuleInfo) -> Result<(),
+                GenerateError> {
+       
+        let logger = XCHammerLogger.shared()
+        logger.logInfo("Reading Bazel configurations")
+        let workspaceInfoResult = doResult {
+            return try TulsiHooks.getWorkspaceInfoV2(labels:
+                config.buildTargetLabels, ruleInfo: xcodeProjectRuleInfo)
+        }
+
+        guard case let .success(workspaceInfo) = workspaceInfoResult else {
+            return .failure(workspaceInfoResult.error!)
+        }
+
+
+        // Listen to Tulsi logs. Assume this function is called 1 time
+        let ruleEntryMap = workspaceInfo.ruleEntryMap
+
+        /* TODO(V2): We'd need to pass this into the rule ( or get rid of it??)
+        guard let genfileLabels = try? BazelQueryer.genFileQuery(targets:
+            config.buildTargetLabels, bazelPath: bazelPath,
+            workspaceRoot: workspaceRootPath) else {
+            fatalError("Can't get genfiles")
+        }
+        */
+        let genfileLabels:[BuildLabel] = []
+
+        // For V2 we really don't need this and the rule is modeled as 1 thread.
+        // ATM this is left perhaps we can refactor to support both use cases.
+        let generateResults = config.projects.map { $0.key }.parallelMap({
+            projectName -> Result<GenerateState, GenerateError> in
+            let logger = XCHammerLogger.shared()
+            let profiler = XCHammerProfiler("generate_project")
+            let outputProjectPath = workspaceRootPath + Path(projectName + ".xcodeproj")
+            defer {
+                 profiler.logEnd(true)
+            }
+
+            logger.logInfo("Generating project " + projectName)
+            let genOptions = XCHammerGenerateOptions(workspaceRootPath:
+                    workspaceRootPath, outputProjectPath:
+                    outputProjectPath, bazelPath: bazelPath,
+                    configPath: configPath, config: config, xcworkspacePath:
+                    xcworkspacePath)
+
+            let depsHash = ""
+            return generateProject(genOptions: genOptions,
+                    ruleEntryMap: ruleEntryMap, bazelExecRoot:
+                    workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
+                    depsHash: depsHash).map {
+                return GenerateState(genOptions: genOptions,
+                        skipped: false)
+            }
+        })
+
+
+        let results = generateResults.parallelMap({
+             generateResult -> Result<(), GenerateError> in
+             guard case let .success(state) = generateResult,
+                !state.skipped else {
+                    return generateResult.map { $0 }.analysis(ifSuccess: { (_) -> Result<(), GenerateError> in
+                        return .success(())
+                    }, ifFailure: { (err) -> Result<(), GenerateError> in
+                        return Result.init(error: err)
+                    })
+             }
+             return doResult {
+                try replaceProject(genOptions: state.genOptions)
+             }
+        })
+
+        // Write the genStatus into the workspace
+        if let xcworkspacePath = xcworkspacePath {
+            try? FileManager.default.createDirectory(atPath:
+                    (xcworkspacePath + Path("XCHammerAssets")).string,
+                    withIntermediateDirectories: true,
+                    attributes: [:])
+            let genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                    xcworkspacePath)
+            guard FileManager.default.createFile(atPath: genStatusPath,
+                    contents: "".data(using: .utf8), attributes: nil) else {
+                 fatalError("Can't write genStatus")
+            }
+        }
+
+        // Symlink the canonical bazel external directory
+        let linkTo = (workspaceRootPath.string + "/external")
+        let canonicalExternalDir = Path(workspaceInfo.bazelExecRoot).normalize()
+                .parent().parent().string + "/external"
+        try? FileManager.default.removeItem(atPath: linkTo)
+        do {
+            try FileManager.default.createSymbolicLink(atPath: linkTo,
+                    withDestinationPath: canonicalExternalDir)
+        } catch {
+            fatalError("Cant link external symlink \(error)")
+        }
+
+        return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in
+             return result.flatMap { _ in element }
+        }
     }
 
     /// Main entry point of generation.
@@ -964,4 +1071,5 @@ enum Generator {
              return result.flatMap { _ in element }
         }
     }
+
 }

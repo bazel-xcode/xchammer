@@ -125,3 +125,16 @@ gen_xchammer_config(
     name = "xchammer_config",
     config = xchammer_config,
 )
+
+# Experimental rule. We need to do many things to pull this off
+load(
+    "//:xcodeproject.bzl",
+    "xcode_project",
+)
+
+xcode_project(
+    name = "workspace_v2",
+    deps = [":xchammer"],
+    project_name = "xchammer"
+)
+
