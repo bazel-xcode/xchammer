@@ -43,11 +43,8 @@ def _impl(ctx):
         "--workspace_root",
         "/Users/jerrymarino/Projects/xchammer-github/",
 
-        # TODO:
-        # Pull this from somewhere. We shouldn't /cant run Bazel,
-        # but it's written into the project
         "--bazel",
-        "/tmp/x",
+        ctx.attr.bazel,
 
         "--xcode_project_rule_info",
         xchammer_info_json.path
@@ -63,8 +60,9 @@ def _impl(ctx):
 xcode_project = rule(
     implementation = _impl,
     attrs = {
-        'deps' : attr.label_list(aspects = [tulsi_sources_aspect]),
-        'project_name' : attr.string(default = 'Default'),
+        "deps" : attr.label_list(aspects = [tulsi_sources_aspect]),
+        "project_name" : attr.string(default="Project"),
+        "bazel" : attr.string(default="Bazel"),
     },
     outputs={"out": "%{project_name}.xcodeproj"}
 )

@@ -135,6 +135,7 @@ load(
 xcode_project(
     name = "workspace_v2",
     deps = [":xchammer"],
-    project_name = "xchammer"
+    project_name = "xchammer",
+    bazel="\$\(SRCROOT\)/tools/bazelwrapper"
 )
 
