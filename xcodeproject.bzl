@@ -24,6 +24,8 @@ def _impl(ctx):
 
     xchammer_command = [
         # TODO: Determine how XCHammer binary is actually compiled and passed in here.
+        # perhaps https://docs.bazel.build/versions/master/skylark/lib/ctx.html#resolve_tools
+        # if works with macos application
         "/Users/jerrymarino/Projects/xchammer-github/xchammer.app/contents/macos/xchammer",
 
         "generate_v2",
