@@ -18,10 +18,17 @@ workspace: build
 	    --force
 
 # Experimental Xcode project generator based on Bazel
+# TODO:
+# - pull xchammer + aspects via WORKSPACE
+# - this old command is assuming they've been installed already
+# - find a way to export projects to $(SRCROOT)
 workspace_v2:
 	tools/bazelwrapper build  \
-	-s --spawn_strategy=standalone :workspace_v2 \
-		'--override_repository=tulsi=$(HOME)/Library/Application Support/xchammer/1.0/Bazel'
+	-s \
+	--spawn_strategy=standalone \
+	'--override_repository=tulsi=$(HOME)/Library/Application Support/xchammer/1.0/Bazel' \
+	 :workspace_v2 && \
+	ditto bazel-bin/xchammer.xcodeproj xchammer.xcodeproj
 
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean

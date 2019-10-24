@@ -6,26 +6,21 @@ load("@tulsi//:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAs
 
 def _impl(ctx):
     artifacts = []
-    for dep in ctx.attr.deps:
-        # Debugging
-        #print("Dep", dep[TulsiSourcesAspectInfo])
-        #print("OutputGroupInfo", dep[OutputGroupInfo])
-        #print("Artifacts", dep_artifacts.to_list())
-        dep_artifacts = dep[TulsiSourcesAspectInfo].artifacts
+    for dep in ctx.attr.targets:
         for a in dep[OutputGroupInfo].tulsi_info.to_list():
             artifacts.append(a)
 
     xchammer_info_json = ctx.actions.declare_file("xchammer_info.json")    
     xchammer_info=struct(
         tulsiinfos=[a.path for a in artifacts],
-        # TODO: Determine where this is used and why.
-        execRoot="TODO"
+        # TODO(V2): This is consumed by bazel_build_settings.py
+        # Perhaps that can be replaced out of process or refactored
+        execRoot="$(BAZEL_EXEC_ROOT)"
     )
     ctx.file_action(
         content=xchammer_info.to_json(),
         output=xchammer_info_json
     )
-
 
     xchammer_command = [
         # TODO: Determine how XCHammer binary is actually compiled and passed in here.
@@ -35,12 +30,11 @@ def _impl(ctx):
 
         ctx.attr.config.files.to_list()[0].path,
 
-        # TODO: This need reconsidering.
+        # TODO(V2): This need reconsidering for multi project-mode
         # - write all the schemes here
-        # - copy projects to here.
-        # Likely a workspace could have deps on projects?!
+        # - likely a workspace could have targets on projects?
         "--workspace_root",
-        "/Users/jerrymarino/Projects/xchammer-github/",
+        ctx.bin_dir.path,
 
         "--bazel",
         ctx.attr.bazel,
@@ -49,23 +43,22 @@ def _impl(ctx):
         xchammer_info_json.path
     ]
 
-    # The xcode project is actually not used right now, we just log the gen command into it
     ctx.actions.run_shell(
         inputs=artifacts + [xchammer_info_json],
-        command=" ".join(xchammer_command) + " | tee -a  " + ctx.outputs.out.path,
+        command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
     )
 
 xcode_project = rule(
     implementation = _impl,
     attrs = {
-        "deps" : attr.label_list(aspects = [tulsi_sources_aspect]),
+        "targets" : attr.label_list(aspects = [tulsi_sources_aspect]),
         "project_name" : attr.string(default="Project"),
         "bazel" : attr.string(default="Bazel"),
 
-        # TODO: Perhaps we can unify a lot of XCHammer config into Bazel rule attributes?
+        # TODO(V2): Perhaps we can unify a lot of XCHammer config into Bazel rule attributes?
         # Specifically:
-        # - the top level `targets` attribute
+        # - the top level `targets` attribute, duplicated by above
         # `projects` attribute
         "config" : attr.label(mandatory=True, allow_single_file=True),
     },
