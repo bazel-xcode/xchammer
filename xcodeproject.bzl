@@ -26,15 +26,14 @@ def _impl(ctx):
         output=xchammer_info_json
     )
 
+
     xchammer_command = [
         # TODO: Determine how XCHammer binary is actually compiled and passed in here.
         "/Users/jerrymarino/Projects/xchammer-github/xchammer.app/contents/macos/xchammer",
 
         "generate_v2",
 
-        # TODO: Generate this dynamically from rule parameters
-        # we can port bring the DSL in via rule attributes
-        "/Users/jerrymarino/Projects/xchammer-github/bazel-genfiles/xchammer_config/XCHammer.json",
+        ctx.attr.config.files.to_list()[0].path,
 
         # TODO: This need reconsidering.
         # - write all the schemes here
@@ -63,6 +62,12 @@ xcode_project = rule(
         "deps" : attr.label_list(aspects = [tulsi_sources_aspect]),
         "project_name" : attr.string(default="Project"),
         "bazel" : attr.string(default="Bazel"),
+
+        # TODO: Perhaps we can unify a lot of XCHammer config into Bazel rule attributes?
+        # Specifically:
+        # - the top level `targets` attribute
+        # `projects` attribute
+        "config" : attr.label(mandatory=True, allow_single_file=True),
     },
     outputs={"out": "%{project_name}.xcodeproj"}
 )

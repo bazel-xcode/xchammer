@@ -7,12 +7,6 @@ git_repository(
     tag = "0.18.0",
 )
 
-local_repository(
-    name="tulsi",
-    #path="/Users/jerrymarino//Library/Application\ Support/xchammer/1.0/Bazel"
-    path="/tmp/xxx"
-)
-
 load(
     "@build_bazel_rules_apple//apple:repositories.bzl",
     "apple_rules_dependencies",
