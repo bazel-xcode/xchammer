@@ -23,11 +23,11 @@ def _impl(ctx):
     )
 
     xchammer_command = [
-        # TODO: Determine how XCHammer binary is actually compiled and passed in here.
+        # TODO: Determine how to load XCHammer here.
         # perhaps https://docs.bazel.build/versions/master/skylark/lib/ctx.html#resolve_tools
         # if works with macos application
-        "/Users/jerrymarino/Projects/xchammer-github/xchammer.app/contents/macos/xchammer",
-
+        "unzip " + ctx.attr.xchammer.files.to_list()[0].path + ";",
+        "xchammer.app/contents/macos/xchammer",
         "generate_v2",
 
         ctx.attr.config.files.to_list()[0].path,
@@ -46,7 +46,7 @@ def _impl(ctx):
     ]
 
     ctx.actions.run_shell(
-        inputs=artifacts + [xchammer_info_json],
+        inputs=artifacts + [xchammer_info_json, ctx.attr.xchammer.files.to_list()[0]],
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
     )
@@ -63,6 +63,8 @@ xcode_project = rule(
         # - the top level `targets` attribute, duplicated by above
         # `projects` attribute
         "config" : attr.label(mandatory=True, allow_single_file=True),
+
+        "xchammer" : attr.label(mandatory=True),
     },
     outputs={"out": "%{project_name}.xcodeproj"}
 )
