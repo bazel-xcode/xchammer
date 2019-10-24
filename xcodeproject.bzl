@@ -32,9 +32,9 @@ def _impl(ctx):
 
         ctx.attr.config.files.to_list()[0].path,
 
-        # TODO(V2): This need reconsidering for multi project-mode
-        # - write all the schemes here
-        # - likely a workspace could have targets on projects?
+        # Write the xcode project into the bin_dir.
+        # In order to keep this hermetic, the project must be installed out of band
+        # or in another non-hermetic rule which depends on this
         "--workspace_root",
         ctx.bin_dir.path,
 
