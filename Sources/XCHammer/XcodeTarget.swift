@@ -1208,7 +1208,8 @@ public class XcodeTarget: Hashable, Equatable {
 
         let targetConfig = genOptions.config.getTargetConfig(for: label.value)
 
-        let assetBase = Bundle.main.resourcePath!
+        //TODO(V2): determine how to pass this in
+        let assetBase = "$SRCROOT/xchammer.app/Contents/Resources/"
         let buildInvocation = "\(assetBase)/bazel_build.py \(label.value) --bazel \(genOptions.bazelPath.string)"
 
 

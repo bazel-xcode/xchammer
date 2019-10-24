@@ -1,5 +1,5 @@
 # Load the sources aspect from Tulsi
-load("@tulsi//:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
+load("@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
 
 # Generally, pass this into Bazel first e.g.
 # '--override_repository=tulsi=$HOME/Library/Application Support/xchammer/1.0/Bazel'
@@ -15,7 +15,7 @@ def _impl(ctx):
         tulsiinfos=[a.path for a in artifacts],
         # TODO(V2): This is consumed by bazel_build_settings.py
         # Perhaps that can be replaced out of process or refactored
-        execRoot="$(BAZEL_EXEC_ROOT)"
+        execRoot="__BAZEL_EXEC_ROOT__"
     )
     ctx.file_action(
         content=xchammer_info.to_json(),

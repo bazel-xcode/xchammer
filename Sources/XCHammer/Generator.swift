@@ -83,7 +83,7 @@ enum Generator {
     private static func makeBazelPreBuildTarget(labels: [BuildLabel], genOptions:
             XCHammerGenerateOptions) -> ProjectSpec.Target {
         let bazel = genOptions.bazelPath.string
-        let retrySh = XCHammerAsset.retry.getPath(underProj: genOptions.outputProjectPath)
+        let retrySh = XCHammerAsset.retry.getPath(underProj: "$PROJECT_FILE_PATH")
         // We retry.sh the bazel command so if Xcode updates, the build still works
         let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build --experimental_show_artifacts \(labels.map{ $0.value }.joined(separator: " ")))'"
         let target = ProjectSpec.Target(
@@ -133,8 +133,7 @@ enum Generator {
             genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
                     xcworkspacePath)
         } else {
-            genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
-                    genOptions.outputProjectPath)
+            genStatusPath = "$PROJECT_FILE_PATH"
         }
 
         // Exit with a non 0 status to ensure Xcode reloads the project ( by
@@ -168,7 +167,7 @@ enum Generator {
              fatalError("Can't write update script")
         }
         let updateScriptPath = XCHammerAsset.updateScript.getPath(underProj:
-                genOptions.outputProjectPath)
+                "$PROJECT_FILE_PATH")
 
         let argStr = "-c \(updateScriptPath)"
 

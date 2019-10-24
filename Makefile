@@ -27,8 +27,11 @@ workspace_v2:
 	-s \
 	--spawn_strategy=standalone \
 	'--override_repository=tulsi=$(HOME)/Library/Application Support/xchammer/1.0/Bazel' \
-	 :workspace_v2 && \
-	ditto bazel-bin/xchammer.xcodeproj xchammer.xcodeproj
+	 :workspace_v2
+	rm -rf xchammer.xcodeproj 
+	sed -i '' "s,__BAZEL_EXEC_ROOT__,$$(tools/bazelwrapper info execution_root )/external,g" bazel-bin/xchammer.xcodeproj/XCHammerAssets/bazel_build_settings.py; \
+	cp -r bazel-bin/xchammer.xcodeproj xchammer.xcodeproj; \
+	ln -fs $$(tools/bazelwrapper info execution_root )/external  external
 
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean
