@@ -4,7 +4,7 @@ load("@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl", "tulsi
 # Generally, pass this into Bazel first e.g.
 # '--override_repository=tulsi=$HOME/Library/Application Support/xchammer/1.0/Bazel'
 
-def _impl(ctx):
+def _xcode_project_impl(ctx):
     artifacts = []
     for dep in ctx.attr.targets:
         for a in dep[OutputGroupInfo].tulsi_info.to_list():
@@ -51,8 +51,8 @@ def _impl(ctx):
         outputs=[ctx.outputs.out]
     )
 
-xcode_project = rule(
-    implementation = _impl,
+_xcode_project = rule(
+    implementation = _xcode_project_impl,
     attrs = {
         "targets" : attr.label_list(aspects = [tulsi_sources_aspect]),
         "project_name" : attr.string(default="Project"),
@@ -68,4 +68,44 @@ xcode_project = rule(
     },
     outputs={"out": "%{project_name}.xcodeproj"}
 )
+
+
+def _install_xcode_project_impl(ctx):
+    xcodeproj = ctx.attr.xcodeproj.files.to_list()[0]
+    output_proj = "$(dirname $(readlink $PWD/WORKSPACE))/" + xcodeproj.basename
+    command = [
+        "cp -r " + xcodeproj.path + " " + output_proj,
+        "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
+        "ln -sf $PWD/external $(dirname $(readlink $PWD/WORKSPACE))/external",
+        "echo \"" + output_proj + "\" > " + ctx.outputs.out.path
+    ]
+    ctx.actions.run_shell(
+        inputs=ctx.attr.xcodeproj.files,
+        command=";".join(command),
+        use_default_shell_env=True,
+        outputs=[ctx.outputs.out]
+    )
+
+
+_install_xcode_project = rule(
+    implementation = _install_xcode_project_impl,
+    attrs = {
+        "xcodeproj" : attr.label(mandatory=True),
+    },
+    outputs={"out": "%{name}.dummy"}
+)
+
+def xcode_project(**kwargs):
+    """ Generate an Xcode project"""
+    project = kwargs["project_name"]
+    proj_args = kwargs
+    rule_name = kwargs["name"]
+    proj_args["name"] =  kwargs["name"] + "_impl"
+    _xcode_project(**proj_args)
+
+    # Note: _xcode_project does the hermetic, reproducible bits
+    # and then, we install this xcode project into the root directory.
+    _install_xcode_project(
+        name=rule_name,
+        xcodeproj=kwargs["name"])
 

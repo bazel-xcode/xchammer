@@ -137,10 +137,9 @@ xcode_project(
     targets=[":xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
     project_name="xchammer",
     bazel="\$SRCROOT/tools/bazelwrapper",
+
     config=":xchammer_config",
-    
     # This implicates a source build of XCHammer
     xchammer=":xchammer"
 )
-
 
