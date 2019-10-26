@@ -126,7 +126,7 @@ gen_xchammer_config(
     config = xchammer_config,
 )
 
-# Experimental rule. We need to do many things to pull this off
+# Experimental xcode_project rule
 load(
     "//:xcodeproject.bzl",
     "xcode_project",
@@ -134,11 +134,8 @@ load(
 
 xcode_project(
     name="workspace_v2",
-    
     targets=[":xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
-
     bazel="\$SRCROOT/tools/bazelwrapper",
-
     xchammer=":xchammer"
 )
 

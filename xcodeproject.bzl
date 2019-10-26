@@ -2,9 +2,6 @@
 load("@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
 load("//tools:xchammerconfig.bzl", "xchammer_config", "gen_xchammer_config", "project_config")
 
-# Generally, pass this into Bazel first e.g.
-# '--override_repository=tulsi=$HOME/Library/Application Support/xchammer/1.0/Bazel'
-
 def _xcode_project_impl(ctx):
     artifacts = []
     for dep in ctx.attr.targets:
@@ -14,8 +11,8 @@ def _xcode_project_impl(ctx):
     xchammer_info_json = ctx.actions.declare_file("xchammer_info.json")    
     xchammer_info=struct(
         tulsiinfos=[a.path for a in artifacts],
-        # TODO(V2): This is consumed by bazel_build_settings.py
-        # Perhaps that can be replaced out of process or refactored
+        # This is used by bazel_build_settings.py and replaced by
+        # install_xcode_project.
         execRoot="__BAZEL_EXEC_ROOT__"
     )
     ctx.file_action(

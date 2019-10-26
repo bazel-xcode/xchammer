@@ -18,10 +18,6 @@ workspace: build
 	    --force
 
 # Experimental Xcode project generator based on Bazel
-# TODO:
-# - pull xchammer + aspects via WORKSPACE
-# - this old command is assuming they've been installed already
-# - find a way to export projects to $(SRCROOT)
 workspace_v2:
 	tools/bazelwrapper build :workspace_v2
 
