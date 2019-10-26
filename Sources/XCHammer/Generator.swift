@@ -125,8 +125,16 @@ enum Generator {
 
     private static func makeUpdateXcodeProjectTarget(genOptions:
             XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> ProjectSpec.Target {
-        // Use whatever command and XCHammer this project was built with
-        let generateCommand = CommandLine.arguments.filter { $0 != "--force" }
+        let generateCommand: [String]
+
+        // TODO: we need to find a way to handle this for Xcode builds, where
+        // CLI arguments aren't available to Bazel.
+        if depsHash == "V2" {
+            generateCommand = ["$SRCROOT/tools/bazelwrapper", "build", "workspace_v2" ]
+        } else {
+            // Use whatever command and XCHammer this project was built with
+            generateCommand = CommandLine.arguments.filter { $0 != "--force" }
+        }
 
         let genStatusPath: String
         if let xcworkspacePath = genOptions.xcworkspacePath {
@@ -868,7 +876,7 @@ enum Generator {
                     configPath: configPath, config: config, xcworkspacePath:
                     xcworkspacePath)
 
-            let depsHash = ""
+            let depsHash = "V2"
             return generateProject(genOptions: genOptions,
                     ruleEntryMap: ruleEntryMap, bazelExecRoot:
                     workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,

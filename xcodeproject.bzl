@@ -44,6 +44,7 @@ def _xcode_project_impl(ctx):
     ]
 
     ctx.actions.run_shell(
+        mnemonic="XcodeProject",
         inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json, ctx.attr.xchammer.files.to_list()[0]],
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
@@ -74,6 +75,10 @@ def _install_xcode_project_impl(ctx):
     command = [
         "ditto " + xcodeproj.path + " " + output_proj,
         "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
+        # This is kind of a hack for reference bazel relative to the source
+        # directory, as bazel_build_settings.py doesn't sub Xcode build
+        # settings.
+        "sed -i '' \"s,\$SRCROOT,$(dirname $(readlink $PWD/WORKSPACE)),g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
         "ln -sf $PWD/external $(dirname $(readlink $PWD/WORKSPACE))/external",
         "echo \"" + output_proj + "\" > " + ctx.outputs.out.path
     ]
@@ -112,6 +117,7 @@ def xcode_project(**kwargs):
     """
     proj_args = kwargs
     rule_name = kwargs["name"]
+
     if not kwargs.get("project_name"):
         proj_args["project_name"] = kwargs["name"]
 
