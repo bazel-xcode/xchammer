@@ -72,7 +72,7 @@ def _install_xcode_project_impl(ctx):
     xcodeproj = ctx.attr.xcodeproj.files.to_list()[0]
     output_proj = "$(dirname $(readlink $PWD/WORKSPACE))/" + xcodeproj.basename
     command = [
-        "cp -r " + xcodeproj.path + " " + output_proj,
+        "ditto " + xcodeproj.path + " " + output_proj,
         "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
         "ln -sf $PWD/external $(dirname $(readlink $PWD/WORKSPACE))/external",
         "echo \"" + output_proj + "\" > " + ctx.outputs.out.path
