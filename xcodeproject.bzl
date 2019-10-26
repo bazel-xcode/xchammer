@@ -1,5 +1,6 @@
 # Load the sources aspect from Tulsi
 load("@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
+load("//tools:xchammerconfig.bzl", "xchammer_config", "gen_xchammer_config", "project_config")
 
 # Generally, pass this into Bazel first e.g.
 # '--override_repository=tulsi=$HOME/Library/Application Support/xchammer/1.0/Bazel'
@@ -46,7 +47,7 @@ def _xcode_project_impl(ctx):
     ]
 
     ctx.actions.run_shell(
-        inputs=artifacts + [xchammer_info_json, ctx.attr.xchammer.files.to_list()[0]],
+        inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json, ctx.attr.xchammer.files.to_list()[0]],
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
     )
@@ -55,7 +56,7 @@ _xcode_project = rule(
     implementation = _xcode_project_impl,
     attrs = {
         "targets" : attr.label_list(aspects = [tulsi_sources_aspect]),
-        "project_name" : attr.string(default="Project"),
+        "project_name" : attr.string(),
         "bazel" : attr.string(default="Bazel"),
 
         # TODO(V2): Perhaps we can unify a lot of XCHammer config into Bazel rule attributes?
@@ -96,11 +97,44 @@ _install_xcode_project = rule(
 )
 
 def xcode_project(**kwargs):
-    """ Generate an Xcode project"""
-    project = kwargs["project_name"]
+    """ Generate an Xcode project
+
+    name: attr.string name of the target
+
+    targets:  attr.label_list
+
+    bazel: attr.string path to Bazel used during Xcode builds
+
+    xchammer: attr.label XCHammer build target.
+
+    project_name: (optional)
+
+    target_config: (optional) struct(target_config)
+    
+    project_config: (optional) struct(target_config)
+    """
     proj_args = kwargs
     rule_name = kwargs["name"]
-    proj_args["name"] =  kwargs["name"] + "_impl"
+    if not kwargs.get("project_name"):
+        proj_args["project_name"] = kwargs["name"]
+
+    # Build an XCHammer config Based on inputs
+    targets_attr = [str(t) for t in kwargs.get("targets")]
+    target_config_attr = proj_args.pop("target_config") if proj_args.get("target_config") else None
+    project_config_attr = proj_args.pop("project_config") if proj_args.get("project_config") else project_config(paths = ["**"])
+
+    gen_xchammer_config(
+        name=rule_name + "_xchammer_config",
+        config=xchammer_config(
+            target_config=target_config_attr,
+            projects={ proj_args["project_name"] : project_config_attr },
+            targets=targets_attr,
+        ),
+    )
+
+    proj_args["config"] = rule_name + "_xchammer_config"
+    proj_args["name"] =  rule_name + "_impl"
+
     _xcode_project(**proj_args)
 
     # Note: _xcode_project does the hermetic, reproducible bits
@@ -108,4 +142,3 @@ def xcode_project(**kwargs):
     _install_xcode_project(
         name=rule_name,
         xcodeproj=kwargs["name"])
-
