@@ -794,11 +794,18 @@ enum Generator {
         return assetBase
     }
 
-    private static func getAspectRepoOverride(genOptions: XCHammerGenerateOptions) -> String {
+    public static func getXCHammerPath(genOptions: XCHammerGenerateOptions) -> String {
+        if let path = genOptions.xcodeProjectRuleInfo?.xchammerPath {
+            return path
+        }
+        return CommandLine.arguments[0]
+    }
+
+    static func getAspectRepoOverride(genOptions: XCHammerGenerateOptions) -> String {
         // In V2 we assume that the aspect is propagated by xchammer in the
         // WORKSPACE. We need to use execRoot to make this reproducible
-        if let execRoot = genOptions.xcodeProjectRuleInfo?.xchammerPath {
-            return execRoot + "/Contents/Resources"
+        if let path = genOptions.xcodeProjectRuleInfo?.xchammerPath {
+            return path + "/Contents/Resources"
         }
 
         // Use `override_repository` in Bazel to resolve the Tulsi
