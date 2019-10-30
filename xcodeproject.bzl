@@ -13,7 +13,13 @@ def _xcode_project_impl(ctx):
         tulsiinfos=[a.path for a in artifacts],
         # This is used by bazel_build_settings.py and replaced by
         # install_xcode_project.
-        execRoot="__BAZEL_EXEC_ROOT__"
+        execRoot="__BAZEL_EXEC_ROOT__",
+
+        # This rule is for the actual _imp. We want XCHammer to run the install
+        # target.
+        # TODO(V2): for workspace mode, we need a way to invoke this to include all
+        # targets
+        bazelTargets=[str(ctx.label)[:-5]]
     )
     ctx.file_action(
         content=xchammer_info.to_json(),
@@ -21,11 +27,11 @@ def _xcode_project_impl(ctx):
     )
 
     xchammer_command = [
-        # TODO: Determine how to load XCHammer here.
+        # TODO(V2): Improve how to load XCHammer here.
         # perhaps https://docs.bazel.build/versions/master/skylark/lib/ctx.html#resolve_tools
         # if works with macos application
         "unzip " + ctx.attr.xchammer.files.to_list()[0].path + ";",
-        "xchammer.app/contents/macos/xchammer",
+        "xchammer.app/contents/MacOS/xchammer",
         "generate_v2",
 
         ctx.attr.config.files.to_list()[0].path,

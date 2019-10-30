@@ -16,12 +16,6 @@ import Foundation
 import TulsiGenerator
 import PathKit
 
-
-public struct XcodeProjectRuleInfo: Codable {
-    let execRoot: String
-    let tulsiinfos: [String]
-}
-
 enum TulsiHooks {
     static func getWorkspaceInfo(labels: [BuildLabel], bazelPath: Path,
             workspaceRootPath: Path) throws ->

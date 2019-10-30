@@ -126,11 +126,9 @@ enum Generator {
     private static func makeUpdateXcodeProjectTarget(genOptions:
             XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> ProjectSpec.Target {
         let generateCommand: [String]
-
-        // TODO: we need to find a way to handle this for Xcode builds, where
-        // CLI arguments aren't available to Bazel.
-        if depsHash == "V2" {
-            generateCommand = ["$SRCROOT/tools/bazelwrapper", "build", "workspace_v2" ]
+        if let xcodeProjectRuleInfo = genOptions.xcodeProjectRuleInfo { 
+            generateCommand = [genOptions.bazelPath.string, "build" ] +
+                xcodeProjectRuleInfo.bazelTargets
         } else {
             // Use whatever command and XCHammer this project was built with
             generateCommand = CommandLine.arguments.filter { $0 != "--force" }
@@ -217,7 +215,7 @@ enum Generator {
                     outputProjectPath, bazelPath: genOptions.bazelPath,
                     configPath: genOptions.configPath, config:
                     genOptions.config, xcworkspacePath:
-                    genOptions.xcworkspacePath)
+                    genOptions.xcworkspacePath, xcodeProjectRuleInfo: genOptions.xcodeProjectRuleInfo)
             let targetMap = XcodeTargetMap(entryMap: targetMap.ruleEntryMap,
                 genOptions: projectGenOptions)
             let allApps = targetMap.includedProjectTargets.filter {
@@ -866,7 +864,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath)
+                    xcworkspacePath, xcodeProjectRuleInfo: xcodeProjectRuleInfo)
 
             let depsHash = "V2"
             return generateProject(genOptions: genOptions,
@@ -935,7 +933,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath)
+                    xcworkspacePath, xcodeProjectRuleInfo: nil)
             guard let existingHash = try? getDepsHashSettingValue(projectPath:
                     genOptions.outputProjectPath) else {
                 return (projectName, (false, nil))
@@ -989,7 +987,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath)
+                    xcworkspacePath, xcodeProjectRuleInfo: nil)
 
             let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees
@@ -1005,7 +1003,7 @@ enum Generator {
             return generateProject(genOptions: genOptions,
                     ruleEntryMap: ruleEntryMap, bazelExecRoot:
                     workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
-                    depsHash: depsHash).map {
+                    depsHash: depsHash).map { _ in
                 return GenerateState(genOptions: genOptions,
                         skipped: false)
             }
