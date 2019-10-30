@@ -30,7 +30,7 @@ def _xcode_project_impl(ctx):
         # TODO(V2): Improve how to load XCHammer here.
         # perhaps https://docs.bazel.build/versions/master/skylark/lib/ctx.html#resolve_tools
         # if works with macos application
-        "unzip " + ctx.attr.xchammer.files.to_list()[0].path + ";",
+        "unzip -o " + ctx.attr.xchammer.files.to_list()[0].path + ";",
         "xchammer.app/contents/MacOS/xchammer",
         "generate_v2",
 
@@ -85,6 +85,17 @@ def _install_xcode_project_impl(ctx):
         # directory, as bazel_build_settings.py doesn't sub Xcode build
         # settings.
         "sed -i '' \"s,\$SRCROOT,$(dirname $(readlink $PWD/WORKSPACE)),g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
+
+        # We will need to patch xchammers build script to use tulsi from the
+        # repo:
+        # '--aspects', '@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'
+        #
+        # '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'
+        #
+        # Otherwise, install the aspects inside of the Xcode project, which may
+        # simplfy things
+
+        
         "ln -sf $PWD/external $(dirname $(readlink $PWD/WORKSPACE))/external",
         "echo \"" + output_proj + "\" > " + ctx.outputs.out.path
     ]

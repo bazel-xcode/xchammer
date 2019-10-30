@@ -377,16 +377,15 @@ enum Generator {
             let targetConfig = genOptions.config.getTargetConfig(for:
                     xcodeTarget.label.value)
             let baseBuildOptions = [
-                // Use `override_repository` in Bazel to resolve the Tulsi
-                // workspace adjacent to the Binary.
-                "--override_repository=tulsi=" + getTulsiAspectRepo(),
                 // This is a hack for BEP output not being updated as much as it
                 // should be. By publishing all actions, it flushes the buffer
                 // more frequently ( still not as much as it should ).
                 // The underlying issue fixed in HEAD
                 // https://github.com/bazelbuild/bazel/commit/de3d8bf821dba97471ab4ccfc1f1b1559f0a1cac
-                // TODO: Remove
                 "--build_event_publish_all_actions=true"
+            ] + [
+                "--override_repository=tulsi=" +
+                getAspectRepoOverride(genOptions: genOptions),
             ]
 
             let buildOptions = (targetConfig?.buildBazelOptions ?? "") + " " +
@@ -795,7 +794,16 @@ enum Generator {
         return assetBase
     }
 
-    private static func getTulsiAspectRepo() -> String {
+    private static func getAspectRepoOverride(genOptions: XCHammerGenerateOptions) -> String {
+        // In V2 we assume that the aspect is propagated by xchammer in the
+        // WORKSPACE. We need to use execRoot to make this reproducible
+        print("ExecRoot", genOptions.xcodeProjectRuleInfo?.execRoot)
+        if let execRoot = genOptions.xcodeProjectRuleInfo?.execRoot {
+            return execRoot + "/external/xchammer-Tulsi"        
+        }
+
+        // Use `override_repository` in Bazel to resolve the Tulsi
+        // workspace adjacent to the Binary.
         return getAssetBase()
     }
 
