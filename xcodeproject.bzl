@@ -32,16 +32,18 @@ def _xcode_project_impl(ctx):
 
     # If we're doing a source build of XCHammer then do so
     # this is intended for development of XCHammer only
-    xchammer_files = ctx.attr.xchammer_bazel_build_target.files.to_list()
     xchammer_command = []
-    if len(xchammer_files) > 0:
+    if ctx.attr.xchammer_bazel_build_target:
+        xchammer_files = ctx.attr.xchammer_bazel_build_target.files.to_list()
         xchammer_zip = xchammer_files[0].path
         xchammer_command.append(
             "unzip -o " + xchammer_zip  + " -d $(dirname $(readlink $PWD/WORKSPACE))/;")
+    else:
+        xchammer_files = []
 
     # TODO(V2): handle absolute paths here
     xchammer_command.append(
-         "$(dirname $(readlink $PWD/WORKSPACE))/" + ctx.attr.xchammer + "/Contents/MacOS/xchammer")
+         ctx.attr.xchammer + "/Contents/MacOS/xchammer")
 
     xchammer_command.extend([
         "generate_v2",
@@ -63,7 +65,7 @@ def _xcode_project_impl(ctx):
 
     ctx.actions.run_shell(
         mnemonic="XcodeProject",
-        inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json] + [xchammer_files[0]] if len(xchammer_files) > 0 else [],
+        inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json] + xchammer_files,
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
     )
@@ -74,16 +76,11 @@ _xcode_project = rule(
         "targets" : attr.label_list(aspects = [tulsi_sources_aspect]),
         "project_name" : attr.string(),
         "bazel" : attr.string(default="Bazel"),
-
-        # TODO(V2): Perhaps we can unify a lot of XCHammer config into Bazel rule attributes?
-        # Specifically:
-        # - the top level `targets` attribute, duplicated by above
-        # `projects` attribute
         "config" : attr.label(mandatory=True, allow_single_file=True),
-
-        "xchammer_bazel_build_target" : attr.label(mandatory=False),
-
         "xchammer" : attr.string(mandatory=True),
+
+        # This is used as a development option only
+        "xchammer_bazel_build_target" : attr.label(mandatory=False),
     },
     outputs={"out": "%{project_name}.xcodeproj"}
 )
@@ -127,7 +124,7 @@ def xcode_project(**kwargs):
 
     bazel: attr.string path to Bazel used during Xcode builds
 
-    xchammer: attr.label XCHammer build target.
+    xchammer: attr.string path to xchammer
 
     project_name: (optional)
 
