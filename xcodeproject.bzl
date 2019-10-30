@@ -45,22 +45,28 @@ def _xcode_project_impl(ctx):
     xchammer_command.append(
          ctx.attr.xchammer + "/Contents/MacOS/xchammer")
 
+    project_name = ctx.attr.project_name + ".xcodeproj"
     xchammer_command.extend([
         "generate_v2",
 
         ctx.attr.config.files.to_list()[0].path,
 
-        # Write the xcode project into the bin_dir.
-        # In order to keep this hermetic, the project must be installed out of band
-        # or in another non-hermetic rule which depends on this
+        # Write the xcode project into the execroot. We need to copy to the
+        # bin-dir after generation for validation. This is not 100% safe 
+        # and needs patches in XcodeGen validation ( or remove XcodeGen )
+        # In order to keep this hermetic, the project is installed out of band
+        # in another non-hermetic rule which depends on this
         "--workspace_root",
-        ctx.bin_dir.path,
+        "$PWD",
 
         "--bazel",
         ctx.attr.bazel if ctx.attr.bazel[0] == "/" else "\$SRCROOT/" + ctx.attr.bazel,
 
         "--xcode_project_rule_info",
-        xchammer_info_json.path
+        xchammer_info_json.path,
+
+        # See above comment
+        "; mv " + project_name + " " + ctx.bin_dir.path + "/" + project_name
     ])
 
     ctx.actions.run_shell(
