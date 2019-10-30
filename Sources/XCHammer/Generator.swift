@@ -790,8 +790,7 @@ enum Generator {
 
     private static func getAssetBase() -> String {
         let assetDir = "/XCHammerAssets"
-        // FIXME:(V2) this is really broken/weird
-        let assetBase = Bundle.main.resourcePath! + "/../Resources"
+        let assetBase = Bundle.main.resourcePath!
         guard FileManager.default.fileExists(atPath: assetBase + assetDir) else {
             fatalError("Missing XCHammerAssets: " + assetBase + assetDir)
         }
@@ -845,17 +844,10 @@ enum Generator {
             return .failure(workspaceInfoResult.error!)
         }
 
-
         // Listen to Tulsi logs. Assume this function is called 1 time
         let ruleEntryMap = workspaceInfo.ruleEntryMap
 
-        /* TODO(V2): We'd need to pass this into the rule ( or get rid of it??)
-        guard let genfileLabels = try? BazelQueryer.genFileQuery(targets:
-            config.buildTargetLabels, bazelPath: bazelPath,
-            workspaceRoot: workspaceRootPath) else {
-            fatalError("Can't get genfiles")
-        }
-        */
+        // TODO(V2): We need to pass this into the rule ( or get rid of it??)
         let genfileLabels:[BuildLabel] = []
 
         // For V2 we really don't need this and the rule is modeled as 1 thread.
@@ -886,7 +878,6 @@ enum Generator {
             }
         })
 
-
         let results = generateResults.parallelMap({
              generateResult -> Result<(), GenerateError> in
              guard case let .success(state) = generateResult,
@@ -914,18 +905,6 @@ enum Generator {
                     contents: "".data(using: .utf8), attributes: nil) else {
                  fatalError("Can't write genStatus")
             }
-        }
-
-        // Symlink the canonical bazel external directory
-        let linkTo = (workspaceRootPath.string + "/external")
-        let canonicalExternalDir = Path(workspaceInfo.bazelExecRoot).normalize()
-                .parent().parent().string + "/external"
-        try? FileManager.default.removeItem(atPath: linkTo)
-        do {
-            try FileManager.default.createSymbolicLink(atPath: linkTo,
-                    withDestinationPath: canonicalExternalDir)
-        } catch {
-            fatalError("Cant link external symlink \(error)")
         }
 
         return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in
