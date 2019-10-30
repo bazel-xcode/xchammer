@@ -8,7 +8,9 @@ def _xcode_project_impl(ctx):
         for a in dep[OutputGroupInfo].tulsi_info.to_list():
             artifacts.append(a)
 
-    xchammer_info_json = ctx.actions.declare_file("xchammer_info.json")    
+    xchammer_info_json = ctx.actions.declare_file("xchammer_info.json")
+
+
     xchammer_info=struct(
         tulsiinfos=[a.path for a in artifacts],
         # This is used by bazel_build_settings.py and replaced by
@@ -19,19 +21,29 @@ def _xcode_project_impl(ctx):
         # target.
         # TODO(V2): for workspace mode, we need a way to invoke this to include all
         # targets
-        bazelTargets=[str(ctx.label)[:-5]]
+        bazelTargets=[str(ctx.label)[:-5]],
+
+        xchammerPath=ctx.attr.xchammer if ctx.attr.xchammer[0] == "/" else "$SRCROOT/" + ctx.attr.xchammer
     )
     ctx.file_action(
         content=xchammer_info.to_json(),
         output=xchammer_info_json
     )
 
-    xchammer_command = [
-        # TODO(V2): Improve how to load XCHammer here.
-        # perhaps https://docs.bazel.build/versions/master/skylark/lib/ctx.html#resolve_tools
-        # if works with macos application
-        "unzip -o " + ctx.attr.xchammer.files.to_list()[0].path + ";",
-        "xchammer.app/contents/MacOS/xchammer",
+    # If we're doing a source build of XCHammer then do so
+    # this is intended for development of XCHammer only
+    xchammer_files = ctx.attr.xchammer_bazel_build_target.files.to_list()
+    xchammer_command = []
+    if len(xchammer_files) > 0:
+        xchammer_zip = xchammer_files[0].path
+        xchammer_command.append(
+            "unzip -o " + xchammer_zip  + " -d $(dirname $(readlink $PWD/WORKSPACE))/;")
+
+    # TODO(V2): handle absolute paths here
+    xchammer_command.append(
+         "$(dirname $(readlink $PWD/WORKSPACE))/" + ctx.attr.xchammer + "/Contents/MacOS/xchammer")
+
+    xchammer_command.extend([
         "generate_v2",
 
         ctx.attr.config.files.to_list()[0].path,
@@ -43,15 +55,15 @@ def _xcode_project_impl(ctx):
         ctx.bin_dir.path,
 
         "--bazel",
-        ctx.attr.bazel,
+        ctx.attr.bazel if ctx.attr.bazel[0] == "/" else "\$SRCROOT/" + ctx.attr.bazel,
 
         "--xcode_project_rule_info",
         xchammer_info_json.path
-    ]
+    ])
 
     ctx.actions.run_shell(
         mnemonic="XcodeProject",
-        inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json, ctx.attr.xchammer.files.to_list()[0]],
+        inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json] + [xchammer_files[0]] if len(xchammer_files) > 0 else [],
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
     )
@@ -69,7 +81,9 @@ _xcode_project = rule(
         # `projects` attribute
         "config" : attr.label(mandatory=True, allow_single_file=True),
 
-        "xchammer" : attr.label(mandatory=True),
+        "xchammer_bazel_build_target" : attr.label(mandatory=False),
+
+        "xchammer" : attr.string(mandatory=True),
     },
     outputs={"out": "%{project_name}.xcodeproj"}
 )
@@ -85,17 +99,6 @@ def _install_xcode_project_impl(ctx):
         # directory, as bazel_build_settings.py doesn't sub Xcode build
         # settings.
         "sed -i '' \"s,\$SRCROOT,$(dirname $(readlink $PWD/WORKSPACE)),g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
-
-        # We will need to patch xchammers build script to use tulsi from the
-        # repo:
-        # '--aspects', '@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'
-        #
-        # '--aspects', '@tulsi//:tulsi/tulsi_aspects.bzl%tulsi_outputs_aspect'
-        #
-        # Otherwise, install the aspects inside of the Xcode project, which may
-        # simplfy things
-
-        
         "ln -sf $PWD/external $(dirname $(readlink $PWD/WORKSPACE))/external",
         "echo \"" + output_proj + "\" > " + ctx.outputs.out.path
     ]
@@ -151,6 +154,11 @@ def xcode_project(**kwargs):
             targets=targets_attr,
         ),
     )
+
+    # XCHammer development only
+    xchammer_target = "//:xchammer"
+    if xchammer_target in targets_attr:
+        proj_args["xchammer_bazel_build_target"] = xchammer_target
 
     proj_args["config"] = rule_name + "_xchammer_config"
     proj_args["name"] =  rule_name + "_impl"

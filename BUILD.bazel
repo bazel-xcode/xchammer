@@ -135,7 +135,7 @@ load(
 xcode_project(
     name="workspace_v2",
     targets=["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
-    bazel="\$SRCROOT/tools/bazelwrapper",
-    xchammer=":xchammer"
+    bazel="tools/bazelwrapper",
+    xchammer="xchammer.app"
 )
 

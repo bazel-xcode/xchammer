@@ -1208,12 +1208,9 @@ public class XcodeTarget: Hashable, Equatable {
 
         let targetConfig = genOptions.config.getTargetConfig(for: label.value)
 
-        // TODO: Under V2, we don't yet know where XCHammer is going to be.
-        // this will only work when it's at the root directory.
-        // consider patching this into the Xcode project.
         let bazelBase: String
-        if let _ = genOptions.xcodeProjectRuleInfo?.execRoot {
-            bazelBase = "$SRCROOT/xchammer.app/Contents/Resources/"
+        if let xchammerPath = genOptions.xcodeProjectRuleInfo?.xchammerPath {
+            bazelBase = xchammerPath + "/Contents/Resources"
         } else {
             bazelBase = Bundle.main.resourcePath!
         }

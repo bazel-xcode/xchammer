@@ -22,6 +22,11 @@ public struct XcodeProjectRuleInfo: Codable {
 
     /// Bazel targets that reference the underlying project
     let bazelTargets: [String]
+
+    /// The path to XCHammer
+    /// Generally, we write the absolute path of XCHammer into
+    /// the Xcode project, but that will not be consistent
+    let xchammerPath: String
 }
 
 struct XCHammerGenerateOptions {
