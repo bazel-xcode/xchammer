@@ -2,15 +2,61 @@
 load("@xchammer_resources//:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
 load(":xchammerconfig.bzl", "xchammer_config", "gen_xchammer_config", "project_config")
 
+load(
+    ":xcode_configuration_provider.bzl",
+    "XcodeProjectTargetInfo",
+    "XcodeConfigurationAspectInfo",
+    "target_config_aspect"
+)
+
 def _xcode_project_impl(ctx):
+    # Collect Target configuration JSON from deps
+    # Then, merge them to a list
+    aggregate_target_config = []
+    for dep in ctx.attr.targets:
+        if XcodeConfigurationAspectInfo in dep:
+            info = dep[XcodeConfigurationAspectInfo].value
+            aggregate_target_config.append({ str(info.label) : info.value})
+
+        if hasattr(dep, "deps"):
+            for depdep in dep.deps:
+                if XcodeConfigurationAspectInfo in depdep:
+                    info = depdep[XcodeConfigurationAspectInfo].value
+                    aggregate_target_config.append({ str(info.label) : info.value})
+
+
+    xchammerconfig_json = ctx.actions.declare_file("xchammer_config.json")
+
+    target_config_attr = ctx.attr.target_config if ctx.attr.target_config else None
+    # Consider adding this ability
+    if len(aggregate_target_config) > 0 and ctx.attr.target_config:
+        print("warning: cannot use aggregate target config and target config directly")
+        target_config = aggregate_target_config
+    elif len(aggregate_target_config) > 0:
+        target_config = aggregate_target_config
+    else:
+        target_config = ctx.attr.target_config
+
+    project_config_attr = ctx.attr.project_config if ctx.attr.project_config else project_config(paths = ["**"])
+    xchammerconfig=struct(
+        target_config=target_config,
+        projects={ ctx.attr.project_name : project_config_attr },
+        targets =[str(t.label) for t in ctx.attr.targets]
+    )
+
+    print(xchammerconfig.to_json())
+    ctx.file_action(
+        content = xchammerconfig.to_json(),
+        output = xchammerconfig_json,
+    )
+
     artifacts = []
+
     for dep in ctx.attr.targets:
         for a in dep[OutputGroupInfo].tulsi_info.to_list():
             artifacts.append(a)
 
     xchammer_info_json = ctx.actions.declare_file("xchammer_info.json")
-
-
     xchammer_info=struct(
         tulsiinfos=[a.path for a in artifacts],
         # This is used by bazel_build_settings.py and replaced by
@@ -48,8 +94,7 @@ def _xcode_project_impl(ctx):
     project_name = ctx.attr.project_name + ".xcodeproj"
     xchammer_command.extend([
         "generate_v2",
-
-        ctx.attr.config.files.to_list()[0].path,
+        xchammerconfig_json.path,
 
         # Write the xcode project into the execroot. We need to copy to the
         # bin-dir after generation for validation. This is not 100% safe 
@@ -71,7 +116,7 @@ def _xcode_project_impl(ctx):
 
     ctx.actions.run_shell(
         mnemonic="XcodeProject",
-        inputs=artifacts + ctx.attr.config.files.to_list() + [xchammer_info_json] + xchammer_files,
+        inputs=artifacts + [xchammerconfig_json, xchammer_info_json] + xchammer_files,
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out]
     )
@@ -79,15 +124,22 @@ def _xcode_project_impl(ctx):
 _xcode_project = rule(
     implementation = _xcode_project_impl,
     attrs = {
-        "targets" : attr.label_list(aspects = [tulsi_sources_aspect]),
+        "targets" : attr.label_list(aspects = [tulsi_sources_aspect, target_config_aspect]),
         "project_name" : attr.string(),
-        "bazel" : attr.string(default="Bazel"),
-        "config" : attr.label(mandatory=True, allow_single_file=True),
+        "bazel" : attr.string(default="bazel"),
+        "target_config" : attr.label(allow_single_file=True),
+        "project_config" : attr.label(allow_single_file=True),
         "xchammer" : attr.string(mandatory=True),
+
 
         # This is used as a development option only
         "xchammer_bazel_build_target" : attr.label(mandatory=False),
     },
+    fragments = [
+        "apple",
+        "cpp",
+        "objc",
+    ],
     outputs={"out": "%{project_name}.xcodeproj"}
 )
 
@@ -146,24 +198,12 @@ def xcode_project(**kwargs):
 
     # Build an XCHammer config Based on inputs
     targets_attr = [str(t) for t in kwargs.get("targets")]
-    target_config_attr = proj_args.pop("target_config") if proj_args.get("target_config") else None
-    project_config_attr = proj_args.pop("project_config") if proj_args.get("project_config") else project_config(paths = ["**"])
-
-    gen_xchammer_config(
-        name=rule_name + "_xchammer_config",
-        config=xchammer_config(
-            target_config=target_config_attr,
-            projects={ proj_args["project_name"] : project_config_attr },
-            targets=targets_attr,
-        ),
-    )
 
     # XCHammer development only
     xchammer_target = "//:xchammer"
     if xchammer_target in targets_attr:
         proj_args["xchammer_bazel_build_target"] = xchammer_target
 
-    proj_args["config"] = rule_name + "_xchammer_config"
     proj_args["name"] =  rule_name + "_impl"
 
     _xcode_project(**proj_args)
