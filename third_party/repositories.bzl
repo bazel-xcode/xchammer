@@ -269,11 +269,10 @@ def xchammer_dependencies():
     )
 
 
-    # See TODOs for refactoring static aspect query
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/tulsi.git",
-        commit = "387e06bf8ffc3e2331e8779094d0a0001c53a752",
+        commit = "6302ee15a49a93fcaaff75e1fcd235fc87ac2ec8",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
