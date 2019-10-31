@@ -78,3 +78,12 @@ http_archive(
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 
 buildifier_dependencies()
+
+# Declare the XCHammer resource to the built product of XCHammer.
+# This is a hack for XCHammer development, but is how XCHammer is imported 
+# into a workspace as a binary build
+local_repository(
+    name="xchammer_resources",
+    path="xchammer.app/Contents/Resources/",
+)
+

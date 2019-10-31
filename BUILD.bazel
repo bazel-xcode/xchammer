@@ -27,7 +27,7 @@ load(
     "namespaced_name",
 )
 load(
-    "//tools:xchammerconfig.bzl",
+    "//BazelExtensions:xchammerconfig.bzl",
     "execution_action",
     "gen_xchammer_config",
     "project_config",
@@ -48,6 +48,7 @@ swift_library(
     srcs = glob(["Sources/**/*.swift"]),
     data = [
         ":XCHammerAssets",
+        "//BazelExtensions:BazelExtensions",
     ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",
@@ -128,7 +129,7 @@ gen_xchammer_config(
 
 # Experimental xcode_project rule
 load(
-    "//:xcodeproject.bzl",
+    "//BazelExtensions:xcodeproject.bzl",
     "xcode_project",
 )
 
@@ -138,4 +139,6 @@ xcode_project(
     bazel="tools/bazelwrapper",
     xchammer="xchammer.app"
 )
+
+
 
