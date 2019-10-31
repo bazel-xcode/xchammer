@@ -14,6 +14,21 @@
 
 import PathKit
 
+public struct XcodeProjectRuleInfo: Codable {
+    /// A template for exec root 
+    let execRoot: String
+
+    let tulsiinfos: [String]
+
+    /// Bazel targets that reference the underlying project
+    let bazelTargets: [String]
+
+    /// The path to XCHammer
+    /// Generally, we write the absolute path of XCHammer into
+    /// the Xcode project, but that will not be consistent
+    let xchammerPath: String
+}
+
 struct XCHammerGenerateOptions {
     let workspaceRootPath: Path
 
@@ -27,6 +42,9 @@ struct XCHammerGenerateOptions {
     let config: XCHammerConfig
 
     let xcworkspacePath: Path?
+
+    /// Info from the xcode_project rule
+    let xcodeProjectRuleInfo: XcodeProjectRuleInfo?
 
     var workspaceEnabled: Bool {
         return xcworkspacePath != nil

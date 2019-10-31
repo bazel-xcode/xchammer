@@ -20,7 +20,7 @@ ios-building
 compile_commands.json
 
 # Generate Projects
-xchammer.xcodeproj/
+*.xcodeproj/
 xchammer.app
 depsHash
 sample/UrlGet/IntegrationTests.xcodeproj/

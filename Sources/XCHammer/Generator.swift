@@ -83,7 +83,7 @@ enum Generator {
     private static func makeBazelPreBuildTarget(labels: [BuildLabel], genOptions:
             XCHammerGenerateOptions) -> ProjectSpec.Target {
         let bazel = genOptions.bazelPath.string
-        let retrySh = XCHammerAsset.retry.getPath(underProj: genOptions.outputProjectPath)
+        let retrySh = XCHammerAsset.retry.getPath(underProj: "$PROJECT_FILE_PATH")
         // We retry.sh the bazel command so if Xcode updates, the build still works
         let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build --experimental_show_artifacts \(labels.map{ $0.value }.joined(separator: " ")))'"
         let target = ProjectSpec.Target(
@@ -125,16 +125,21 @@ enum Generator {
 
     private static func makeUpdateXcodeProjectTarget(genOptions:
             XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> ProjectSpec.Target {
-        // Use whatever command and XCHammer this project was built with
-        let generateCommand = CommandLine.arguments.filter { $0 != "--force" }
+        let generateCommand: [String]
+        if let xcodeProjectRuleInfo = genOptions.xcodeProjectRuleInfo { 
+            generateCommand = [genOptions.bazelPath.string, "build" ] +
+                xcodeProjectRuleInfo.bazelTargets
+        } else {
+            // Use whatever command and XCHammer this project was built with
+            generateCommand = CommandLine.arguments.filter { $0 != "--force" }
+        }
 
         let genStatusPath: String
         if let xcworkspacePath = genOptions.xcworkspacePath {
             genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
                     xcworkspacePath)
         } else {
-            genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
-                    genOptions.outputProjectPath)
+            genStatusPath = "$PROJECT_FILE_PATH"
         }
 
         // Exit with a non 0 status to ensure Xcode reloads the project ( by
@@ -168,7 +173,7 @@ enum Generator {
              fatalError("Can't write update script")
         }
         let updateScriptPath = XCHammerAsset.updateScript.getPath(underProj:
-                genOptions.outputProjectPath)
+                "$PROJECT_FILE_PATH")
 
         let argStr = "-c \(updateScriptPath)"
 
@@ -210,7 +215,7 @@ enum Generator {
                     outputProjectPath, bazelPath: genOptions.bazelPath,
                     configPath: genOptions.configPath, config:
                     genOptions.config, xcworkspacePath:
-                    genOptions.xcworkspacePath)
+                    genOptions.xcworkspacePath, xcodeProjectRuleInfo: genOptions.xcodeProjectRuleInfo)
             let targetMap = XcodeTargetMap(entryMap: targetMap.ruleEntryMap,
                 genOptions: projectGenOptions)
             let allApps = targetMap.includedProjectTargets.filter {
@@ -372,16 +377,15 @@ enum Generator {
             let targetConfig = genOptions.config.getTargetConfig(for:
                     xcodeTarget.label.value)
             let baseBuildOptions = [
-                // Use `override_repository` in Bazel to resolve the Tulsi
-                // workspace adjacent to the Binary.
-                "--override_repository=tulsi=" + getTulsiAspectRepo(),
                 // This is a hack for BEP output not being updated as much as it
                 // should be. By publishing all actions, it flushes the buffer
                 // more frequently ( still not as much as it should ).
                 // The underlying issue fixed in HEAD
                 // https://github.com/bazelbuild/bazel/commit/de3d8bf821dba97471ab4ccfc1f1b1559f0a1cac
-                // TODO: Remove
                 "--build_event_publish_all_actions=true"
+            ] + [
+                "--override_repository=tulsi=" +
+                getAspectRepoOverride(genOptions: genOptions),
             ]
 
             let buildOptions = (targetConfig?.buildBazelOptions ?? "") + " " +
@@ -785,12 +789,27 @@ enum Generator {
         let assetDir = "/XCHammerAssets"
         let assetBase = Bundle.main.resourcePath!
         guard FileManager.default.fileExists(atPath: assetBase + assetDir) else {
-            fatalError("Missing XCHammerAssets")
+            fatalError("Missing XCHammerAssets: " + assetBase + assetDir)
         }
         return assetBase
     }
 
-    private static func getTulsiAspectRepo() -> String {
+    public static func getXCHammerPath(genOptions: XCHammerGenerateOptions) -> String {
+        if let path = genOptions.xcodeProjectRuleInfo?.xchammerPath {
+            return path
+        }
+        return CommandLine.arguments[0]
+    }
+
+    static func getAspectRepoOverride(genOptions: XCHammerGenerateOptions) -> String {
+        // In V2 we assume that the aspect is propagated by xchammer in the
+        // WORKSPACE. We need to use execRoot to make this reproducible
+        if let path = genOptions.xcodeProjectRuleInfo?.xchammerPath {
+            return path + "/Contents/Resources"
+        }
+
+        // Use `override_repository` in Bazel to resolve the Tulsi
+        // workspace adjacent to the Binary.
         return getAssetBase()
     }
 
@@ -820,6 +839,92 @@ enum Generator {
     }
 
     /// Main entry point of generation.
+    public static func generateProjectsV2(workspaceRootPath: Path, bazelPath: Path,
+                                        configPath: Path, config:
+                                        XCHammerConfig, xcworkspacePath: Path?,
+                                        xcodeProjectRuleInfo: XcodeProjectRuleInfo) -> Result<(),
+                GenerateError> {
+       
+        let logger = XCHammerLogger.shared()
+        logger.logInfo("Reading Bazel configurations")
+        let workspaceInfoResult = doResult {
+            return try TulsiHooks.getWorkspaceInfoV2(labels:
+                config.buildTargetLabels, ruleInfo: xcodeProjectRuleInfo)
+        }
+
+        guard case let .success(workspaceInfo) = workspaceInfoResult else {
+            return .failure(workspaceInfoResult.error!)
+        }
+
+        // Listen to Tulsi logs. Assume this function is called 1 time
+        let ruleEntryMap = workspaceInfo.ruleEntryMap
+
+        // TODO(V2): We need to pass this into the rule ( or get rid of it??)
+        let genfileLabels:[BuildLabel] = []
+
+        // For V2 we really don't need this and the rule is modeled as 1 thread.
+        // ATM this is left perhaps we can refactor to support both use cases.
+        let generateResults = config.projects.map { $0.key }.parallelMap({
+            projectName -> Result<GenerateState, GenerateError> in
+            let logger = XCHammerLogger.shared()
+            let profiler = XCHammerProfiler("generate_project")
+            let outputProjectPath = workspaceRootPath + Path(projectName + ".xcodeproj")
+            defer {
+                 profiler.logEnd(true)
+            }
+
+            logger.logInfo("Generating project " + projectName)
+            let genOptions = XCHammerGenerateOptions(workspaceRootPath:
+                    workspaceRootPath, outputProjectPath:
+                    outputProjectPath, bazelPath: bazelPath,
+                    configPath: configPath, config: config, xcworkspacePath:
+                    xcworkspacePath, xcodeProjectRuleInfo: xcodeProjectRuleInfo)
+
+            let depsHash = "V2"
+            return generateProject(genOptions: genOptions,
+                    ruleEntryMap: ruleEntryMap, bazelExecRoot:
+                    workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
+                    depsHash: depsHash).map {
+                return GenerateState(genOptions: genOptions,
+                        skipped: false)
+            }
+        })
+
+        let results = generateResults.parallelMap({
+             generateResult -> Result<(), GenerateError> in
+             guard case let .success(state) = generateResult,
+                !state.skipped else {
+                    return generateResult.map { $0 }.analysis(ifSuccess: { (_) -> Result<(), GenerateError> in
+                        return .success(())
+                    }, ifFailure: { (err) -> Result<(), GenerateError> in
+                        return Result.init(error: err)
+                    })
+             }
+             return doResult {
+                try replaceProject(genOptions: state.genOptions)
+             }
+        })
+
+        // Write the genStatus into the workspace
+        if let xcworkspacePath = xcworkspacePath {
+            try? FileManager.default.createDirectory(atPath:
+                    (xcworkspacePath + Path("XCHammerAssets")).string,
+                    withIntermediateDirectories: true,
+                    attributes: [:])
+            let genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                    xcworkspacePath)
+            guard FileManager.default.createFile(atPath: genStatusPath,
+                    contents: "".data(using: .utf8), attributes: nil) else {
+                 fatalError("Can't write genStatus")
+            }
+        }
+
+        return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in
+             return result.flatMap { _ in element }
+        }
+    }
+
+    /// Main entry point of generation.
     public static func generateProjects(workspaceRootPath: Path, bazelPath: Path,
                                         configPath: Path, config:
                                         XCHammerConfig, xcworkspacePath: Path?,
@@ -842,7 +947,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath)
+                    xcworkspacePath, xcodeProjectRuleInfo: nil)
             guard let existingHash = try? getDepsHashSettingValue(projectPath:
                     genOptions.outputProjectPath) else {
                 return (projectName, (false, nil))
@@ -896,7 +1001,7 @@ enum Generator {
                     workspaceRootPath, outputProjectPath:
                     outputProjectPath, bazelPath: bazelPath,
                     configPath: configPath, config: config, xcworkspacePath:
-                    xcworkspacePath)
+                    xcworkspacePath, xcodeProjectRuleInfo: nil)
 
             let existingState = projectStates[projectName]
             // TODO: (jerry) Propagate transitive project updates to dependees
@@ -912,7 +1017,7 @@ enum Generator {
             return generateProject(genOptions: genOptions,
                     ruleEntryMap: ruleEntryMap, bazelExecRoot:
                     workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
-                    depsHash: depsHash).map {
+                    depsHash: depsHash).map { _ in
                 return GenerateState(genOptions: genOptions,
                         skipped: false)
             }
@@ -964,4 +1069,5 @@ enum Generator {
              return result.flatMap { _ in element }
         }
     }
+
 }

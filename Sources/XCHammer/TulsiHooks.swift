@@ -31,4 +31,13 @@ enum TulsiHooks {
         return try TulsiRuleEntryMapExtractor.extract(config:
                 config, workspace: workspaceRootPath.url)
     }
+
+    static func getWorkspaceInfoV2(labels: [BuildLabel], ruleInfo: XcodeProjectRuleInfo) throws ->
+        XCHammerBazelWorkspaceInfo {
+	let execRoot = ruleInfo.execRoot
+	let files = Set(ruleInfo.tulsiinfos)
+	let ruleEntryMap = XCHammerAspectInfoExtractor.extractRuleEntriesFromArtifacts(files,
+		executionRootURL: URL(fileURLWithPath: execRoot))
+	return XCHammerBazelWorkspaceInfo(bazelExecRoot: execRoot, ruleEntryMap: ruleEntryMap)
+    }
 }

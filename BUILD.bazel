@@ -125,3 +125,17 @@ gen_xchammer_config(
     name = "xchammer_config",
     config = xchammer_config,
 )
+
+# Experimental xcode_project rule
+load(
+    "//:xcodeproject.bzl",
+    "xcode_project",
+)
+
+xcode_project(
+    name="workspace_v2",
+    targets=["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
+    bazel="tools/bazelwrapper",
+    xchammer="xchammer.app"
+)
+

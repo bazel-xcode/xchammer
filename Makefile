@@ -17,6 +17,10 @@ workspace: build
 	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
 	    --force
 
+# Experimental Xcode project generator based on Bazel
+workspace_v2:
+	tools/bazelwrapper build :workspace_v2
+
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean
 

@@ -54,6 +54,12 @@ func getHammerConfig(path: Path) throws -> XCHammerConfig {
     return config
 }
 
+func getXcodeProjectRuleInfo(path: Path) throws -> XcodeProjectRuleInfo {
+    let data = try Data(contentsOf: URL(fileURLWithPath: path.string))
+    return try JSONDecoder().decode(XcodeProjectRuleInfo.self, from: data)
+}
+
+
 /// XCHammer generate options
 /// 
 /// Options for generation only.
@@ -146,6 +152,99 @@ struct GenerateCommand: CommandProtocol {
     }
 }
 
+struct GenerateOptionsV2: OptionsProtocol, Equatable {
+    typealias ClientError = CommandError
+
+    let configPath: Path
+    let workspaceRootPath: Path
+    let bazelPath: Path
+    let xcodeProjectRuleInfoPath: Path
+    let xcworkspacePath: Path?
+
+    private static func getEnvBazelPath() throws -> Path {
+        let path = try shellOut(to: "which", arguments: ["bazel"])
+        return Path(path)
+    }
+
+    static func create(_ configPath: Path) -> (Path?) -> (Path?) -> (Path) -> (Path?) -> GenerateOptionsV2 {
+        return { workspaceRootPathOpt in { bazelPathOpt in {
+            xcodeProjectRuleInfoPathOpt in { xcworkspacePathOpt -> GenerateOptionsV2 in
+                // Defaults to PWD
+                let workspaceRootPath: Path = workspaceRootPathOpt?.normalize() ??
+                    Path(FileManager.default.currentDirectoryPath)
+                // If the user gave us Bazel, then use that.
+                // Otherwise, try to get bazel from the env
+                let bazelPath: Path
+                if let normalizedBazelPath = bazelPathOpt?.normalize() {
+                    bazelPath = normalizedBazelPath
+                } else {
+                    guard let envBazel = try? getEnvBazelPath() else {
+                        fatalError("Missing Bazel")
+                    }
+                    bazelPath = envBazel.normalize()
+                }
+
+                return GenerateOptionsV2(
+                configPath: configPath.normalize(),
+                workspaceRootPath: workspaceRootPath,
+                bazelPath: bazelPath,
+                xcodeProjectRuleInfoPath: xcodeProjectRuleInfoPathOpt.normalize(),
+                xcworkspacePath: xcworkspacePathOpt?.normalize()
+            )
+        } } } } 
+    }
+
+    static func evaluate(_ m: Commandant.CommandMode) -> Result<GenerateOptionsV2, Commandant.CommandantError<CommandError>> {
+        return create
+            <*> m <| Argument(usage: "Path to the XCHammerConfig yaml file")
+            <*> m <| Option(key: "workspace_root", defaultValue: nil,
+                 usage: "The source root of the repo")
+            <*> m <| Option(key: "bazel", defaultValue: nil,
+                 usage: "Path to the bazel binary")
+            <*> m <| Option(key: "xcode_project_rule_info", defaultValue: "", usage: "Force run the generator")
+            <*> m <| Option(key: "xcworkspace", defaultValue: nil,
+                 usage: "Path to the xcworkspace")
+    }
+}
+
+
+
+struct GenerateCommandV2: CommandProtocol {
+    let verb = "generate_v2"
+    let function = "Bazel rule helper command"
+
+    typealias Options = GenerateOptionsV2
+
+    func run(_ options: Options) -> Result<(), CommandError> {
+        let profiler = XCHammerProfiler("generate")
+        defer {
+            profiler.logEnd(true)
+        }
+        do {
+            let config = try getHammerConfig(path: options.configPath)
+            let _ = try validate(config: config, workspaceRootPath:
+                    options.workspaceRootPath)
+
+           
+            let ruleInfo = try getXcodeProjectRuleInfo(path: options.xcodeProjectRuleInfoPath)
+            let result = Generator.generateProjectsV2(workspaceRootPath:
+                    options.workspaceRootPath, bazelPath: options.bazelPath,
+                    configPath: options.configPath, config: config,
+                    xcworkspacePath: options.xcworkspacePath, xcodeProjectRuleInfo: ruleInfo)
+            switch result {
+            case .success:
+                return .success(())
+            case .failure(let error):
+                return .failure(.swiftException(error))
+            }
+        } catch {
+            return .failure(.swiftException(error))
+        }
+    }
+}
+
+
+
 struct ProcessIpaCommand: CommandProtocol {
     let verb = "process-ipa"
     let function = "Process IPA after a build -- this is expected to be run in an environment with Xcode ENV vars"
@@ -179,6 +278,7 @@ func main() {
     XCHammerLogger.initialize()
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
+    commands.register(GenerateCommandV2())
     commands.register(ProcessIpaCommand())
     commands.register(VersionCommand())
     commands.register(HelpCommand(registry: commands))
