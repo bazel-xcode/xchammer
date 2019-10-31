@@ -66,7 +66,7 @@ def _xcode_project_impl(ctx):
         xchammer_info_json.path,
 
         # See above comment
-        "; mv " + project_name + " " + ctx.bin_dir.path + "/" + project_name
+        "; ditto " + project_name + " " + ctx.bin_dir.path + "/" + project_name
     ])
 
     ctx.actions.run_shell(
@@ -172,4 +172,5 @@ def xcode_project(**kwargs):
     # and then, we install this xcode project into the root directory.
     _install_xcode_project(
         name=rule_name,
-        xcodeproj=kwargs["name"])
+        xcodeproj=kwargs["name"],
+        testonly=proj_args.get("testonly", False))
