@@ -1,6 +1,6 @@
 # Load the sources aspect from Tulsi
-load("@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
-load("//tools:xchammerconfig.bzl", "xchammer_config", "gen_xchammer_config", "project_config")
+load("@xchammer_resources//:tulsi/tulsi_aspects.bzl", "tulsi_sources_aspect", "TulsiSourcesAspectInfo")
+load(":xchammerconfig.bzl", "xchammer_config", "gen_xchammer_config", "project_config")
 
 def _xcode_project_impl(ctx):
     artifacts = []

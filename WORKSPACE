@@ -78,3 +78,10 @@ http_archive(
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 
 buildifier_dependencies()
+
+# For a binary check-in, this should be declared as so
+#local_repository(
+#    name="xchammer_resources",
+#    path="xchammer.app/Contents/Resources/",
+#)
+

@@ -283,6 +283,16 @@ def xchammer_dependencies():
         ],
     )
 
+    # This is a hack for XCHammer development, but is how XCHammer is imported 
+    # into a workspace as a binary build
+    new_git_repository(
+        name = "xchammer_resources",
+        remote = "https://github.com/pinterest/tulsi.git",
+        commit = "6302ee15a49a93fcaaff75e1fcd235fc87ac2ec8",
+        strip_prefix="src/TulsiGenerator/Bazel",
+        build_file_content="# "
+    )
+
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
