@@ -43,6 +43,16 @@ apple_resource_group(
     ]),
 )
 
+
+
+load(
+    "//BazelExtensions:xcode_configuration_provider.bzl",
+    "declare_target_config",
+)
+
+# This is an example of declaring a target config.
+declare_target_config(name="XCHammerSourcesXcodeConfig", config=target_config())
+
 swift_library(
     name = "XCHammerSources",
     srcs = glob(["Sources/**/*.swift"]),
@@ -64,7 +74,7 @@ swift_library(
         "XcodeGen//:ProjectSpec",
         "XcodeProj//:XcodeProj",
         "Yams//:Yams",
-    ]],
+    ]] + [":XCHammerSourcesXcodeConfig" ],
     copts = [
         "-swift-version",
         "4.2"
@@ -135,9 +145,10 @@ load(
 
 xcode_project(
     name="workspace_v2",
-    targets=["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
+    targets=["//:xchammer",  "//tools/XCConfigExporter:xcconfig-exporter"],
     bazel="tools/bazelwrapper",
-    xchammer="xchammer.app"
+    xchammer="xchammer.app",
+    project_config=project_config(["**"])
 )
 
 
