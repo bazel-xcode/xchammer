@@ -18,12 +18,6 @@ def _xcode_project_impl(ctx):
             info = dep[XcodeConfigurationAspectInfo].value
             aggregate_target_config.append({ str(info.label) : info.value})
 
-        if hasattr(dep, "deps"):
-            for depdep in dep.deps:
-                if XcodeConfigurationAspectInfo in depdep:
-                    info = depdep[XcodeConfigurationAspectInfo].value
-                    aggregate_target_config.append({ str(info.label) : info.value})
-
 
     xchammerconfig_json = ctx.actions.declare_file("xchammer_config.json")
 
@@ -135,11 +129,6 @@ _xcode_project = rule(
         # This is used as a development option only
         "xchammer_bazel_build_target" : attr.label(mandatory=False),
     },
-    fragments = [
-        "apple",
-        "cpp",
-        "objc",
-    ],
     outputs={"out": "%{project_name}.xcodeproj"}
 )
 
