@@ -143,13 +143,12 @@ load(
     "xcode_project",
 )
 
-
-
 xcode_project(
     name="workspace_v2",
     targets=["//:xchammer",  "//tools/XCConfigExporter:xcconfig-exporter"],
     bazel="tools/bazelwrapper",
-    xchammer="xchammer.app"
+    xchammer="xchammer.app",
+    project_config=project_config(["**"])
 )
 
 
