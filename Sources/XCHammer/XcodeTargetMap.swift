@@ -65,6 +65,17 @@ func makePathFiltersPredicate(_ paths: Set<String>) -> (String) -> Bool {
     return includePath
 }
 
+func makeOptionalPathFiltersPredicate(_ genOptions: XCHammerGenerateOptions) -> (String) -> Bool {
+    let projectConfig = genOptions.config.projects[genOptions.projectName]
+    let generateTransitiveXcodeTargets =
+            (projectConfig?.generateTransitiveXcodeTargets ?? true)
+    print("GenTrans", generateTransitiveXcodeTargets)
+    if generateTransitiveXcodeTargets {
+         return alwaysIncludePathPredicate
+    }
+
+    return  makePathFiltersPredicate(genOptions.pathsSet)
+}
 
 /// Get all the tests
 func allTests(for xcodeTarget: XcodeTarget, map targetMap: XcodeTargetMap) -> [String] {
@@ -196,12 +207,13 @@ public class XcodeTargetMap {
                 .projects[genOptions.projectName]
         let generateTransitiveXcodeTargets =
                 (projectConfig?.generateTransitiveXcodeTargets ?? true)
+        let pathsPredicate = makeOptionalPathFiltersPredicate(self.genOptions)
         return Set(self.allTargets.filter {
             target in
             if !generateTransitiveXcodeTargets {
                 return specifiedLabels.contains(target.label)
             }
-            return includeTarget(target, pathPredicate: alwaysIncludePathPredicate)
+            return includeTarget(target, pathPredicate: pathsPredicate)
         })
     }()
 }
