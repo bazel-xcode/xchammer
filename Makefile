@@ -169,3 +169,7 @@ format:
 .PHONY:
 xchammer_config:
 	tools/bazelwrapper build xchammer_config
+
+update_bazelwrappers:
+	find sample -name bazelwrapper -exec cp tools/bazelwrapper {} \;
+
