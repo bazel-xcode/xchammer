@@ -69,7 +69,6 @@ func makeOptionalPathFiltersPredicate(_ genOptions: XCHammerGenerateOptions) -> 
     let projectConfig = genOptions.config.projects[genOptions.projectName]
     let generateTransitiveXcodeTargets =
             (projectConfig?.generateTransitiveXcodeTargets ?? true)
-    print("GenTrans", generateTransitiveXcodeTargets)
     if generateTransitiveXcodeTargets {
          return alwaysIncludePathPredicate
     }
