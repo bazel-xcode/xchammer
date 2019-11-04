@@ -137,9 +137,10 @@ enum Generator {
         let genStatusPath: String
         if let xcworkspacePath = genOptions.xcworkspacePath {
             genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
-                    xcworkspacePath)
+                xcworkspacePath)
         } else {
-            genStatusPath = "$PROJECT_FILE_PATH"
+            genStatusPath = XCHammerAsset.genStatus.getPath(underProj:
+                "$PROJECT_FILE_PATH")
         }
 
         // Exit with a non 0 status to ensure Xcode reloads the project ( by

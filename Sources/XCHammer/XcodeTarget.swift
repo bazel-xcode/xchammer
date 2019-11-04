@@ -242,7 +242,8 @@ public class XcodeTarget: Hashable, Equatable {
     }()
 
     lazy var xcTargetName: String = {
-        let numberOfEntries = self.targetMap.targets(buildLabel: self.label).count
+        let numberOfEntries = self.targetMap.includedTargets
+                .filter { $0.label == self.label }.count
         let deploymentSuffix = (numberOfEntries > 1) ? self.deploymentTarget.map { "\($0.platform)-\($0.osVersion)" } : nil
 
         // FIXME: Add uncolliding naming convention
@@ -434,9 +435,11 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     lazy var myResources: [ProjectSpec.TargetSource] = {
+        let pathsPredicate = makeOptionalPathFiltersPredicate(self.genOptions)
         let resources: [ProjectSpec.TargetSource] = self.pathsForAttrs(attrs:
                 [.launch_storyboard, .supporting_files])
             .filter(self.isAllowableXcodeGenSource(path:))
+            .filter { pathsPredicate($0.string) }
             .compactMap { inputPath in
             let path = Path(self.resolveExternalPath(for: inputPath.string))
             let pathComponents = path.components
@@ -521,10 +524,11 @@ public class XcodeTarget: Hashable, Equatable {
         let deps = self.transitiveTargets(map: self.targetMap, predicate:
                 stopAfterNeedsRecursive, force: true)
             .flatMap { xcodeTarget -> [ProjectSpec.Dependency] in
+                let pathsPredicate = makeOptionalPathFiltersPredicate(self.genOptions)
                 guard let linkableProductName =
                     xcodeTarget.extractLinkableBuiltProductName(map:
                             self.targetMap), includeTarget(xcodeTarget, pathPredicate:
-                        alwaysIncludePathPredicate) else {
+                        pathsPredicate) else {
                     // either way, get the dependencies
                     return xcodeTarget.xcDependencies
                 }
@@ -535,6 +539,12 @@ public class XcodeTarget: Hashable, Equatable {
                 // Do not link static libraries that aren't going to exist.
                 // These targets still need to be included in the project.
                 case .StaticLibrary, .DynamicLibrary:
+                    let projectConfig = xcodeTarget.genOptions.config
+                            .projects[genOptions.projectName]
+                    let generateTransitiveXcodeTargets =
+                            (projectConfig?.generateTransitiveXcodeTargets ?? true)
+                    guard generateTransitiveXcodeTargets else { return [] }
+
                     let compiledSrcs = (xcodeTarget.sourceFiles + xcodeTarget.nonARCSourceFiles)
                         .filter {
                        fileInfo in
@@ -1057,7 +1067,6 @@ public class XcodeTarget: Hashable, Equatable {
     }
 
     lazy var xcBundles: [ProjectSpec.TargetSource] = {
-
         let bundleResources = ([self] + self.transitiveTargets(map:
                     self.targetMap,
                     predicate: stopAfterNeedsRecursive))
@@ -1314,11 +1323,16 @@ public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Tar
         return nil
     }
 
+    let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
+    guard includeTarget(xcodeTarget, pathPredicate: pathsPredicate) == true
+else {
+            return nil
+        }
+
     let xcodeTargetSources = xcodeTarget.xcSources
     let sources: [ProjectSpec.TargetSource]
     let settings: XCBuildSettings
     let deps: [ProjectSpec.Dependency]
-    let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
     // Find the linked deps and extract the deps name
     // We need actual targets here, since these are things like Applications
     let linkedDeps = xcodeTarget.linkedTargetLabels
