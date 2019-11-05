@@ -795,9 +795,9 @@ enum Generator {
         return assetBase
     }
 
-    public static func getXCHammerPath(genOptions: XCHammerGenerateOptions) -> String {
+    public static func getXCHammerBinPath(genOptions: XCHammerGenerateOptions) -> String {
         if let path = genOptions.xcodeProjectRuleInfo?.xchammerPath {
-            return path
+            return path + "/Contents/MacOS/xchammer"
         }
         return CommandLine.arguments[0]
     }
@@ -860,8 +860,9 @@ enum Generator {
         // Listen to Tulsi logs. Assume this function is called 1 time
         let ruleEntryMap = workspaceInfo.ruleEntryMap
 
-        // TODO(V2): We need to pass this into the rule ( or get rid of it??)
-        let genfileLabels:[BuildLabel] = []
+        // Build all of the generated files.
+        let genfileLabels: [BuildLabel] = xcodeProjectRuleInfo
+            .bazelTargets.map { BuildLabel($0 + "_xcode_project_deps") }
 
         // For V2 we really don't need this and the rule is modeled as 1 thread.
         // ATM this is left perhaps we can refactor to support both use cases.
