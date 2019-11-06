@@ -241,18 +241,6 @@ def xchammer_dependencies():
     )
 
     namespaced_new_git_repository(
-        name = "SwiftCLI",
-        remote = "https://github.com/jakeheis/SwiftCLI.git",
-        commit = "5318c37d3cacc8780f50b87a8840a6774320ebdf",
-        build_file_content = namespaced_build_file([
-            namespaced_swift_library(
-                name = "SwiftCLI",
-                srcs = ["Sources/**/*.swift"],
-            ),
-        ]),
-    )
-
-    namespaced_new_git_repository(
         name = "SwiftShell",
         remote = "https://github.com/kareman/SwiftShell",
         commit = "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
@@ -296,7 +284,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
-        commit = "0f903227d18b9ceb902fe893e118a2c0084b5d3c",
+        commit = "1942ba36c0c603df723f8fe40bece07fcf981ba3",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeGenKit",
@@ -306,7 +294,15 @@ def xchammer_dependencies():
                     "@JSONUtilities//:JSONUtilities",
                     "@PathKit//:PathKit",
                     "@Yams//:Yams",
-                    "@SwiftCLI//:SwiftCLI",
+                    ":Core",
+                ],
+            ),
+            namespaced_swift_library(
+                name = "Core",
+                srcs = ["Sources/Core/**/*.swift"],
+                deps = [
+                    "@PathKit//:PathKit",
+                    "@Yams//:Yams",
                 ],
             ),
             namespaced_swift_library(
@@ -316,6 +312,7 @@ def xchammer_dependencies():
                     "@JSONUtilities//:JSONUtilities",
                     "@XcodeProj//:XcodeProj",
                     "@Yams//:Yams",
+                    ":Core",
                 ],
             ),
         ]),
