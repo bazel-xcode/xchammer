@@ -84,13 +84,7 @@ def _extract_generated_sources(target):
 
 def _xcode_build_sources_aspect_impl(itarget, ctx):
     infos = []
-    if XcodeBuildSourceInfo in itarget:
-        target = itarget
-        infos.append(itarget.label)
-
-    trans = _extract_generated_sources(itarget)
-    infos.extend(trans)
-
+    infos.extend(_extract_generated_sources(itarget))
     if hasattr(ctx.rule.attr, "deps"):
         for target in ctx.rule.attr.deps:
             if XcodeBuildSourceInfo in target:
