@@ -36,7 +36,7 @@ def _xcode_project_impl(ctx):
             for info in dep[XcodeConfigurationAspectInfo].values:
                 aggregate_target_config[info] = dep[XcodeConfigurationAspectInfo].values[info]
 
-    xchammerconfig_json = ctx.actions.declare_file("xchammer_config.json")
+    xchammerconfig_json = ctx.actions.declare_file(ctx.attr.name + "_xchammer_config.json")
     target_config_attr = ctx.attr.target_config if ctx.attr.target_config else None
 
     # Consider adding the ability to support this
@@ -65,7 +65,7 @@ def _xcode_project_impl(ctx):
         for a in dep[OutputGroupInfo].tulsi_info.to_list():
             artifacts.append(a)
 
-    xchammer_info_json = ctx.actions.declare_file("xchammer_info.json")
+    xchammer_info_json = ctx.actions.declare_file(ctx.attr.name + "_xchammer_info.json")
     xchammer_info = struct(
         tulsiinfos=[a.path for a in artifacts],
         # This is used by bazel_build_settings.py and replaced by
@@ -115,7 +115,6 @@ def _xcode_project_impl(ctx):
             else "\$SRCROOT/" + ctx.attr.bazel,
             "--xcode_project_rule_info",
             xchammer_info_json.path,
-            # See above comment
             "; ditto " + project_name + " " + ctx.bin_dir.path + "/" + project_name,
         ]
     )
