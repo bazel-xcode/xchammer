@@ -206,6 +206,7 @@ objc_library(
         "UrlGet/UrlGetViewController.xib",
         ":StructuredResources"
     ],
+    copts = ["-index-store-path", "$(GENDIR)/index-store"],
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",
