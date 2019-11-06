@@ -141,7 +141,9 @@ gen_xchammer_config(
 load(
     "//BazelExtensions:xcodeproject.bzl",
     "xcode_project",
+    "xcode_project_deps",
 )
+
 
 xcode_project(
     name="workspace_v2",
@@ -150,6 +152,4 @@ xcode_project(
     xchammer="xchammer.app",
     project_config=project_config(["**"])
 )
-
-
 

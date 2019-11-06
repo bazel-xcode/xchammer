@@ -11,7 +11,11 @@ load(
     "XcodeProjectTargetInfo",
     "XcodeConfigurationAspectInfo",
     "target_config_aspect",
+    "xcode_build_sources_aspect",
+    "XcodeBuildSourceInfo",
 )
+
+non_hermetic_execution_requirements = { "no-cache": "1", "no-remote": "1", "local": "1", "no-sandbox": "1" }
 
 # Why are we rendering JSON here?
 # - the XCHammerConfig is modeled as structs which are passed to rules as strings
@@ -145,6 +149,46 @@ _xcode_project = rule(
 )
 
 
+def _xcode_project_deps_impl(ctx):
+    """ Install Xcode project dependencies into the source root.
+    This is required as by default, Bazel only installs genfiles for those
+    genfiles which are passed to the Bazel command line.
+    """
+    inputs = []
+    cmd = []
+    cmd.append("base_path=$(dirname $(readlink $PWD/WORKSPACE))/")
+    for dep in ctx.attr.targets:
+        if XcodeBuildSourceInfo in dep:
+            for info in dep[XcodeBuildSourceInfo].values:
+                parts = info.path.split("/bin/")
+                if len(parts) > 0:
+                    inputs.append(info)
+                    last = parts[len(parts) - 1]
+                    cmd.append(
+                        "target_dir=$base_path/bazel-genfiles/$(dirname " + last + ")"
+                    )
+                    cmd.append("mkdir -p $target_dir")
+                    cmd.append("ditto " + info.path + " $target_dir")
+
+    cmd.append("touch " + ctx.outputs.out.path)
+    ctx.actions.run_shell(
+        inputs=inputs,
+        command="\n".join(cmd),
+        use_default_shell_env=True,
+        outputs=[ctx.outputs.out],
+        execution_requirements = non_hermetic_execution_requirements
+    )
+
+
+# Adds these targets as a dependency for Xcode.
+# This is required for Xcode builds and code completion
+xcode_project_deps = rule(
+    implementation=_xcode_project_deps_impl,
+    attrs={"targets": attr.label_list(aspects=[xcode_build_sources_aspect])},
+    outputs={"out": "%{name}-deps.dummy"},
+)
+
+
 def _install_xcode_project_impl(ctx):
     xcodeproj = ctx.attr.xcodeproj.files.to_list()[0]
     output_proj = "$(dirname $(readlink $PWD/WORKSPACE))/" + xcodeproj.basename
@@ -167,6 +211,7 @@ def _install_xcode_project_impl(ctx):
         command=";".join(command),
         use_default_shell_env=True,
         outputs=[ctx.outputs.out],
+        execution_requirements = non_hermetic_execution_requirements
     )
 
 
@@ -213,6 +258,11 @@ def xcode_project(**kwargs):
     proj_args["target_config"] = proj_args["target_config"].to_json() if "target_config" in  proj_args else None
 
     _xcode_project(**proj_args)
+
+    xcode_project_deps(
+        name=rule_name + "_xcode_project_deps",
+        targets=kwargs.get("targets"),
+    )
 
     # Note: _xcode_project does the hermetic, reproducible bits
     # and then, we install this xcode project into the root directory.

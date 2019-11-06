@@ -62,3 +62,38 @@ def _target_config_aspect_impl(itarget, ctx):
 target_config_aspect = aspect(
     implementation=_target_config_aspect_impl, attr_aspects=["*"]
 )
+
+
+XcodeBuildSourceInfo = provider(
+    fields={
+        "values": """The values of source files
+"""
+    }
+)
+
+def _extract_generated_sources(target):
+    """ Collects all of the generated source files"""
+    if not hasattr(target, "objc"):
+        return []
+    objc_provider = target.objc
+    if hasattr(objc_provider, "source") and hasattr(objc_provider, "header"):
+        all_files = depset(transitive = [objc_provider.source, objc_provider.header])
+        return [f for f in all_files.to_list()  if not f.is_source]
+    return []
+
+
+def _xcode_build_sources_aspect_impl(itarget, ctx):
+    infos = []
+    infos.extend(_extract_generated_sources(itarget))
+    if hasattr(ctx.rule.attr, "deps"):
+        for target in ctx.rule.attr.deps:
+            if XcodeBuildSourceInfo in target:
+                trans = _extract_generated_sources(target)
+                infos.extend(trans)
+    return XcodeBuildSourceInfo(values=infos)
+
+
+xcode_build_sources_aspect = aspect(
+    implementation=_xcode_build_sources_aspect_impl, attr_aspects=["*"]
+)
+

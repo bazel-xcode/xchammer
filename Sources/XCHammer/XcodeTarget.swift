@@ -1284,7 +1284,8 @@ func shouldFlatten(xcodeTarget: XcodeTarget) -> Bool {
 private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGenerateOptions, targetMap: XcodeTargetMap) -> ([ProjectSpec.BuildScript], [ProjectSpec.BuildScript]) {
     func getProcessScript() -> ProjectSpec.BuildScript {
         // Use whatever XCHammer this project was built with
-        let processContent = "\(Generator.getXCHammerPath(genOptions: genOptions)) process-ipa"
+        let xchammerBin = Generator.getXCHammerBinPath(genOptions: genOptions)
+        let processContent = "\(xchammerBin) process-ipa"
         return  ProjectSpec.BuildScript(path: nil, script: processContent, name: "Process IPA")
     }
 
