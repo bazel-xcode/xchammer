@@ -20,13 +20,26 @@ trap exit_trap EXIT
 # Go to bazel release page
 # These are typically posted in groups.google
 # https://groups.google.com/forum/#!forum/bazel-discuss
-BAZEL_VERSION="0.24.1"
-BAZEL_VERSION_SHA="5fe570423945424a8c44b35c6d171fdde92e9ed90c3c321b83f2e380bcc966b9"
+BAZEL_VERSION="0.28.1"
+BAZEL_VERSION_SHA="5d50ae13ba01a224ddf54cfd818289bee5b38e551cca22bffc79b89f377d2095"
+
 BAZEL_VERSION_URL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-darwin-x86_64.sh"
 
 BAZEL_ROOT="$HOME/.bazelenv/versions/$BAZEL_VERSION"
 BAZEL_PATH="$BAZEL_ROOT/bin/bazel"
-XCODE_SELECT_ENV_PATH="${SCRIPTPATH}/.xcode_select_env"
+
+if [[ "${BUILDKITE}" == "true" ]]; then
+   # The CI uses git clean which blows away the above path
+    if [[ -e "/Volumes/Cache" ]]; then
+        # In some environments, the cache is persistent
+        XCODE_SELECT_ENV_PATH="/Volumes/Cache/.xcode_select_env"
+    else
+        XCODE_SELECT_ENV_PATH="/tmp/.xcode_select_env"
+    fi
+else
+    XCODE_SELECT_ENV_PATH="${SCRIPTPATH}/.xcode_select_env"
+fi
+
 LEGACY_BAZEL_PATH="$SCRIPTPATH/../Scripts/bazel/bin/bazel"
 
 BAZEL=""
@@ -63,6 +76,15 @@ if ! [[ -e "$BAZEL" ]]; then
   BAZEL=$BAZEL_PATH
 fi
 
+
+function clean() {
+  echo "INFO: Bazel force cleaning"
+  $BAZEL clean --expunge
+
+  # The Bazel server can have issues across Bazel versions
+  killall -9 bazel || true
+}
+
 if [[ -x "${BAZEL}" ]]; then
   CURRENT_XCODE_PATH="$(/usr/bin/xcode-select -p)"
   XCODE_VERSION=$(/usr/bin/xcodebuild -version | grep Xcode | cut -d ' ' -f2)
@@ -71,10 +93,19 @@ if [[ -x "${BAZEL}" ]]; then
     EXISTING_XCODE_HASH="$(cat "${XCODE_SELECT_ENV_PATH}")"
     if [[ $EXISTING_XCODE_HASH != $CURRENT_XCODE_HASH ]]; then
       echo "Xcode select path or Bazel version has changed, must clear cached data"
-      $BAZEL clean --expunge
+      clean
     fi
   fi
   echo "${CURRENT_XCODE_HASH}" > $XCODE_SELECT_ENV_PATH
+  if [[ ! -z $BAZEL_FORCE_CLEAN ]]; then
+    clean
+  fi
+
+  if [[ ! -z $BAZEL_DEBUG_ACTION_CACHE ]]; then
+    echo "INFO: dumping action cache pre"
+    mkdir -p bazel-diags
+    $BAZEL dump --action_cache > bazel-diags/bazel-action-cache-pre.txt
+  fi
 
   # Make variable support
   # In the context of Xcode builds, variables are defined as "Make variable"
@@ -95,7 +126,8 @@ if [[ -x "${BAZEL}" ]]; then
       fi
   done
 
-  exec -a "$0" /usr/bin/env - TERM=$TERM SHELL=$SHELL PATH=$PATH HOME=$HOME "${BAZEL}" "${ARGS[@]}"
+  # Exec in a subshell in order to trap
+  (exec -a "$0" /usr/bin/env - TERM="${TERM}" SHELL="${SHELL}" PATH="${PATH}" HOME="${HOME}" "${BAZEL}" "${ARGS[@]}")
 else
   echo "WARNING: Missing installation of bazel" >&2;
   exit 1
