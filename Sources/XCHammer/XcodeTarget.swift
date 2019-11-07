@@ -1214,11 +1214,6 @@ public class XcodeTarget: Hashable, Equatable {
             return nil
         }
 
-        // TODO: Support testing in Bazel
-        guard isTopLevelTestTarget == false else {
-            return nil
-        }
-
         let platform = { (xcodeTarget: XcodeTarget) -> String in
             if let deploymentTarget = xcodeTarget.deploymentTarget {
                 switch deploymentTarget.platform {
@@ -1262,6 +1257,41 @@ public class XcodeTarget: Hashable, Equatable {
 
         // Minimal settings for this build
         var settings = XCBuildSettings()
+
+        /// We need to include the sources into the target
+        let sources: [ProjectSpec.TargetSource]
+        if isTopLevelTestTarget {
+            let flattened = Set(flattenedInner(targetMap: targetMap))
+            // Determine deps to fuse into the rule.
+            let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
+            let fusableDeps = self.unfilteredDependencies
+                .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
+                        pathsPredicate) }
+
+	    let xcodeBuildableTargetSettings = self.settings
+			    <> fusableDeps.foldMap { $0.settings }
+
+            if let xcBuildTestHost = xcodeBuildableTargetSettings.testHost?.v {
+                 // Notes on test host build configuration:
+                 // - Xcode bazel-builds the app as a scheme dep
+                 // - Xcode bazel-builds the test which install the test bundle into the
+                 //   app
+                 settings.testHost = First(xcBuildTestHost.replacingOccurrences(of: ".app", with: "-Bazel.app") + "-Bazel")
+            }
+
+	    settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
+	    settings.copts = xcodeBuildableTargetSettings.copts
+
+            // Use settings, sources, and deps from the fusable deps
+            sources = fusableDeps.flatMap { $0.xcSources }
+
+            // We need to stub out the CC
+            settings.cc = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh")
+        } else {
+            sources = []
+        }
+
+        settings.onlyActiveArch = First("YES")
         settings.codeSigningRequired <>= First("NO")
         settings.productName <>= First("$(TARGET_NAME)")
         // A custom XCHammerAsset bazel_build_settings.py is loaded by bazel_build.py
@@ -1277,7 +1307,7 @@ public class XcodeTarget: Hashable, Equatable {
             platform: Platform(rawValue: platform)!,
             settings: makeXcodeGenSettings(from: settings),
             configFiles: [String: String](),
-            sources: [],
+            sources: sources,
             dependencies: [],
             preBuildScripts: [bazelScript]
         )

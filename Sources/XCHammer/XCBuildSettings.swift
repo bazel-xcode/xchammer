@@ -133,6 +133,7 @@ struct Setting<T: XCSettingStringEncodeable & Semigroup>: Semigroup {
 
 
 struct XCBuildSettings: Encodable {
+    var cc: First<String>?
     var copts: [String] = []
     var productName: First<String>?
     var enableModules: First<String>?
@@ -175,6 +176,7 @@ struct XCBuildSettings: Encodable {
 
     enum CodingKeys: String, CodingKey {
         // Add to this list the known XCConfig keys
+        case cc = "CC"
         case copts = "OTHER_CFLAGS"
         case productName = "PRODUCT_NAME"
         case moduleName = "PRODUCT_MODULE_NAME"
@@ -226,6 +228,7 @@ struct XCBuildSettings: Encodable {
         // TODO: port all of these to XCCodingKey
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        try cc.map { try container.encode($0.v, forKey: .cc) }
         try container.encode(copts.joined(separator: " "), forKey: .copts)
         try container.encode(swiftCopts.joined(separator: " "), forKey: .swiftCopts)
 
@@ -279,6 +282,7 @@ extension XCBuildSettings: Monoid {
 
     static func<>(lhs: XCBuildSettings, rhs: XCBuildSettings) -> XCBuildSettings {
         return XCBuildSettings(
+            cc: lhs.cc <> rhs.cc,
             copts: lhs.copts <> rhs.copts,
             productName: lhs.productName <> rhs.productName,
             enableModules: lhs.enableModules <> rhs.enableModules,

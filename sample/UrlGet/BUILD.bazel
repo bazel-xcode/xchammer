@@ -48,6 +48,8 @@ xcode_project(
     targets = [
 	"//ios-app:ios-app",
 	"//ios-app:UrlGetClasses",
+	"//ios-app:UnitTests",
+	"//ios-app:UnitTestsWithHost",
     ],
     bazel = "tools/bazelwrapper",
     xchammer = "tools/xchammer.app",
@@ -65,6 +67,7 @@ xcode_project(
     target_config = {
         "//ios-app:ios-app" : target_config(
             scheme_config = app_scheme_config )
-    }
+    },
+    testonly=True
 )
 
