@@ -11,6 +11,7 @@ ios_application(
     infoplists = ["Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["ios-app-bin"],
+    minimum_os_version = "9.0",
 )
 
 objc_library(
