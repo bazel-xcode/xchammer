@@ -1289,6 +1289,8 @@ public class XcodeTarget: Hashable, Equatable {
             settings.cc = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh")
         } else {
             sources = []
+            let xcodeBuildableTargetSettings = self.settings
+            settings.infoPlistFile = xcodeBuildableTargetSettings.infoPlistFile
         }
 
         settings.onlyActiveArch = First("YES")
