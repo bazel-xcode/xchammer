@@ -139,7 +139,7 @@ _xcode_project = rule(
         ),
         "project_name": attr.string(),
         "bazel": attr.string(default="bazel"),
-        "target_config": attr.string(),
+        "target_config": attr.string(default="{}"),
         "project_config": attr.string(),
         "xchammer": attr.string(mandatory=True),
         # This is used as a development option only
@@ -253,9 +253,17 @@ def xcode_project(**kwargs):
     if xchammer_target in targets_json:
         proj_args["xchammer_bazel_build_target"] = xchammer_target
 
+    if "target_config" in  proj_args:
+        str_dict = {}
+        for k in proj_args["target_config"]:
+            str_dict[k] = proj_args["target_config"][k].to_json()
+
+        proj_args["target_config"] = _dict_to_json(str_dict)
+    else:
+        proj_args["target_config"] =  "{}"
+
     proj_args["name"] = rule_name + "_impl"
     proj_args["project_config"] = proj_args["project_config"].to_json() if "project_config" in  proj_args else None
-    proj_args["target_config"] = proj_args["target_config"].to_json() if "target_config" in  proj_args else None
 
     _xcode_project(**proj_args)
 

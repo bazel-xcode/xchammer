@@ -30,7 +30,7 @@ private func shouldPropagateDeps(forTarget xcodeTarget: XcodeTarget) -> Bool {
 /// Return XCConfig files
 private func getXCConfigFiles(for xcodeTarget: XcodeTarget) -> [String: String] {
     let genOptions = xcodeTarget.genOptions
-    let targetConfig = genOptions.config.getTargetConfig(for: xcodeTarget.label.value)
+    let targetConfig = XcodeTarget.getTargetConfig(for: xcodeTarget)
     if let overrides = targetConfig?.xcconfigOverrides ?? genOptions.projectConfig?.xcconfigOverrides {
         return Dictionary.from(overrides.map {
             k, v in
@@ -135,6 +135,23 @@ public class XcodeTarget: Hashable, Equatable {
         self.ruleEntry = ruleEntry
         self.weakTargetMap = targetMap
         self.genOptions = genOptions
+    }
+
+
+    public static func getTargetConfig(for xcodeTarget: XcodeTarget) -> XCHammerTargetConfig? {
+        let genOptions = xcodeTarget.genOptions
+        if let targetConfig = genOptions.config.getTargetConfig(for:
+            xcodeTarget.label.value) {
+            return targetConfig
+        }
+
+        // The target config may propagate to the internal binary when using dep
+        // configs.
+        if xcodeTarget.type == "ios_application" {
+            let label = xcodeTarget.label.value + ".__internal__.apple_binary"
+            return genOptions.config.getTargetConfig(for: label)
+        }
+        return nil
     }
 
     public var label: BuildLabel {
@@ -1215,8 +1232,7 @@ public class XcodeTarget: Hashable, Equatable {
             }
         }(self)
 
-        let targetConfig = genOptions.config.getTargetConfig(for: label.value)
-
+        let targetConfig = XcodeTarget.getTargetConfig(for: self)
         let bazelBase: String
         if let xchammerPath = genOptions.xcodeProjectRuleInfo?.xchammerPath {
             bazelBase = xchammerPath + "/Contents/Resources"

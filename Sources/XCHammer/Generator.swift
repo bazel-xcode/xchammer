@@ -249,8 +249,8 @@ enum Generator {
                     return nil
                 }
 
-                let targetConfig = genOptions.config.getTargetConfig(for:
-                    xcodeTarget.label.value)
+                let targetConfig = XcodeTarget.getTargetConfig(for:
+                    xcodeTarget)
                 let schemeConfig = targetConfig?.schemeConfig
                 let buildTargets = [
                     XcodeScheme.BuildTarget(target: UpdateXcodeProjectTargetName,
@@ -319,8 +319,8 @@ enum Generator {
             return targets.map {
                 xcodeTarget in
                 let name = xcodeTarget.xcTargetName + "-Bazel"
-                let targetConfig = genOptions.config.getTargetConfig(for:
-                    xcodeTarget.label.value)
+                let targetConfig = XcodeTarget.getTargetConfig(for:
+                    xcodeTarget)
                 let schemeConfig = targetConfig?.schemeConfig
                 let buildTargets = [
                     XcodeScheme.BuildTarget(target: name,
@@ -375,8 +375,8 @@ enum Generator {
                 return nil
             }
 
-            let targetConfig = genOptions.config.getTargetConfig(for:
-                    xcodeTarget.label.value)
+            let targetConfig = XcodeTarget.getTargetConfig(for:
+                    xcodeTarget)
             let baseBuildOptions = [
                 // This is a hack for BEP output not being updated as much as it
                 // should be. By publishing all actions, it flushes the buffer

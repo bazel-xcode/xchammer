@@ -55,3 +55,8 @@ http_archive(
     urls = ["https://github.com/pinterest/PodToBUILD/releases/download/0.25.2-4079ca6/PodToBUILD.zip"],
 )
 
+local_repository(
+    name = "xchammer_resources",
+    path = "tools/xchammer.app/Contents/Resources",
+)
+

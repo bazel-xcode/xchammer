@@ -19,3 +19,52 @@ filegroup(
         "//conditions:default": [],
     }),
 )
+
+load(
+    "@xchammer_resources//:xchammerconfig.bzl",
+    "execution_action",
+    "project_config",
+    "scheme_action_config",
+    "target_config",
+)
+
+load("@xchammer_resources//:xcodeproject.bzl", "xcode_project")
+
+# Spawn the index import action as a background process
+app_scheme_config = {
+    "Build": scheme_action_config(
+        post_actions = [
+            execution_action(
+                name = "Import global index",
+                script = "$SRCROOT/tools/XCHammerIndexImportAction.sh &",
+            )],
+        pre_actions = [],
+    ),
+}
+
+xcode_project(
+    name = "FocusXcode",
+    project_name = "FocusXcode",
+    targets = [
+	"//ios-app:ios-app",
+	"//ios-app:UrlGetClasses",
+    ],
+    bazel = "tools/bazelwrapper",
+    xchammer = "tools/xchammer.app",
+    project_config = project_config(
+	build_bazel_platform_options = {
+            "ios_x86_64": ["--config=ios_x86_64"],
+            "ios_i386": ["--config=ios_i386"],
+            "ios_arm64": ["--config=ios_arm64"],
+            "ios_armv7": ["--config=ios_armv7"],
+        },
+	paths = ["**"],
+	generate_xcode_schemes = False,
+	generate_transitive_xcode_targets = False,
+    ),
+    target_config = {
+        "//ios-app:ios-app" : target_config(
+            scheme_config = app_scheme_config )
+    }
+)
+
