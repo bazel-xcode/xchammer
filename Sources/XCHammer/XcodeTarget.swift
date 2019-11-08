@@ -1268,8 +1268,8 @@ public class XcodeTarget: Hashable, Equatable {
                 .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
                         pathsPredicate) }
 
-	    let xcodeBuildableTargetSettings = self.settings
-			    <> fusableDeps.foldMap { $0.settings }
+            let xcodeBuildableTargetSettings = self.settings
+                            <> fusableDeps.foldMap { $0.settings }
 
             if let xcBuildTestHost = xcodeBuildableTargetSettings.testHost?.v {
                  // Notes on test host build configuration:
@@ -1279,8 +1279,8 @@ public class XcodeTarget: Hashable, Equatable {
                  settings.testHost = First(xcBuildTestHost.replacingOccurrences(of: ".app", with: "-Bazel.app") + "-Bazel")
             }
 
-	    settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
-	    settings.copts = xcodeBuildableTargetSettings.copts
+            settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
+            settings.copts = xcodeBuildableTargetSettings.copts
 
             // Use settings, sources, and deps from the fusable deps
             sources = fusableDeps.flatMap { $0.xcSources }
