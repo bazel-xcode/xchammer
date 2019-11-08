@@ -727,7 +727,7 @@ public class XcodeTarget: Hashable, Equatable {
         // Product Name
         settings.productName <>= self.bundleName.map { First($0) }
 
-        if settings.productName == nil {
+        if settings.productName == nil, self.xcType != nil {
             settings.productName = First(self.extractBuiltProductName())
         }
 
@@ -1306,7 +1306,7 @@ public class XcodeTarget: Hashable, Equatable {
             type: PBXProductType(rawValue: productType.rawValue)!,
             platform: Platform(rawValue: platform)!,
             settings: makeXcodeGenSettings(from: settings),
-            configFiles: [String: String](),
+            configFiles: getXCConfigFiles(for: self),
             sources: sources,
             dependencies: [],
             preBuildScripts: [bazelScript]
