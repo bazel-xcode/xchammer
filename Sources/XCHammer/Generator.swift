@@ -567,10 +567,7 @@ enum Generator {
              fatalError("Can't write genStatus")
         }
 
-        let genfilesRules = [BuildLabel("/" + relativeProjDir + "/XCHammerAssets:deps")]
-        // Add the entitilement rules to the queried rules
-        let targetsToBuild = genfilesRules
-                .map { BuildLabel("/" + relativeProjDir + "/XCHammerAssets:" + $0.targetName! ) }
+        let targetsToBuild = [BuildLabel("/" + relativeProjDir + "/XCHammerAssets:deps")] + genfileLabels
         let bazelPreBuildTarget = makeBazelPreBuildTarget(labels: targetsToBuild,
                 genOptions: genOptions)
 
@@ -909,10 +906,6 @@ enum Generator {
         // Listen to Tulsi logs. Assume this function is called 1 time
         let ruleEntryMap = workspaceInfo.ruleEntryMap
 
-        // Build all of the generated files.
-        let genfileLabels: [BuildLabel] = xcodeProjectRuleInfo
-            .bazelTargets.map { BuildLabel($0 + "_xcode_project_deps") }
-
         // For V2 we really don't need this and the rule is modeled as 1 thread.
         // ATM this is left perhaps we can refactor to support both use cases.
         let generateResults = config.projects.map { $0.key }.parallelMap({
@@ -934,7 +927,7 @@ enum Generator {
             let depsHash = "V2"
             return generateProject(genOptions: genOptions,
                     ruleEntryMap: ruleEntryMap, bazelExecRoot:
-                    workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
+                    workspaceInfo.bazelExecRoot, genfileLabels: [],
                     depsHash: depsHash).map {
                 return GenerateState(genOptions: genOptions,
                         skipped: false)
@@ -1031,13 +1024,6 @@ enum Generator {
             return .failure(workspaceInfoResult.error!)
         }
 
-        let ruleEntryMap = workspaceInfo.ruleEntryMap
-        guard let genfileLabels = try? BazelQueryer.genFileQuery(targets:
-            config.buildTargetLabels, bazelPath: bazelPath,
-            workspaceRoot: workspaceRootPath) else {
-            fatalError("Can't get genfiles")
-        }
-
         let generateResults = config.projects.map { $0.key }.parallelMap({
             projectName -> Result<GenerateState, GenerateError> in
             let logger = XCHammerLogger.shared()
@@ -1067,7 +1053,7 @@ enum Generator {
                     genOptions.workspaceRootPath, genOptions: genOptions)
             return generateProject(genOptions: genOptions,
                     ruleEntryMap: ruleEntryMap, bazelExecRoot:
-                    workspaceInfo.bazelExecRoot, genfileLabels: genfileLabels,
+                    workspaceInfo.bazelExecRoot, genfileLabels: [],
                     depsHash: depsHash).map { _ in
                 return GenerateState(genOptions: genOptions,
                         skipped: false)
