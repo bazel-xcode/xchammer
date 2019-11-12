@@ -1277,15 +1277,7 @@ public class XcodeTarget: Hashable, Equatable {
         /// We need to include the sources into the target
         let sources: [ProjectSpec.TargetSource]
         let xcodeBuildableTargetSettings: XCBuildSettings
-        let deps: [ProjectSpec.Dependency]
-
         let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
-        let linkedDeps = xcodeTarget.linkedTargetLabels
-            .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: xcodeTarget) }
-            .filter { includeTarget($0, pathPredicate: pathsPredicate) }
-            .map { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName + "-Bazel",
-                    embed: $0.isExtension) }
-
         if isTopLevelTestTarget {
             let flattened = Set(flattenedInner(targetMap: targetMap))
             // Determine deps to fuse into the rule.
@@ -1308,24 +1300,8 @@ public class XcodeTarget: Hashable, Equatable {
 
             // Use settings, sources, and deps from the fusable deps
             sources = fusableDeps.flatMap { $0.xcCompileableSources }
-
-            if shouldPropagateDeps(forTarget: xcodeTarget) {
-                deps = fusableDeps
-                    .flatMap { $0.transitiveDeps } + xcodeTarget.xcExtensionDeps
-            } else {
-                deps = []
-            }
-
-
-            // We need to stub out the CC
         } else {
             sources = self.xcCompileableSources
-            if shouldPropagateDeps(forTarget: xcodeTarget) {
-                deps = Array(xcodeTarget.transitiveDeps) +
-                    xcodeTarget.xcExtensionDeps
-            } else {
-                deps = []
-            }
             xcodeBuildableTargetSettings = self.settings
             settings.infoPlistFile = xcodeBuildableTargetSettings.infoPlistFile
         }
@@ -1353,7 +1329,7 @@ public class XcodeTarget: Hashable, Equatable {
             settings: makeXcodeGenSettings(from: settings),
             configFiles: getXCConfigFiles(for: self),
             sources: sources,
-            dependencies: Array(Set(deps + linkedDeps)),
+            dependencies: [],
             postBuildScripts: [bazelScript]
         )
     }
