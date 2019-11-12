@@ -339,7 +339,7 @@ public class XcodeTarget: Hashable, Equatable {
             path.hasSuffix(".def")
     }
 
-    lazy var xcSources: [ProjectSpec.TargetSource] = {
+    lazy var xcCompileableSources: [ProjectSpec.TargetSource] = {
         let sourceFiles = self.sourceFiles
             .filter { !$0.subPath.hasSuffix(".modulemap") && !$0.subPath.hasSuffix(".hmap") }
             .map { fileInfo -> ProjectSpec.TargetSource in
@@ -362,16 +362,19 @@ public class XcodeTarget: Hashable, Equatable {
                         TargetSource.HeaderVisibility.`project`)
             }
 
-        let resources = self.xcResources
-        let bundles = self.xcBundles
 
         let stubAsset = self.settings.swiftVersion == nil ?  XCHammerAsset.stubImp : XCHammerAsset.stubImpSwift
-        let all: [ProjectSpec.TargetSource] = resources + nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
+        let all: [ProjectSpec.TargetSource] = nonArcFiles + (sourceFiles.filter { !$0.path.hasSuffix("h") }.count > 0 ?
             sourceFiles :
             [ProjectSpec.TargetSource(path: stubAsset.getPath(underProj:
                     self.genOptions.outputProjectPath), compilerFlags: ["-x objective-c", "-std=gnu99"])]
-        ) + bundles
+        )
         let s: Set<ProjectSpec.TargetSource> = Set(all)
+        return Array(s)
+    }()
+
+    lazy var xcSources: [ProjectSpec.TargetSource] = {
+        let s: Set<ProjectSpec.TargetSource> = Set(self.xcResources + self.xcBundles + self.xcCompileableSources)
         return Array(s)
     }()
 
@@ -433,6 +436,18 @@ public class XcodeTarget: Hashable, Equatable {
             // FIXME: We naievely copy all resources
             return self.myResources
         }
+    }()
+
+    lazy var xcAdHocFiles: [String] = {
+        let projectConfig = genOptions.config
+                .projects[genOptions.projectName]
+        // Include resources is ad-hoc files if they're not in a target
+        let generateXcodeTargets = (projectConfig?.generateXcodeSchemes ?? true != false)
+        let buildFile = [self.buildFilePath ?? ""]
+        guard generateXcodeTargets else {
+            return buildFile
+        }
+        return buildFile + self.xcBundles.map { $0.path } + self.xcResources.map { $0.path }
     }()
 
     // TODO: consider refactoring this code to return `BazelFileInfo`s if possible
@@ -727,7 +742,7 @@ public class XcodeTarget: Hashable, Equatable {
         // Product Name
         settings.productName <>= self.bundleName.map { First($0) }
 
-        if settings.productName == nil {
+        if settings.productName == nil, self.xcType != nil {
             settings.productName = First(self.extractBuiltProductName())
         }
 
@@ -1214,11 +1229,6 @@ public class XcodeTarget: Hashable, Equatable {
             return nil
         }
 
-        // TODO: Support testing in Bazel
-        guard isTopLevelTestTarget == false else {
-            return nil
-        }
-
         let platform = { (xcodeTarget: XcodeTarget) -> String in
             if let deploymentTarget = xcodeTarget.deploymentTarget {
                 switch deploymentTarget.platform {
@@ -1262,6 +1272,47 @@ public class XcodeTarget: Hashable, Equatable {
 
         // Minimal settings for this build
         var settings = XCBuildSettings()
+
+        let xcodeTarget = self
+        /// We need to include the sources into the target
+        let sources: [ProjectSpec.TargetSource]
+        let xcodeBuildableTargetSettings: XCBuildSettings
+        let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
+        if isTopLevelTestTarget {
+            let flattened = Set(flattenedInner(targetMap: targetMap))
+            // Determine deps to fuse into the rule.
+            let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
+            let fusableDeps = self.unfilteredDependencies
+                .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
+                        pathsPredicate) }
+
+            xcodeBuildableTargetSettings = self.settings
+                            <> fusableDeps.foldMap { $0.settings }
+
+            if let xcBuildTestHost = xcodeBuildableTargetSettings.testHost?.v {
+                 // Notes on test host build configuration:
+                 // - Xcode bazel-builds the app as a scheme dep
+                 // - Xcode bazel-builds the test which install the test bundle into the
+                 //   app
+                 settings.testHost = First(xcBuildTestHost.replacingOccurrences(of: ".app", with: "-Bazel.app") + "-Bazel")
+            }
+
+
+            // Use settings, sources, and deps from the fusable deps
+            sources = fusableDeps.flatMap { $0.xcCompileableSources }
+        } else {
+            sources = self.xcCompileableSources
+            xcodeBuildableTargetSettings = self.settings
+            settings.infoPlistFile = xcodeBuildableTargetSettings.infoPlistFile
+        }
+
+        settings.cc = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh")
+        settings.ld = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh")
+        settings.debugInformationFormat = First("dwarf")
+        settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
+        settings.copts = xcodeBuildableTargetSettings.copts
+
+        settings.onlyActiveArch = First("YES")
         settings.codeSigningRequired <>= First("NO")
         settings.productName <>= First("$(TARGET_NAME)")
         // A custom XCHammerAsset bazel_build_settings.py is loaded by bazel_build.py
@@ -1276,10 +1327,10 @@ public class XcodeTarget: Hashable, Equatable {
             type: PBXProductType(rawValue: productType.rawValue)!,
             platform: Platform(rawValue: platform)!,
             settings: makeXcodeGenSettings(from: settings),
-            configFiles: [String: String](),
-            sources: [],
+            configFiles: getXCConfigFiles(for: self),
+            sources: sources,
             dependencies: [],
-            preBuildScripts: [bazelScript]
+            postBuildScripts: [bazelScript]
         )
     }
 }

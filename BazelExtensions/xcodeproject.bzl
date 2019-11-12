@@ -270,6 +270,7 @@ def xcode_project(**kwargs):
     xcode_project_deps(
         name=rule_name + "_xcode_project_deps",
         targets=kwargs.get("targets"),
+        testonly=proj_args.get("testonly", False),
     )
 
     # Note: _xcode_project does the hermetic, reproducible bits

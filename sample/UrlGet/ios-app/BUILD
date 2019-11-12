@@ -6,6 +6,9 @@ load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group", "a
 # files.
 package(default_visibility = ["//visibility:public"])
 
+
+index_store_copts = ["-index-store-path", "$(GENDIR)/index-store"]
+
 ios_extension(
     name = "share-extension",
     bundle_id = "Google.UrlGet.ShareExtension",
@@ -88,7 +91,6 @@ ios_application(
     extensions = [
         ":share-extension",
         ":siri-extension",
-        ":strings-extension",
     ],
     families = ["iphone"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
@@ -139,6 +141,7 @@ objc_library(
         "CoreGraphics",
     ],
     visibility = ["//visibility:public"],
+    copts = index_store_copts,
     deps = [
         ":UrlGetClasses",
     ],
@@ -206,7 +209,7 @@ objc_library(
         "UrlGet/UrlGetViewController.xib",
         ":StructuredResources"
     ],
-    copts = ["-index-store-path", "$(GENDIR)/index-store"],
+    copts = index_store_copts,
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",

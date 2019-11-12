@@ -194,20 +194,8 @@ enum Generator {
         return target
     }
 
-    /// Generate schemes for Bazel targets
-    /// schemes:
-    /// - automatically build rules tagged `xchammer`
-    /// - automatically update the Xcode project during builds if needed
-    /// - include test dependencies
-    private static func makeXcodeSchemes(for targets: [XcodeTarget], targetMap:
-            XcodeTargetMap, genOptions:
-            XCHammerGenerateOptions) -> [XcodeScheme] {
-        let profiler = XCHammerProfiler("make_schemes")
-        defer {
-            profiler.logEnd(true)
-        }
-
-        let projectByXCTargetName = genOptions.config.projects.reduce(into: [String: String]()){
+    private static func getProjectsByXCTargetName(genOptions: XCHammerGenerateOptions, targetMap: XcodeTargetMap) -> [String: String] {
+        return genOptions.config.projects.reduce(into: [String: String]()){
             result, next in
             let projectName = next.key
             let outputProjectPath = genOptions.workspaceRootPath + Path(projectName + ".xcodeproj")
@@ -225,6 +213,22 @@ enum Generator {
             
             allApps.forEach { result[$0.xcTargetName] = projectName  }
         }
+    }
+
+
+    /// Generate schemes for Bazel targets
+    /// schemes:
+    /// - automatically build rules tagged `xchammer`
+    /// - automatically update the Xcode project during builds if needed
+    /// - include test dependencies
+    private static func makeXcodeSchemes(for targets: [XcodeTarget], targetMap:
+            XcodeTargetMap, projectByXCTargetName: [String: String],
+            genOptions: XCHammerGenerateOptions) -> [XcodeScheme] {
+        let profiler = XCHammerProfiler("make_schemes")
+        defer {
+            profiler.logEnd(true)
+        }
+
 
         func getSchemeDeps(xcodeTarget: XcodeTarget) -> [XcodeScheme.BuildTarget] {
             if xcodeTarget.isTopLevelTestTarget,
@@ -313,56 +317,75 @@ enum Generator {
     /// Generate schemes for Bazel targets
     /// These schemes simply run `bazel build`.
     private static func makeBazelTargetSchemes(for targets: [XcodeTarget], targetMap:
-            XcodeTargetMap, genOptions:
-            XCHammerGenerateOptions) ->
+            XcodeTargetMap, projectByXCTargetName: [String: String],
+            genOptions: XCHammerGenerateOptions) ->
         [XcodeScheme] {
-            return targets.map {
-                xcodeTarget in
-                let name = xcodeTarget.xcTargetName + "-Bazel"
-                let targetConfig = XcodeTarget.getTargetConfig(for:
-                    xcodeTarget)
-                let schemeConfig = targetConfig?.schemeConfig
-                let buildTargets = [
-                    XcodeScheme.BuildTarget(target: name,
-                            project: genOptions.projectName, productName:
-                            xcodeTarget.extractBuiltProductName() + "-Bazel")
-                ]
+        func getSchemeDeps(xcodeTarget: XcodeTarget) -> [XcodeScheme.BuildTarget] {
+            if xcodeTarget.isTopLevelTestTarget,
+                let testHostSetting = xcodeTarget.settings.testHost?.v {
+                let testHostName = testHostSetting.components(separatedBy: "/")[2]
+                return [XcodeScheme.BuildTarget(target: testHostName + "-Bazel",
+                            project: projectByXCTargetName[testHostName]!,
+                            productName: testHostName  + "-Bazel" + ".app")]
+            }
+            return []
+        }
 
-                let buildConfig = schemeConfig?[SchemeActionType.build.rawValue]
-                let buildPhase = XcodeScheme.Build(
-                        targets: buildTargets,
-                        preActions: buildConfig?.preActions ?? [],
-                        postActions: buildConfig?.postActions ?? [],
-                        parallelizeBuild: false)
 
-                let runConfig = schemeConfig?[SchemeActionType.run.rawValue]
-                let runPhase = XcodeScheme.Run(config: "Debug",
-                        commandLineArguments: runConfig?.commandLineArguments ??
-                        [:],
-                        environmentVariables: runConfig?.environmentVariables ?? [],
-                        preActions: runConfig?.preActions ?? [],
-                        postActions: runConfig?.postActions ?? [])
+        return targets.map {
+            xcodeTarget in
+            let name = xcodeTarget.xcTargetName + "-Bazel"
+            let targetConfig = XcodeTarget.getTargetConfig(for:
+                xcodeTarget)
+            let schemeConfig = targetConfig?.schemeConfig
+            let buildTargets = getSchemeDeps(xcodeTarget: xcodeTarget) + [
+                XcodeScheme.BuildTarget(target: name,
+                        project: genOptions.projectName, productName:
+                        xcodeTarget.extractBuiltProductName() + "-Bazel")
+            ]
 
-                let testConfig = schemeConfig?[SchemeActionType.test.rawValue]
-                let testPhase = XcodeScheme.Test(config: "Debug",
-                        commandLineArguments: testConfig?.commandLineArguments
-                        ?? [:],
-                        environmentVariables: testConfig?.environmentVariables ?? [],
-                        targets: [],
-                        preActions: testConfig?.preActions ?? [],
-                        postActions: testConfig?.postActions ?? [])
+            let buildConfig = schemeConfig?[SchemeActionType.build.rawValue]
+            let buildPhase = XcodeScheme.Build(
+                    targets: buildTargets,
+                    preActions: buildConfig?.preActions ?? [],
+                    postActions: buildConfig?.postActions ?? [],
+                    parallelizeBuild: false)
 
-                let profileConfig = schemeConfig?[SchemeActionType.profile.rawValue]
-                let profilePhase = XcodeScheme.Profile(config: "Profile",
-                        commandLineArguments:
-                        profileConfig?.commandLineArguments ?? [:],
-                        environmentVariables:
-                        profileConfig?.environmentVariables ?? [],
-                        preActions: profileConfig?.preActions ?? [],
-                        postActions: profileConfig?.postActions ?? [])
+            let runConfig = schemeConfig?[SchemeActionType.run.rawValue]
+            let runPhase = XcodeScheme.Run(config: "Debug",
+                    commandLineArguments: runConfig?.commandLineArguments ??
+                    [:],
+                    environmentVariables: runConfig?.environmentVariables ?? [],
+                    preActions: runConfig?.preActions ?? [],
+                    postActions: runConfig?.postActions ?? [])
 
-                return XcodeScheme(name: name, build: buildPhase, run: runPhase,
-                        test: testPhase, profile: profilePhase)
+            let testConfig = schemeConfig?[SchemeActionType.test.rawValue]
+
+            // For tests, grab all of the tests:
+            // TODO: Add this to XCHammerConfig
+            // https://github.com/pinterest/xchammer/issues/141
+            let testTargets: [String] = xcodeTarget.isTopLevelTestTarget ?
+                    [name] : []
+            let testPhase = XcodeScheme.Test(config: "Debug",
+                    commandLineArguments: testConfig?.commandLineArguments
+                    ?? [:],
+                    environmentVariables: testConfig?.environmentVariables ?? [],
+                    targets: testTargets,
+                    preActions: testConfig?.preActions ?? [],
+                    postActions: testConfig?.postActions ?? [])
+
+
+            let profileConfig = schemeConfig?[SchemeActionType.profile.rawValue]
+            let profilePhase = XcodeScheme.Profile(config: "Profile",
+                    commandLineArguments:
+                    profileConfig?.commandLineArguments ?? [:],
+                    environmentVariables:
+                    profileConfig?.environmentVariables ?? [],
+                    preActions: profileConfig?.preActions ?? [],
+                    postActions: profileConfig?.postActions ?? [])
+
+            return XcodeScheme(name: name, build: buildPhase, run: runPhase,
+                    test: testPhase, profile: profilePhase)
         }
     }
 
@@ -601,14 +624,19 @@ enum Generator {
             genOptions: genOptions,
             xcodeProjPath: tempProjectPath)
 
-        let projectConfig = genOptions.projectConfig
+	let projectConfig = genOptions.projectConfig
+        let projectByXCTargetName = getProjectsByXCTargetName(genOptions:
+            genOptions, targetMap: targetMap)
         let xcSchemes = (projectConfig?.generateXcodeSchemes ?? true) ?
             makeXcodeSchemes(for: allXCTargets.values.map { $0.xcodeTarget },
-                    targetMap: targetMap, genOptions: genOptions) : []
+                      targetMap: targetMap, projectByXCTargetName:
+                      projectByXCTargetName, genOptions: genOptions) : []
 
         let bazelSchemes = makeBazelTargetSchemes(for:
-                bazelBuildableXcodeTargets, targetMap: targetMap, genOptions:
+                bazelBuildableXcodeTargets, targetMap: targetMap,
+                projectByXCTargetName: projectByXCTargetName, genOptions:
                 genOptions)
+
         try ProjectWriter.write(
             schemes: xcSchemes + bazelSchemes,
             genOptions: genOptions,
