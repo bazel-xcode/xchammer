@@ -96,7 +96,8 @@ ios_application(
     infoplists = ["UrlGet/UrlGet-Info.plist"],
     visibility = ["//visibility:public"],
     deps = ["ios-app-bin"],
-    minimum_os_version = "9.3"
+    minimum_os_version = "9.3",
+    entitlements = "Example.entitlements"
 )
 
 objc_library(

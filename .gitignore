@@ -31,6 +31,7 @@ tulsigen-*
 tulsi-includes
 tulsi-workspace
 tulsi-aspects
+xchammer-workspace
 
 *.xcode_select_env
 bazel-*
@@ -39,3 +40,5 @@ external
 
 *.pyc
 *.swp
+
+

@@ -107,16 +107,22 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
 private let stopAfterNeedsRecursive: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { $0.needsRecursiveExtraction ? .justOnceMore : .keepGoing }
 private let stopAtBundles: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { isBundleLibrary($0.type) ? .stop : .keepGoing }
 
-let GenDirSubSRCRoot = "$(SRCROOT)/bazel-genfiles"
-let GenDirSub = "bazel-genfiles"
+let XCHammerIncludesSRCRoot = "$(SRCROOT)/xchammer-workspace/xchammer-includes/x/x/"
+let XCHammerIncludes = "xchammer-workspace/xchammer-includes/x/x/"
 
 // __BAZEL_GEN_DIR__ is a custom toolchain make variable
 // resolve that to $(SRCROOT)/bazel-genfiles.
 // TODO: remove this when it works in every case in Bazel and is no longer used
 func subBazelMakeVariables(_ str: String, useSRCRoot: Bool = false) -> String {
-    let sub = useSRCRoot ? GenDirSubSRCRoot : GenDirSub
+    let sub = useSRCRoot ? XCHammerIncludesSRCRoot : XCHammerIncludes
     return str.replacingOccurrences(of: "__BAZEL_GEN_DIR__", with:
         sub).replacingOccurrences(of: "$(GENDIR)", with: sub)
+}
+
+/// Tulsi injects this into strings in a few places
+func subTulsiIncludes(_ str: String, useSRCRoot: Bool = false) -> String {
+    let sub = useSRCRoot ? XCHammerIncludesSRCRoot : XCHammerIncludes
+    return str.replacingOccurrences(of: "bazel-tulsi-includes/x/x", with: sub)
 }
 
 public class XcodeTarget: Hashable, Equatable {
@@ -294,20 +300,15 @@ public class XcodeTarget: Hashable, Equatable {
         case .sourceFile:
             return resolveExternalPath(for: fileInfo.subPath)
         case .generatedFile:
-            // Tulsi sticks some generated source file types in _tulsi-includes
-            // and the aspect is aware of this.
-            if useTulsiPath && fileInfo.fullPath.hasPrefix("bazel-tulsi-includes") {
-                return "tulsi-workspace/" + fileInfo.fullPath
-            } else {
-                return "bazel-genfiles/" + resolveExternalPath(for: fileInfo.subPath)
-            }
+            return XCHammerIncludes + resolveExternalPath(for: fileInfo.subPath)
         }
     }
 
     func resolveExternalPath(for path: String) -> String {
-        if path.hasPrefix("external/")
-            || self.label.packageName?.hasPrefix("@") ?? false {
+        if path.hasPrefix("external/") {
             return path.replacingOccurrences(of: "../", with: "external/")
+        } else if path.hasPrefix("../") {
+            return "external" + String(path.dropFirst().dropFirst())
         }
         return path
     }
@@ -762,14 +763,11 @@ public class XcodeTarget: Hashable, Equatable {
             settings.headerSearchPaths <>=
                 OrderedArray(["$(inherited)"]) <>
                 headerSearchPaths
-                .filter { !$0.0.contains("tulsi-includes") }
                 .foldMap { (path: String, isRecursive: Bool) in
-                if path.hasSuffix("module_map") {
-                    return ["$(SRCROOT)/bazel-genfiles/\(path)"]
-                } else if isRecursive {
+                if isRecursive {
                     return ["$(SRCROOT)/\(path)/**"]
                 } else {
-                    return ["$(SRCROOT)/\(path)"]
+                    return [subTulsiIncludes(path, useSRCRoot: true)]
                 }
             }
         }
@@ -1077,7 +1075,7 @@ public class XcodeTarget: Hashable, Equatable {
                 .replacingOccurrences(of: genOptions.workspaceRootPath.string,
                                     with: "")
         let targetName = label.asFullPBXTargetName!
-        return "$(SRCROOT)/bazel-genfiles" + relativeProjDir + "/XCHammerAssets/" + targetName + ".entitlements"
+        return XCHammerIncludesSRCRoot + relativeProjDir + "/XCHammerAssets/" + targetName + ".entitlements"
     }
 
     var mobileProvisionProfileFile: String? {

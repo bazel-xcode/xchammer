@@ -1,3 +1,9 @@
+load(
+    "@xchammer_resources//:tulsi/tulsi_aspects_paths.bzl",
+    "SwiftInfo",
+)
+
+
 XcodeProjectTargetInfo = provider(
     fields={
         "target_config_json_str": """
@@ -71,25 +77,38 @@ XcodeBuildSourceInfo = provider(
     }
 )
 
-def _extract_generated_sources(target):
+def _extract_generated_sources(target, ctx):
     """ Collects all of the generated source files"""
-    if not hasattr(target, "objc"):
-        return []
-    objc_provider = target.objc
-    if hasattr(objc_provider, "source") and hasattr(objc_provider, "header"):
-        all_files = depset(transitive = [objc_provider.source, objc_provider.header])
-        return [f for f in all_files.to_list()  if not f.is_source]
-    return []
+
+    files = []
+    if ctx.rule.kind == "entitlements_writer":
+        files.append(target.files)
+
+    if SwiftInfo in target:
+        module_info = target[SwiftInfo]
+        if hasattr(module_info, "transitive_modulemaps"):
+            files.append(module_info.transitive_modulemaps)
+
+    if hasattr(target, "objc"):
+        objc = target.objc
+        files.append(objc.source)
+        files.append(objc.header)
+        files.append(objc.module_map)
+
+    trans_files = depset(transitive = files)
+    return [f for f in trans_files.to_list()  if not f.is_source]
 
 
 def _xcode_build_sources_aspect_impl(itarget, ctx):
     infos = []
-    infos.extend(_extract_generated_sources(itarget))
+    infos.extend(_extract_generated_sources(itarget, ctx))
     if hasattr(ctx.rule.attr, "deps"):
         for target in ctx.rule.attr.deps:
             if XcodeBuildSourceInfo in target:
-                trans = _extract_generated_sources(target)
+                trans = _extract_generated_sources(target, ctx)
                 infos.extend(trans)
+
+
     return XcodeBuildSourceInfo(values=infos)
 
 
