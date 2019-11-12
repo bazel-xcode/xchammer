@@ -1,26 +1,19 @@
 #!/bin/bash
-# This program provides dummy data to XCBuild
-
+set -e
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 pushd "$SCRIPTPATH/.." > /dev/null
-set -e
+
 while [[ $# -gt 0 ]]
 do
     case $1 in
-        -MF)
+        -dependency_info)
+           shift
            shift
            mkdir -p "$(dirname $1)"
-           touch "$1"
-            ;;
-        -o)
-           shift
-           mkdir -p "$(dirname $1)"
-           # TODO: Determine object file architecture based on target arch
-           ditto $SCRIPTPATH/x86_64_ObjectStub.o "$1"
+           ditto $SCRIPTPATH/dependency_info_Stub.dat "$1"
             ;;
         *)
             shift # past argument
             ;;
     esac
 done
-

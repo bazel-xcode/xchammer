@@ -624,7 +624,6 @@ enum Generator {
             genOptions: genOptions,
             xcodeProjPath: tempProjectPath)
 
-        let projectConfig = genOptions.projectConfig
         let projectByXCTargetName = getProjectsByXCTargetName(genOptions:
             genOptions, targetMap: targetMap)
         let xcSchemes = (projectConfig?.generateXcodeSchemes ?? true) ?
