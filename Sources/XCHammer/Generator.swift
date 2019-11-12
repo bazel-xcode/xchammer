@@ -535,7 +535,6 @@ enum Generator {
         let entitlementLabels = entitlementRules.map { BuildLabel($0.name) }
         let targetsStr = (genOptions.config.buildTargetLabels + entitlementLabels).map { "\"" + $0.value + "\"" }.joined(separator: ", ")
 
-        // FIXME: we need to make this load xchammer_resources
         let buildFileHdr = """
             load(\"/\(relativeProjDir)/XCHammerAssets:\(XCHammerAsset.bazelExtensions.rawValue)\", \"export_entitlements\")
             load(\"@xchammer_resources//:xcodeproject.bzl\", \"xcode_project_deps\")

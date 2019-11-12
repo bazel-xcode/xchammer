@@ -148,8 +148,9 @@ _xcode_project = rule(
     outputs={"out": "%{project_name}.xcodeproj"},
 )
 
-# Get the workspace by reading the symlink or cat the embedded file path
-get_srcroot = "$(( [[ -f WORKSPACE ]] && echo \"$(dirname $(readlink WORKSPACE))/\" ) || echo \"$(cat ../../DO_NOT_BUILD_HERE)/\")"
+# Get the workspace by reading DO_NOT_BUILD_HERE
+# https://github.com/bazelbuild/bazel/blob/master/src/main/java/com/google/devtools/build/lib/runtime/BlazeWorkspace.java#L298
+get_srcroot = "$(cat ../../DO_NOT_BUILD_HERE)/"
 
 def _xcode_project_deps_impl(ctx):
     """ Install Xcode project dependencies into the source root.
@@ -158,7 +159,7 @@ def _xcode_project_deps_impl(ctx):
     """
     inputs = []
     cmd = []
-    cmd.append("set -x; SRCROOT=" + get_srcroot)
+    cmd.append("SRCROOT=" + get_srcroot)
     for dep in ctx.attr.targets:
         if XcodeBuildSourceInfo in dep:
             for info in dep[XcodeBuildSourceInfo].values:
@@ -195,7 +196,7 @@ def _install_xcode_project_impl(ctx):
     xcodeproj = ctx.attr.xcodeproj.files.to_list()[0]
     output_proj = "$SRCROOT/" + xcodeproj.basename
     command = [
-        "set -x; SRCROOT=" + get_srcroot,
+        "SRCROOT=" + get_srcroot,
         "ditto " + xcodeproj.path + " " + output_proj,
         "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" "
         + output_proj

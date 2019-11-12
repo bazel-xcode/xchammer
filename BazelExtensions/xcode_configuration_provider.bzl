@@ -93,8 +93,6 @@ def _extract_generated_sources(target, ctx):
         objc = target.objc
         files.append(objc.source)
         files.append(objc.header)
-        # Entitlements are loaded from here
-        files.append(objc.link_inputs)
         files.append(objc.module_map)
 
     trans_files = depset(transitive = files)
