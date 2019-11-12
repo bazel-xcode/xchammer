@@ -148,6 +148,8 @@ _xcode_project = rule(
     outputs={"out": "%{project_name}.xcodeproj"},
 )
 
+# Get the workspace by reading the symlink or cat the embedded file path
+get_srcroot = "$(( [[ -f WORKSPACE ]] && echo \"$(dirname $(readlink WORKSPACE))/\" ) || echo \"$(cat ../../DO_NOT_BUILD_HERE)/\")"
 
 def _xcode_project_deps_impl(ctx):
     """ Install Xcode project dependencies into the source root.
@@ -156,7 +158,7 @@ def _xcode_project_deps_impl(ctx):
     """
     inputs = []
     cmd = []
-    cmd.append("base_path=$(dirname $(readlink $PWD/WORKSPACE))/")
+    cmd.append("set -x; SRCROOT=" + get_srcroot)
     for dep in ctx.attr.targets:
         if XcodeBuildSourceInfo in dep:
             for info in dep[XcodeBuildSourceInfo].values:
@@ -165,7 +167,7 @@ def _xcode_project_deps_impl(ctx):
                     inputs.append(info)
                     last = parts[len(parts) - 1]
                     cmd.append(
-                        "target_dir=$base_path/bazel-genfiles/$(dirname " + last + ")"
+                        "target_dir=$SRCROOT/xchammer-workspace/xchammer-includes/x/x/$(dirname " + last + ")"
                     )
                     cmd.append("mkdir -p $target_dir")
                     cmd.append("ditto " + info.path + " $target_dir")
@@ -191,8 +193,9 @@ xcode_project_deps = rule(
 
 def _install_xcode_project_impl(ctx):
     xcodeproj = ctx.attr.xcodeproj.files.to_list()[0]
-    output_proj = "$(dirname $(readlink $PWD/WORKSPACE))/" + xcodeproj.basename
+    output_proj = "$SRCROOT/" + xcodeproj.basename
     command = [
+        "set -x; SRCROOT=" + get_srcroot,
         "ditto " + xcodeproj.path + " " + output_proj,
         "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" "
         + output_proj
@@ -200,10 +203,10 @@ def _install_xcode_project_impl(ctx):
         # This is kind of a hack for reference bazel relative to the source
         # directory, as bazel_build_settings.py doesn't sub Xcode build
         # settings.
-        "sed -i '' \"s,\$SRCROOT,$(dirname $(readlink $PWD/WORKSPACE)),g\" "
+        "sed -i '' \"s,\$SRCROOT,$SRCROOT,g\" "
         + output_proj
         + "/XCHammerAssets/bazel_build_settings.py",
-        "ln -sf $PWD/external $(dirname $(readlink $PWD/WORKSPACE))/external",
+        "ln -sf $PWD/external $SRCROOT/external",
         'echo "' + output_proj + '" > ' + ctx.outputs.out.path,
     ]
     ctx.actions.run_shell(

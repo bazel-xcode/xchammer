@@ -66,7 +66,6 @@ enum Generator {
         defer {
             profiler.logEnd(true)
         }
-
         let entries: [XcodeGenTarget] = targetMap.includedProjectTargets.compactMap {
             xcodeTarget in
             guard let target = makeXcodeGenTarget(from: xcodeTarget) else {
@@ -84,8 +83,11 @@ enum Generator {
             XCHammerGenerateOptions) -> ProjectSpec.Target {
         let bazel = genOptions.bazelPath.string
         let retrySh = XCHammerAsset.retry.getPath(underProj: "$PROJECT_FILE_PATH")
+        let xchammerResources = getAspectRepoOverride(genOptions: genOptions)
+        // Under V1 XCHammer is written as an absolute path
+        let overrideRepo = "--override_repository=xchammer_resources=" + xchammerResources
         // We retry.sh the bazel command so if Xcode updates, the build still works
-        let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build --experimental_show_artifacts \(labels.map{ $0.value }.joined(separator: " ")))'"
+        let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build \(overrideRepo) --experimental_show_artifacts \(labels.map{ $0.value }.joined(separator: " ")))'"
         let target = ProjectSpec.Target(
             name: BazelPreBuildTargetName,
             type: PBXProductType.none,
@@ -96,7 +98,7 @@ enum Generator {
                 "toolPath": "/bin/bash",
                 "arguments": argStr,
                 "passSettings": true,
-                "workingDirectory": genOptions.workspaceRootPath.string
+                "workingDirectory": "$SRCROOT"
             ])
         )
         return target
@@ -116,7 +118,7 @@ enum Generator {
                 "toolPath": "/bin/bash",
                 "arguments": argStr,
                 "passSettings": true,
-                "workingDirectory": genOptions.workspaceRootPath.string
+                "workingDirectory": "$SRCROOT"
             ])
         )
         return target
@@ -188,7 +190,7 @@ enum Generator {
                 "toolPath": "/bin/bash",
                 "arguments": argStr,
                 "passSettings": true,
-                "workingDirectory": genOptions.workspaceRootPath.string
+                "workingDirectory": "$SRCROOT"
             ])
         )
         return target
@@ -529,8 +531,16 @@ enum Generator {
         let relativeProjDir = genOptions.outputProjectPath.string
                 .replacingOccurrences(of: genOptions.workspaceRootPath.string,
                                     with: "")
+
+        let entitlementLabels = entitlementRules.map { BuildLabel($0.name) }
+        let targetsStr = (genOptions.config.buildTargetLabels + entitlementLabels).map { "\"" + $0.value + "\"" }.joined(separator: ", ")
+
+        // FIXME: we need to make this load xchammer_resources
         let buildFileHdr = """
             load(\"/\(relativeProjDir)/XCHammerAssets:\(XCHammerAsset.bazelExtensions.rawValue)\", \"export_entitlements\")
+            load(\"@xchammer_resources//:xcodeproject.bzl\", \"xcode_project_deps\")
+
+            xcode_project_deps(name=\"deps\", targets=[ \(targetsStr) ],testonly=True)
 
             """
         let buildFile = buildFileHdr + entitlementRules
@@ -558,9 +568,10 @@ enum Generator {
              fatalError("Can't write genStatus")
         }
 
+        let genfilesRules = [BuildLabel("/" + relativeProjDir + "/XCHammerAssets:deps")]
         // Add the entitilement rules to the queried rules
-        let targetsToBuild = genfileLabels + entitlementRules
-                .map { BuildLabel("/" + relativeProjDir + "/XCHammerAssets:" + $0.name) }
+        let targetsToBuild = genfilesRules
+                .map { BuildLabel("/" + relativeProjDir + "/XCHammerAssets:" + $0.targetName! ) }
         let bazelPreBuildTarget = makeBazelPreBuildTarget(labels: targetsToBuild,
                 genOptions: genOptions)
 
@@ -595,10 +606,20 @@ enum Generator {
                 .map { $0.value.xcodeTarget }
         }
 
+
+        let adHocFiles = Array(Set(allXCTargets.flatMap {
+            value -> [String] in
+            let (_, xcgTarget) = value
+            return xcgTarget.xcodeTarget.xcAdHocFiles
+        }))
+
+        let projectConfig = genOptions.projectConfig
+        let generateXcodeTargets = (projectConfig?.generateXcodeSchemes ?? true != false)
+        let includedXcodeTargets = generateXcodeTargets ? allXCTargets.map { k, v in v.target } : []
         let bazelBuildableXcodeTargets = getBazelBuildableTargets()
         let bazelBuildableTargets = 
             bazelBuildableXcodeTargets.compactMap { $0.getBazelBuildableTarget() }
-        let allTargets = allXCTargets.map { k, v in v.target } + [
+        let allTargets = includedXcodeTargets + [
                 updateXcodeProjectTarget,
                 bazelPreBuildTarget,
                 clearSourceMapTarget
@@ -615,7 +636,8 @@ enum Generator {
             targets: allTargets.sorted { $0.name < $1.name },
             settings: settings,
             settingGroups: [:],
-            options: options
+            options: options,
+            fileGroups: adHocFiles
         )
 
         XCHammerLogger.shared().logInfo("Writing project")
