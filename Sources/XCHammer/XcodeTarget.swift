@@ -1332,6 +1332,7 @@ public class XcodeTarget: Hashable, Equatable {
 
         settings.cc = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh")
         settings.ld = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh")
+        settings.debugInformationFormat = First("dwarf")
         settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
         settings.copts = xcodeBuildableTargetSettings.copts
 

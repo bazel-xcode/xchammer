@@ -145,6 +145,7 @@ struct XCBuildSettings: Encodable {
     var validArchs: First<String>?
     var pch: First<String>?
     var productBundleId: First<String>?
+    var debugInformationFormat: First<String>?
     var codeSigningRequired: First<String>?
     var onlyActiveArch: First<String>?
     var enableTestability: First<String>?
@@ -191,6 +192,7 @@ struct XCBuildSettings: Encodable {
         case pch = "GCC_PREFIX_HEADER"
         case productBundleId = "PRODUCT_BUNDLE_IDENTIFIER"
         case codeSigningRequired = "CODE_SIGNING_REQUIRED"
+        case debugInformationFormat = "DEBUG_INFORMATION_FORMAT"
         case onlyActiveArch = "ONLY_ACTIVE_ARCH"
         case enableTestability = "ENABLE_TESTABILITY"
         case enableObjcArc = "CLANG_ENABLE_OBJC_ARC"
@@ -244,6 +246,7 @@ struct XCBuildSettings: Encodable {
         try archs.map { try container.encode($0.v, forKey: .archs) }
         try validArchs.map { try container.encode($0.v, forKey: .validArchs) }
         try pch.map { try container.encode($0.v, forKey: .pch) }
+        try debugInformationFormat.map { try container.encode($0.v, forKey: .debugInformationFormat) }
         try productBundleId.map { try container.encode($0.v, forKey: .productBundleId) }
         try codeSigningRequired.map { try container.encode($0.v, forKey: .codeSigningRequired) }
         try codeSigningIdentity.map { try container.encode($0.v, forKey: .codeSigningIdentity) }
@@ -297,6 +300,7 @@ extension XCBuildSettings: Monoid {
             validArchs: lhs.validArchs <> rhs.validArchs,
             pch: lhs.pch <> rhs.pch,
             productBundleId: lhs.productBundleId <> rhs.productBundleId,
+            debugInformationFormat: lhs.debugInformationFormat <> rhs.debugInformationFormat,
             codeSigningRequired: lhs.codeSigningRequired <> rhs.codeSigningRequired,
             onlyActiveArch: lhs.onlyActiveArch <> rhs.onlyActiveArch,
             enableTestability: lhs.enableTestability <> rhs.enableTestability,
