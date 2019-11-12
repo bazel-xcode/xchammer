@@ -642,7 +642,6 @@ enum Generator {
             genOptions: genOptions,
             xcodeProjPath: tempProjectPath)
 
-	let projectConfig = genOptions.projectConfig
         let projectByXCTargetName = getProjectsByXCTargetName(genOptions:
             genOptions, targetMap: targetMap)
         let xcSchemes = (projectConfig?.generateXcodeSchemes ?? true) ?
@@ -1048,6 +1047,7 @@ enum Generator {
                             skipped: true))
             }
 
+            let ruleEntryMap = workspaceInfo.ruleEntryMap
             // Attempt to get the depsHash from the project state or recompute
             let depsHash = existingState?.1 ?? getHash(workspaceRootPath:
                     genOptions.workspaceRootPath, genOptions: genOptions)

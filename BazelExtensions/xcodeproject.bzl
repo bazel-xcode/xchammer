@@ -150,7 +150,7 @@ _xcode_project = rule(
 
 # Get the workspace by reading DO_NOT_BUILD_HERE
 # https://github.com/bazelbuild/bazel/blob/master/src/main/java/com/google/devtools/build/lib/runtime/BlazeWorkspace.java#L298
-get_srcroot = "$(cat ../../DO_NOT_BUILD_HERE)/"
+get_srcroot = "\"$(cat ../../DO_NOT_BUILD_HERE)/\""
 
 def _xcode_project_deps_impl(ctx):
     """ Install Xcode project dependencies into the source root.
