@@ -86,8 +86,8 @@ enum Generator {
         let xchammerResources = getAspectRepoOverride(genOptions: genOptions)
         // Build xcode_project_deps for the targets in question
         let bazelArgs = [
-            "--override_repository=xchammer_resources=" + xchammerResources,
             "--experimental_show_artifacts",
+            "--override_repository=xchammer_resources=" + xchammerResources,
             "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
             "--output_groups=xcode_project_deps"
         ] + labels.map { $0.value }
@@ -408,6 +408,7 @@ enum Generator {
 
             let targetConfig = XcodeTarget.getTargetConfig(for:
                     xcodeTarget)
+            let aspectRepoOverride = getAspectRepoOverride(genOptions: genOptions)
             let baseBuildOptions = [
                 // This is a hack for BEP output not being updated as much as it
                 // should be. By publishing all actions, it flushes the buffer
@@ -416,10 +417,10 @@ enum Generator {
                 // https://github.com/bazelbuild/bazel/commit/de3d8bf821dba97471ab4ccfc1f1b1559f0a1cac
                 "--build_event_publish_all_actions=true"
             ] + [
-                "--override_repository=tulsi=" +
-                getAspectRepoOverride(genOptions: genOptions),
+                "--override_repository=tulsi=" + aspectRepoOverride,
             ] + [
                 // Build xcode_project_deps for targets in question.
+                "--override_repository=xchammer_resources=" + aspectRepoOverride,
                 "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
                 "--output_groups=+xcode_project_deps"
             ]

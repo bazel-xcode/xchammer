@@ -1276,11 +1276,9 @@ public class XcodeTarget: Hashable, Equatable {
         // Minimal settings for this build
         var settings = XCBuildSettings()
 
-        let xcodeTarget = self
         /// We need to include the sources into the target
         let sources: [ProjectSpec.TargetSource]
         let xcodeBuildableTargetSettings: XCBuildSettings
-        let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
         if isTopLevelTestTarget {
             let flattened = Set(flattenedInner(targetMap: targetMap))
             // Determine deps to fuse into the rule.
