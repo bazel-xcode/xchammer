@@ -86,7 +86,6 @@ enum Generator {
         let xchammerResources = getAspectRepoOverride(genOptions: genOptions)
         // Build xcode_project_deps for the targets in question
         let bazelArgs = [
-            "--experimental_show_artifacts",
             "--override_repository=xchammer_resources=" + xchammerResources,
             "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
             "--output_groups=xcode_project_deps"
