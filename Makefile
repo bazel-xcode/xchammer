@@ -19,7 +19,7 @@ workspace: build
 
 # Experimental Xcode project generator based on Bazel
 workspace_v2:
-	tools/bazelwrapper build -s :workspace_v2 :workspace_v2_xcode_project_deps
+	tools/bazelwrapper build -s :workspace_v2
 
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean

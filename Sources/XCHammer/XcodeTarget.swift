@@ -107,8 +107,8 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
 private let stopAfterNeedsRecursive: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { $0.needsRecursiveExtraction ? .justOnceMore : .keepGoing }
 private let stopAtBundles: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate { isBundleLibrary($0.type) ? .stop : .keepGoing }
 
-let XCHammerIncludesSRCRoot = "$(SRCROOT)/xchammer-workspace/xchammer-includes/x/x/"
-let XCHammerIncludes = "xchammer-workspace/xchammer-includes/x/x/"
+let XCHammerIncludesSRCRoot = "$(SRCROOT)/xchammer-includes/x/x/"
+let XCHammerIncludes = "xchammer-includes/x/x/"
 
 // __BAZEL_GEN_DIR__ is a custom toolchain make variable
 // resolve that to $(SRCROOT)/bazel-genfiles.
@@ -122,7 +122,7 @@ func subBazelMakeVariables(_ str: String, useSRCRoot: Bool = false) -> String {
 /// Tulsi injects this into strings in a few places
 func subTulsiIncludes(_ str: String, useSRCRoot: Bool = false) -> String {
     let sub = useSRCRoot ? XCHammerIncludesSRCRoot : XCHammerIncludes
-    return str.replacingOccurrences(of: "bazel-tulsi-includes/x/x", with: sub)
+    return str.replacingOccurrences(of: "bazel-tulsi-includes/x/x/", with: sub)
 }
 
 public class XcodeTarget: Hashable, Equatable {
@@ -772,7 +772,7 @@ public class XcodeTarget: Hashable, Equatable {
                 if isRecursive {
                     return ["$(SRCROOT)/\(path)/**"]
                 } else {
-                    return [subTulsiIncludes(path, useSRCRoot: true)]
+                    return ["$(SRCROOT)/\(subTulsiIncludes(path, useSRCRoot: false))"]
                 }
             }
         }
@@ -1276,11 +1276,9 @@ public class XcodeTarget: Hashable, Equatable {
         // Minimal settings for this build
         var settings = XCBuildSettings()
 
-        let xcodeTarget = self
         /// We need to include the sources into the target
         let sources: [ProjectSpec.TargetSource]
         let xcodeBuildableTargetSettings: XCBuildSettings
-        let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
         if isTopLevelTestTarget {
             let flattened = Set(flattenedInner(targetMap: targetMap))
             // Determine deps to fuse into the rule.

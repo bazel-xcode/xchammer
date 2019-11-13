@@ -98,8 +98,15 @@ def _extract_generated_sources(target, ctx):
     trans_files = depset(transitive = files)
     return [f for f in trans_files.to_list()  if not f.is_source]
 
+get_srcroot = "\"$(cat ../../DO_NOT_BUILD_HERE)/\""
+non_hermetic_execution_requirements = { "no-cache": "1", "no-remote": "1", "local": "1", "no-sandbox": "1" }
 
 def _xcode_build_sources_aspect_impl(itarget, ctx):
+    """ Install Xcode project dependencies into the source root.
+    This is required as by default, Bazel only installs genfiles for those
+    genfiles which are passed to the Bazel command line.
+    """
+
     infos = []
     infos.extend(_extract_generated_sources(itarget, ctx))
     if hasattr(ctx.rule.attr, "deps"):
@@ -109,7 +116,41 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
                 infos.extend(trans)
 
 
-    return XcodeBuildSourceInfo(values=infos)
+    # This uses an external program because bazel action code doesn't like to
+    # be non-hermetic
+    inputs = []
+    cmd = []
+    cmd.append("SRCROOT=" + get_srcroot)
+    for info in infos:
+        parts = info.path.split("/bin/")
+        dirname = info.path
+        short_path = info.short_path.split("/")[:-1]
+        if len(short_path) > 0 and short_path[0] == "..":
+            target_dir = "external/" + "/".join(short_path[1:])
+        else:
+            target_dir = "/".join(short_path)
+        if len(parts) > 0:
+            inputs.append(info)
+            last = parts[len(parts) - 1]
+            cmd.append(
+                "target_dir=\"$SRCROOT/xchammer-includes/x/x/" + target_dir + "\""
+            )
+            cmd.append("mkdir -p \"$target_dir\"")
+            cmd.append("ditto " + info.path + " \"$target_dir\"")
+    output = ctx.actions.declare_file(itarget.label.name + "_outputs.dummy")
+    cmd.append("touch " + output.path)
+    ctx.actions.run_shell(
+        inputs=inputs,
+        command="\n".join(cmd),
+        use_default_shell_env=True,
+        outputs=[output],
+        execution_requirements = non_hermetic_execution_requirements
+    )
+
+    return [
+        OutputGroupInfo(xcode_project_deps=infos + [output]),
+        XcodeBuildSourceInfo(values=infos)
+    ]
 
 
 xcode_build_sources_aspect = aspect(

@@ -84,10 +84,15 @@ enum Generator {
         let bazel = genOptions.bazelPath.string
         let retrySh = XCHammerAsset.retry.getPath(underProj: "$PROJECT_FILE_PATH")
         let xchammerResources = getAspectRepoOverride(genOptions: genOptions)
-        // Under V1 XCHammer is written as an absolute path
-        let overrideRepo = "--override_repository=xchammer_resources=" + xchammerResources
+        // Build xcode_project_deps for the targets in question
+        let bazelArgs = [
+            "--override_repository=xchammer_resources=" + xchammerResources,
+            "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
+            "--output_groups=xcode_project_deps"
+        ] + labels.map { $0.value }
+
         // We retry.sh the bazel command so if Xcode updates, the build still works
-        let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build \(overrideRepo) --experimental_show_artifacts \(labels.map{ $0.value }.joined(separator: " ")))'"
+        let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build \(bazelArgs.joined(separator: " ")))'"
         let target = ProjectSpec.Target(
             name: BazelPreBuildTargetName,
             type: PBXProductType.none,
@@ -402,6 +407,7 @@ enum Generator {
 
             let targetConfig = XcodeTarget.getTargetConfig(for:
                     xcodeTarget)
+            let aspectRepoOverride = getAspectRepoOverride(genOptions: genOptions)
             let baseBuildOptions = [
                 // This is a hack for BEP output not being updated as much as it
                 // should be. By publishing all actions, it flushes the buffer
@@ -410,8 +416,12 @@ enum Generator {
                 // https://github.com/bazelbuild/bazel/commit/de3d8bf821dba97471ab4ccfc1f1b1559f0a1cac
                 "--build_event_publish_all_actions=true"
             ] + [
-                "--override_repository=tulsi=" +
-                getAspectRepoOverride(genOptions: genOptions),
+                "--override_repository=tulsi=" + aspectRepoOverride,
+            ] + [
+                // Build xcode_project_deps for targets in question.
+                "--override_repository=xchammer_resources=" + aspectRepoOverride,
+                "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
+                "--output_groups=+xcode_project_deps"
             ]
 
             let buildOptions = (targetConfig?.buildBazelOptions ?? "") + " " +
@@ -532,14 +542,12 @@ enum Generator {
                 .replacingOccurrences(of: genOptions.workspaceRootPath.string,
                                     with: "")
 
-        let entitlementLabels = entitlementRules.map { BuildLabel($0.name) }
-        let targetsStr = (genOptions.config.buildTargetLabels + entitlementLabels).map { "\"" + $0.value + "\"" }.joined(separator: ", ")
+        let entitlementLabels = entitlementRules
+             .map { BuildLabel("/" + relativeProjDir + "/XCHammerAssets:" + $0.name) }
+        let genfileLabels = genOptions.config.buildTargetLabels + entitlementLabels
 
         let buildFileHdr = """
             load(\"/\(relativeProjDir)/XCHammerAssets:\(XCHammerAsset.bazelExtensions.rawValue)\", \"export_entitlements\")
-            load(\"@xchammer_resources//:xcodeproject.bzl\", \"xcode_project_deps\")
-
-            xcode_project_deps(name=\"deps\", targets=[ \(targetsStr) ],testonly=True)
 
             """
         let buildFile = buildFileHdr + entitlementRules
@@ -567,14 +575,13 @@ enum Generator {
              fatalError("Can't write genStatus")
         }
 
-        let targetsToBuild = [BuildLabel("/" + relativeProjDir + "/XCHammerAssets:deps")] + genfileLabels
-        let bazelPreBuildTarget = makeBazelPreBuildTarget(labels: targetsToBuild,
+        let bazelPreBuildTarget = makeBazelPreBuildTarget(labels: genfileLabels,
                 genOptions: genOptions)
 
         let updateXcodeProjectTarget = makeUpdateXcodeProjectTarget(genOptions:
                 genOptions, projectPath: tempProjectPath, depsHash: depsHash)
         
-        let clearSourceMapTarget = makeClearSourceMapTarget(labels: targetsToBuild,
+        let clearSourceMapTarget = makeClearSourceMapTarget(labels: genfileLabels,
                 genOptions: genOptions)
 
         let options = SpecOptions(
