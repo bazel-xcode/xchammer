@@ -140,8 +140,7 @@ gen_xchammer_config(
 # Experimental xcode_project rule
 load(
     "//BazelExtensions:xcodeproject.bzl",
-    "xcode_project",
-    "xcode_project_deps",
+    "xcode_project"
 )
 
 

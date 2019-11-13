@@ -98,6 +98,8 @@ def _extract_generated_sources(target, ctx):
     trans_files = depset(transitive = files)
     return [f for f in trans_files.to_list()  if not f.is_source]
 
+get_srcroot = "\"$(cat ../../DO_NOT_BUILD_HERE)/\""
+non_hermetic_execution_requirements = { "no-cache": "1", "no-remote": "1", "local": "1", "no-sandbox": "1" }
 
 def _xcode_build_sources_aspect_impl(itarget, ctx):
     infos = []
@@ -109,7 +111,34 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
                 infos.extend(trans)
 
 
-    return XcodeBuildSourceInfo(values=infos)
+    inputs = []
+    cmd = []
+    cmd.append("SRCROOT=" + get_srcroot)
+    for info in infos:
+        parts = info.path.split("/bin/")
+        if len(parts) > 0:
+            inputs.append(info)
+            last = parts[len(parts) - 1]
+            cmd.append(
+                "target_dir=$SRCROOT/xchammer-includes/x/x/$(dirname " + last + ")"
+            )
+            cmd.append("mkdir -p $target_dir")
+            cmd.append("ditto " + info.path + " $target_dir")
+
+    output = ctx.actions.declare_file(itarget.label.name + "_outputs.dummy")
+    cmd.append("touch " + output.path)
+    ctx.actions.run_shell(
+        inputs=inputs,
+        command="\n".join(cmd),
+        use_default_shell_env=True,
+        outputs=[output],
+        execution_requirements = non_hermetic_execution_requirements
+    )
+
+    return [
+        OutputGroupInfo(xcode_project_deps=infos + [output]),
+        XcodeBuildSourceInfo(values=infos)
+    ]
 
 
 xcode_build_sources_aspect = aspect(
