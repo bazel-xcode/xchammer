@@ -658,16 +658,21 @@ public class XcodeTarget: Hashable, Equatable {
             switch attr {
             case .copts:
                 if let coptsArray = value as? [String] {
-                    let processedOpts = coptsArray.map { opt -> String in
+                    let processedOpts = coptsArray.enumerated().reduce(into: [String]()) {
+                        accum, itr in
+                        let (idx, opt) = itr
                         if opt == "-I." {
-                             return opt
+                             accum.append(opt)
                         } else if opt.hasPrefix("-I") {
                             let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
                             let path = opt[substringRangeStart...]
                             let processedOpt =  "-I$(SRCROOT)/\(path)"
-                            return subBazelMakeVariables(processedOpt, useSRCRoot: false)
+                            accum.append(subBazelMakeVariables(processedOpt, useSRCRoot: false))
+                        } else if opt == "-index-store-path" || (idx > 0 &&
+                            coptsArray[idx - 1] == "-index-store-path") {
+                            return
                         } else {
-                            return subBazelMakeVariables(opt)
+                            accum.append(subBazelMakeVariables(opt))
                         }
                     }
                     settings.copts <>= processedOpts
