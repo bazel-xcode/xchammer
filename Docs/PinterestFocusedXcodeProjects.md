@@ -49,7 +49,7 @@ aggregates all Xcode configuration for included targets [via an
 aspect](https://github.com/pinterest/xchammer/pull/192) which makes Xcode
 configuration composeable. By convention, the DSL is declared via macros
 adjacent to related BUILD files, e.g. for an an app declared at
-`Pinterest/iOS/App`, the Xcode configuration is declared at
+`Pinterest/iOS/App/BUILD`, the Xcode configuration is declared at
 `Pinterest/iOS/App/XcodeProjectConfig.bzl`. The main BUILD file imports all of
 the configuration macros.
 
@@ -59,33 +59,38 @@ Pinterest has a lot of source files which makes building, project generation,
 and indexing slow. We use Bazel locally to maximize caching and paralleism of
 clang invocations.
 
-Within the `XCHammerConfig` directory, users declare Xcode projects via the `xcode_project` rule in a way that's ignored from SCM. By default we focus by target and path to succinctly filter a subset of # transitive dependencies for specified targets.
+Within the `XCHammerConfig` directory, users declare Xcode projects via the
+`xcode_project` rule in a way that's ignored from SCM. By default we focus by
+target and path to succinctly filter a subset of # transitive dependencies for
+specified targets.
 
 ```
-# XCHammerConfig/Focux.bzl
- pinterest_xcode_project(
-        targets = [ ":PinterestDevelopment" ],
-        paths = [ "Pinterest/**" ],
-    )
+# XCHammerConfig/Focus.bzl
+xcode_project(
+    targets = [ ":PinterestDevelopment" ],
+    paths = [ "Pinterest/**" ],
+)
 ```
 
-After editing the focused file, the Xcode project automatically is updated (
-add the this for Bazel builds )
+After editing the focused file, the Xcode project automatically is updated.
 
-Generation time for focused are an order of magnitude faster the generating our entire Xcode workspace.
+
+Generation time for focused are an order of magnitude faster the generating our
+entire Xcode workspace.
 
 
 ### Indexing
 
 Like instrumentation, we import indexes into the Xcode project via scheme
 actions. After a build, an sync task is triggered that index-imports the index
-into Xcode.
+into Xcode. It uses [`index-import`](https://github.com/lyft/index-import) to
+rewrite the Bazel compilation directory to the users current working directory.
 
 As XCHammer Xcode projects are designed to reproduce Bazel build via Xcode
 build, incremental indexing works as we type. Xcode picks up compiler settings
 from Xcode build targets.
 
-### Xcode testing Bazel built test bundles
+### Run Bazel built tests with Xcode
 
 Xcode has deep integration into the test running system which adds complexity
 into how Bazel targets are integrated into the Project. In the original
@@ -103,12 +108,13 @@ information.
 
 ### Bazel integration
 
-XCHammer leverages both Tulsi's aspect code and build script. It simply creates "Bazel buildable" target that can run Bazel.
+XCHammer leverages both Tulsi's aspect code and build script. It creates
+buildable targets that use Bazel as the build system.
 
-This approach has many cons, but integrates nicely into Xcode. The current plan
-is to replace XCBuild with a more Bazel aware build system that doesn't require
-this hack, can dynamically build and assemble Bazel targets, and report status
-to the user.
+This approach has many drawbacks and works without replacing XCBuild. The
+current plan is to replace XCBuild with a more Bazel aware build system that
+doesn't require this hack, can dynamically build and assemble Bazel targets, and
+report status to the user.
 
 ### Falling back to Xcode ( Legacy Mode )
 
@@ -117,5 +123,5 @@ projects including faster build times, indexing times, and generation times.
 It's a fundamentally different / better experience. However, under some
 situations there may be a reason e.g. developer preference to use the Xcode
 building projects. We provide the option to do Xcode builds locally at the cost
-of degraded experience.
+of slower experience.
 
