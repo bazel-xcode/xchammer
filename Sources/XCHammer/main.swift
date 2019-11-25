@@ -274,12 +274,91 @@ struct VersionCommand: CommandProtocol {
     }
 }
 
+/// Runs a bash `script` and get the exit code
+///
+/// the XCBuildKit installer needs root and `ShellOut`
+/// doesn't support this yet.
+
+func runBash(_ script: String) -> Int32 {
+    let process = Process()
+    process.environment = ProcessInfo.processInfo.environment
+    let stdin = Pipe()
+    let stdout = Pipe()
+    let stderr = Pipe()
+    process.standardOutput = stdout
+    process.standardError = stderr
+    process.standardInput = stdin
+    process.launchPath = "/bin/bash"
+
+    // Pipe fitting:
+    // pipe stdin to the process stdin
+    FileHandle.standardInput.readabilityHandler = {
+        h in
+        stdin.fileHandleForWriting.write(h.availableData)
+    }
+    // pipe stdout to our stdout
+    stderr.fileHandleForReading.readabilityHandler = {
+        h in
+        FileHandle.standardError.write(h.availableData)
+    }
+
+    // pipe stderr to our stdout
+    stdout.fileHandleForReading.readabilityHandler = {
+        h in
+        FileHandle.standardOutput.write(h.availableData)
+    }
+
+    process.arguments = ["-c", "sudo -S \(script)"] 
+    process.launch()
+    process.waitUntilExit()
+    return process.terminationStatus
+}
+
+struct InstallXcodeBuildSystemCommand: CommandProtocol {
+    let verb = "install_xcode_build_system"
+    let function = "Installs XCHammer's Xcode build system"
+
+    typealias Options = NoOptions<CommandError>
+
+    func getVersion(path: String) -> String? {
+        guard let plistXML = FileManager.default.contents(atPath: path) else {
+            return nil
+        }
+        var propertyListFormat =  PropertyListSerialization.PropertyListFormat.xml
+        guard let plistData: [String: AnyObject] = try? PropertyListSerialization.propertyList(from:
+            plistXML, options: .mutableContainersAndLeaves,
+            format: &propertyListFormat) as! [String:AnyObject] else {
+            fatalError("Can't read plist")
+        }
+        return plistData["CFBundleVersion"] as? String
+    }
+
+    func run(_: Options) -> Result<(), CommandError> {
+        print("Installing xcode build system")
+        let bundle = Bundle.main
+        let appPath = bundle.path(forResource: "BazelBuildService", ofType: "app")!
+        let appVersionPath = appPath + "/Contents/Info.plist"
+        let homeDirURL = URL(fileURLWithPath: NSHomeDirectory())
+        let installedPath = homeDirURL.path + "/Library/Application Support/XCBuildKit/BazelBuildService.app/Contents/Info.plist"
+        if getVersion(path: appVersionPath)  != getVersion(path: installedPath) {
+            print("This command requires you're password:")
+            let installerPath = bundle.path(forResource:
+                "install_build_service_app", ofType: "sh")!
+            guard runBash("\(installerPath) \(appPath) --global") == 0 else {
+                fatalError("Failed to install")
+            }
+        }
+        return .success(())
+    }
+}
+
 func main() {
     XCHammerLogger.initialize()
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
     commands.register(GenerateCommandV2())
     commands.register(ProcessIpaCommand())
+    commands.register(InstallXcodeBuildSystemCommand())
     commands.register(VersionCommand())
     commands.register(HelpCommand(registry: commands))
 

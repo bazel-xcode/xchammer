@@ -59,6 +59,11 @@ swift_library(
     data = [
         ":XCHammerAssets",
         "//BazelExtensions:BazelExtensions",
+    ] + [
+        # Build system support. Currently, we use the example xcbuildkit
+        # to simply show the progress bar
+        "@xcbuildkit//:BazelBuildService",
+        "@xcbuildkit//utils:install_build_service_app.sh"
     ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",
@@ -93,6 +98,7 @@ macos_application(
     minimum_os_version = "10.14",
     version = ":XCHammerVersion",
     deps = [":XCHammerSources"],
+    ipa_post_processor = "//tools:process-xchammer-ipa.sh"
 )
 
 buildifier(
