@@ -9,6 +9,7 @@ load(
 load(
     "@build_bazel_rules_apple//apple:resources.bzl",
     "apple_resource_group",
+    "apple_resource_bundle",
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
@@ -44,6 +45,16 @@ apple_resource_group(
 )
 
 
+# Build system support. Currently, we use the example xcbuildkit
+# to simply show the progress bar.
+# Stick this into a bundle to group files together
+apple_resource_bundle(
+    name = "XCBuildKit",
+    resources = [
+        "@xcbuildkit//:BazelBuildServiceInstaller",
+        "@xcbuildkit//:BuildInfo"
+    ]
+)
 
 load(
     "//BazelExtensions:xcode_configuration_provider.bzl",
@@ -60,10 +71,8 @@ swift_library(
         ":XCHammerAssets",
         "//BazelExtensions:BazelExtensions",
     ] + [
-        # Build system support. Currently, we use the example xcbuildkit
-        # to simply show the progress bar
-        "@xcbuildkit//:BazelBuildService",
-        "@xcbuildkit//utils:install_build_service_app.sh"
+        ":XCBuildKit",
+        
     ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",
@@ -98,7 +107,6 @@ macos_application(
     minimum_os_version = "10.14",
     version = ":XCHammerVersion",
     deps = [":XCHammerSources"],
-    ipa_post_processor = "//tools:process-xchammer-ipa.sh"
 )
 
 buildifier(
@@ -148,7 +156,6 @@ load(
     "//BazelExtensions:xcodeproject.bzl",
     "xcode_project"
 )
-
 
 xcode_project(
     name="workspace_v2",
