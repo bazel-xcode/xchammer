@@ -47,7 +47,7 @@ compile_commands.json:
 
 
 build-debug: BAZELFLAGS = --announce_rc \
-	-s --disk_cache=$(HOME)/Library/Caches/Bazel
+	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-debug: build-impl
 
 build-release: BAZELFLAGS = --announce_rc \
