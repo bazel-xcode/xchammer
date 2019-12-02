@@ -373,3 +373,15 @@ module CYaml {
             ),
         ]),
     )
+
+    ### Build system
+    git_repository(
+        name = "xcbuildkit",
+        remote = "https://github.com/jerrymarino/xcbuildkit.git",
+        commit = "537dac50d963e321fea9bb59c200b2ad92d32431",
+    )
+
+    load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies="dependencies")
+
+    xcbuildkit_dependencies()
+

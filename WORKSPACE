@@ -56,19 +56,6 @@ load("//third_party:repositories.bzl", "xchammer_dependencies")
 
 xchammer_dependencies()
 
-### Build system
-git_repository(
-    name = "xcbuildkit",
-    remote = "https://github.com/jerrymarino/xcbuildkit.git",
-    commit = "5629b1f41164722b9f65db7c0f24d21c4e89adf2",
- )
-
-
-load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies="dependencies")
-
-xcbuildkit_dependencies()
-
-
 ## Buildifier deps (Bazel file formatting)
 http_archive(
     name = "io_bazel_rules_go",
