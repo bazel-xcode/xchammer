@@ -57,10 +57,12 @@ load("//third_party:repositories.bzl", "xchammer_dependencies")
 xchammer_dependencies()
 
 ### Build system
-local_repository(
+git_repository(
     name = "xcbuildkit",
-    path="/Users/jerrymarino/projects/xcbuildkit"
-)
+    remote = "https://github.com/jerrymarino/xcbuildkit.git",
+    commit = "5629b1f41164722b9f65db7c0f24d21c4e89adf2",
+ )
+
 
 load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies="dependencies")
 
