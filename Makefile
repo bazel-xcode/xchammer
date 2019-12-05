@@ -173,7 +173,7 @@ run_swift: build
 # - there seems to be an issue without running without standalone
 run_force_bazel: build
 	cd sample/$(SAMPLE)/ && \
-	rm -rf bazel-bin/FocusXcode* && \
+	rm -rf bazel-bin/Xcode* && \
 	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone \
 	    --override_repository=xchammer_resources=$(PWD)/xchammer.app/Contents/Resources/
 
