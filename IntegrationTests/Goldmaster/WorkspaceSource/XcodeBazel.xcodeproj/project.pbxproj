@@ -1,0 +1,921 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09BCB2B588FF6552CCA56CB7 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14B917C3D954AF9F1B43A6 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
+		35D0BB9761373BE88631C474 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1B7620277B76B5808DEB90 /* main.m */; };
+		552A251DA4320A3FB9B4A2CA /* some.m in Sources */ = {isa = PBXBuildFile; fileRef = F0101564C2582E8DD87645A9 /* some.m */; };
+		78B2910D85EF958D195332B8 /* ios-app-main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71CDE0CFA4421FC3C968FAB1 /* ios-app-main.a */; };
+		A7381F3E789B41B72CD3CC80 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14B917C3D954AF9F1B43A6 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
+		B2DCFD61B0340755E05F83BD /* Some.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F18B42D672C50890ADDBCF5 /* Some.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		34D66F494DFB4D3FCD4EDF98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 941874CD860498876864A7AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 467963BB903AB4864E9B6873;
+			remoteInfo = "ios-app-main";
+		};
+		5C8A0A94153BCBF5D9674192 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 941874CD860498876864A7AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FEC37C1816F7B27D83ACAA3D;
+			remoteInfo = Some;
+		};
+		7607B1D1A629350B9FE01D04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 941874CD860498876864A7AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FEC37C1816F7B27D83ACAA3D;
+			remoteInfo = Some;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01E1A45C57F2B1D7AAE9B5C1 /* BUILD */ = {isa = PBXFileReference; path = BUILD; sourceTree = "<group>"; };
+		0A87022C93C931400E2DF1A1 /* BUILD */ = {isa = PBXFileReference; path = BUILD; sourceTree = "<group>"; };
+		29B261EAA0D035C1E9624A5A /* ios-app-Bazel.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app-Bazel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F18B42D672C50890ADDBCF5 /* Some.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = Some.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B1B7620277B76B5808DEB90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		71CDE0CFA4421FC3C968FAB1 /* ios-app-main.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = "ios-app-main.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A14B1089D807833F63DCDEE4 /* some.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = some.h; sourceTree = "<group>"; };
+		BAEF8198B35BD6E5F63499EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D88E563FE5A26CAC2212536C /* ios-app.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0101564C2582E8DD87645A9 /* some.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = some.m; sourceTree = "<group>"; };
+		FD14B917C3D954AF9F1B43A6 /* Stub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stub.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		726475191428A8740F7C49D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2DCFD61B0340755E05F83BD /* Some.a in Frameworks */,
+				78B2910D85EF958D195332B8 /* ios-app-main.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0336E746C5B23A3FA3163173 /* Some */ = {
+			isa = PBXGroup;
+			children = (
+				0A87022C93C931400E2DF1A1 /* BUILD */,
+				A14B1089D807833F63DCDEE4 /* some.h */,
+				F0101564C2582E8DD87645A9 /* some.m */,
+			);
+			path = Some;
+			sourceTree = "<group>";
+		};
+		2117B0727B2B3E84D8C9CB08 /* external */ = {
+			isa = PBXGroup;
+			children = (
+				0336E746C5B23A3FA3163173 /* Some */,
+			);
+			path = external;
+			sourceTree = "<group>";
+		};
+		73F75737801979B0E3910284 /* XCHammerAssets */ = {
+			isa = PBXGroup;
+			children = (
+				FD14B917C3D954AF9F1B43A6 /* Stub.m */,
+			);
+			path = XCHammerAssets;
+			sourceTree = "<group>";
+		};
+		91173608FD69A7AEBFFDE3C2 = {
+			isa = PBXGroup;
+			children = (
+				01E1A45C57F2B1D7AAE9B5C1 /* BUILD */,
+				BAEF8198B35BD6E5F63499EC /* Info.plist */,
+				4B1B7620277B76B5808DEB90 /* main.m */,
+				2117B0727B2B3E84D8C9CB08 /* external */,
+				D8904D0C6BDA91710492BA2C /* XcodeBazel.xcodeproj */,
+				EEEA15371AE22FFD8141F2FA /* Products */,
+			);
+			indentWidth = 4;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
+		};
+		D8904D0C6BDA91710492BA2C /* XcodeBazel.xcodeproj */ = {
+			isa = PBXGroup;
+			children = (
+				73F75737801979B0E3910284 /* XCHammerAssets */,
+			);
+			path = XcodeBazel.xcodeproj;
+			sourceTree = "<group>";
+		};
+		EEEA15371AE22FFD8141F2FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29B261EAA0D035C1E9624A5A /* ios-app-Bazel.app */,
+				71CDE0CFA4421FC3C968FAB1 /* ios-app-main.a */,
+				D88E563FE5A26CAC2212536C /* ios-app.app */,
+				2F18B42D672C50890ADDBCF5 /* Some.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		1DD23ED8653A54ECFD3364DE /* GeneratedFiles */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && ($SRCROOT/tools/bazelwrapper clean) || ($PROJECT_FILE_PATH/XCHammerAssets/retry.sh $SRCROOT/tools/bazelwrapper build --override_repository=xchammer_resources=$SRCROOT/tools/xchammer.app/Contents/Resources --aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect --output_groups=xcode_project_deps //:ios-app //XcodeBazel.xcodeproj/XCHammerAssets:-ios-app_entitlements)'";
+			buildConfigurationList = 04EF2C52699E1514A5DA4A83 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
+			buildPhases = (
+				7C9AD9CD47110C3F3A2FFA3B /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = $SRCROOT;
+			dependencies = (
+			);
+			name = GeneratedFiles;
+			passBuildSettingsInEnvironment = 1;
+			productName = GeneratedFiles;
+		};
+		308237080422F60053706C55 /* ResetLLDBInit */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'";
+			buildConfigurationList = DC2CEB9766A7BD70F8690F3C /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */;
+			buildPhases = (
+				C2DD90D3888DEA1EC39F2576 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = $SRCROOT;
+			dependencies = (
+			);
+			name = ResetLLDBInit;
+			passBuildSettingsInEnvironment = 1;
+			productName = ResetLLDBInit;
+		};
+		31F1533A6642C1CCE056F9DE /* UpdateXcodeProject */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c $PROJECT_FILE_PATH/XCHammerAssets/updateXcodeProj.sh";
+			buildConfigurationList = 0093E03B8DAC868EEEDF7BE9 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */;
+			buildPhases = (
+				35FA55AB55417018DB97FEA7 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = $SRCROOT;
+			dependencies = (
+			);
+			name = UpdateXcodeProject;
+			passBuildSettingsInEnvironment = 1;
+			productName = UpdateXcodeProject;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		42DED598CA7ADA1408188BCB /* ios-app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A27ED0B715DFBDF4CE406D04 /* Build configuration list for PBXNativeTarget "ios-app" */;
+			buildPhases = (
+				D7EF65288559338B2B9984D8 /* Sources */,
+				726475191428A8740F7C49D6 /* Frameworks */,
+				7901CA32A0417425F8EFEC95 /* Process IPA */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8B9BE8E3715128FA5D65638 /* PBXTargetDependency */,
+				BB512FFCF7F02359C9A2E465 /* PBXTargetDependency */,
+			);
+			name = "ios-app";
+			productName = "ios-app";
+			productReference = D88E563FE5A26CAC2212536C /* ios-app.app */;
+			productType = "com.apple.product-type.application";
+		};
+		467963BB903AB4864E9B6873 /* ios-app-main */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6B8B64F5083B3D93B831C040 /* Build configuration list for PBXNativeTarget "ios-app-main" */;
+			buildPhases = (
+				AE83DCA08A22FE2E59C6CFFE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C78DFA32E1C1931A52CFA8C9 /* PBXTargetDependency */,
+			);
+			name = "ios-app-main";
+			productName = "ios-app-main";
+			productReference = 71CDE0CFA4421FC3C968FAB1 /* ios-app-main.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		87CCDC17C380DD680F2E37C8 /* ios-app-Bazel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 177D0FE028D67385480A3A91 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */;
+			buildPhases = (
+				24FF8E6333A86E8EFFDF3A39 /* Sources */,
+				EC5DAA8C92E46DBBD479C38A /* Bazel build */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app-Bazel";
+			productName = "ios-app-Bazel";
+			productReference = 29B261EAA0D035C1E9624A5A /* ios-app-Bazel.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FEC37C1816F7B27D83ACAA3D /* Some */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64357ED7D6B459E915470C9A /* Build configuration list for PBXNativeTarget "Some" */;
+			buildPhases = (
+				81891F2668C59894DFE5C7B2 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Some;
+			productName = Some;
+			productReference = 2F18B42D672C50890ADDBCF5 /* Some.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		941874CD860498876864A7AF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				TargetAttributes = {
+					42DED598CA7ADA1408188BCB = {
+						ProvisioningStyle = manual;
+					};
+					467963BB903AB4864E9B6873 = {
+						ProvisioningStyle = manual;
+					};
+					87CCDC17C380DD680F2E37C8 = {
+						ProvisioningStyle = manual;
+					};
+					FEC37C1816F7B27D83ACAA3D = {
+						ProvisioningStyle = manual;
+					};
+				};
+			};
+			buildConfigurationList = 44C9035B11D3487A024BEB52 /* Build configuration list for PBXProject "XcodeBazel" */;
+			compatibilityVersion = "Xcode 10.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 91173608FD69A7AEBFFDE3C2;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1DD23ED8653A54ECFD3364DE /* GeneratedFiles */,
+				308237080422F60053706C55 /* ResetLLDBInit */,
+				FEC37C1816F7B27D83ACAA3D /* Some */,
+				31F1533A6642C1CCE056F9DE /* UpdateXcodeProject */,
+				42DED598CA7ADA1408188BCB /* ios-app */,
+				87CCDC17C380DD680F2E37C8 /* ios-app-Bazel */,
+				467963BB903AB4864E9B6873 /* ios-app-main */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7901CA32A0417425F8EFEC95 /* Process IPA */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Process IPA";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/tools/xchammer.app/Contents/MacOS/xchammer process-ipa";
+		};
+		EC5DAA8C92E46DBBD479C38A /* Bazel build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bazel build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export TULSI_USE_HAMMER_DEBUG_CONFIG=YES\n$SRCROOT/tools/xchammer.app/Contents/Resources/bazel_build.py //:ios-app --bazel $SRCROOT/tools/bazelwrapper";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		24FF8E6333A86E8EFFDF3A39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09BCB2B588FF6552CCA56CB7 /* Stub.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35FA55AB55417018DB97FEA7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C9AD9CD47110C3F3A2FFA3B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81891F2668C59894DFE5C7B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				552A251DA4320A3FB9B4A2CA /* some.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE83DCA08A22FE2E59C6CFFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35D0BB9761373BE88631C474 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2DD90D3888DEA1EC39F2576 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7EF65288559338B2B9984D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7381F3E789B41B72CD3CC80 /* Stub.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB512FFCF7F02359C9A2E465 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 467963BB903AB4864E9B6873 /* ios-app-main */;
+			targetProxy = 34D66F494DFB4D3FCD4EDF98 /* PBXContainerItemProxy */;
+		};
+		C78DFA32E1C1931A52CFA8C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FEC37C1816F7B27D83ACAA3D /* Some */;
+			targetProxy = 5C8A0A94153BCBF5D9674192 /* PBXContainerItemProxy */;
+		};
+		F8B9BE8E3715128FA5D65638 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FEC37C1816F7B27D83ACAA3D /* Some */;
+			targetProxy = 7607B1D1A629350B9FE01D04 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0EBF22934C03C2D433E007E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		12C415F2A63F48E2A6B03BDB /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-ObjC",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/xchammer-includes/x/x//XcodeBazel.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
+				PRODUCT_MODULE_NAME = "ios-app";
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+		2372541E325AAD2C521A8BC7 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+		377B25C1B6486EADFCC9A97B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		3BA32E796E66E255290CCE37 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Profile;
+		};
+		3C0A36318E35BE1CB721BE1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		45587B2FFD07D58CE55F8EF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		58C1DA01CDD046FBE776AE11 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+			};
+			name = Profile;
+		};
+		6634ED0B6EAB47A282E406F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		6B78820929FC99335C305245 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		6FF62707E1C112DC2E48A0D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		8721DE91ABBD9B37C8CFE25E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		8C31061DB2BE55DFE7B89CB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/xchammer-includes/x/x/ $(SRCROOT)/external/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_MODULE_NAME = Some;
+				PRODUCT_NAME = Some;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		9A0ED82082A4F07632AA5628 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		AC6060920F19C64D6E524316 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Profile;
+		};
+		AE88B093A9908FF2602C1B63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-ObjC",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/xchammer-includes/x/x//XcodeBazel.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
+				PRODUCT_MODULE_NAME = "ios-app";
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		B7CE6EBB3B734883A6659BBB /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/xchammer-includes/x/x/ $(SRCROOT)/external/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_MODULE_NAME = "ios-app-main";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+		C316A12DA6A5193A28402165 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+				
+			};
+			name = Debug;
+		};
+		D44F23534675F8E135BAECBB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/xchammer-includes/x/x/ $(SRCROOT)/external/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_MODULE_NAME = Some;
+				PRODUCT_NAME = Some;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		E2306B311DFD965BBD56B4B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-ObjC",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = "-ObjC -sectcreate __TEXT __entitlements $(SRCROOT)/xchammer-includes/x/x//XcodeBazel.xcodeproj/XCHammerAssets/-ios-app_entitlements.entitlements";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sample;
+				PRODUCT_MODULE_NAME = "ios-app";
+				PRODUCT_NAME = "ios-app";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		E5E79F0A44314F97667C367A /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Profile;
+		};
+		F7EEB6B3D1A95A446ABE155C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/xchammer-includes/x/x/ $(SRCROOT)/external/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_MODULE_NAME = "ios-app-main";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		FC1CF03445B3EB7F19398C4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/xchammer-includes/x/x/ $(SRCROOT)/external/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_MODULE_NAME = "ios-app-main";
+				PRODUCT_NAME = "ios-app-main";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		FC5A9F9671F2B86513A87A69 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/xchammer-includes/x/x/ $(SRCROOT)/external/";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG -DDEBUG -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_MODULE_NAME = Some;
+				PRODUCT_NAME = Some;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0093E03B8DAC868EEEDF7BE9 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EBF22934C03C2D433E007E1 /* Debug */,
+				9A0ED82082A4F07632AA5628 /* Release */,
+				AC6060920F19C64D6E524316 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		04EF2C52699E1514A5DA4A83 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45587B2FFD07D58CE55F8EF4 /* Debug */,
+				3C0A36318E35BE1CB721BE1E /* Release */,
+				E5E79F0A44314F97667C367A /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		177D0FE028D67385480A3A91 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B78820929FC99335C305245 /* Debug */,
+				6FF62707E1C112DC2E48A0D2 /* Release */,
+				2372541E325AAD2C521A8BC7 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		44C9035B11D3487A024BEB52 /* Build configuration list for PBXProject "XcodeBazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C316A12DA6A5193A28402165 /* Debug */,
+				8721DE91ABBD9B37C8CFE25E /* Release */,
+				58C1DA01CDD046FBE776AE11 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		64357ED7D6B459E915470C9A /* Build configuration list for PBXNativeTarget "Some" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C31061DB2BE55DFE7B89CB0 /* Debug */,
+				D44F23534675F8E135BAECBB /* Release */,
+				FC5A9F9671F2B86513A87A69 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		6B8B64F5083B3D93B831C040 /* Build configuration list for PBXNativeTarget "ios-app-main" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7EEB6B3D1A95A446ABE155C /* Debug */,
+				FC1CF03445B3EB7F19398C4E /* Release */,
+				B7CE6EBB3B734883A6659BBB /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		A27ED0B715DFBDF4CE406D04 /* Build configuration list for PBXNativeTarget "ios-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE88B093A9908FF2602C1B63 /* Debug */,
+				E2306B311DFD965BBD56B4B3 /* Release */,
+				12C415F2A63F48E2A6B03BDB /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		DC2CEB9766A7BD70F8690F3C /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				377B25C1B6486EADFCC9A97B /* Debug */,
+				6634ED0B6EAB47A282E406F4 /* Release */,
+				3BA32E796E66E255290CCE37 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 941874CD860498876864A7AF /* Project object */;
+}

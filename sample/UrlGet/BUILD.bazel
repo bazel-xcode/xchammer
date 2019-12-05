@@ -42,12 +42,12 @@ app_scheme_config = {
     ),
 }
 
+# This example is a "Focused" example. We don't generate Xcode target schemes
+# and strip out Vendor sources
 xcode_project(
-    name = "FocusXcode",
-    project_name = "FocusXcode",
+    name = "XcodeBazel",
     targets = [
 	"//ios-app:ios-app",
-	"//ios-app:UrlGetClasses",
 	"//ios-app:UnitTests",
 	"//ios-app:UnitTestsWithHost",
     ],
@@ -60,9 +60,9 @@ xcode_project(
             "ios_arm64": ["--config=ios_arm64"],
             "ios_armv7": ["--config=ios_armv7"],
         },
-	paths = ["**"],
+	paths = ["ios-app/**"],
 	generate_xcode_schemes = False,
-	generate_transitive_xcode_targets = False,
+	generate_transitive_xcode_targets = True,
     ),
     target_config = {
         "//ios-app:ios-app" : target_config(

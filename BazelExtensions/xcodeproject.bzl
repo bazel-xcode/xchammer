@@ -61,7 +61,7 @@ def _xcode_project_impl(ctx):
         "projects" : _dict_to_json({ctx.attr.project_name: projects_json}),
         "targets": _array_to_json([str(t.label) for t in ctx.attr.targets])
     })
-    ctx.file_action(content=xchammerconfig, output=xchammerconfig_json)
+    ctx.actions.write(content=xchammerconfig, output=xchammerconfig_json)
 
     artifacts = []
 
@@ -84,7 +84,7 @@ def _xcode_project_impl(ctx):
         if ctx.attr.xchammer[0] == "/"
         else "$SRCROOT/" + ctx.attr.xchammer,
     )
-    ctx.file_action(content=xchammer_info.to_json(), output=xchammer_info_json)
+    ctx.actions.write(content=xchammer_info.to_json(), output=xchammer_info_json)
 
     # If we're doing a source build of XCHammer then do so
     # this is intended for development of XCHammer only
