@@ -568,7 +568,7 @@ public class XcodeTarget: Hashable, Equatable {
                 // included don't include it is a dependency.
                 // under workspace mode, the latter code uses an implicit dep.
                 let genOptions = self.genOptions
-                guard projectConfig?.generateXcodeSchemes == false,
+                guard (projectConfig?.generateXcodeSchemes ?? true),
                     includeTarget(xcodeTarget, pathPredicate:
                         makePathFiltersPredicate(genOptions.pathsSet)) else {
                     return []
