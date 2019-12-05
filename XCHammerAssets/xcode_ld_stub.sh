@@ -10,7 +10,7 @@ do
            shift
            shift
            mkdir -p "$(dirname $1)"
-           ditto $SCRIPTPATH/dependency_info_Stub.dat "$1"
+           ditto "$SCRIPTPATH/dependency_info_Stub.dat" "$1"
             ;;
         *)
             shift # past argument
