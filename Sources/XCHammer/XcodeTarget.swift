@@ -557,7 +557,24 @@ public class XcodeTarget: Hashable, Equatable {
         let deps = self.transitiveTargets(map: self.targetMap, predicate:
                 stopAfterNeedsRecursive, force: true)
             .flatMap { xcodeTarget -> [ProjectSpec.Dependency] in
-                let pathsPredicate = makeOptionalPathFiltersPredicate(self.genOptions)
+                let projectConfig = xcodeTarget.genOptions.config
+                            .projects[genOptions.projectName]
+
+                let generateTransitiveXcodeTargets =
+                            (projectConfig?.generateTransitiveXcodeTargets ?? true)
+                guard generateTransitiveXcodeTargets else { return [] }
+
+                // Focus - XcodeSchemes are disabled, and the target is not
+                // included don't include it is a dependency.
+                // under workspace mode, the latter code uses an implicit dep.
+                let genOptions = self.genOptions
+                guard projectConfig?.generateXcodeSchemes == false,
+                    includeTarget(xcodeTarget, pathPredicate:
+                        makePathFiltersPredicate(genOptions.pathsSet)) else {
+                    return []
+                }
+
+                let pathsPredicate = makeOptionalPathFiltersPredicate(genOptions)
                 guard let linkableProductName =
                     xcodeTarget.extractLinkableBuiltProductName(map:
                             self.targetMap), includeTarget(xcodeTarget, pathPredicate:
@@ -572,11 +589,6 @@ public class XcodeTarget: Hashable, Equatable {
                 // Do not link static libraries that aren't going to exist.
                 // These targets still need to be included in the project.
                 case .StaticLibrary, .DynamicLibrary:
-                    let projectConfig = xcodeTarget.genOptions.config
-                            .projects[genOptions.projectName]
-                    let generateTransitiveXcodeTargets =
-                            (projectConfig?.generateTransitiveXcodeTargets ?? true)
-                    guard generateTransitiveXcodeTargets else { return [] }
 
                     let compiledSrcs = (xcodeTarget.sourceFiles + xcodeTarget.nonARCSourceFiles)
                         .filter {

@@ -617,7 +617,7 @@ enum Generator {
         }))
 
         let projectConfig = genOptions.projectConfig
-        let generateXcodeTargets = (projectConfig?.generateXcodeSchemes ?? true != false)
+        let generateXcodeTargets = (projectConfig?.generateTransitiveXcodeTargets ?? true != false)
         let includedXcodeTargets = generateXcodeTargets ? allXCTargets.map { k, v in v.target } : []
         let bazelBuildableXcodeTargets = getBazelBuildableTargets()
         let bazelBuildableTargets = 
