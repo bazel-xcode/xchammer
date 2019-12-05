@@ -174,8 +174,7 @@ run_swift: build
 run_force_bazel: build
 	cd sample/$(SAMPLE)/ && \
 	 tools/bazelwrapper clean  && \
-	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone \
-	    --override_repository=xchammer_resources=$(PWD)/xchammer.app/Contents/Resources/
+	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone
 
 # On the CI we always load the deps
 run_perf_ci:

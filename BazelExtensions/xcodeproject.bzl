@@ -88,7 +88,7 @@ def _xcode_project_impl(ctx):
 
     # If we're doing a source build of XCHammer then do so
     # this is intended for development of XCHammer only
-    xchammer_command = []
+    xchammer_command = ["set -e;"]
     if ctx.attr.xchammer_bazel_build_target:
         xchammer_files = ctx.attr.xchammer_bazel_build_target.files.to_list()
         xchammer_zip = xchammer_files[0].path
