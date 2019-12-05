@@ -154,7 +154,7 @@ goldmaster_bazel:
 		ditto sample/$$S/XcodeBazel.xcodeproj/project.pbxproj $$MASTER/project.pbxproj; \
 		sed -i '' 's,$(PWD),__PWD__,g' $$MASTER/project.pbxproj; \
 		sed -i '' 's,XCHAMMER.*,,g' $$MASTER/project.pbxproj; \
-		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
+		ditto sample/$$S/XcodeBazel.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
 	done
 
 goldmaster: clean_goldmaster goldmaster_bazel goldmaster_cli
