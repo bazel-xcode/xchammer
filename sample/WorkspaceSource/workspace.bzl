@@ -1,4 +1,5 @@
 def _impl(ctx):
+    ctx.file("WORKSPACE", "")
     ctx.file("some.h", "extern int SomeVersion;")
     ctx.file("some.m", "int SomeVersion = 1;")
     ctx.file("BUILD", """

@@ -1,0 +1,743 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09BCB2B588FF6552CCA56CB7 /* Stub.m in Sources */ = {isa = PBXBuildFile; fileRef = FD14B917C3D954AF9F1B43A6 /* Stub.m */; settings = {COMPILER_FLAGS = "-x objective-c -std=gnu99"; }; };
+		3BF6BC1D1BF4E6F137CAAB2D /* Tests2.m in Sources */ = {isa = PBXBuildFile; fileRef = E3CC091251632B48C7D78D6E /* Tests2.m */; };
+		5D3813F049CD9AECF9EAB5DF /* Tests2.m in Sources */ = {isa = PBXBuildFile; fileRef = E3CC091251632B48C7D78D6E /* Tests2.m */; };
+		AB936186DA3CBF577A8C2B73 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = B236188DC16584ACC9EC8167 /* Tests.m */; };
+		E11600E3FDE6B84FC9CA3946 /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = B236188DC16584ACC9EC8167 /* Tests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1EC1ED4248758F52693FB9A6 /* BUILD */ = {isa = PBXFileReference; path = BUILD; sourceTree = "<group>"; };
+		2371BC9DF76FD5250A1A734F /* UnitTestsWithHost-Bazel.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "UnitTestsWithHost-Bazel.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29B261EAA0D035C1E9624A5A /* ios-app-Bazel.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ios-app-Bazel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		380CC9A65FE953B64834E524 /* BUILD */ = {isa = PBXFileReference; path = BUILD; sourceTree = "<group>"; };
+		B236188DC16584ACC9EC8167 /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
+		D923CB72CCCA3C274DF76F77 /* UnitTests-Bazel.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "UnitTests-Bazel.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3CC091251632B48C7D78D6E /* Tests2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests2.m; sourceTree = "<group>"; };
+		FD14B917C3D954AF9F1B43A6 /* Stub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stub.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		24D35D7D4E31DBF77DDED890 /* ios-app */ = {
+			isa = PBXGroup;
+			children = (
+				1EC1ED4248758F52693FB9A6 /* BUILD */,
+				DE47E0338F660AC0C5D3B1E5 /* HeaderLib */,
+				4E7D3FB8D80072A7E9ED0D55 /* UnitTests */,
+			);
+			path = "ios-app";
+			sourceTree = "<group>";
+		};
+		4E7D3FB8D80072A7E9ED0D55 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				B236188DC16584ACC9EC8167 /* Tests.m */,
+				E3CC091251632B48C7D78D6E /* Tests2.m */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		73F75737801979B0E3910284 /* XCHammerAssets */ = {
+			isa = PBXGroup;
+			children = (
+				FD14B917C3D954AF9F1B43A6 /* Stub.m */,
+			);
+			path = XCHammerAssets;
+			sourceTree = "<group>";
+		};
+		91173608FD69A7AEBFFDE3C2 = {
+			isa = PBXGroup;
+			children = (
+				24D35D7D4E31DBF77DDED890 /* ios-app */,
+				D8904D0C6BDA91710492BA2C /* XcodeBazel.xcodeproj */,
+				EEEA15371AE22FFD8141F2FA /* Products */,
+			);
+			indentWidth = 4;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
+		};
+		D8904D0C6BDA91710492BA2C /* XcodeBazel.xcodeproj */ = {
+			isa = PBXGroup;
+			children = (
+				73F75737801979B0E3910284 /* XCHammerAssets */,
+			);
+			path = XcodeBazel.xcodeproj;
+			sourceTree = "<group>";
+		};
+		DE47E0338F660AC0C5D3B1E5 /* HeaderLib */ = {
+			isa = PBXGroup;
+			children = (
+				380CC9A65FE953B64834E524 /* BUILD */,
+			);
+			path = HeaderLib;
+			sourceTree = "<group>";
+		};
+		EEEA15371AE22FFD8141F2FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29B261EAA0D035C1E9624A5A /* ios-app-Bazel.app */,
+				D923CB72CCCA3C274DF76F77 /* UnitTests-Bazel.xctest */,
+				2371BC9DF76FD5250A1A734F /* UnitTestsWithHost-Bazel.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		1DD23ED8653A54ECFD3364DE /* GeneratedFiles */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && ($SRCROOT/tools/bazelwrapper clean) || ($PROJECT_FILE_PATH/XCHammerAssets/retry.sh $SRCROOT/tools/bazelwrapper build --override_repository=xchammer_resources=$SRCROOT/tools/xchammer.app/Contents/Resources --aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect --output_groups=xcode_project_deps //ios-app:ios-app //ios-app:UnitTests //ios-app:UnitTestsWithHost //XcodeBazel.xcodeproj/XCHammerAssets:ios-app-ios-app_entitlements)'";
+			buildConfigurationList = 04EF2C52699E1514A5DA4A83 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */;
+			buildPhases = (
+				7C9AD9CD47110C3F3A2FFA3B /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = $SRCROOT;
+			dependencies = (
+			);
+			name = GeneratedFiles;
+			passBuildSettingsInEnvironment = 1;
+			productName = GeneratedFiles;
+		};
+		308237080422F60053706C55 /* ResetLLDBInit */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c 'echo \"settings clear target.source-map\" > ~/.lldbinit-tulsiproj'";
+			buildConfigurationList = DC2CEB9766A7BD70F8690F3C /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */;
+			buildPhases = (
+				C2DD90D3888DEA1EC39F2576 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = $SRCROOT;
+			dependencies = (
+			);
+			name = ResetLLDBInit;
+			passBuildSettingsInEnvironment = 1;
+			productName = ResetLLDBInit;
+		};
+		31F1533A6642C1CCE056F9DE /* UpdateXcodeProject */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "-c $PROJECT_FILE_PATH/XCHammerAssets/updateXcodeProj.sh";
+			buildConfigurationList = 0093E03B8DAC868EEEDF7BE9 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */;
+			buildPhases = (
+				35FA55AB55417018DB97FEA7 /* Sources */,
+			);
+			buildToolPath = /bin/bash;
+			buildWorkingDirectory = $SRCROOT;
+			dependencies = (
+			);
+			name = UpdateXcodeProject;
+			passBuildSettingsInEnvironment = 1;
+			productName = UpdateXcodeProject;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		04AC074D16844E113CF60830 /* UnitTests-Bazel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F121B9CEA3EE926CF4F79634 /* Build configuration list for PBXNativeTarget "UnitTests-Bazel" */;
+			buildPhases = (
+				1DF36F2B09CAFA85B76572AF /* Sources */,
+				842D14047F234465AC7AB68E /* Bazel build */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UnitTests-Bazel";
+			productName = "UnitTests-Bazel";
+			productReference = D923CB72CCCA3C274DF76F77 /* UnitTests-Bazel.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		66A0CB6BB961CE8834CA9E4A /* UnitTestsWithHost-Bazel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 736A62983C6CDF14E05330B4 /* Build configuration list for PBXNativeTarget "UnitTestsWithHost-Bazel" */;
+			buildPhases = (
+				4A4C1725AA8D0FA068F917D6 /* Sources */,
+				5233124DF61F0081A722EBC2 /* Bazel build */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UnitTestsWithHost-Bazel";
+			productName = "UnitTestsWithHost-Bazel";
+			productReference = 2371BC9DF76FD5250A1A734F /* UnitTestsWithHost-Bazel.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		87CCDC17C380DD680F2E37C8 /* ios-app-Bazel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 177D0FE028D67385480A3A91 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */;
+			buildPhases = (
+				24FF8E6333A86E8EFFDF3A39 /* Sources */,
+				EC5DAA8C92E46DBBD479C38A /* Bazel build */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-app-Bazel";
+			productName = "ios-app-Bazel";
+			productReference = 29B261EAA0D035C1E9624A5A /* ios-app-Bazel.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		941874CD860498876864A7AF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				TargetAttributes = {
+					04AC074D16844E113CF60830 = {
+						ProvisioningStyle = manual;
+					};
+					66A0CB6BB961CE8834CA9E4A = {
+						ProvisioningStyle = manual;
+					};
+					87CCDC17C380DD680F2E37C8 = {
+						ProvisioningStyle = manual;
+					};
+				};
+			};
+			buildConfigurationList = 44C9035B11D3487A024BEB52 /* Build configuration list for PBXProject "XcodeBazel" */;
+			compatibilityVersion = "Xcode 10.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 91173608FD69A7AEBFFDE3C2;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1DD23ED8653A54ECFD3364DE /* GeneratedFiles */,
+				308237080422F60053706C55 /* ResetLLDBInit */,
+				04AC074D16844E113CF60830 /* UnitTests-Bazel */,
+				66A0CB6BB961CE8834CA9E4A /* UnitTestsWithHost-Bazel */,
+				31F1533A6642C1CCE056F9DE /* UpdateXcodeProject */,
+				87CCDC17C380DD680F2E37C8 /* ios-app-Bazel */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5233124DF61F0081A722EBC2 /* Bazel build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bazel build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export TULSI_USE_HAMMER_DEBUG_CONFIG=YES\n$SRCROOT/tools/xchammer.app/Contents/Resources/bazel_build.py //ios-app:UnitTestsWithHost --bazel $SRCROOT/tools/bazelwrapper";
+		};
+		842D14047F234465AC7AB68E /* Bazel build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bazel build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export TULSI_USE_HAMMER_DEBUG_CONFIG=YES\n$SRCROOT/tools/xchammer.app/Contents/Resources/bazel_build.py //ios-app:UnitTests --bazel $SRCROOT/tools/bazelwrapper";
+		};
+		EC5DAA8C92E46DBBD479C38A /* Bazel build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bazel build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export TULSI_USE_HAMMER_DEBUG_CONFIG=YES\n$SRCROOT/tools/xchammer.app/Contents/Resources/bazel_build.py //ios-app:ios-app --bazel $SRCROOT/tools/bazelwrapper";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1DF36F2B09CAFA85B76572AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB936186DA3CBF577A8C2B73 /* Tests.m in Sources */,
+				5D3813F049CD9AECF9EAB5DF /* Tests2.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		24FF8E6333A86E8EFFDF3A39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09BCB2B588FF6552CCA56CB7 /* Stub.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35FA55AB55417018DB97FEA7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A4C1725AA8D0FA068F917D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E11600E3FDE6B84FC9CA3946 /* Tests.m in Sources */,
+				3BF6BC1D1BF4E6F137CAAB2D /* Tests2.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C9AD9CD47110C3F3A2FFA3B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2DD90D3888DEA1EC39F2576 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0EBF22934C03C2D433E007E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		13251FB8897E940F7262E5DE /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/GoogleAppIndexing/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/PINOperation/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINCache/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/Stripe/pod_support/Headers/Public $(SRCROOT)/external/ $(SRCROOT)/xchammer-includes/x/x/";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-app-Bazel.app/ios-app-Bazel";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+		2372541E325AAD2C521A8BC7 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/UrlGet/UrlGet-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -DEXAMPLE_DEF=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+		25F2B867674DEF3DB6A8CE72 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/GoogleAppIndexing/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/PINOperation/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINCache/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/Stripe/pod_support/Headers/Public $(SRCROOT)/external/ $(SRCROOT)/xchammer-includes/x/x/";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		377B25C1B6486EADFCC9A97B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		3BA32E796E66E255290CCE37 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Profile;
+		};
+		3C0A36318E35BE1CB721BE1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		45587B2FFD07D58CE55F8EF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		54044B06C5372BBC58BC989C /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/GoogleAppIndexing/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/PINOperation/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINCache/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/Stripe/pod_support/Headers/Public $(SRCROOT)/external/ $(SRCROOT)/xchammer-includes/x/x/";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Profile;
+		};
+		58C1DA01CDD046FBE776AE11 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+			};
+			name = Profile;
+		};
+		6634ED0B6EAB47A282E406F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		6B78820929FC99335C305245 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/UrlGet/UrlGet-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -DEXAMPLE_DEF=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		6D538D63BB784D3DF9D3CA2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/GoogleAppIndexing/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/PINOperation/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINCache/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/Stripe/pod_support/Headers/Public $(SRCROOT)/external/ $(SRCROOT)/xchammer-includes/x/x/";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		6FF62707E1C112DC2E48A0D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/external/";
+				INFOPLIST_FILE = "$(SRCROOT)/ios-app/UrlGet/UrlGet-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -DEXAMPLE_DEF=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		8721DE91ABBD9B37C8CFE25E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		9A0ED82082A4F07632AA5628 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		AC6060920F19C64D6E524316 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Profile;
+		};
+		C316A12DA6A5193A28402165 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos;
+				
+			};
+			name = Debug;
+		};
+		E54A16714402CC5CCB4C75F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/GoogleAppIndexing/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/PINOperation/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINCache/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/Stripe/pod_support/Headers/Public $(SRCROOT)/external/ $(SRCROOT)/xchammer-includes/x/x/";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-app-Bazel.app/ios-app-Bazel";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		E5E79F0A44314F97667C367A /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Profile;
+		};
+		F2F12E300794AA2CA0A521AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CC = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh";
+				CODE_SIGNING_REQUIRED = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HAMMER_DIAGNOSTIC_FLAGS = "";
+				HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/Vendor/GoogleAppIndexing/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleAppIndexing/GoogleAppIndexing_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleSymbolUtilities/GoogleSymbolUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleNetworkingUtilities/GoogleNetworkingUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/GoogleAuthUtilities/GoogleAuthUtilities_module_map $(SRCROOT)/Vendor/PINOperation/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINOperation/PINOperation_module_map $(SRCROOT)/Vendor/PINCache/pod_support/Headers/Public $(SRCROOT)/xchammer-includes/x/x/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/PINCache/PINCache_module_map $(SRCROOT)/Vendor/Stripe/pod_support/Headers/Public $(SRCROOT)/external/ $(SRCROOT)/xchammer-includes/x/x/";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD = "$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1 -D_FORTIFY_SOURCE=1";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PYTHONPATH = "${PYTHONPATH}:$(PROJECT_FILE_PATH)/XCHammerAssets";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-app-Bazel.app/ios-app-Bazel";
+				TULSI_WR = $SOURCE_ROOT;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0093E03B8DAC868EEEDF7BE9 /* Build configuration list for PBXLegacyTarget "UpdateXcodeProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EBF22934C03C2D433E007E1 /* Debug */,
+				9A0ED82082A4F07632AA5628 /* Release */,
+				AC6060920F19C64D6E524316 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		04EF2C52699E1514A5DA4A83 /* Build configuration list for PBXLegacyTarget "GeneratedFiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45587B2FFD07D58CE55F8EF4 /* Debug */,
+				3C0A36318E35BE1CB721BE1E /* Release */,
+				E5E79F0A44314F97667C367A /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		177D0FE028D67385480A3A91 /* Build configuration list for PBXNativeTarget "ios-app-Bazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B78820929FC99335C305245 /* Debug */,
+				6FF62707E1C112DC2E48A0D2 /* Release */,
+				2372541E325AAD2C521A8BC7 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		44C9035B11D3487A024BEB52 /* Build configuration list for PBXProject "XcodeBazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C316A12DA6A5193A28402165 /* Debug */,
+				8721DE91ABBD9B37C8CFE25E /* Release */,
+				58C1DA01CDD046FBE776AE11 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		736A62983C6CDF14E05330B4 /* Build configuration list for PBXNativeTarget "UnitTestsWithHost-Bazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E54A16714402CC5CCB4C75F1 /* Debug */,
+				F2F12E300794AA2CA0A521AD /* Release */,
+				13251FB8897E940F7262E5DE /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		DC2CEB9766A7BD70F8690F3C /* Build configuration list for PBXLegacyTarget "ResetLLDBInit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				377B25C1B6486EADFCC9A97B /* Debug */,
+				6634ED0B6EAB47A282E406F4 /* Release */,
+				3BA32E796E66E255290CCE37 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		F121B9CEA3EE926CF4F79634 /* Build configuration list for PBXNativeTarget "UnitTests-Bazel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D538D63BB784D3DF9D3CA2C /* Debug */,
+				25F2B867674DEF3DB6A8CE72 /* Release */,
+				54044B06C5372BBC58BC989C /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 941874CD860498876864A7AF /* Project object */;
+}

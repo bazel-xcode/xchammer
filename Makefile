@@ -125,22 +125,39 @@ run_perf: build-release
 # - output is reproducible across machines
 # TODO: Port Frankenstein to external PodToBUILD before adding it as a
 # goldmaster
-goldmaster:
+clean_goldmaster:
 	@rm -rf IntegrationTests/Goldmaster
 	@mkdir -p IntegrationTests/Goldmaster
+
+goldmaster_cli:
 	@for S in $$(ls sample); do \
 		[[ $$S != "Frankenstein" ]] || continue; \
+		[[ $$S != "SnapshotMe" ]] || continue; \
 		SAMPLE=$$S make run_force || exit 1; \
 		echo "Making goldmaster for $$S"; \
-		MASTER=IntegrationTests/Goldmaster/$$S.xcodeproj; \
+		MASTER=IntegrationTests/Goldmaster/$$S/$$S.xcodeproj; \
 		mkdir -p $$MASTER; \
 		ditto sample/$$S/$$S.xcodeproj/project.pbxproj $$MASTER/project.pbxproj; \
 		sed -i '' 's,$(PWD),__PWD__,g' $$MASTER/project.pbxproj; \
 		sed -i '' 's,XCHAMMER.*,,g' $$MASTER/project.pbxproj; \
 		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
+		find IntegrationTests/Goldmaster/$$S/ -name *.xcscheme -exec sed -i '' 's,TEMP.*,",g' {} \; ; \
 	done
 
+goldmaster_bazel:
+	@for S in $$(ls sample); do \
+		[[ $$S != "Frankenstein" ]] || continue; \
+		SAMPLE=$$S make run_force_bazel || exit 1; \
+		echo "Making goldmaster for $$S"; \
+		MASTER=IntegrationTests/Goldmaster/$$S/XcodeBazel.xcodeproj; \
+		mkdir -p $$MASTER; \
+		ditto sample/$$S/XcodeBazel.xcodeproj/project.pbxproj $$MASTER/project.pbxproj; \
+		sed -i '' 's,$(PWD),__PWD__,g' $$MASTER/project.pbxproj; \
+		sed -i '' 's,XCHAMMER.*,,g' $$MASTER/project.pbxproj; \
+		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
+	done
 
+goldmaster: clean_goldmaster goldmaster_bazel goldmaster_cli
 
 run_swift: build
 	$(XCHAMMER_BIN) generate \
@@ -148,6 +165,16 @@ run_swift: build
 	    --workspace_root $(ROOT_DIR)/sample/Tailor \
 	    --bazel $(ROOT_DIR)/sample/Tailor/tools/bazelwrapper \
 	    --force
+
+# TODO:
+# - currently the Bazel Xcode projects require defining xchammer_resources
+# in the workspace. This needs to be resolved ( ideally moved to defining this
+# as @xchammer as a bianry release in the WORKSPACE )
+# - there seems to be an issue without running without standalone
+run_force_bazel: build
+	cd sample/$(SAMPLE)/ && \
+	 tools/bazelwrapper clean  && \
+	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone
 
 # On the CI we always load the deps
 run_perf_ci:
@@ -161,7 +188,7 @@ bazelrc_home:
 	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
 
-ci: bazelrc_home test run_perf_ci run_swift
+ci: bazelrc_home test run_perf_ci run_swift goldmaster
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier

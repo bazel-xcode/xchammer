@@ -1,31 +1,15 @@
-# Xcode
-*.perspective
-*.perspectivev3
-*.pbxuser
-*.mode1
-*.mode2v3
-*.mode1v3
-xcuserdata
-Snapshots
-*xctimeline
-*.xcscmblueprint
-
 # OS X
 *.DS_Store
 
 # Build Outputs
-.build/
-tmp_build_dir
-ios-building
 compile_commands.json
 
 # Generate Projects
-*.xcodeproj/
-xchammer.app
+*.xcscheme
+/*.xcodeproj
+*.xcodeproj-tmp
+/xchammer.app
 depsHash
-sample/UrlGet/IntegrationTests.xcodeproj/
-sample/UrlGet/UrlGet.xcodeproj/XCHammerAssets/HammerLog.txt
-sample/UrlGet/tools/XCHammer
 
 tulsigen-*
 tulsi-includes
@@ -41,4 +25,4 @@ external
 *.pyc
 *.swp
 
-
+xchammer-includes
