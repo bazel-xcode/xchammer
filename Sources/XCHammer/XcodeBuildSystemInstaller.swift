@@ -41,7 +41,7 @@ enum XcodeBuildSystemInstaller {
             // Returns an array of [/Path/To/Xcode.app/]
             let xcodes = resultsStr.split(separator: "\n")
             if xcodes.count == 0 {
-                print("warning: No xcodes installed")
+                print("warning: No Xcodes installed")
             }
             let needsInstalls = xcodes.filter {
                 xcode in
@@ -81,6 +81,9 @@ enum XcodeBuildSystemInstaller {
             format: &propertyListFormat) as! [String:AnyObject] else {
             fatalError("Can't read plist")
         }
+        // This is determined by the ref of xcbuildkit either built by it's
+        // self, or the repository_rule that defined it.
+        // https://github.com/jerrymarino/xcbuildkit/blob/master/BUILD#L101
         return plistData["BUILD_COMMIT"] as? String
     }
 }
