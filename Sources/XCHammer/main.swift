@@ -274,12 +274,24 @@ struct VersionCommand: CommandProtocol {
     }
 }
 
+struct InstallXcodeBuildSystemCommand: CommandProtocol {
+    let verb = "install_xcode_build_system"
+    let function = "Installs XCHammer's Xcode build system"
+
+    typealias Options = NoOptions<CommandError>
+
+    func run(_: Options) -> Result<(), CommandError> {
+        return XcodeBuildSystemInstaller.installIfNecessary()
+    }
+}
+
 func main() {
     XCHammerLogger.initialize()
     let commands = CommandRegistry<CommandError>()
     commands.register(GenerateCommand())
     commands.register(GenerateCommandV2())
     commands.register(ProcessIpaCommand())
+    commands.register(InstallXcodeBuildSystemCommand())
     commands.register(VersionCommand())
     commands.register(HelpCommand(registry: commands))
 

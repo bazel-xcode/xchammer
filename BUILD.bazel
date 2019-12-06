@@ -9,6 +9,7 @@ load(
 load(
     "@build_bazel_rules_apple//apple:resources.bzl",
     "apple_resource_group",
+    "apple_resource_bundle",
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
@@ -44,6 +45,18 @@ apple_resource_group(
 )
 
 
+# Build system support. Currently, we use the example xcbuildkit
+# to simply show the progress bar.
+# Stick this into a bundle to group files together
+apple_resource_bundle(
+    name = "XCBuildKit",
+    resources = [
+        "@xcbuildkit//:BazelBuildServiceInstaller",
+        "@xcbuildkit//:BuildInfo",
+        # We use this to check if it's installed into each Xcode
+        "@bazel_tools//tools/osx:xcode-locator-genrule"
+    ]
+)
 
 load(
     "//BazelExtensions:xcode_configuration_provider.bzl",
@@ -59,6 +72,9 @@ swift_library(
     data = [
         ":XCHammerAssets",
         "//BazelExtensions:BazelExtensions",
+    ] + [
+        ":XCBuildKit",
+        
     ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",
@@ -142,7 +158,6 @@ load(
     "//BazelExtensions:xcodeproject.bzl",
     "xcode_project"
 )
-
 
 xcode_project(
     name="workspace_v2",
