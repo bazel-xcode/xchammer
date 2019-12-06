@@ -52,7 +52,9 @@ apple_resource_bundle(
     name = "XCBuildKit",
     resources = [
         "@xcbuildkit//:BazelBuildServiceInstaller",
-        "@xcbuildkit//:BuildInfo"
+        "@xcbuildkit//:BuildInfo",
+        # We use this to check if it's installed into each Xcode
+        "@bazel_tools//tools/osx:xcode-locator-genrule"
     ]
 )
 

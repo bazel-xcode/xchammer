@@ -14,17 +14,54 @@
 
 import Foundation
 import Result
+import ShellOut
 
 enum XcodeBuildSystemInstaller {
     /// Installs the Xcode build system contained inside the bundle if necessary
     /// It noops quickly if the installed plist doesnt match in order to be ran
     /// inline with builds or project generation
+
+    static let servicePath =
+            "/Contents/SharedFrameworks/XCBuild.framework/PlugIns/XCBBuildService.bundle/Contents/MacOS/XCBBuildService"
     static func installIfNecessary() -> Result<(), CommandError> {
         let bundle = Bundle.main
         let buildkitBundlePath = bundle.path(forResource: "XCBuildKit", ofType: "bundle")!
+        let xcodeLocatorPath =  buildkitBundlePath + "/xcode-locator"
+        let installedAppDir = "/opt/XCBuildKit/XCBuildKit.app"
+        let installedBinPath =  installedAppDir + "/Contents/MacOS/BazelBuildService"
         let plistPath = buildkitBundlePath + "/BuildInfo.plist"
-        let installedPath = "/opt/XCBuildKit/XCBuildKit.app/Contents/Info.plist"
-        if getVersion(path: plistPath) != getVersion(path: installedPath) {
+        let pkgVersion = getVersion(path: plistPath)
+
+        // Check each Xcode that's compatible with this version and verify if
+        // it's installed
+        var hasUnlinkedXcodes = false
+        let cmd = xcodeLocatorPath + " 2>&1 | grep expanded=11 | sed -e 's,.*file://,,g' -e 's,/:.*,,g'"
+        do {
+            let resultsStr = try shellOut(to: cmd)
+            // Returns an array of [/Path/To/Xcode.app/]
+            let xcodes = resultsStr.split(separator: "\n")
+            if xcodes.count == 0 {
+                print("warning: No xcodes installed")
+            }
+            let needsInstalls = xcodes.filter {
+                xcode in
+                let bsPath = String(xcode + servicePath)
+                guard let link = try? FileManager.default.destinationOfSymbolicLink(atPath: bsPath) else {
+                   return true
+                }
+                guard link == installedBinPath else {
+                    return true
+                }
+                return false
+            }
+            hasUnlinkedXcodes = needsInstalls.count > 0
+        } catch {
+            return .failure(.basic(error.localizedDescription))
+        }
+
+        let installedPlistPath = installedAppDir + "/Contents/Info.plist"
+        if hasUnlinkedXcodes || pkgVersion != getVersion(path: installedPlistPath) {
+            print("xchammer requires install")
             let installerPath = buildkitBundlePath + "/BazelBuildServiceInstaller.pkg"
             let script = "installer -pkg \(installerPath) -target /"
             guard ShellOutWithSudo(script) == 0 else {
@@ -59,7 +96,7 @@ func disableEcho(fileHandle: FileHandle) -> termios {
     tcgetattr(fileHandle.fileDescriptor, &raw)
     let original = raw
     raw.c_lflag &= ~(UInt(ECHO))
-    raw.c_lflag &= (UInt(ECHOE | ECHOK | ECHONL | ICANON | ECHOCTL))
+    raw.c_lflag &= (UInt(ECHOE |  ECHONL | ICANON | ECHOCTL))
     tcsetattr(fileHandle.fileDescriptor, TCSAFLUSH, &raw);
     return original
 }
@@ -83,7 +120,7 @@ func ShellOutWithSudo(_ script: String) -> Int32 {
     // Unless this is running 
     let originalTerm = disableEcho(fileHandle: FileHandle.standardInput)
     defer {
-	restoreEcho(fileHandle: FileHandle.standardInput, originalTerm: originalTerm)
+        restoreEcho(fileHandle: FileHandle.standardInput, originalTerm: originalTerm)
     }
 
     // Pipe fitting:
