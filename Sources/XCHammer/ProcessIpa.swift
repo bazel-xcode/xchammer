@@ -34,7 +34,7 @@ private func processIpaExn(builtProductsDir: Path, codesigningFolderPath: Path) 
             let path = codesigningFolderPath + $0
 
             let components = path.components
-            if let bundleComponentIdx = (components.index { $0.contains("_Bundle_") }), path.extension == "bundle" {
+            if let bundleComponentIdx = (components.firstIndex { $0.contains("_Bundle_") }), path.extension == "bundle" {
                 let component = components[bundleComponentIdx]
                 let newComponent = component.components(separatedBy: "_Bundle_")[1]
 
