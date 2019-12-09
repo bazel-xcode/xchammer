@@ -256,7 +256,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/tools/xchammer.app/Contents/MacOS/xchammer process-ipa";
+			shellScript = "$SRCROOT/tools/xchammer.app/Contents/MacOS/xchammer process_ipa";
 		};
 		EC5DAA8C92E46DBBD479C38A /* Bazel build */ = {
 			isa = PBXShellScriptBuildPhase;

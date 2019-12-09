@@ -4938,7 +4938,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "__PWD__/xchammer.app/Contents/MacOS/XCHammer process-ipa";
+			shellScript = "__PWD__/xchammer.app/Contents/MacOS/XCHammer process_ipa";
 		};
 		ECCBD99E01A8B9F7D830A5BD /* Bazel build */ = {
 			isa = PBXShellScriptBuildPhase;

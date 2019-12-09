@@ -1365,7 +1365,7 @@ private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGener
     func getProcessScript() -> ProjectSpec.BuildScript {
         // Use whatever XCHammer this project was built with
         let xchammerBin = Generator.getXCHammerBinPath(genOptions: genOptions)
-        let processContent = "\(xchammerBin) process-ipa"
+        let processContent = "\(xchammerBin) process_ipa"
         return  ProjectSpec.BuildScript(path: nil, script: processContent, name: "Process IPA")
     }
 

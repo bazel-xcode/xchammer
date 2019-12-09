@@ -321,7 +321,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "__PWD__/xchammer.app/Contents/MacOS/XCHammer process-ipa";
+			shellScript = "__PWD__/xchammer.app/Contents/MacOS/XCHammer process_ipa";
 		};
 		AF178F4820849A2350BB2BE8 /* Copy Swift Objective-C Interface Header */ = {
 			isa = PBXShellScriptBuildPhase;
