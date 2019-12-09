@@ -476,7 +476,7 @@ public class XcodeTarget: Hashable, Equatable {
             .compactMap { inputPath in
             let path = Path(self.resolveExternalPath(for: inputPath.string))
             let pathComponents = path.components
-            if let specialIndex = (pathComponents.index { component in
+            if let specialIndex = (pathComponents.firstIndex { component in
                 DirectoriesAsFileSuffixes.map { component.hasSuffix("." + $0) }.any()
             }) {
                 let formattedPath =
