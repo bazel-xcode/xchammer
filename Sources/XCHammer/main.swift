@@ -246,7 +246,7 @@ struct GenerateCommandV2: CommandProtocol {
 
 
 struct ProcessIpaCommand: CommandProtocol {
-    let verb = "process-ipa"
+    let verb = "process_ipa"
     let function = "Process IPA after a build -- this is expected to be run in an environment with Xcode ENV vars"
 
     typealias Options = NoOptions<CommandError>
