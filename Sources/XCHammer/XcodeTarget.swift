@@ -553,9 +553,21 @@ public class XcodeTarget: Hashable, Equatable {
     private static let librarySourceTypes = Set(["swift", "m", "mm", "cpp", "c", "cc", "S"])
 
     // Returns transitive linkable
-    lazy var transitiveDeps: Set<ProjectSpec.Dependency> = {
+    lazy var xcLinkableTransitiveDeps: Set<ProjectSpec.Dependency> = {
+        // By traversing the dependency graph through `transitiveTargets` we
+        // pick up many dependencies, that may or may not be on the linker
+        // command line. Consider other ways to do this. For now, reject known
+        // non legitimate dependency propagators.
+        let linkablePredicate: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate {
+            xcodeTarget -> Transition in
+            guard xcodeTarget.type != "_headermap" else {
+                return Transition.stop
+            }
+            return xcodeTarget.needsRecursiveExtraction ? Transition.justOnceMore : Transition.keepGoing
+        }
+
         let deps = self.transitiveTargets(map: self.targetMap, predicate:
-                stopAfterNeedsRecursive, force: true)
+                linkablePredicate, force: true)
             .flatMap { xcodeTarget -> [ProjectSpec.Dependency] in
                 let projectConfig = xcodeTarget.genOptions.config
                             .projects[genOptions.projectName]
@@ -960,7 +972,7 @@ public class XcodeTarget: Hashable, Equatable {
             return []
         }
 
-        // TODO: Move this to transitiveDeps
+        // TODO: Move this to xcLinkableTransitiveDeps
         let xcodeTargetDeps: [XcodeTarget] = self.dependencies.compactMap {
             depLabel in
             let depName = depLabel.value
@@ -1439,7 +1451,7 @@ else {
             <> fusableDeps.foldMap { $0.settings }
         if shouldPropagateDeps(forTarget: xcodeTarget) {
             deps = fusableDeps
-                .flatMap { $0.transitiveDeps } + xcodeTarget.xcExtensionDeps
+                .flatMap { $0.xcLinkableTransitiveDeps } + xcodeTarget.xcExtensionDeps
         } else {
             deps = []
         }
@@ -1447,7 +1459,7 @@ else {
         sources = xcodeTargetSources
         settings = xcodeTarget.settings
         if shouldPropagateDeps(forTarget: xcodeTarget) {
-            deps = Array(xcodeTarget.transitiveDeps) +
+            deps = Array(xcodeTarget.xcLinkableTransitiveDeps) +
                 xcodeTarget.xcExtensionDeps
         } else {
             deps = []
