@@ -62,7 +62,7 @@ xchammer_dependencies()
 git_repository(
     name = "xcbuildkit",
     remote = "https://github.com/jerrymarino/xcbuildkit.git",
-    commit = "80d051856314d0b75cf42dc45de3b52d41a25777",
+    commit = "1207dc3656066ef6bd8a895f426892cce078353e",
 )
 
 load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies="dependencies")
