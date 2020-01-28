@@ -20,11 +20,9 @@ trap exit_trap EXIT
 # Go to bazel release page
 # These are typically posted in groups.google
 # https://groups.google.com/forum/#!forum/bazel-discuss
-BAZEL_VERSION="0.28.1"
-BAZEL_VERSION_SHA="5d50ae13ba01a224ddf54cfd818289bee5b38e551cca22bffc79b89f377d2095"
-
-BAZEL_VERSION_URL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-darwin-x86_64.sh"
-
+BAZEL_VERSION="2.1.0rc1"
+BAZEL_VERSION_SHA="e1fa6dffc6f4ecb803eca241b017127a567beacea8c425f12858c4e1fe7eecae"
+BAZEL_VERSION_URL="https://releases.bazel.build/2.1.0/rc1/bazel-2.1.0rc1-installer-darwin-x86_64.sh"
 BAZEL_ROOT="$HOME/.bazelenv/versions/$BAZEL_VERSION"
 BAZEL_PATH="$BAZEL_ROOT/bin/bazel"
 
