@@ -30,7 +30,7 @@ let package = Package(
 
         // Changes reside in the xchammer branch
         .package(url: "https://github.com/pinterest/Tulsi.git",
-            .revision("6520b88660bdcc46e1d0237ad4c26a1cd908b1b4")),
+            .revision("0e16c8fb6a65037c30ebe9b896fc308fa3ea1cbd")),
 
         // Note: XcodeGen now transitively depends on this one, so the versions
         // must match!
