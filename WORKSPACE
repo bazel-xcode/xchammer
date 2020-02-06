@@ -1,23 +1,39 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_file(
+    name = "xctestrunner",
+    executable = 1,
+    urls = ["https://github.com/jerrymarino/xctestrunner/files/3453677/ios_test_runner.par.zip"],
+    sha256 = "4e19d47ffe0c248e1cd91cc647557efdf88a7b0e68dba674222c0745e0c0a47b",
+)
+
+
+http_archive(
+    name = "build_bazel_rules_swift",
+    sha256 = "2eb3c54fcbcd366d6cb27ce4b0e2e1876745266e0d077f39516016105f6652a1",
+    strip_prefix = "rules_swift-f51e68960fca1e0e6d594f3d7b519917ec4f988b",
+    url = "https://github.com/bazelbuild/rules_swift/archive/f51e68960fca1e0e6d594f3d7b519917ec4f988b.tar.gz",
+)
+
+http_archive(
+    name = "build_bazel_apple_support",
+    sha256 = "bdbc3f426be3d0fa6489a3b5cb6b7c1af689215a19bfa1abbaaf3cb3280ed58b",
+    strip_prefix = "apple_support-9605c3da1c5bcdddc20d1704b52415a6f3a5f422",
+    url = "https://github.com/bazelbuild/apple_support/archive/9605c3da1c5bcdddc20d1704b52415a6f3a5f422.tar.gz",
+)
 
 git_repository(
     name = "build_bazel_rules_apple",
     remote = "https://github.com/bazelbuild/rules_apple.git",
-    tag = "0.18.0",
+    commit = "f6a95e8d0c2bd6fa9f0a6280ef3c4d34c9594513",
 )
 
 load(
     "@build_bazel_rules_apple//apple:repositories.bzl",
     "apple_rules_dependencies",
 )
-
-git_repository(
-    name = "build_bazel_rules_swift",
-    remote = "https://github.com/bazelbuild/rules_swift.git",
-    commit = "0192f16b82b2998d846c45187545e38548a6671a",
-)
-
 load(
     "@build_bazel_rules_swift//swift:repositories.bzl",
     "swift_rules_dependencies",
@@ -25,9 +41,7 @@ load(
 
 swift_rules_dependencies()
 
-apple_rules_dependencies()
-
-
+apple_rules_dependencies(ignore_version_differences = True)
 
 load(
     "@com_google_protobuf//:protobuf_deps.bzl",
@@ -42,13 +56,6 @@ load(
 )
 
 apple_support_dependencies()
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-
-http_file(
-    name = "xctestrunner",
-    executable = 1,
-    urls = ["https://github.com/google/xctestrunner/releases/download/0.2.6/ios_test_runner.par"],
-)
 
 ## SPM Dependencies
 
