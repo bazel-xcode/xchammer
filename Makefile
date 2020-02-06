@@ -55,11 +55,6 @@ build-release: BAZELFLAGS = --announce_rc \
 	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-release: build-impl
 
-build-release-no-cache: BAZELFLAGS = --announce_rc \
-	--compilation_mode opt \
-	--disk_cache=$(HOME)/Library/Caches/Bazel
-build-release-no-cache: build-impl
-
 build-impl:
 	$(ROOT_DIR)/tools/bazelwrapper build \
 		 $(BAZELFLAGS) xchammer
@@ -115,7 +110,7 @@ run_force: build
 	    --bazel $(ROOT_DIR)/sample/$(SAMPLE)/tools/bazelwrapper \
 	    --force
 
-run_perf: build-release-no-cache
+run_perf: build-release
 	@[[ -d sample/Frankenstein/Vendor/rules_pods ]] \
 		|| (echo "Run 'make' in sample/Frankenstein" && exit 1)
 	$(XCHAMMER_BIN) generate \
