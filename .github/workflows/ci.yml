@@ -13,9 +13,9 @@ jobs:
       run: sudo gem install cocoapods
     - name: Run Tests (test)
       run: make test
-    - name: Run Perf Tests
-      run: make run_perf_ci
     - name: Run Swift Tests
       run: make run_swift
     - name: Run Goldmaster Tests
       run: make goldmaster
+    - name: Run Perf Tests
+      run: make run_perf_ci
