@@ -227,7 +227,7 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> XCSch
                 if name == entry.buildableReference.blueprintName {
                     return true
                 }
-                if (name + "-bazel") == entry.buildableReference.blueprintName {
+                if (name + "-Bazel") == entry.buildableReference.blueprintName {
                     return true
                 }
                 return false
@@ -239,7 +239,14 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> XCSch
     // There may be several scheme deps - find the first matching one by
     // convention
     let runnableEntry = buildActionEntries.first { runnable in
-        return runnable.buildableReference.blueprintName == scheme.name
+        let name = scheme.name
+        if name == runnable.buildableReference.blueprintName {
+            return true
+        }
+        if (name + "-Bazel") == runnable.buildableReference.blueprintName {
+            return true
+        }
+        return false
     }
     let buildableReference = runnableEntry!.buildableReference
     let productRunable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)

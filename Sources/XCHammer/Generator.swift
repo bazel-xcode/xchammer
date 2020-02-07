@@ -338,9 +338,12 @@ enum Generator {
             return []
         }
 
-
+        let projectConfig = genOptions.projectConfig
+        let generateXcodeSchemes = (projectConfig?.generateXcodeSchemes ?? true != false)
         return targets.map {
             xcodeTarget in
+            let schemeName = generateXcodeSchemes ? xcodeTarget.xcTargetName +
+                "-Bazel" : xcodeTarget.xcTargetName
             let name = xcodeTarget.xcTargetName + "-Bazel"
             let targetConfig = XcodeTarget.getTargetConfig(for:
                 xcodeTarget)
@@ -391,7 +394,7 @@ enum Generator {
                     preActions: profileConfig?.preActions ?? [],
                     postActions: profileConfig?.postActions ?? [])
 
-            return XcodeScheme(name: name, build: buildPhase, run: runPhase,
+            return XcodeScheme(name: schemeName, build: buildPhase, run: runPhase,
                     test: testPhase, profile: profilePhase)
         }
     }
