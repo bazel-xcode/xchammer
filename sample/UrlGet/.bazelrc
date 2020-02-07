@@ -12,7 +12,6 @@ build \
     --apple_generate_dsym=false \
     --spawn_strategy=standalone \
     --apple_platform_type=ios \
-    --noincompatible_disallow_load_labels_to_cross_package_boundaries  \
     --incompatible_new_actions_api=false
 
 build:ios_x86_64 \
