@@ -147,6 +147,7 @@ struct XCBuildSettings: Encodable {
     var productBundleId: First<String>?
     var debugInformationFormat: First<String>?
     var codeSigningRequired: First<String>?
+    var codeSigningAllowed: First<String>? = First("NO")
     var onlyActiveArch: First<String>?
     var enableTestability: First<String>?
     var enableObjcArc: First<String>?
@@ -192,6 +193,7 @@ struct XCBuildSettings: Encodable {
         case pch = "GCC_PREFIX_HEADER"
         case productBundleId = "PRODUCT_BUNDLE_IDENTIFIER"
         case codeSigningRequired = "CODE_SIGNING_REQUIRED"
+        case codeSigningAllowed = "CODE_SIGNING_ALLOWED"
         case debugInformationFormat = "DEBUG_INFORMATION_FORMAT"
         case onlyActiveArch = "ONLY_ACTIVE_ARCH"
         case enableTestability = "ENABLE_TESTABILITY"
@@ -249,6 +251,7 @@ struct XCBuildSettings: Encodable {
         try debugInformationFormat.map { try container.encode($0.v, forKey: .debugInformationFormat) }
         try productBundleId.map { try container.encode($0.v, forKey: .productBundleId) }
         try codeSigningRequired.map { try container.encode($0.v, forKey: .codeSigningRequired) }
+        try codeSigningAllowed.map { try container.encode($0.v, forKey: .codeSigningAllowed) }
         try codeSigningIdentity.map { try container.encode($0.v, forKey: .codeSigningIdentity) }
         try onlyActiveArch.map { try container.encode($0.v, forKey: .onlyActiveArch) }
         try enableTestability.map { try container.encode($0.v, forKey: .enableTestability) }
@@ -302,6 +305,7 @@ extension XCBuildSettings: Monoid {
             productBundleId: lhs.productBundleId <> rhs.productBundleId,
             debugInformationFormat: lhs.debugInformationFormat <> rhs.debugInformationFormat,
             codeSigningRequired: lhs.codeSigningRequired <> rhs.codeSigningRequired,
+            codeSigningAllowed: lhs.codeSigningAllowed <> rhs.codeSigningAllowed,
             onlyActiveArch: lhs.onlyActiveArch <> rhs.onlyActiveArch,
             enableTestability: lhs.enableTestability <> rhs.enableTestability,
             enableObjcArc: lhs.enableObjcArc <> rhs.enableObjcArc,
