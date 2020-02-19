@@ -175,6 +175,7 @@ struct XCBuildSettings: Encodable {
     var pythonPath: First<String>?
     var sdkRoot: First<String>?
     var targetedDeviceFamily: OrderedArray<String> = OrderedArray.empty
+    var isBazel: First<String> = First("NO")
     var diagnosticFlags: [String] = []
 
     enum CodingKeys: String, CodingKey {
@@ -221,6 +222,7 @@ struct XCBuildSettings: Encodable {
         case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
         case mobileProvisionProfileFile = "HAMMER_PROFILE_FILE"
         case diagnosticFlags = "HAMMER_DIAGNOSTIC_FLAGS"
+        case isBazel = "HAMMER_IS_BAZEL"
         case tulsiWR = "TULSI_WR"
         case sdkRoot = "SDKROOT"
         case targetedDeviceFamily = "TARGETED_DEVICE_FAMILY"
@@ -277,6 +279,7 @@ struct XCBuildSettings: Encodable {
         try sdkRoot.map { try container.encode($0.v, forKey: .sdkRoot) }
         try container.encode(targetedDeviceFamily.joined(separator: ","), forKey: .targetedDeviceFamily)
         try swiftVersion.map { try container.encode($0.v, forKey: .swiftVersion) }
+        try container.encode(isBazel.v, forKey: .isBazel)
 
         // XCHammer only supports Xcode projects at the root directory
         try container.encode("$SOURCE_ROOT", forKey: .tulsiWR)
@@ -333,6 +336,7 @@ extension XCBuildSettings: Monoid {
             sdkRoot: lhs.sdkRoot <> rhs.sdkRoot,
             targetedDeviceFamily: lhs.targetedDeviceFamily <>
                 rhs.targetedDeviceFamily,
+            isBazel: lhs.isBazel <> rhs.isBazel,
             diagnosticFlags: lhs.diagnosticFlags <> rhs.diagnosticFlags
         )
     }
