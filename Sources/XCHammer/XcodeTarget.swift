@@ -1473,6 +1473,20 @@ public class XcodeTarget: Hashable, Equatable {
         )
     }
 
+
+    public func getLaunchAutomaticallySubstyle() -> String? {
+        // Support for launch substyle.
+        switch extensionType {
+        // Some extension types require a remote debuggable and different
+        // runtime configuration. Simply put, at launch, this auto selects
+        // the executable. This closely mirrors how Xcode sets up the schemes
+        case "com.apple.intents-service", "com.apple.message-payload-provider":
+            return "2"
+        default:
+            // Use the default value for this, which ends up being "0"
+            return nil
+        }
+    }
 }
 
 // MARK: - Equatable

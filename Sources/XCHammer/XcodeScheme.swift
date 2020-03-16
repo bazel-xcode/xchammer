@@ -82,18 +82,21 @@ public struct XcodeScheme: Equatable, Codable {
         public var environmentVariables: [EnvironmentVariable]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var launchAutomaticallySubstyle: String?
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
             environmentVariables: [EnvironmentVariable] = [],
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            launchAutomaticallySubstyle: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.environmentVariables = environmentVariables
             self.preActions = preActions
             self.postActions = postActions
+            self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
         }
     }
 
@@ -295,7 +298,8 @@ public func makeXCProjScheme(from scheme: XcodeScheme, project: String) -> XCSch
         preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
         postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
         commandlineArguments: launchCommandLineArgs,
-        environmentVariables: launchEnvironmentVariables
+        environmentVariables: launchEnvironmentVariables,
+        launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle
     )
 
     let profileAction = XCScheme.ProfileAction(
