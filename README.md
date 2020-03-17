@@ -117,7 +117,7 @@ To make outputs consistent and debuggable across machines, e.g. with remote
 caching, it's recommended to use debug info remapping. Debug info remapping is a
 technique that simply remaps absolute paths in debug info to a stable location.
 LLDB then is able to map these to the source directory, via a
-`target.source-map`. By default, these bazel flags are not configured and
+`target.source-map`. By default, these Bazel flags are not configured and
 require adding additional flags to the build. Generally, these flags should set
 in _your_ `.bazelrc` for every build.
 
@@ -129,15 +129,15 @@ up [crosstool
 logic](https://github.com/bazelbuild/bazel/blob/master/tools/osx/crosstool/wrapped_clang.cc#L218)
 for more info.
 
-Starting with Swift 5.0, Swift provides debug info remapping via the
+Starting with Xcode 10.2, Swift provides debug info remapping via the
 `-debug-prefix-map` flag.  `rules_swift` supports the ability to [pass the debug
 remapping](https://github.com/bazelbuild/rules_swift/commit/43900104d279fcdffbca2d02dbc550492bf33353).
 Simply add `--swiftcopt=-Xwrapped-swift=-debug-prefix-pwd-is-dot` to remap debug
 info in Swift.
 
 XCHammer will automatically write a compatible remapping in the `.lldbinit`. Set
-`HAMMER_USE_DEBUG_INFO_REMAPPING=YES` in xcconfig or as an environment variable
-to the `Bazel build` runscript.
+`HAMMER_USE_DEBUG_INFO_REMAPPING=YES` via an `xcconfig`. See [XCHammer's BUILD
+file](BUILD.bazel), for an example of this.
 
 _Generating a dSYM for development is not recommended due to the performance
 hit, and in practice is only required for Instruments.app._

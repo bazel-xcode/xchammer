@@ -1,0 +1,5 @@
+// The project is setup to use debug info remapping
+HAMMER_USE_DEBUG_INFO_REMAPPING=YES
+// This is the default, which needs to be set. We override this at the target
+// leve.
+SWIFT_VERSION=5.0
