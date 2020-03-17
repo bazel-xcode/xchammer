@@ -357,7 +357,8 @@ enum Generator {
                     [:],
                     environmentVariables: runConfig?.environmentVariables ?? [],
                     preActions: runConfig?.preActions ?? [],
-                    postActions: runConfig?.postActions ?? [])
+                    postActions: runConfig?.postActions ?? [],
+                    launchAutomaticallySubstyle: xcodeTarget.getLaunchAutomaticallySubstyle())
 
             let testConfig = schemeConfig?[SchemeActionType.test.rawValue]
 
