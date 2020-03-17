@@ -1287,7 +1287,6 @@ public class XcodeTarget: Hashable, Equatable {
                 let template = try? String(contentsOf: (self.genOptions.workspaceRootPath + Path(
                     templatePath)).url) else {
                 return """
-                export HAMMER_USE_DEBUG_INFO_REMAPPING=NO
                 \(buildInvocation)
                 """
             }
