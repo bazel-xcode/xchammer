@@ -65,7 +65,7 @@ enum XcodeBuildSystemInstaller {
             let installerPath = buildkitBundlePath + "/BazelBuildServiceInstaller.pkg"
             let script = "installer -pkg \(installerPath) -target /"
             guard ShellOutWithSudo(script) == 0 else {
-                return .failure(.basic("failed to install"))
+                return .failure(.basic("failed to install. please see /var/log/install.log for more info"))
             }
         }
         return .success(())
