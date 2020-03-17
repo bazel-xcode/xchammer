@@ -260,7 +260,7 @@ def xchammer_dependencies():
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/tulsi.git",
-        commit = "dde8fdd59e7eb2128c91d8f971973d7d28f3aca4",
+        commit = "15fbbf9fca15fad4623e9cae047a88623c75a512",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
