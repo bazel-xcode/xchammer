@@ -164,6 +164,14 @@ xcode_project(
     targets=["//:xchammer",  "//tools/XCConfigExporter:xcconfig-exporter"],
     bazel="tools/bazelwrapper",
     xchammer="xchammer.app",
-    project_config=project_config(["**"])
+    project_config=project_config(
+        paths = ["**"],
+        generate_xcode_schemes=False,
+        xcconfig_overrides = {
+            "Release": "tools/BazelToolchain.xcconfig",
+            "Debug": "tools/BazelToolchain.xcconfig",
+            "Profile": "tools/BazelToolchain.xcconfig",
+        }
+    )
 )
 

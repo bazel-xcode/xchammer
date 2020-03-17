@@ -1287,7 +1287,6 @@ public class XcodeTarget: Hashable, Equatable {
                 let template = try? String(contentsOf: (self.genOptions.workspaceRootPath + Path(
                     templatePath)).url) else {
                 return """
-                export TULSI_USE_HAMMER_DEBUG_CONFIG=YES
                 \(buildInvocation)
                 """
             }
