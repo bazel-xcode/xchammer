@@ -106,6 +106,37 @@ xchammer install_xcode_build_system
 - make sure Xcode's new build system is enabled
 
 
+## LLDB integration
+
+Under Swift and clang compilers, the execution root is written into debug info
+in object files by default. XCHammer writes an lldbinit file to map this
+directory to the source root of source code, so that both breakpoints and
+sources work in Xcode.
+
+It's recommended to use debug info remapping, which often works better, and is
+also required debug outputs created from external machines e.g. from a remote
+cache. XCHammer is often setup to work with the debug remapping features
+provided by Swift and clang compilers:
+
+Starting with Swift 5.0, Swift provides debug info remapping via the
+`-debug-prefix-map` flag.  `rules_swift` supports the ability to [pass the debug
+remapping](https://github.com/bazelbuild/rules_swift/commit/43900104d279fcdffbca2d02dbc550492bf33353).
+Simply add `--swiftcopt=-Xwrapped-swift=-debug-prefix-pwd-is-dot` to remap debug
+info in Swift.
+
+Clang provides debug info remapping via the `-fdebug-prefix-map` flag. For
+Objective-C, C, C++, debug info remapping is implemented at the crosstool level.
+Configure Bazel to pass these arguments by setting setting
+`--copt="DEBUG_PREFIX_MAP_PWD=."` or providing a custom crosstool to do so.
+[crosstool to remap debug info](https://github.com/bazelbuild/bazel/blob/master/tools/osx/crosstool/wrapped_clang.cc#L218).
+
+Finally, to use this remapping, in the `.lldbinit`, set
+`HAMMER_USE_DEBUG_INFO_REMAPPING=YES` either inside of xcconfig for this
+project.
+
+_Generating a dSYM for development builds is not recommended due to the
+performance hit, and in practice is only used for profile builds._
+
 ## Development
 
 Please find more info about developing XCHammer in [The XCHammer FAQ](Docs/XCHammerFAQ.md). Pull requests welcome 💖.
