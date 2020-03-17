@@ -20,12 +20,6 @@ import XcodeGenKit
 import XcodeProj
 import TulsiGenerator
 
-/// Internal struct to help building out the `Spec`
-private struct XcodeGenTarget {
-    let xcodeTarget: XcodeTarget
-    let target: ProjectSpec.Target
-}
-
 extension XCHammerConfig {
     var buildTargetLabels: [BuildLabel] {
         return targets.map { BuildLabel($0) }
@@ -60,21 +54,12 @@ enum Generator {
     /// Used to store the `depsHash` into the project
     static let DepsHashSettingName = "XCHAMMER_DEPS_HASH"
 
-    private static func makeTargets(targetMap: XcodeTargetMap, genOptions:
-            XCHammerGenerateOptions) -> [String: XcodeGenTarget] {
-        let profiler = XCHammerProfiler("convert_targets")
-        defer {
-            profiler.logEnd(true)
+    private static func getIncludedTargets(targetMap: XcodeTargetMap, genOptions:
+            XCHammerGenerateOptions) -> [String: XcodeTarget] {
+        let entries: [XcodeTarget] = targetMap.includedProjectTargets.filter {
+            $0.getXcodeBuildableTarget() != nil
         }
-        let entries: [XcodeGenTarget] = targetMap.includedProjectTargets.compactMap {
-            xcodeTarget in
-            guard let target = makeXcodeGenTarget(from: xcodeTarget) else {
-                return nil
-            }
-            return XcodeGenTarget(xcodeTarget: xcodeTarget, target: target)
-        }
-        return Dictionary.from(entries.map { xcodeGenTarget in
-                (xcodeGenTarget.xcodeTarget.xcTargetName, xcodeGenTarget)})
+        return Dictionary.from(entries.map { xcodeTarget in (xcodeTarget.xcTargetName, xcodeTarget)})
     }
 
     // Mark - Xcode helper targets
@@ -331,27 +316,32 @@ enum Generator {
             if xcodeTarget.isTopLevelTestTarget,
                 let testHostSetting = xcodeTarget.settings.testHost?.v {
                 let testHostName = testHostSetting.components(separatedBy: "/")[2]
-                return [XcodeScheme.BuildTarget(target: testHostName + "-Bazel",
+                return [XcodeScheme.BuildTarget(target: testHostName,
                             project: projectByXCTargetName[testHostName]!,
-                            productName: testHostName  + "-Bazel" + ".app")]
+                            productName: testHostName  + ".app")]
             }
             return []
         }
 
-        let projectConfig = genOptions.projectConfig
-        let generateXcodeSchemes = (projectConfig?.generateXcodeSchemes ?? true != false)
-        return targets.map {
-            xcodeTarget in
-            let schemeName = generateXcodeSchemes ? xcodeTarget.xcTargetName +
-                "-Bazel" : xcodeTarget.xcTargetName
-            let name = xcodeTarget.xcTargetName + "-Bazel"
+        let specifiedLabels = Set(genOptions.config.buildTargetLabels)
+        return targets.compactMap { xcodeTarget in
+            let type = xcodeTarget.xcType!
+            let name = xcodeTarget.xcTargetName
+            guard type.contains("application")
+                || type.contains("-test")
+                || specifiedLabels.contains(xcodeTarget.label)
+                else {
+                return nil
+            }
+
+            let schemeName = xcodeTarget.xcTargetName
             let targetConfig = XcodeTarget.getTargetConfig(for:
                 xcodeTarget)
             let schemeConfig = targetConfig?.schemeConfig
             let buildTargets = getSchemeDeps(xcodeTarget: xcodeTarget) + [
                 XcodeScheme.BuildTarget(target: name,
                         project: genOptions.projectName, productName:
-                        xcodeTarget.extractBuiltProductName() + "-Bazel")
+                        xcodeTarget.extractBuiltProductName())
             ]
 
             let buildConfig = schemeConfig?[SchemeActionType.build.rawValue]
@@ -399,11 +389,10 @@ enum Generator {
         }
     }
 
-    private static func getBazelBuildSettings(targets: [String: XcodeGenTarget],
+    private static func getBazelBuildSettings(targets: [String: XcodeTarget],
             genOptions: XCHammerGenerateOptions, bazelExecRoot: String) -> BazelBuildSettings {
         let targetFlags = targets.values.compactMap {
-            xcgTarget -> (String, BazelFlagsSet)? in
-            let xcodeTarget = xcgTarget.xcodeTarget
+            xcodeTarget -> (String, BazelFlagsSet)? in
             guard xcodeTarget.getBazelBuildableTarget() != nil else {
                 return nil
             }
@@ -511,12 +500,12 @@ enum Generator {
                                                 fatalError("Can't write temp swift stub")
         }
 
-        let allXCTargets: [String: XcodeGenTarget] = makeTargets(targetMap:
+        let targetsByName: [String: XcodeTarget] = getIncludedTargets(targetMap:
                 targetMap, genOptions: genOptions)
 
         // Generate and write out the "Bazel Build Settings"
         // build_bazel.py reads this file in to determine settings
-        let bazelBuildSettings = getBazelBuildSettings(targets: allXCTargets,
+        let bazelBuildSettings = getBazelBuildSettings(targets: targetsByName,
                 genOptions: genOptions, bazelExecRoot: bazelExecRoot)
         let settingsTemplatePath = basePath +
                 "/bazel_build_settings.py.template"
@@ -535,9 +524,9 @@ enum Generator {
         }
 
         // Code gen entitlement rules and write a build file
-        let entitlementRules = allXCTargets
-            .compactMap { (name: String, xcodeGenTarget: XcodeGenTarget) in
-                return xcodeGenTarget.xcodeTarget.extractExportEntitlementRule(map: targetMap)
+        let entitlementRules = targetsByName
+            .compactMap { (name: String, xcodeTarget: XcodeTarget) in
+                return xcodeTarget.extractExportEntitlementRule(map: targetMap)
         }
 
         // Write the build file header
@@ -603,33 +592,33 @@ enum Generator {
         let settings = Settings(configSettings: ["DEBUG": Settings(dictionary:
                     debugSettingsDict)])
 
-        // Get Bazel targets for the specified labels
-        let getBazelBuildableTargets: (() -> [XcodeTarget]) = {
-            () -> [XcodeTarget] in
-            let specifiedLabels = Set(genOptions.config.buildTargetLabels)
-            return allXCTargets
-                .filter { specifiedLabels.contains($0.value.xcodeTarget.label) }
-                .map { $0.value.xcodeTarget }
-        }
-
-
-        let adHocFiles = Array(Set(allXCTargets.flatMap {
+        let adHocFiles = Array(Set(targetsByName.flatMap {
             value -> [String] in
-            let (_, xcgTarget) = value
-            return xcgTarget.xcodeTarget.xcAdHocFiles
+            let (_, xcodeTarget) = value
+            return xcodeTarget.xcAdHocFiles
         }))
 
         let projectConfig = genOptions.projectConfig
-        let generateXcodeTargets = (projectConfig?.generateTransitiveXcodeTargets ?? true != false)
-        let includedXcodeTargets = generateXcodeTargets ? allXCTargets.map { k, v in v.target } : []
-        let bazelBuildableXcodeTargets = getBazelBuildableTargets()
-        let bazelBuildableTargets = 
-            bazelBuildableXcodeTargets.compactMap { $0.getBazelBuildableTarget() }
-        let allTargets = includedXcodeTargets + [
+        let generateTransitiveXcodeTargets = (projectConfig?.generateTransitiveXcodeTargets ?? true != false)
+        // TODO: consider renaming generateXcodeSchemes to buildWithBazel
+        let buildWithXcode = (projectConfig?.generateXcodeSchemes ?? true != false)
+        if generateTransitiveXcodeTargets == false && buildWithXcode {
+            fatalError("Xcode requires generateTransitiveXcodeTargets and generateXcodeSchemes")
+        }
+
+        let convertTargetsProfiler = XCHammerProfiler("convert_targets")
+        let includedXcodeGenTargets: [ProjectSpec.Target]
+
+        includedXcodeGenTargets = targetsByName.values.compactMap {
+            buildWithXcode ? $0.getXcodeBuildableTarget() : $0.getBazelBuildableTarget()
+        }
+        convertTargetsProfiler.logEnd(true)
+
+        let allTargets: [ProjectSpec.Target] = includedXcodeGenTargets + [
                 updateXcodeProjectTarget,
                 bazelPreBuildTarget,
                 clearSourceMapTarget
-            ] + bazelBuildableTargets
+            ]
 
         let project = ProjectSpec.Project(
             basePath: genOptions.workspaceRootPath,
@@ -654,18 +643,20 @@ enum Generator {
 
         let projectByXCTargetName = getProjectsByXCTargetName(genOptions:
             genOptions, targetMap: targetMap)
-        let xcSchemes = (projectConfig?.generateXcodeSchemes ?? true) ?
-            makeXcodeSchemes(for: allXCTargets.values.map { $0.xcodeTarget },
-                      targetMap: targetMap, projectByXCTargetName:
-                      projectByXCTargetName, genOptions: genOptions) : []
-
-        let bazelSchemes = makeBazelTargetSchemes(for:
-                bazelBuildableXcodeTargets, targetMap: targetMap,
+        let targetSchemes: [XcodeScheme]
+        if buildWithXcode {
+            targetSchemes = makeXcodeSchemes(for: Array(targetsByName.values),
+                targetMap: targetMap, projectByXCTargetName:
+                projectByXCTargetName, genOptions: genOptions)
+        } else {
+            targetSchemes = makeBazelTargetSchemes(for:
+                Array(targetsByName.values), targetMap: targetMap,
                 projectByXCTargetName: projectByXCTargetName, genOptions:
                 genOptions)
+        }
 
         try ProjectWriter.write(
-            schemes: xcSchemes + bazelSchemes,
+            schemes: targetSchemes,
             genOptions: genOptions,
             xcodeProjPath: tempProjectPath)
     }

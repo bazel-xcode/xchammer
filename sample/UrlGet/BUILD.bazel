@@ -48,6 +48,7 @@ xcode_project(
     name = "XcodeBazel",
     targets = [
 	"//ios-app:ios-app",
+	"//ios-app:UrlGetClasses",
 	"//ios-app:UnitTests",
 	"//ios-app:UnitTestsWithHost",
     ],

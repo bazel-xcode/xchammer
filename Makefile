@@ -188,7 +188,7 @@ bazelrc_home:
 	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
 
-ci: bazelrc_home test run_perf_ci run_swift goldmaster
+ci: bazelrc_home test run_perf_ci run_swift run_force_bazel goldmaster
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier

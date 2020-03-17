@@ -445,7 +445,7 @@ public class XcodeTarget: Hashable, Equatable {
         // Include resources is ad-hoc files if they're not in a target
         let generateXcodeTargets = (projectConfig?.generateXcodeSchemes ?? true != false)
         let buildFile = [self.buildFilePath ?? ""]
-        guard generateXcodeTargets else {
+        guard generateXcodeTargets == false else {
             return buildFile
         }
         return buildFile + self.xcBundles.map { $0.path } + self.xcResources.map { $0.path }
@@ -1311,21 +1311,23 @@ public class XcodeTarget: Hashable, Equatable {
             let fusableDeps = self.unfilteredDependencies
                 .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
                         pathsPredicate) }
-
             xcodeBuildableTargetSettings = self.settings
                             <> fusableDeps.foldMap { $0.settings }
-
-            if let xcBuildTestHost = xcodeBuildableTargetSettings.testHost?.v {
-                 // Notes on test host build configuration:
-                 // - Xcode bazel-builds the app as a scheme dep
-                 // - Xcode bazel-builds the test which install the test bundle into the
-                 //   app
-                 settings.testHost = First(xcBuildTestHost.replacingOccurrences(of: ".app", with: "-Bazel.app") + "-Bazel")
-            }
-
-
             // Use settings, sources, and deps from the fusable deps
             sources = fusableDeps.flatMap { $0.xcCompileableSources }
+            // Notes on test host build configuration:
+            // - Xcode bazel-builds the app as a scheme dep
+            // - Xcode bazel-builds the test which install the test bundle into the
+            //   app
+            settings.testHost = xcodeBuildableTargetSettings.testHost
+            settings.testTargetName = xcodeBuildableTargetSettings.testTargetName
+
+            // This is required to codesign the Runner.app with the right
+            // entitlement.
+            // TODO: support custom entitlements for on device.
+            if settings.testTargetName != nil {
+                settings.codeSigningAllowed = First("YES")
+            }
         } else {
             sources = self.xcCompileableSources
             xcodeBuildableTargetSettings = self.settings
@@ -1338,6 +1340,7 @@ public class XcodeTarget: Hashable, Equatable {
         settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
         settings.copts = xcodeBuildableTargetSettings.copts
 
+        settings.isBazel = First("YES")
         settings.onlyActiveArch = First("YES")
         settings.codeSigningRequired <>= First("NO")
         settings.productName <>= First("$(TARGET_NAME)")
@@ -1349,7 +1352,7 @@ public class XcodeTarget: Hashable, Equatable {
         let bazelScript = ProjectSpec.BuildScript(path: nil, script: getScriptContent(),
                 name: "Bazel build")
         return ProjectSpec.Target(
-            name: xcTargetName + "-Bazel",
+            name: xcTargetName,
             type: PBXProductType(rawValue: productType.rawValue)!,
             platform: Platform(rawValue: platform)!,
             settings: makeXcodeGenSettings(from: settings),
@@ -1359,6 +1362,117 @@ public class XcodeTarget: Hashable, Equatable {
             postBuildScripts: [bazelScript]
         )
     }
+
+    public func getXcodeBuildableTarget() -> ProjectSpec.Target? {
+        let xcodeTarget = self
+        let genOptions = xcodeTarget.genOptions
+        let config = genOptions.config
+        let targetMap = xcodeTarget.targetMap
+        guard let type = xcodeTarget.xcType,
+              let productType = xcodeTarget.extractProductType() else {
+            return nil
+        }
+        //TODO: (jerry) move this into `includedTargets`
+        let flattened = Set(flattenedInner(targetMap: targetMap))
+        guard flattened.contains(xcodeTarget) == false else {
+            return nil
+        }
+
+        let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
+        guard includeTarget(xcodeTarget, pathPredicate: pathsPredicate) == true
+    else {
+                return nil
+            }
+
+        let xcodeTargetSources = xcodeTarget.xcSources
+        let sources: [ProjectSpec.TargetSource]
+        let settings: XCBuildSettings
+        let deps: [ProjectSpec.Dependency]
+        // Find the linked deps and extract the deps name
+        // We need actual targets here, since these are things like Applications
+        let linkedDeps = xcodeTarget.linkedTargetLabels
+            .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: xcodeTarget) }
+            .filter { includeTarget($0, pathPredicate: pathsPredicate) }
+            .map { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
+                    embed: $0.isExtension) }
+
+        // Determine settings, sources, and deps
+        // There are 2 different possibilities:
+        // 1) High level "Fusing" of a target from multiple targets
+        // 2) A simple conversion of the target: taking it "as is"
+        if shouldFlatten(xcodeTarget: xcodeTarget) {
+            // Determine deps to fuse into the rule.
+            let fusableDeps = xcodeTarget.unfilteredDependencies
+                .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
+                        pathsPredicate) }
+
+            // Use settings, sources, and deps from the fusable deps
+            sources = fusableDeps.flatMap { $0.xcSources }
+            settings = xcodeTarget.settings
+                <> fusableDeps.foldMap { $0.settings }
+            if shouldPropagateDeps(forTarget: xcodeTarget) {
+                deps = fusableDeps
+                    .flatMap { $0.xcLinkableTransitiveDeps } + xcodeTarget.xcExtensionDeps
+            } else {
+                deps = []
+            }
+        } else {
+            sources = xcodeTargetSources
+            settings = xcodeTarget.settings
+            if shouldPropagateDeps(forTarget: xcodeTarget) {
+                deps = Array(xcodeTarget.xcLinkableTransitiveDeps) +
+                    xcodeTarget.xcExtensionDeps
+            } else {
+                deps = []
+            }
+        }
+
+        func getComposedSettings() -> XCBuildSettings {
+            guard let codeSignEntitlementsFile =
+                xcodeTarget.extractCodeSignEntitlementsFile(genOptions: genOptions) else {
+                return settings
+            }
+
+            // Compose entitlements linker flags on, if they are detected by hacky assumptions
+            let simEntitlementsLDFlags: OrderedArray<String> = OrderedArray(["-sectcreate __TEXT __entitlements \(codeSignEntitlementsFile)"])
+            var eSettings = XCBuildSettings()
+            eSettings.ldFlags = Setting(base: nil, SDKiPhoneSimulator: simEntitlementsLDFlags, SDKiPhone: nil)
+
+            if let mobileProvisionProfileFile = xcodeTarget.mobileProvisionProfileFile {
+                eSettings.mobileProvisionProfileFile = First(mobileProvisionProfileFile)
+                eSettings.codeSignEntitlementsFile = First(codeSignEntitlementsFile)
+            }
+            return settings <> eSettings
+        }
+
+        let (prebuildScripts, postbuildScripts) = makeScripts(for: xcodeTarget, genOptions: genOptions, targetMap: targetMap)
+        let platform = { (xcodeTarget: XcodeTarget) -> String in
+            if let deploymentTarget = xcodeTarget.deploymentTarget {
+                switch deploymentTarget.platform {
+                case .ios: return "iOS"
+                case .macos: return "macOS"
+                case .tvos: return "tvOS"
+                case .watchos: return "watchOS"
+                }
+            } else {
+                return "iOS"
+            }
+        }(xcodeTarget)
+
+        return ProjectSpec.Target(
+            name: xcodeTarget.xcTargetName,
+            type: PBXProductType(rawValue: productType.rawValue)!,
+            platform: Platform(rawValue: platform)!,
+            settings: makeXcodeGenSettings(from: getComposedSettings()),
+            configFiles: getXCConfigFiles(for: xcodeTarget),
+            sources: sources,
+            dependencies: Array(Set(deps + linkedDeps))
+                 .sorted(by:{ $0.reference  < $1.reference }),
+            preBuildScripts: prebuildScripts,
+            postBuildScripts: postbuildScripts
+        )
+    }
+
 }
 
 // MARK: - Equatable
@@ -1403,112 +1517,4 @@ private func makeScripts(for xcodeTarget: XcodeTarget, genOptions: XCHammerGener
     return (basePreScripts, basePostScripts)
 }
 
-public func makeXcodeGenTarget(from xcodeTarget: XcodeTarget) -> ProjectSpec.Target? {
-    let genOptions = xcodeTarget.genOptions
-    let config = genOptions.config
-    let targetMap = xcodeTarget.targetMap
-    guard let type = xcodeTarget.xcType,
-          let productType = xcodeTarget.extractProductType() else {
-        return nil
-    }
-    //TODO: (jerry) move this into `includedTargets`
-    let flattened = Set(flattenedInner(targetMap: targetMap))
-    guard flattened.contains(xcodeTarget) == false else {
-        return nil
-    }
-
-    let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
-    guard includeTarget(xcodeTarget, pathPredicate: pathsPredicate) == true
-else {
-            return nil
-        }
-
-    let xcodeTargetSources = xcodeTarget.xcSources
-    let sources: [ProjectSpec.TargetSource]
-    let settings: XCBuildSettings
-    let deps: [ProjectSpec.Dependency]
-    // Find the linked deps and extract the deps name
-    // We need actual targets here, since these are things like Applications
-    let linkedDeps = xcodeTarget.linkedTargetLabels
-        .compactMap { targetMap.xcodeTarget(buildLabel: $0, depender: xcodeTarget) }
-        .filter { includeTarget($0, pathPredicate: pathsPredicate) }
-        .map { ProjectSpec.Dependency(type: .target, reference: $0.xcTargetName,
-                embed: $0.isExtension) }
-
-    // Determine settings, sources, and deps
-    // There are 2 different possibilities:
-    // 1) High level "Fusing" of a target from multiple targets
-    // 2) A simple conversion of the target: taking it "as is"
-    if shouldFlatten(xcodeTarget: xcodeTarget) {
-        // Determine deps to fuse into the rule.
-        let fusableDeps = xcodeTarget.unfilteredDependencies
-            .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
-                    pathsPredicate) }
-
-        // Use settings, sources, and deps from the fusable deps
-        sources = fusableDeps.flatMap { $0.xcSources }
-        settings = xcodeTarget.settings
-            <> fusableDeps.foldMap { $0.settings }
-        if shouldPropagateDeps(forTarget: xcodeTarget) {
-            deps = fusableDeps
-                .flatMap { $0.xcLinkableTransitiveDeps } + xcodeTarget.xcExtensionDeps
-        } else {
-            deps = []
-        }
-    } else {
-        sources = xcodeTargetSources
-        settings = xcodeTarget.settings
-        if shouldPropagateDeps(forTarget: xcodeTarget) {
-            deps = Array(xcodeTarget.xcLinkableTransitiveDeps) +
-                xcodeTarget.xcExtensionDeps
-        } else {
-            deps = []
-        }
-    }
-
-    func getComposedSettings() -> XCBuildSettings {
-        guard let codeSignEntitlementsFile =
-            xcodeTarget.extractCodeSignEntitlementsFile(genOptions: genOptions) else {
-            return settings
-        }
-
-        // Compose entitlements linker flags on, if they are detected by hacky assumptions
-        let simEntitlementsLDFlags: OrderedArray<String> = OrderedArray(["-sectcreate __TEXT __entitlements \(codeSignEntitlementsFile)"])
-        var eSettings = XCBuildSettings()
-        eSettings.ldFlags = Setting(base: nil, SDKiPhoneSimulator: simEntitlementsLDFlags, SDKiPhone: nil)
-
-        if let mobileProvisionProfileFile = xcodeTarget.mobileProvisionProfileFile {
-            eSettings.mobileProvisionProfileFile = First(mobileProvisionProfileFile)
-            eSettings.codeSignEntitlementsFile = First(codeSignEntitlementsFile)
-        }
-        return settings <> eSettings
-    }
-
-    let (prebuildScripts, postbuildScripts) = makeScripts(for: xcodeTarget, genOptions: genOptions, targetMap: targetMap)
-    let platform = { (xcodeTarget: XcodeTarget) -> String in
-        if let deploymentTarget = xcodeTarget.deploymentTarget {
-            switch deploymentTarget.platform {
-            case .ios: return "iOS"
-            case .macos: return "macOS"
-            case .tvos: return "tvOS"
-            case .watchos: return "watchOS"
-            }
-        } else {
-            return "iOS"
-        }
-    }(xcodeTarget)
-
-    return ProjectSpec.Target(
-        name: xcodeTarget.xcTargetName,
-        type: PBXProductType(rawValue: productType.rawValue)!,
-        platform: Platform(rawValue: platform)!,
-        settings: makeXcodeGenSettings(from: getComposedSettings()),
-        configFiles: getXCConfigFiles(for: xcodeTarget),
-        sources: sources,
-        dependencies: Array(Set(deps + linkedDeps))
-             .sorted(by:{ $0.reference  < $1.reference }),
-        preBuildScripts: prebuildScripts,
-        postBuildScripts: postbuildScripts
-    )
-}
 
