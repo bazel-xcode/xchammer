@@ -118,8 +118,8 @@ caching, it's recommended to use debug info remapping. Debug info remapping is a
 technique that simply remaps absolute paths in debug info to a stable location.
 LLDB then is able to map these to the source directory, via a
 `target.source-map`. By default, these bazel flags are not configured and
-require adding additional flags to the build: likely, these flags are set
-consistelty in `.bazelrc` for every build.
+require adding additional flags to the build. Generally, these flags should set
+in _your_ `.bazelrc` for every build.
 
 Clang provides debug info remapping via the `-fdebug-prefix-map` flag. For
 Objective-C, C, C++, debug info remapping is implemented at the crosstool level.
