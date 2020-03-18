@@ -36,15 +36,6 @@ uninstall:
 	unlink $(PREFIX)/bin/xchammer
 	rm -rf $(PREFIX)/bin/$(PRODUCT)
 
-.PHONY: compile_commands.json
-# https://github.com/swift-vim/SwiftPackageManager.vim
-compile_commands.json:
-	swift package clean
-	which spm-vim
-	swift build --build-tests \
-                -Xswiftc -parseable-output | tee .build/commands_build.log
-	cat .build/commands_build.log | spm-vim compile_commands
-
 
 build-debug: BAZELFLAGS = --announce_rc \
 	--disk_cache=$(HOME)/Library/Caches/Bazel
