@@ -38,7 +38,11 @@ def _xcode_project_impl(ctx):
     for dep in ctx.attr.targets:
         if XcodeConfigurationAspectInfo in dep:
             for info in dep[XcodeConfigurationAspectInfo].values:
-                aggregate_target_config[info] = dep[XcodeConfigurationAspectInfo].values[info]
+                # For some targets, this is set on the apple binary target.
+                # Move this to the target level, so that XCHammer can easily
+                # read it
+                key = info.replace(".__internal__.apple_binary", "")
+                aggregate_target_config[key] = dep[XcodeConfigurationAspectInfo].values[info]
 
     xchammerconfig_json = ctx.actions.declare_file(ctx.attr.name + "_xchammer_config.json")
     target_config_attr = ctx.attr.target_config if ctx.attr.target_config else None
