@@ -21,7 +21,7 @@ new_pod_repository(
 
 new_pod_repository(
   name = "Stripe",
-  url = "https://github.com/stripe/stripe-ios/archive/v12.1.2.zip",
+  url = "https://github.com/stripe/stripe-ios/archive/v14.0.1.zip",
   owner = "@ios-action",
   inhibit_warnings = True,
 
