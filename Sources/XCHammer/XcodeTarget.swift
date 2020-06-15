@@ -620,6 +620,7 @@ public class XcodeTarget: Hashable, Equatable {
                 if xcodeTarget.genOptions.workspaceEnabled
                         || xcodeTarget.type == "apple_static_framework_import"
                         || xcodeTarget.type == "apple_dynamic_framework_import"
+                        || xcodeTarget.type == "ios_framework"
                         || xcodeTarget.type == "objc_import" {
                     // Dep's aren't really frameworks.
                     // The idea here is to drop these deps in "Link With Libs"
