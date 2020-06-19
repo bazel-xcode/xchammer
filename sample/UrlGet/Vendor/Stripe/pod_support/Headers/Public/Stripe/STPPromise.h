@@ -1,1 +1,0 @@
-../../../../Stripe/STPPromise.h

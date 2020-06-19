@@ -1,1 +1,0 @@
-../../../../Stripe/STPImageLibrary+Private.h

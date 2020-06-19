@@ -39,7 +39,3 @@ targetConfig:
                       value: "$SRCROOT"
                       enabled: true
 
-    "//Vendor/Stripe:Stripe":
-        xcconfigOverrides:
-            Release: "Vendor/Analyzer.xcconfig"
-            Debug: "Vendor/Analyzer.xcconfig"
