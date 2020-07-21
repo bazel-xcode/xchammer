@@ -1,1 +1,0 @@
-../../../../Stripe/PublicHeaders/STPSourceRedirect.h

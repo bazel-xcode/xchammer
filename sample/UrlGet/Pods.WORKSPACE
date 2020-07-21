@@ -20,16 +20,6 @@ new_pod_repository(
 )
 
 new_pod_repository(
-  name = "Stripe",
-  url = "https://github.com/stripe/stripe-ios/archive/v12.1.2.zip",
-  owner = "@ios-action",
-  inhibit_warnings = True,
-
-  # Duplicate interface definition issue
-  generate_module_map = False,
-)
-
-new_pod_repository(
     name = "GoogleAuthUtilities",
     url = "https://dl.google.com/dl/cpdc/815501e47d1a2496/GoogleAuthUtilities-2.0.2.tar.gz",
     podspec_url = "Vendor/PodSpecs/GoogleAuthUtilities-2.0.2/GoogleAuthUtilities.podspec.json",

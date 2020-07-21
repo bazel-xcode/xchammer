@@ -1,1 +1,0 @@
-../../../../Stripe/UIBarButtonItem+Stripe.h

@@ -216,7 +216,6 @@ objc_library(
         "//Vendor/GoogleAuthUtilities",
         "//Vendor/PINCache",
         "//Vendor/PINOperation",
-        "//Vendor/Stripe",
         "//ios-app/HeaderLib",
     ],
 )
