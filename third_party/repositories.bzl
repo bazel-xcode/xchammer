@@ -284,7 +284,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeGen",
         remote = "https://github.com/yonaskolb/XcodeGen.git",
-        commit = "1942ba36c0c603df723f8fe40bece07fcf981ba3",
+        commit = "1e3f93a8593dae08c3db6ee8cecc0bf3b83cc9f2",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeGenKit",
@@ -320,7 +320,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "XcodeProj",
         remote = "https://github.com/tuist/xcodeproj.git",
-        commit = "0f563e2d7d604499e7b57a28c78ff23d5c545acd",
+        commit = "912d40cc2ea4a300eff6dd7c6a10b4f4dedbcbec",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "XcodeProj",
@@ -329,6 +329,9 @@ def xchammer_dependencies():
                     "@AEXML//:AEXML",
                     "@PathKit//:PathKit",
                     "@SwiftShell//:SwiftShell",
+                    "@XcodeProjCExt//:XcodeProjCExt",
+                    "@Version//:Version",
+                    "@GraphViz//:DOT",
                 ],
                 copts = [
                     "-swift-version",
@@ -336,6 +339,75 @@ def xchammer_dependencies():
                 ],
             ),
         ]),
+    )
+
+    namespaced_new_git_repository(
+        name = "GraphViz",
+        remote = "https://github.com/SwiftDocOrg/GraphViz.git",
+        commit = "6a89c4a011c3d60603bda4e17b1f14838eb26917",
+        build_file_content = namespaced_build_file([
+            namespaced_swift_library(
+                name = "DOT",
+                srcs = ["Sources/DOT/**/*.swift"],
+                deps = [ ":GraphViz" ],
+                copts = [
+                    "-swift-version",
+                    "5"
+                ],
+            ),
+            namespaced_swift_library(
+                name = "GraphVizBuilder",
+                srcs = ["Sources/GraphVizBuilder/**/*.swift"],
+                deps = [ ":GraphViz" ],
+                copts = [
+                    "-swift-version",
+                    "5"
+                ],
+            ),
+            namespaced_swift_library(
+                name = "GraphViz",
+                srcs = [ "Sources/GraphViz/**/*.swift" ],
+                deps = [ ],
+                copts = [
+                    "-swift-version",
+                    "5"
+                ],
+            ),
+        ]),
+    )
+
+    namespaced_new_git_repository(
+        name = "Version",
+        remote = "https://github.com/mxcl/Version.git",
+        commit = "a94b48f36763c05629fc102837398505032dead9",
+        build_file_content = namespaced_build_file([
+            namespaced_swift_library(
+                name = "Version",
+                srcs = ["Sources/**/*.swift"],
+                deps = [ ],
+                copts = [
+                    "-swift-version",
+                    "5"
+                ],
+            ),
+        ]),
+    )
+
+    namespaced_new_git_repository(
+        name = "XcodeProjCExt",
+        remote = "https://github.com/tuist/XcodeProjCExt.git",
+        commit = "21a510c225ff2bc83d5920a21d902af4b1e7e218",
+        build_file_content = """
+package(default_visibility = ["//visibility:public"])
+
+objc_library(
+    name = "XcodeProjCExt",
+    module_name = "XcodeProjCExt",
+    srcs = glob(["Sources/**/*.c"]),
+    hdrs = glob(["Sources/**/*.h"]),
+    includes = ["Sources/XcodeProjCExt/include"],
+)
+        """
     )
 
     namespaced_new_git_repository(
