@@ -59,7 +59,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_pods",
-    urls = ["https://github.com/pinterest/PodToBUILD/releases/download/0.25.2-fa7a088/PodToBUILD.zip"],
+    urls = ["https://github.com/pinterest/PodToBUILD/releases/download/0.25.2-d76cb615/PodToBUILD.zip"],
 )
 
 # XCHammer resources
