@@ -9,7 +9,7 @@ load(
 
 def _entitlements_writer_impl(ctx):
     entitlement_info = ctx.attr.entitlements[AppleEntitlementsInfo]
-    out = ctx.new_file(ctx.attr.name + ".entitlements")
+    out = ctx.actions.declare_file(ctx.attr.name + ".entitlements")
     if not entitlement_info or not entitlement_info.final_entitlements:
         # Create some dummy entitlements
         cmd = " ".join([
@@ -17,7 +17,8 @@ def _entitlements_writer_impl(ctx):
             out.path,
             "\n",
         ])
-        ctx.action(
+
+        ctx.actions.run_shell(
             command = cmd,
             mnemonic = "EntitlementsWriter",
             inputs = [],
@@ -36,7 +37,7 @@ def _entitlements_writer_impl(ctx):
         "\n",
     ])
 
-    ctx.action(
+    ctx.actions.run_shell(
         command = cmd,
         mnemonic = "EntitlementsWriter",
         inputs = [entitlements_file],
