@@ -84,10 +84,14 @@ def _extract_generated_sources(target, ctx):
     if ctx.rule.kind == "entitlements_writer":
         files.append(target.files)
 
+    include_swift_outputs = ctx.attr.include_swift_outputs == "true" 
+
     if SwiftInfo in target:
         module_info = target[SwiftInfo]
         if hasattr(module_info, "transitive_modulemaps"):
             files.append(module_info.transitive_modulemaps)
+        if include_swift_outputs and hasattr(module_info, "transitive_swiftmodules"):
+            files.append(module_info.transitive_swiftmodules)
 
     if hasattr(target, "objc"):
         objc = target.objc
@@ -101,23 +105,7 @@ def _extract_generated_sources(target, ctx):
 get_srcroot = "\"$(cat ../../DO_NOT_BUILD_HERE)/\""
 non_hermetic_execution_requirements = { "no-cache": "1", "no-remote": "1", "local": "1", "no-sandbox": "1" }
 
-def _xcode_build_sources_aspect_impl(itarget, ctx):
-    """ Install Xcode project dependencies into the source root.
-    This is required as by default, Bazel only installs genfiles for those
-    genfiles which are passed to the Bazel command line.
-    """
-
-    infos = []
-    infos.extend(_extract_generated_sources(itarget, ctx))
-    if hasattr(ctx.rule.attr, "deps"):
-        for target in ctx.rule.attr.deps:
-            if XcodeBuildSourceInfo in target:
-                trans = _extract_generated_sources(target, ctx)
-                infos.extend(trans)
-
-
-    # This uses an external program because bazel action code doesn't like to
-    # be non-hermetic
+def _install_action(ctx, infos, itarget):
     inputs = []
     cmd = []
     cmd.append("SRCROOT=" + get_srcroot)
@@ -137,6 +125,7 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
             )
             cmd.append("mkdir -p \"$target_dir\"")
             cmd.append("ditto " + info.path + " \"$target_dir\"")
+
     output = ctx.actions.declare_file(itarget.label.name + "_outputs.dummy")
     cmd.append("touch " + output.path)
     ctx.actions.run_shell(
@@ -146,14 +135,39 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
         outputs=[output],
         execution_requirements = non_hermetic_execution_requirements
     )
+    return output
+
+def _xcode_build_sources_aspect_impl(itarget, ctx):
+    """ Install Xcode project dependencies into the source root.
+    This is required as by default, Bazel only installs genfiles for those
+    genfiles which are passed to the Bazel command line.
+    """
+
+    infos = []
+    infos.extend(_extract_generated_sources(itarget, ctx))
+    if hasattr(ctx.rule.attr, "deps"):
+        for target in ctx.rule.attr.deps:
+            if XcodeBuildSourceInfo in target:
+                trans = _extract_generated_sources(target, ctx)
+                infos.extend(trans)
+
 
     return [
-        OutputGroupInfo(xcode_project_deps=infos + [output]),
+        OutputGroupInfo(
+            xcode_project_deps=[_install_action(ctx, infos, itarget)],
+        ),
         XcodeBuildSourceInfo(values=infos)
     ]
 
+# Note, that for "pure" Xcode builds we build swiftmodules with Xcode, so we
+# don't need to pre-compile them with Bazel
+pure_xcode_build_sources_aspect = aspect(
+    implementation=_xcode_build_sources_aspect_impl, attr_aspects=["*"],
+    attrs = { "include_swift_outputs": attr.string(values=["false","true"], default="false") }
+)
 
 xcode_build_sources_aspect = aspect(
-    implementation=_xcode_build_sources_aspect_impl, attr_aspects=["*"]
+    implementation=_xcode_build_sources_aspect_impl, attr_aspects=["*"],
+    attrs = { "include_swift_outputs": attr.string(values=["false", "true"], default="true") }
 )
 

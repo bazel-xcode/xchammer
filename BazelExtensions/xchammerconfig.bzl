@@ -2,7 +2,7 @@
 
 
 def _gen_dsl_impl(ctx):
-    ctx.file_action(
+    ctx.actions.write(
         content = ctx.attr.ast,
         output = ctx.outputs.xchammerconfig,
     )

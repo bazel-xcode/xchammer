@@ -129,11 +129,9 @@ struct Setting<T: XCSettingStringEncodeable & Semigroup>: Semigroup {
     }
 }
 
-
-
-
 struct XCBuildSettings: Encodable {
     var cc: First<String>?
+    var swiftc: First<String>?
     var ld: First<String>?
     var copts: [String] = []
     var productName: First<String>?
@@ -181,7 +179,9 @@ struct XCBuildSettings: Encodable {
     enum CodingKeys: String, CodingKey {
         // Add to this list the known XCConfig keys
         case cc = "CC"
+        case swiftc = "SWIFT_EXEC"
         case ld = "LD"
+        case libtool = "LIBTOOL"
         case copts = "OTHER_CFLAGS"
         case productName = "PRODUCT_NAME"
         case moduleName = "PRODUCT_MODULE_NAME"
@@ -237,7 +237,9 @@ struct XCBuildSettings: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try cc.map { try container.encode($0.v, forKey: .cc) }
+        try swiftc.map { try container.encode($0.v, forKey: .swiftc) }
         try ld.map { try container.encode($0.v, forKey: .ld) }
+        try ld.map { try container.encode($0.v, forKey: .libtool) }
         try container.encode(copts.joined(separator: " "), forKey: .copts)
         try container.encode(swiftCopts.joined(separator: " "), forKey: .swiftCopts)
 
@@ -295,6 +297,7 @@ extension XCBuildSettings: Monoid {
     static func<>(lhs: XCBuildSettings, rhs: XCBuildSettings) -> XCBuildSettings {
         return XCBuildSettings(
             cc: lhs.cc <> rhs.cc,
+            swiftc: lhs.swiftc <> rhs.swiftc,
             ld: lhs.ld <> rhs.ld,
             copts: lhs.copts <> rhs.copts,
             productName: lhs.productName <> rhs.productName,
