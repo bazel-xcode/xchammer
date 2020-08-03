@@ -54,6 +54,7 @@ swift_c_module(
   name = "{name}",
   deps = [":{name}Lib"],
   module_map = "{module_map}",
+  module_name = "{name}",
 )
 """.format(**dict(
         name = name,
@@ -260,7 +261,7 @@ def xchammer_dependencies():
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/tulsi.git",
-        commit = "15fbbf9fca15fad4623e9cae047a88623c75a512",
+        commit = "e910a978e5381106186653462b9d649a35a997e0",
         patch_cmds = [
             """
          sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD

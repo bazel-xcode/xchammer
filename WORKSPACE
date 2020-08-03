@@ -4,7 +4,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 git_repository(
     name = "build_bazel_rules_apple",
     remote = "https://github.com/bazelbuild/rules_apple.git",
-    tag = "0.18.0",
+    commit = "1cdaf74e44c4c969d7ee739b3a0f11b993c49d2a",
 )
 
 load(
@@ -15,7 +15,7 @@ load(
 git_repository(
     name = "build_bazel_rules_swift",
     remote = "https://github.com/bazelbuild/rules_swift.git",
-    commit = "0192f16b82b2998d846c45187545e38548a6671a",
+    commit = "d07d880dcf939e0ad98df4dd723f8516bf8a2867",
 )
 
 load(
@@ -26,8 +26,6 @@ load(
 swift_rules_dependencies()
 
 apple_rules_dependencies()
-
-
 
 load(
     "@com_google_protobuf//:protobuf_deps.bzl",
