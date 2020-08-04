@@ -75,6 +75,7 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
     guard let buildFilePath = xcodeTarget.buildFilePath else {
         return false
     }
+
     guard pathPredicate(buildFilePath) else {
         return false
     }
@@ -115,8 +116,9 @@ let XCHammerIncludes = "xchammer-includes/x/x/"
 // TODO: remove this when it works in every case in Bazel and is no longer used
 func subBazelMakeVariables(_ str: String, useSRCRoot: Bool = false) -> String {
     let sub = useSRCRoot ? XCHammerIncludesSRCRoot : XCHammerIncludes
-    return str.replacingOccurrences(of: "__BAZEL_GEN_DIR__", with:
+    let output = str.replacingOccurrences(of: "__BAZEL_GEN_DIR__", with:
         sub).replacingOccurrences(of: "$(GENDIR)", with: sub)
+    return subTulsiIncludes(output, useSRCRoot: useSRCRoot)
 }
 
 /// Tulsi injects this into strings in a few places
@@ -689,16 +691,11 @@ public class XcodeTarget: Hashable, Equatable {
                         let (idx, opt) = itr
                         if opt == "-I." {
                              accum.append(opt)
-                        } else if opt.hasPrefix("-I") {
-                            let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
-                            let path = opt[substringRangeStart...]
-                            let processedOpt =  "-I$(SRCROOT)/\(path)"
-                            accum.append(subBazelMakeVariables(processedOpt, useSRCRoot: false))
                         } else if opt == "-index-store-path" || (idx > 0 &&
                             coptsArray[idx - 1] == "-index-store-path") {
                             return
-                        } else {
-                            accum.append(subBazelMakeVariables(opt))
+                        } else if !opt.isEmpty {
+                            accum.append(subBazelMakeVariables(opt, useSRCRoot: true))
                         }
                     }
                     settings.copts <>= processedOpts
@@ -750,17 +747,18 @@ public class XcodeTarget: Hashable, Equatable {
                 break // Logic handled in extractSwiftVersion function since there is a logical order of determining SWIFT_VERSION
             case .swiftc_opts:
                 if let coptsArray = value as? [String] {
-                    let processedOpts = coptsArray.map { opt -> String in
-                        if opt.hasPrefix("-I") && opt != "-I." {
-                            let substringRangeStart = opt.index(opt.startIndex, offsetBy: 2)
-                            let path = opt[substringRangeStart...]
-                            let processedOpt =  "-I$(SRCROOT)/\(path)"
-                            return processedOpt
-                        } else {
-                            return opt
+                    let processedOpts = coptsArray.enumerated().reduce(into: [String]()) {
+                        accum, itr in
+                        let (idx, opt) = itr
+                        if opt == "-I." {
+                             accum.append(opt)
+                        }  else if opt == "-index-store-path" || (idx > 0 &&
+                            coptsArray[idx - 1] == "-index-store-path") {
+                            return
+                        } else if !opt.isEmpty {
+                            accum.append(subBazelMakeVariables(opt, useSRCRoot: true))
                         }
                     }
-
                     settings.swiftCopts <>= processedOpts
                 }
             default:
@@ -779,11 +777,13 @@ public class XcodeTarget: Hashable, Equatable {
         }
 
         // Set the module name - this is needed for some use cases
-        // consider passing this as a compiler flagoption directly
         if let definedModuleName =  self.ruleEntry.moduleName {
             settings.moduleName = First(definedModuleName)
         } else {
-            settings.moduleName = First(xcTargetName)
+            // Note: this needs to conform to the clang module spec. Assume that
+            // a Bazel label would excpet for -
+            let possiblyValidName = xcTargetName.replacingOccurrences(of: "-", with: "_")
+            settings.moduleName = First(possiblyValidName)
         }
 
         // Product Bundle Identifier
@@ -797,8 +797,10 @@ public class XcodeTarget: Hashable, Equatable {
                 .foldMap { (path: String, isRecursive: Bool) in
                 if isRecursive {
                     return ["$(SRCROOT)/\(path)/**"]
-                } else {
+                } else if path != "." {
                     return ["$(SRCROOT)/\(subTulsiIncludes(path, useSRCRoot: false))"]
+                } else {
+                    return []
                 }
             }
         }
@@ -806,37 +808,36 @@ public class XcodeTarget: Hashable, Equatable {
         settings.headerSearchPaths <>=
                 OrderedArray(["$(SRCROOT)/external/"])
 
+        // Add copts for module maps
+        settings.copts <>= self.ruleEntry.objCModuleMaps.map {
+            "-fmodule-map-file=" + subBazelMakeVariables(getRelativePath(for: $0,
+                useTulsiPath: true))
+        }
+
+        // Patch on inclusion of swift modules
         let transTargets = self.transitiveTargets(map: targetMap)
-             .sorted(by: { $0.label < $1.label })
-
-        let allCopts = ([self] + transTargets).reduce(into: [String]()) {
-            accum, xcodeTarget in
-            // We may need to specify to the ClangImporter as well
-            let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
-                "-iquote " + getRelativePath(for: $0,  useTulsiPath: true)
+            .sorted(by: { $0.label < $1.label })
+        let swiftModuleIncs: [String] = transTargets.compactMap {
+            xcodeTarget in
+            guard xcodeTarget.ruleEntry.moduleName != nil,
+                xcodeTarget.type == "swift_library",
+                let buildFilePath = xcodeTarget.buildFilePath else {
+                return nil
             }
-            accum.append(contentsOf: maps)
+
+            let parts = buildFilePath.components(separatedBy: "/").dropLast()
+            let xchammerIncludeDir  = XCHammerIncludes +  parts.joined(separator: "/")
+            return "-I " + xchammerIncludeDir
         }
-        settings.copts <>= allCopts
-
-        let allSwiftCopts = ([self] + transTargets).reduce(into: [String]()) {
-            accum, xcodeTarget in
-            if let hmap = xcodeTarget.extractHeaderMap() {
-                accum.append("-Xcc -iquote -Xcc " + hmap)
-            }
-            let maps = xcodeTarget.ruleEntry.objCModuleMaps.map {
-                "-Xcc -fmodule-map-file=" + getRelativePath(for: $0, useTulsiPath: true)
-            }
-            accum.append(contentsOf: maps)
-            if xcodeTarget.ruleEntry.type == "swift_c_module" {
-                let maps = xcodeTarget.ruleEntry.artifacts.map {
-                    "-Xcc -fmodule-map-file=" + getRelativePath(for: $0, useTulsiPath: true)
-                }
-                accum.append(contentsOf: maps)
-            }
+        settings.swiftCopts <>= swiftModuleIncs
+        settings.swiftCopts <>= self.ruleEntry.objCModuleMaps.map {
+            "-Xcc -fmodule-map-file=" + subBazelMakeVariables(getRelativePath(for: $0,
+                useTulsiPath: true))
         }
 
-        settings.swiftCopts <>= allSwiftCopts
+        if let headerMap =  self.extractHeaderMap() {
+            settings.swiftCopts <>= ["-Xcc -iquote -Xcc " + headerMap]
+        }
 
         // Delegate warnings and error compiler options for targets that have a
         // xcconfig.
@@ -1336,9 +1337,12 @@ public class XcodeTarget: Hashable, Equatable {
 
         settings.cc = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_clang_stub.sh")
         settings.ld = First("$(PROJECT_FILE_PATH)/XCHammerAssets/xcode_ld_stub.sh")
+        settings.swiftc = First("$(PROJECT_FILE_PATH)/XCHammerAssets/swiftc_stub.py")
+
         settings.debugInformationFormat = First("dwarf")
         settings.headerSearchPaths = xcodeBuildableTargetSettings.headerSearchPaths
         settings.copts = xcodeBuildableTargetSettings.copts
+        settings.swiftCopts = xcodeBuildableTargetSettings.swiftCopts
 
         settings.isBazel = First("YES")
         settings.onlyActiveArch = First("YES")

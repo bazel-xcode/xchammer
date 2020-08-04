@@ -1,12 +1,11 @@
 #!/bin/bash
 
-set -ex
+set -e
 # Make sure we're in the project root directory.
 SCRIPTPATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
 pushd "$SCRIPTPATH/.." > /dev/null
 
 
-set -x
 BAZEL="${SCRIPTPATH}/bazel"
 
 function clean() {

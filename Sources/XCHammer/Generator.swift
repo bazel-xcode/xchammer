@@ -72,7 +72,7 @@ enum Generator {
         // Build xcode_project_deps for the targets in question
         let bazelArgs = [
             "--override_repository=xchammer_resources=" + xchammerResources,
-            "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
+            "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%pure_xcode_build_sources_aspect",
             "--output_groups=xcode_project_deps"
         ] + labels.map { $0.value }
 

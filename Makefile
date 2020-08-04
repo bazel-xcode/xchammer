@@ -13,7 +13,7 @@ PREFIX := /usr/local
 workspace: build
 	@tools/bazelwrapper build :xchammer_config
 	$(XCHAMMER_BIN) generate \
-		bazel-genfiles/xchammer_config/XCHammer.json \
+		bazel-bin/xchammer_config/XCHammer.json \
 	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
 	    --force
 
@@ -179,7 +179,7 @@ bazelrc_home:
 	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
 
-ci: bazelrc_home test run_perf_ci run_swift run_force_bazel goldmaster
+ci: bazelrc_home test run_perf_ci run_swift run_force_bazel goldmaster workspace
 
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
