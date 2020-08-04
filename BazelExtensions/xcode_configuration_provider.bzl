@@ -84,9 +84,8 @@ def _extract_generated_sources(target, ctx):
     if ctx.rule.kind == "entitlements_writer":
         files.append(target.files)
 
-    include_swift_outputs = ctx.attr.include_swift_outputs == "true" 
-
     if SwiftInfo in target:
+        include_swift_outputs = ctx.attr.include_swift_outputs == "true"
         module_info = target[SwiftInfo]
         if hasattr(module_info, "transitive_modulemaps"):
             files.append(module_info.transitive_modulemaps)

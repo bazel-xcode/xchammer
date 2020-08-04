@@ -45,6 +45,8 @@ def _touch_swiftmodule_files(args):
     _touch(swiftmodule_path)
     _touch(swiftdoc_path)
     _touch(swiftsourceinfo_path)
+    header_path = swiftmodule_path.replace((".swiftmodule"), "-Swift.h")
+    _touch(header_path)
 
 
 def _touch(path):
@@ -53,7 +55,6 @@ def _touch(path):
 
 
 def _replace_ext(path, extension):
-
     # type: (str, str) -> str
     name, _ = os.path.splitext(path)
     return ".".join((name, extension))
