@@ -1,11 +1,12 @@
 # Bazel for iOS Developers
 
 This document is an introduction to Bazel for iOS developers. There's been many
-docs written about Bazel and this document is geared more towards an iOS
+docs written about Bazel and this document is geared towards an iOS
 application developer coming from Xcode and aims to be a lightweight but
 complete introduction and map familiar concepts.
 
 The document supplements canonical resources:
+- [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
 - [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html)
 - [Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
 - [Getting started](https://docs.bazel.build/versions/master/getting-started.html)
@@ -230,4 +231,22 @@ occurred and `BUILD` file that created the error in a call stack like fashion.
 
 To actually fix this error, simply remove the unsupported argument `copts`.
 
+### Building Apple dependencies
 
+`PodToBUILD` provides a WORKSPACE rule to make it easy to build CocoaPods with
+Bazel. It loads in sources, and by reading in a Podspec file, it can generate a
+BUILD file. Find out more information about [PodToBUILD on
+github](https://github.com/pinterest/PodToBUILD). 
+
+
+## More information
+
+This concludes the introduction. The Bazel documentation
+contains in depth tutorials, knowledge, and documentation.
+
+- [Rules](https://docs.bazel.build/versions/master/rules.html)
+- [Encyclopedia](https://docs.bazel.build/versions/master/be/overview.html)
+- [Starlark](https://docs.bazel.build/versions/master/skylark/language.html)
+
+If there's additional bullet points useful for iOS developer onboarding, please
+send a pull request. 
