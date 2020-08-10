@@ -5,12 +5,11 @@ docs written about Bazel online. This document is geared towards an iOS
 application developer coming from Xcode and intends to be a lightweight
 introduction and map familiar concepts.
 
-The document supplements canonical resources:
+The document supplements canonical Bazel resources:
 - [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
-- [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html)
-- [Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
-- [Getting started](https://docs.bazel.build/versions/master/getting-started.html)
-
+- [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html) 
+- [Bazel Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
+- [Getting started with Bazel](https://docs.bazel.build/versions/master/getting-started.html) 
 
 ## Build systems for iOS developers
 
@@ -138,14 +137,21 @@ In the previous segment, we created an iOS application with a single BUILD
 file. The `ios_application` rule is implemented by `rules_apple` and the
 `objc_library` is a native rule.
 
-An target is an instance of a rule. Rules implement business logic for how the
-iOS application is built by creating actions. Typical projects contains many
-rules, targets, and BUILD files.
+A target is an instance of a rule. Rules implement business logic for how the
+iOS application is built by creating actions. actions represent invocations of
+extenal command line programs like `clang` or `bash`. Typical projects contain
+many rules, targets, and BUILD files.
 
 ```
 BUILD file -> target -> rule -> action -> execution
 ```
 
+Bazel and open source rules should provide most functionality to build an iOS
+application. Generally, defining custom rules isn't required but can improve
+and consolidate functionality. To learn more about how to create custom rules,
+the document, [Bazel extensions](https://docs.bazel.build/versions/master/skylark/concepts.html)
+contains a comprehensive overview.
+	
 ### Command line usage
 
 In Xcode, command line builds are achieved through the command line interface
