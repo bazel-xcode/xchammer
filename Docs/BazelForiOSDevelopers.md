@@ -121,17 +121,16 @@ ios_application(
 After fulfilling requirements, e.g. creating `main.m` and the `Info.plist`, the
 application can build. 
 
-### Xcode projects
+### Generated Xcode projects
 
-This segment describes how to build an Xcode project with XCHammer
-
-Generally in an Xcode world, folks have checked in a project when can lead to
-merge conflicts and be difficult to audit and manage configuration when the
-team and project grows. When using Bazel, generally Bazel is the source of
-truth for Xcode configuration. Tools like [XCHammer](), and [Tulsi]() use an
-aspect to traverse the build graph and extract metata required to generate a
-project. These tools make it easier to manage the project and generate on
-demand - not needing to check it in.
+Generally in an Xcode world, folks checked in a project which contains an index
+of both files, build settings, and IDE state. This can lead to merge conflicts
+and complexity when the project scales. Auditing and code reviewing config
+changes in Xcode projects quickly become difficult. With Bazel, Bazel is the
+source of truth for Xcode configuration. Tools like [XCHammer](), and [Tulsi]()
+use an aspect to traverse the build graph and extract metadata required to
+generate a project.  These tools make it easier to manage the project and
+generate on demand - not needing to check it in.
 
 XCHammer provides a rule to [bazel build Xcode
 projects](ihttps://github.com/pinterest/xchammer#bazel-build-xcode-projects).
@@ -145,15 +144,30 @@ xcode_project(
 )
 ```
 
+Like any other Bazel target, it's build from the command line
+```
+bazel build :MyProject
+```
+
 The rule definition for the `xcode_project` may be found in the [github
 repository](https://github.com/pinterest/xchammer/blob/master/BazelExtensions/xcodeproject.bzl).
-Simply put, the aspect traverses sources, and invokes the `xchammer` binary
-with a JSON file. Internally, XCHammer instantiates
-[`XcodeGen`](https://github.com/yonaskolb/XcodeGen) types and writes them out
-to disk with `xcodeproj`.
+Simply put, the aspect traverses sources, and invokes the `xchammer` binary with
+a JSON file. Internally, XCHammer instantiates
+[`XcodeGen`](https://github.com/yonaskolb/XcodeGen) types and writes them out to
+disk with `xcodeproj`.
 
+The workflow for generating an Xcode project with XCHammer is quite simple:
+```
+command line -> bazel -> rule -> xchammer -> xcodegen -> xcodeproj
+```
 
-## Practical Bazel usage
+Generators like XCHammer and Tulsi take care of integrating Bazel into the IDE.
+Bazel builds are invoked a shell script build phase from the IDE. Basically,
+Xcode shells out to Bazel to produce the application, and then Xcode picks up
+the product from the derived data path. Performing a Bazel build from Xcode.
+```
+play button -> shell script build phase -> bazel build ios-app
+```
 
 ### Command line usage
 
@@ -171,7 +185,7 @@ is in the global WORKSPACE and there is no notion of schemes.
 bazel build ios-app
 ```
 
-The Bazel command line has hundreds of possibilites, which can be found in the
+The Bazel command line has hundreds of options, which can be found in the
 [Bazel
 documentation](https://docs.bazel.build/versions/master/command-line-reference.html).
 For iOS developers, a set of useful flags is available at
@@ -204,6 +218,9 @@ This is passed in as a define to Bazel
 bazel build ios-app --define app_store=true
 ```
 
+For more information about `config_setting`, please see the [Bazel
+documentation](https://docs.bazel.build/versions/master/be/common-definitions.html#configurable-attributes).
+
 ### Basic configuration of libraries and flags
 
 ## _objc_library_ configuration via macros
@@ -212,8 +229,9 @@ The `objc_library` API provides many arguments for configuration, after all, the
 `objc_library` it's self is a configuration.  The documentation resides here
 https://docs.bazel.build/versions/master/be/objective-c.html
 
-_Note: Unlike skylark easily added on to Bazel, the `objc_library` is part of
-the internal java rules shipped with the Bazel binary._ Most users of Bazel
+_Note: Unlike Starlark rules which are easily added on to Bazel, the
+`objc_library` is part of the internal java rules shipped with the Bazel
+binary._ Most users of Bazel
 implement a higher level system of macros to encapsulate defaults of building
 librarys and simplify configuration management.
 
