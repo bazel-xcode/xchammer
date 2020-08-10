@@ -1,9 +1,10 @@
 # Bazel for iOS Developers
 
-This document is an introduction to Bazel for iOS developers. There's been many
-docs written about Bazel online. This document is geared towards an iOS
-application developer coming from Xcode and intends to be a lightweight
-introduction and map familiar concepts.
+This document is an introduction to Bazel for iOS developers. While there's
+been many docs written about Bazel, the existing material can be overwhelming
+for a line engineer looking to get started. This document is geared towards an
+iOS developer coming from Xcode and intends to be a lightweight introduction to
+Bazel.
 
 The document supplements canonical Bazel resources:
 - [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
@@ -35,13 +36,14 @@ developer experience.
 
 Compared to other mainstream build systems, Bazel is strict about inputs and
 outputs. This characteristic makes it reproducible and well suited for
-distributed cloud builds and caching. In 2018, Microsoft came out with a paper
-that compares popular build systems, [Build Systems à la
-Carte](https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf).
+distributed cloud builds and caching. _To learn about how Bazel compares to
+other build systems, Microsoft's paper [Build Systems à la
+Carte](https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf),
+compares popular build systems._
 
 ## Introduction to Bazel projects
 
-The root of a Bazel project contains 2 key human readable files
+The root of a Bazel project contains two human readable files:
 
 The `BUILD` file - these files define what targets are inside of a project.
 Applications, extensions, static libraries, and frameworks are all declared in
