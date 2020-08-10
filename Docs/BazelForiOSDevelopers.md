@@ -39,7 +39,7 @@ compares all the build systems
 https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf
 
 
-# Project files
+## Introduction to Bazel projects
 
 In the root of Bazel project, there's going to be 2 files atleast
 
@@ -89,15 +89,16 @@ given `commit`.
 
 _`git_repository` documentation https://docs.bazel.build/versions/2.0.0/repo/git.html_
 
-## BUILD file configuration
+### BUILD files
 
 The `BUILD` file is where all the rules are declared. Rules implement business
 logic for how the iOS application is built by creating actions. An instance of
 a rule is a `target`. A target has a few abilities in Bazel.
 
-First create a library for an iOS application. The following code defines an
-`objc_library`, `sources`. In Xcode this is similar to navigating in the GUI and
-hitting `File -> New Target` 
+Let's walk through creating a basic iOS application. First, a library for the
+iOS application sources. The following code defines an `objc_library`,
+`sources`. In Xcode this is similar to navigating in the GUI and hitting `File
+-> New Target` 
 
 ```
 objc_library(
@@ -106,7 +107,7 @@ objc_library(
 )
 ```
 
-Next, create the app 
+Next, the application target
 ```
 ios_application(
     name = "ios-app",
@@ -118,8 +119,7 @@ ios_application(
 )
 ```
 
-After fulfilling requirements, e.g. creating `main.m` and the `Info.plist`, the
-application can build. 
+![Docs](XcodeExampleOfiOSProject.png)
 
 ### Generated Xcode projects
 
@@ -223,8 +223,6 @@ documentation](https://docs.bazel.build/versions/master/be/common-definitions.ht
 
 ### Basic configuration of libraries and flags
 
-## _objc_library_ configuration via macros
-
 The `objc_library` API provides many arguments for configuration, after all, the
 `objc_library` it's self is a configuration.  The documentation resides here
 https://docs.bazel.build/versions/master/be/objective-c.html
@@ -306,7 +304,7 @@ occurred and `BUILD` file that created the error in a call stack like fashion.
 
 To actually fix this error, simply remove the unsupported argument `copts`.
 
-### Building Apple dependencies
+### Building CocoaPods with Bazel
 
 `PodToBUILD` provides a WORKSPACE rule to make it easy to build CocoaPods with
 Bazel. It loads in sources, and by reading in a Podspec file, it can generate a
