@@ -246,7 +246,8 @@ By loading our `objc_library` into a `BUILD` file, it will override the native
 ```
 load(":objc_library.bzl", "objc_library")
 
-# This calls the custom objc_library, and will error out on `copts`
+# This calls the custom objc_library macro. Thankfully, building this with
+# Bazel will error out due to the unavailable argument `copts` used here.
 objc_library(name="some", copts=["-DSOME"])
 ```
 
@@ -266,9 +267,9 @@ primitive, the toolchain. Toolchains provide default compilers and arguments
 for those compilers. For the native c++ rules, this is relied upon to configure
 the many flags required for cross compilation.
 
-For most iOS projects, updating isn't generally required but it gives full
-control over compiler invocations, and replacing the compiler being invoked.
-Please see the [toolchain
+For most iOS projects, configuring the c++ toolchain isn't required. Defining a
+custom toolchain is useful to gives full control over compiler invocations or
+to customize the compiler being invoked.  Please see the [toolchain
 documentation](https://docs.bazel.build/versions/master/tutorial/cc-toolchain-config.html)
 to learn more.
 
