@@ -200,8 +200,7 @@ documentation](https://docs.bazel.build/versions/master/be/common-definitions.ht
 
 ### Basic configuration of libraries and flags
 
-The [`objc_library`](The documentation resides here
-https://docs.bazel.build/versions/master/be/objective-c.html) rule provides
+The [`objc_library`](The documentation resides here https://docs.bazel.build/versions/master/be/objective-c.html) rule provides
 several arguments, used for configuration.
 
 _Note: Unlike Starlark rules which are easily added on to Bazel, the
