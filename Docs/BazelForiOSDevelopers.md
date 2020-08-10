@@ -3,7 +3,7 @@
 This document is an introduction to Bazel for iOS developers. There's been many
 docs written about Bazel online. This document is geared towards an iOS
 application developer coming from Xcode and intends to be a lightweight
-introduction and map familiar iOS developer concepts.
+introduction and map familiar concepts.
 
 The document supplements canonical resources:
 - [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
@@ -21,39 +21,40 @@ from source code(eg. .apk for android app). Building incorporates
 compiling,linking and packaging the code into a usable or executable form._
 
 In iOS development, Apple encapsulates build systems inside of Xcode. Xcode is
-the IDE _and build system_. For many developers, Xcode just works. To have a
-good experience, most developers don't need to worry about the implementation
-of C++, Swift, Objective-C, compilers, or how those compilers are invoked
+both the IDE _and build system_. For many developers, Xcode just works. To have
+a good experience, most developers don't need to worry about implementing build
+systems, IDEs, or compilers. When the project scales, developer experience
+drops off. Tasks like building, indexing, or merging a change that adds a new
+file can become painful. 
 
-When the build size grows, developer experience drops off. Having the ability
-to optimizing the build system can significantly improve the developer
-experience. Tasks like indexing, or making a change that adds or removes a file
-due to a manually managed project can get out of hand. Bazel makes it easy to
-manage build configuration in a way that results are functional and
-reproducible. In addition to producing an iOS application, Bazel makes it easy
-to automate many other kinds tasks for example, code generating a thrift
-schema, generating an Xcode project, and pushing a docker container.
+Bazel makes it easy to manage build configuration in a way that results are
+functional and reproducible. In addition to producing an iOS application, Bazel
+makes it easy to automate many other kinds tasks for example, code generating a
+thrift schema, generating an Xcode project, and pushing a docker container.
+Having the ability to optimize the build system can significantly improve the
+developer experience.
 
-Compared to other mainstream build systems out there, Bazel is very strict about inputs
-which makes it reproducible. In 2018, Microsoft came out with a paper that
-compares all the build systems
-https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf
-
+Compared to other mainstream build systems, Bazel is strict about inputs and
+outputs. This characteristic makes it reproducible and well suited for
+distributed cloud builds and caching. In 2018, Microsoft came out with a paper
+that compares popular build systems, [Build Systems à la
+Carte](https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf).
 
 ## Introduction to Bazel projects
 
-In the root of Bazel project, there's going to be 2 files atleast
+The root of a Bazel project contains 2 key human readable files
 
-`WORKSPACE` - this is about getting files and dependencies from [outside the
-world into Bazel](https://docs.bazel.build/versions/master/be/workspace.html).
-Simply put, external-to-bazel dependencies are put here. 
-
-`BUILD` files - these files define what targets are inside of a project.
+The `BUILD` file - these files define what targets are inside of a project.
 Applications, extensions, static libraries, and frameworks are all declared in
-BUILD file.
+BUILD files.
 
-_These notions don't exist in the Xcode world, but it's similar to the machine
-readble `xcodeproj` files managed by Xcode._
+The `WORKSPACE` file - this file is about getting files and dependencies from
+[outside the world into
+Bazel](https://docs.bazel.build/versions/master/be/workspace.html).  Simply
+put, external-to-bazel dependencies are put here. 
+
+_The closest notion to BUILD files in the Xcode world, is the machine readble
+`xcodeproj` files managed by Xcode._
 
 ## WORKSPACE configuration and setting up rules_apple
 
@@ -143,57 +144,6 @@ rules, targets, and BUILD files.
 
 ```
 BUILD file -> target -> rule -> action -> execution
-```
-
-
-### Generated Xcode projects
-
-In an Xcode world, folks checked in a project which contains an listing of
-files, build settings, and IDE state. When the project scales, the project file
-model breaks down. Auditing and code reviewing config changes in Xcode projects
-quickly becomes difficult. With Bazel, human readable `BUILD` files are the
-source of truth for build and Xcode configuration. Tools like
-[XCHammer](https://github.com/pinterest/xchammer), and
-[Tulsi](https://github.com/bazelbuild/tulsi) use an aspect to traverse the
-build graph and extract metadata required to generate a project.  These tools
-make it easier to manage the project and generate on demand - not needing to
-check it in.
-
-XCHammer provides a rule to [bazel build Xcode
-projects](ihttps://github.com/pinterest/xchammer#bazel-build-xcode-projects).
-Simply declare the rule with the project and Bazel build the target.
-```
-load("@xchammer_resources//:xcodeproject.bzl", "xcode_project")
-xcode_project(
-    name = "MyProject",
-    targets = [ "//ios-app:ios-app" ],
-    paths = [ "**" ],
-)
-```
-
-Like any other Bazel target, it's built from the command line
-```
-bazel build :MyProject
-```
-
-The rule definition for the `xcode_project` may be found in the [github
-repository](https://github.com/pinterest/xchammer/blob/master/BazelExtensions/xcodeproject.bzl).
-Simply put, the aspect traverses sources, and invokes the `xchammer` binary with
-a JSON file. Internally, XCHammer instantiates
-[`XcodeGen`](https://github.com/yonaskolb/XcodeGen) types and writes them out to
-disk with `xcodeproj`.
-
-The workflow for generating an Xcode project with XCHammer is quite simple:
-```
-command line -> bazel -> rule -> xchammer -> xcodegen -> xcodeproj
-```
-
-Generators like XCHammer and Tulsi take care of integrating Bazel into the IDE.
-Bazel builds are invoked a shell script build phase from the IDE. Basically,
-Xcode shells out to Bazel to produce the application, and then Xcode picks up
-the product from the derived data path. Performing a Bazel build from Xcode.
-```
-play button -> shell script build phase -> bazel build ios-app
 ```
 
 ### Command line usage
@@ -307,6 +257,57 @@ For more information on implementing rules and macros, check out the [Extension
 Overview](https://docs.bazel.build/versions/master/skylark/concepts.html)
 
 _Toolchains_ Bazel uses a combination of [toolchains and crosstool's to manage configuration](https://docs.bazel.build/versions/master/tutorial/cc-toolchain-config.html). 
+
+### Generated Xcode projects
+
+In an Xcode world, folks checked in a project which contains an listing of
+files, build settings, and IDE state. When the project scales, the project file
+model breaks down. Auditing and code reviewing config changes in Xcode projects
+quickly becomes difficult. With Bazel, human readable `BUILD` files are the
+source of truth for build and Xcode configuration. Tools like
+[XCHammer](https://github.com/pinterest/xchammer), and
+[Tulsi](https://github.com/bazelbuild/tulsi) use an aspect to traverse the
+build graph and extract metadata required to generate a project.  These tools
+make it easier to manage the project and generate on demand - not needing to
+check it in.
+
+XCHammer provides a rule to [bazel build Xcode
+projects](ihttps://github.com/pinterest/xchammer#bazel-build-xcode-projects).
+Simply declare the rule with the project and Bazel build the target.
+```
+load("@xchammer_resources//:xcodeproject.bzl", "xcode_project")
+xcode_project(
+    name = "MyProject",
+    targets = [ "//ios-app:ios-app" ],
+    paths = [ "**" ],
+)
+```
+
+Like any other Bazel target, it's built from the command line
+```
+bazel build :MyProject
+```
+
+The rule definition for the `xcode_project` may be found in the [github
+repository](https://github.com/pinterest/xchammer/blob/master/BazelExtensions/xcodeproject.bzl).
+Simply put, the aspect traverses sources, and invokes the `xchammer` binary with
+a JSON file. Internally, XCHammer instantiates
+[`XcodeGen`](https://github.com/yonaskolb/XcodeGen) types and writes them out to
+disk with `xcodeproj`.
+
+The workflow for generating an Xcode project with XCHammer is quite simple:
+```
+command line -> bazel -> rule -> xchammer -> xcodegen -> xcodeproj
+```
+
+Generators like XCHammer and Tulsi take care of integrating Bazel into the IDE.
+Bazel builds are invoked a shell script build phase from the IDE. Basically,
+Xcode shells out to Bazel to produce the application, and then Xcode picks up
+the product from the derived data path. Performing a Bazel build from Xcode.
+```
+play button -> shell script build phase -> bazel build ios-app
+```
+
 
 ### Fixing common Bazel errors
 
