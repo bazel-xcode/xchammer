@@ -204,27 +204,23 @@ bazel build ios-app --define app_store=true
 For more information about `config_setting`, please see the [Bazel
 documentation](https://docs.bazel.build/versions/master/be/common-definitions.html#configurable-attributes).
 
-### Basic configuration of libraries and flags
+### Configuration of libraries and flags via macros
 
-The [`objc_library`](The documentation resides here https://docs.bazel.build/versions/master/be/objective-c.html) rule provides
-several arguments, used for configuration.
+Most users of Bazel implement a higher level system of macros to encapsulate
+defaults of building librarys and simplify configuration management. 
 
-_Note: Unlike Starlark rules which are easily added on to Bazel, the
-`objc_library` is part of the internal java rules shipped with the Bazel
-binary._  Most users of Bazel
-implement a higher level system of macros to encapsulate defaults of building
-librarys and simplify configuration management.
+Bazel provides the pythonic programming language Starlark to implement such
+build system logic. Like rules and aspects, macros are defined in `.bzl` files.
+A macro is a convenient way to call a rule, and not recognized by Bazel in the
+same way a rule is.
 
-Bazel provides the pythonic programming language Starlark to implement build
-system logic. Build logic is implemented in rules, aspects, and macros defined
-in `.bzl`. The main distinction the 2 files is that is `BUILD` files are used to
-define targets by calling macros and rules. `.bzl` files define the
-implementation. A Bazel target is generally an instantiation of a rule in some
-form.
+_Note: The main distinction between a `.bzl` and a `BUILD` file is `BUILD` files are
+used to create targets by calling macros and rules. `.bzl` files define the
+implementation._
 
-To create a wrapper for `objc_library`, define the file `objc_library.bzl`.  The
-following macro restricts the customization that users are able to use here, and
-enforces defaults. This is somewhat of a composition pattern.
+To create a wrapper for `objc_library`, create the file `objc_library.bzl`. The
+following macro restricts the customization, and enforces defaults of the
+native `objc_library` rule.
 
 ```
 def objc_library(name, srcs=[], hdrs=[], deps=[], data=[]):
@@ -245,8 +241,8 @@ def objc_library(name, srcs=[], hdrs=[], deps=[], data=[]):
     )
 ```
 
-By loading our `objc_library` into a `BUILD` file, it will ovverride the native
-`objc_library` rule, which was automatically imported.
+By loading our `objc_library` into a `BUILD` file, it will override the native
+`objc_library` rule, which is automatically imported.
 ```
 load(":objc_library.bzl", "objc_library")
 
@@ -256,12 +252,25 @@ objc_library(name="some", copts=["-DSOME"])
 
 The same principals can be applied to many rules: wrapping macros with macros.
 With Starlark, the possibilities are endless! _technically they are endless as
-the language is not turing complete_.
+the language is not turing complete_. Please see the
+[`objc_library`](https://docs.bazel.build/versions/master/be/objective-c.html)
+documentation for all possible arguments. _Note: Unlike Starlark rules which
+are easily added on to Bazel, the `objc_library` is part of the internal java
+rules shipped with the Bazel
+binary._ 
 
-For more information on implementing rules and macros, check out the [Extension
-Overview](https://docs.bazel.build/versions/master/skylark/concepts.html)
+### Toolchains
 
-_Toolchains_ Bazel uses a combination of [toolchains and crosstool's to manage configuration](https://docs.bazel.build/versions/master/tutorial/cc-toolchain-config.html). 
+In additional to configuring the build with rules, bazel provides a additional
+primitive, the toolchain. Toolchains provide default compilers and arguments
+for those compilers. For the native c++ rules, this is relied upon to configure
+the many flags required for cross compilation.
+
+For most iOS projects, updating isn't generally required but it gives full
+control over compiler invocations, and replacing the compiler being invoked.
+Please see the [toolchain
+documentation](https://docs.bazel.build/versions/master/tutorial/cc-toolchain-config.html)
+to learn more.
 
 ### Generated Xcode projects
 
