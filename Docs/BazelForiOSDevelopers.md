@@ -14,15 +14,24 @@ The document supplements canonical resources:
 
 ## Build systems for iOS developers
 
-In iOS development, Apple encapsulates build systems inside of Xcode to build
-applications. For many developers, the default Xcode build system is great.
-Most iOS developers don't need to worry about the implementation of C++ swift,
-and objective C, compilers or how those compilers are invoked. When the build
-size grows, developer experience drops off. Having the ability to optimizing the
+First, let's address the definiton of a `Build system`. According to [Stack
+overflow](https://stackoverflow.com/questions/7249871/what-is-a-build-tool_),
+_Build tools are programs that automate the creation of executable applications
+from source code(eg. .apk for android app). Building incorporates
+compiling,linking and packaging the code into a usable or executable form._
+
+In iOS development, Apple encapsulates build systems inside of Xcode. Xcode is
+the IDE _and build system_. For many developers, Xcode just works. Most iOS
+developers don't need to worry about the implementation of C++, Swift, and
+Objective-C, compilers or how those compilers are invoked. When the build size
+grows, developer experience drops off. Having the ability to optimizing the
 build system can significantly improve the developer experience. Tasks like
 indexing, or making a change that adds or removes a file due to a manually
-managed project can get out of hand. Bazel makes it easy to manage all of the
-build configuration in a way that results is functional and reproducible.
+managed project can get out of hand. Bazel makes it easy to manage build
+configuration in a way that results are functional and reproducible. In addition
+to producing an iOS application, Bazel makes it easy to automate many other
+kinds tasks for example, code generating a thrift schema, generating an Xcode
+project, and pushing a docker container.
 
 Compared to other mainstream build systems out there, Bazel is very strict about inputs
 which makes it reproducible. In 2018, Microsoft came out with a paper that
@@ -146,6 +155,54 @@ to disk with `xcodeproj`.
 
 ## Practical Bazel usage
 
+### Command line usage
+
+In Xcode, command line builds are achieved through the command line interface
+`xcodebuild`.  to build the scheme `ios-app` from `MyProject.xcworkspace`,
+`xcodebuild`, would be invoked as:
+
+```
+xcodebuild -workspace MyProject.xcworkspace -scheme ios-app
+```
+
+Bazel exposes a command line which can also do builds. In Bazel, _every_ target
+is in the global WORKSPACE and there is no notion of schemes.
+```
+bazel build ios-app
+```
+
+The Bazel command line has hundreds of possibilites, which can be found in the
+[Bazel
+documentation](https://docs.bazel.build/versions/master/command-line-reference.html).
+For iOS developers, a set of useful flags is available at
+[bazel-ios-users](https://github.com/ios-bazel-users/ios-bazel-users/blob/master/UsefulFlags.md).
+
+In addition to the default bazel options, it's common to create custom
+configuration settings to customize builds, so the possible Bazel command line
+permutations are endless.
+
+For example, the following build file has conditional `copts` on `:app_store`
+
+```
+objc_library(
+   name = "some",
+   srcs = ["some.m"],
+   copts = select({
+      # For app_store we need to build `some.m` with a special copt
+      ":app_store": ["-DAPPSTORE=1"],
+      "//conditions:default": [],
+    })
+)
+config_setting(
+    name = "app_store",
+    values = { "app_store" : "true" }
+)
+```
+
+This is passed in as a define to Bazel
+```
+bazel build ios-app --define app_store=true
+```
 
 ### Basic configuration of libraries and flags
 
