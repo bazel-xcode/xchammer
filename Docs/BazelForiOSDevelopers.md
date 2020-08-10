@@ -1,9 +1,9 @@
 # Bazel for iOS Developers
 
 This document is an introduction to Bazel for iOS developers. There's been many
-docs written about Bazel and this document is geared towards an iOS
-application developer coming from Xcode and aims to be a lightweight but
-complete introduction and map familiar concepts.
+docs written about Bazel. This document is geared towards an iOS application
+developer coming from Xcode and intends to be a lightweight introduction and
+map familiar iOS developer concepts.
 
 The document supplements canonical resources:
 - [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
@@ -21,17 +21,18 @@ from source code(eg. .apk for android app). Building incorporates
 compiling,linking and packaging the code into a usable or executable form._
 
 In iOS development, Apple encapsulates build systems inside of Xcode. Xcode is
-the IDE _and build system_. For many developers, Xcode just works. Most iOS
-developers don't need to worry about the implementation of C++, Swift, and
-Objective-C, compilers or how those compilers are invoked. When the build size
-grows, developer experience drops off. Having the ability to optimizing the
-build system can significantly improve the developer experience. Tasks like
-indexing, or making a change that adds or removes a file due to a manually
-managed project can get out of hand. Bazel makes it easy to manage build
-configuration in a way that results are functional and reproducible. In addition
-to producing an iOS application, Bazel makes it easy to automate many other
-kinds tasks for example, code generating a thrift schema, generating an Xcode
-project, and pushing a docker container.
+the IDE _and build system_. For many developers, Xcode just works. To have a
+good experience, most developers don't need to worry about the implementation
+of C++, Swift, Objective-C, compilers, or how those compilers are invoked
+
+When the build size grows, developer experience drops off. Having the ability
+to optimizing the build system can significantly improve the developer
+experience. Tasks like indexing, or making a change that adds or removes a file
+due to a manually managed project can get out of hand. Bazel makes it easy to
+manage build configuration in a way that results are functional and
+reproducible. In addition to producing an iOS application, Bazel makes it easy
+to automate many other kinds tasks for example, code generating a thrift
+schema, generating an Xcode project, and pushing a docker container.
 
 Compared to other mainstream build systems out there, Bazel is very strict about inputs
 which makes it reproducible. In 2018, Microsoft came out with a paper that
@@ -43,21 +44,26 @@ https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf
 
 In the root of Bazel project, there's going to be 2 files atleast
 
-`WORKSPACE` - this is about getting files and dependencies from outside the world
-into Bazel
-https://docs.bazel.build/versions/master/be/workspace.html
+`WORKSPACE` - this is about getting files and dependencies from [outside the
+world into Bazel](https://docs.bazel.build/versions/master/be/workspace.html).
+Simply put, external-to-bazel dependencies are put here. 
 
-`BUILD` files, these files define how a project builds.
+`BUILD` files, these files define what targets are inside of a project.
+Appications, extensions, static libraries, and frameworks are all declared in
+BUILD file.
+
+_These notions don't exist in the Xcode world, but it's similar to the machine
+readble `xcodeproj` files managed by Xcode._
 
 ## WORKSPACE configuration and setting up rules apple
 
 For building iOS applications, most iOS developers use the rule set
 `rules_apple`. This rule set contains key rules for iOS development which
-include building applications, unit tests, and more.
+include rules to build applications, unit tests, and more.
 
-Head to https://github.com/bazelbuild/rules_apple and follow the latest
-instructions to get the relevant instructions. `rules_apple` will provide
-instructions to add dependencies for the `WORKSPACE` file.
+Head to [rules_apple](https://github.com/bazelbuild/rules_apple) and follow the
+latest instructions to get setup. `rules_apple` provides instructions to add
+dependencies for the `WORKSPACE` file.
 
 This is typical code in setting up rules, like `rules_apple`
 ```
@@ -69,9 +75,6 @@ git_repository(
     commit = "[SOME_HASH_VALUE]",
 )
 ```
-
-Based on the current requirements of `rules_apple`, there's going to be a few
-lines of code.
 
 The first line of code calls the function, `load`. The load function
 imports symbols from a Bazel file to make them available. Simply put it tells Bazel
@@ -91,46 +94,55 @@ _`git_repository` documentation https://docs.bazel.build/versions/2.0.0/repo/git
 
 ### BUILD files
 
-The `BUILD` file is where all the rules are declared. Rules implement business
+The `BUILD` file is where all the targets are declared. Rules implement business
 logic for how the iOS application is built by creating actions. An instance of
 a rule is a `target`. A target has a few abilities in Bazel.
 
-Let's walk through creating a basic iOS application. First, a library for the
-iOS application sources. The following code defines an `objc_library`,
+Let's walk through creating a basic iOS application. In the root of the
+project, let's create the `BUILD` file. First, a library for the iOS
+application sources. The following code defines an `objc_library`,
 `sources`. In Xcode this is similar to navigating in the GUI and hitting `File
 -> New Target` 
 
 ```
+# /path/to/myproject/BUILD
 objc_library(
     name="sources",
     srcs=["main.m"]
 )
 ```
 
-Next, the application target
+Next, create the application target
 ```
+# /path/to/myproject/BUILD
+...
 ios_application(
     name = "ios-app",
     bundle_id = "com.bazel-bootcamp.some",
     families = ["iphone"],
     infoplists = ["Info.plist"],
     minimum_os_version = "[MINIMUM VERSION]",
+    # Add `sources` as a dependency
     deps = [ ":sources" ],
 )
 ```
+
+The`ios_application` and `objc_library` targets together would be represented in Xcode as:
 
 ![Docs](XcodeExampleOfiOSProject.png)
 
 ### Generated Xcode projects
 
-Generally in an Xcode world, folks checked in a project which contains an index
-of both files, build settings, and IDE state. This can lead to merge conflicts
-and complexity when the project scales. Auditing and code reviewing config
-changes in Xcode projects quickly become difficult. With Bazel, Bazel is the
-source of truth for Xcode configuration. Tools like [XCHammer](), and [Tulsi]()
-use an aspect to traverse the build graph and extract metadata required to
-generate a project.  These tools make it easier to manage the project and
-generate on demand - not needing to check it in.
+In an Xcode world, folks checked in a project which contains an listing of
+files, build settings, and IDE state. This can lead to merge conflicts and
+complexity when the project scales. Auditing and code reviewing config changes
+in Xcode projects quickly becomes difficult. With Bazel, Bazel is the source of
+truth for build and Xcode configuration. Tools like
+[XCHammer](https://github.com/pinterest/xchammer), and
+[Tulsi](https://github.com/bazelbuild/tulsi) use an aspect to traverse the
+build graph and extract metadata required to generate a project.  These tools
+make it easier to manage the project and generate on demand - not needing to
+check it in.
 
 XCHammer provides a rule to [bazel build Xcode
 projects](ihttps://github.com/pinterest/xchammer#bazel-build-xcode-projects).
@@ -144,7 +156,7 @@ xcode_project(
 )
 ```
 
-Like any other Bazel target, it's build from the command line
+Like any other Bazel target, it's built from the command line
 ```
 bazel build :MyProject
 ```
@@ -223,13 +235,13 @@ documentation](https://docs.bazel.build/versions/master/be/common-definitions.ht
 
 ### Basic configuration of libraries and flags
 
-The `objc_library` API provides many arguments for configuration, after all, the
-`objc_library` it's self is a configuration.  The documentation resides here
-https://docs.bazel.build/versions/master/be/objective-c.html
+The [`objc_library`](The documentation resides here
+https://docs.bazel.build/versions/master/be/objective-c.html) rule provides
+several arguments, used for configuration.
 
 _Note: Unlike Starlark rules which are easily added on to Bazel, the
 `objc_library` is part of the internal java rules shipped with the Bazel
-binary._ Most users of Bazel
+binary._  Most users of Bazel
 implement a higher level system of macros to encapsulate defaults of building
 librarys and simplify configuration management.
 
