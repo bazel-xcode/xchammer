@@ -175,6 +175,3 @@ xcode_project(
     )
 )
 
-load(":objc_library.bzl", "objc_library")
-
-objc_library(name="some", copts=["-DSOME"])
