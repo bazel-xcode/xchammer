@@ -1,9 +1,9 @@
 # Bazel for iOS Developers
 
 This document is an introduction to Bazel for iOS developers. There's been many
-docs written about Bazel. This document is geared towards an iOS application
-developer coming from Xcode and intends to be a lightweight introduction and
-map familiar iOS developer concepts.
+docs written about Bazel online. This document is geared towards an iOS
+application developer coming from Xcode and intends to be a lightweight
+introduction and map familiar iOS developer concepts.
 
 The document supplements canonical resources:
 - [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
@@ -48,25 +48,26 @@ In the root of Bazel project, there's going to be 2 files atleast
 world into Bazel](https://docs.bazel.build/versions/master/be/workspace.html).
 Simply put, external-to-bazel dependencies are put here. 
 
-`BUILD` files, these files define what targets are inside of a project.
-Appications, extensions, static libraries, and frameworks are all declared in
+`BUILD` files - these files define what targets are inside of a project.
+Applications, extensions, static libraries, and frameworks are all declared in
 BUILD file.
 
 _These notions don't exist in the Xcode world, but it's similar to the machine
 readble `xcodeproj` files managed by Xcode._
 
-## WORKSPACE configuration and setting up rules apple
+## WORKSPACE configuration and setting up rules_apple
 
 For building iOS applications, most iOS developers use the rule set
-`rules_apple`. This rule set contains key rules for iOS development which
-include rules to build applications, unit tests, and more.
+`rules_apple`. `rules_apple` contains key rules for iOS development which
+includes rules to build applications, unit tests, and more.
 
 Head to [rules_apple](https://github.com/bazelbuild/rules_apple) and follow the
 latest instructions to get setup. `rules_apple` provides instructions to add
-dependencies for the `WORKSPACE` file.
+dependencies into the `WORKSPACE` file. Simply paste the lines from
+`rules_apple`'s README into the `WORKSPACE` file
 
-This is typical code in setting up rules, like `rules_apple`
 ```
+# /path/to/myproject/WORKSPACE
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
@@ -76,11 +77,10 @@ git_repository(
 )
 ```
 
-The first line of code calls the function, `load`. The load function
-imports symbols from a Bazel file to make them available. Simply put it tells Bazel
-that during the loading sequence, it should import symbols. In Objective-C or
-swift, it's like importing a header file, but specific symbols out of that
-header.
+The first line of code calls the function, `load`. The load function imports
+symbols from a `.bzl` file.  In Objective-C or swift, it's like importing a
+header file.
+
 ```
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 ```
@@ -94,15 +94,13 @@ _`git_repository` documentation https://docs.bazel.build/versions/2.0.0/repo/git
 
 ### BUILD files
 
-The `BUILD` file is where all the targets are declared. Rules implement business
-logic for how the iOS application is built by creating actions. An instance of
-a rule is a `target`. A target has a few abilities in Bazel.
+`BUILD` files are where all the targets are defined.
 
-Let's walk through creating a basic iOS application. In the root of the
+First, let's walk through creating a basic iOS application. In the root of the
 project, let's create the `BUILD` file. First, a library for the iOS
-application sources. The following code defines an `objc_library`,
-`sources`. In Xcode this is similar to navigating in the GUI and hitting `File
--> New Target` 
+application sources. The following code defines an `objc_library`, `sources`.
+In Xcode this is similar to navigating in the GUI and hitting `File -> New
+Target` 
 
 ```
 # /path/to/myproject/BUILD
@@ -112,10 +110,11 @@ objc_library(
 )
 ```
 
-Next, create the application target
+Next, create the application target with `rules_apple`'s `ios_applicaiton` rule.
 ```
 # /path/to/myproject/BUILD
 ...
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
 ios_application(
     name = "ios-app",
     bundle_id = "com.bazel-bootcamp.some",
@@ -127,17 +126,33 @@ ios_application(
 )
 ```
 
-The`ios_application` and `objc_library` targets together would be represented in Xcode as:
+The`ios_application` and `objc_library` targets together would be represented
+in Xcode as:
 
 ![Docs](XcodeExampleOfiOSProject.png)
+
+### Rules
+
+In the previous segment, we created an iOS application with a single BUILD
+file. The `ios_application` rule is implemented by `rules_apple` and the
+`objc_library` is a native rule.
+
+An target is an instance of a rule. Rules implement business logic for how the
+iOS application is built by creating actions. Typical projects contains many
+rules, targets, and BUILD files.
+
+```
+BUILD file -> target -> rule -> action -> execution
+```
+
 
 ### Generated Xcode projects
 
 In an Xcode world, folks checked in a project which contains an listing of
-files, build settings, and IDE state. This can lead to merge conflicts and
-complexity when the project scales. Auditing and code reviewing config changes
-in Xcode projects quickly becomes difficult. With Bazel, Bazel is the source of
-truth for build and Xcode configuration. Tools like
+files, build settings, and IDE state. When the project scales, the project file
+model breaks down. Auditing and code reviewing config changes in Xcode projects
+quickly becomes difficult. With Bazel, human readable `BUILD` files are the
+source of truth for build and Xcode configuration. Tools like
 [XCHammer](https://github.com/pinterest/xchammer), and
 [Tulsi](https://github.com/bazelbuild/tulsi) use an aspect to traverse the
 build graph and extract metadata required to generate a project.  These tools
@@ -248,7 +263,7 @@ librarys and simplify configuration management.
 Bazel provides the pythonic programming language Starlark to implement build
 system logic. Build logic is implemented in rules, aspects, and macros defined
 in `.bzl`. The main distinction the 2 files is that is `BUILD` files are used to
-define targets by calling macros and rules, and `.bzl` files define the
+define targets by calling macros and rules. `.bzl` files define the
 implementation. A Bazel target is generally an instantiation of a rule in some
 form.
 
