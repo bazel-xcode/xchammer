@@ -87,7 +87,7 @@ stored in the machine readable `xcodeproj` files._
 ### Setting up a WORKSPACE
 
 For building iOS applications, most iOS developers use the rule set
-`rules_apple`. `rules_apple` contains key [rules](### Rules) for iOS development which
+`rules_apple`. `rules_apple` contains key [rules](#rules) for iOS development which
 includes rules to build applications, unit tests, and more.
 
 Head to [rules_apple](https://github.com/bazelbuild/rules_apple) and follow the
@@ -228,14 +228,20 @@ level configuration](### Macros)
 
 ### Rules
 
+> A rule defines a series of actions that Bazel performs on inputs to produce a set of outputs.
+
+_ - the [bazel documentation](https://docs.bazel.build/versions/master/skylark/rules.html)_
+ 
+
+Rules implement business logic for how the iOS application is built by creating
+actions. actions represent invocations of external command line programs like
+`clang` or `bash`. A target is an instance of a rule. Typical projects contain
+many rules, targets, and BUILD files.
+
 In the previous segment, we created an iOS application with a single BUILD
 file. The `ios_application` rule is implemented by `rules_apple` and the
 `objc_library` is a native rule.
 
-A target is an instance of a rule. Rules implement business logic for how the
-iOS application is built by creating actions. actions represent invocations of
-external command line programs like `clang` or `bash`. Typical projects contain
-many rules, targets, and BUILD files.
 
 ```
 BUILD file -> target -> rule -> action -> execution
@@ -251,7 +257,7 @@ contains a comprehensive overview.
 ### Macros
 
 Bazel provides the pythonic programming language Starlark to implement build
-system logic. Like [rules](### Rules) and [aspects](### Aspects), macros are
+system logic. Like [rules](#Rules) and [aspects](#Aspects), macros are
 defined in `.bzl` files.  A macro is a convenient way to call a rule, and not
 recognized by Bazel in the same way a rule is.
 
@@ -314,6 +320,8 @@ actions on the way.
 > Aspects are a feature of Bazel that are basically like fan-fic, if build rules
 were stories: aspects let you add features that require intimate knowledge of
 the build graph, but that that the rule maintainer would never want to add.
+
+_ - [Kristina Chodorow, aspects the fan fic of build rules](https://kchodorow.com/2017/01/10/aspects-the-fan-fic-of-build-rules/) _
 
 Combined with Rules and the Bazel command line, the user to create robust
 architectures and powerful abstractions. Like rules, generally, defining custom
