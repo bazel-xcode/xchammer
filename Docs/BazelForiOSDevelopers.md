@@ -12,6 +12,31 @@ The document supplements canonical Bazel resources:
 - [Bazel Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
 - [Getting started with Bazel](https://docs.bazel.build/versions/master/getting-started.html) 
 
+## Table of contents
+
+* [Bazel for iOS Developers](#bazel-for-ios-developers)
+  * [Table of contents](#table-of-contents)
+  * [Build systems for iOS developers](#build-systems-for-ios-developers)
+  * [Bazel projects](#bazel-projects)
+     * [Setting up a WORKSPACE](#setting-up-a-workspace)
+     * [Adding an iOS application with BUILD files](#adding-an-ios-application-with-build-files)
+     * [Bazel command line](#bazel-command-line)
+     * [Configurable build attributes](#configurable-build-attributes)
+     * [Compiler configuration](#compiler-configuration)
+  * [Extending Bazel](#extending-bazel)
+     * [Rules](#rules)
+     * [Macros](#macros)
+     * [Aspects](#aspects)
+     * [Toolchains](#toolchains)
+     * [Generated Xcode projects](#generated-xcode-projects)
+  * [More information](#more-information)
+     * [Gathering information with Bazel query](#gathering-information-with-bazel-query)
+     * [Fixing common Bazel errors](#fixing-common-bazel-errors)
+     * [Installing Bazel](#installing-bazel)
+     * [Building CocoaPods with Bazel](#building-cocoapods-with-bazel)
+  * [Conclusion](#conclusion)
+
+
 ## Build systems for iOS developers
 
 First, let's address the definiton of a `Build system`. According to [Stack
@@ -43,7 +68,7 @@ compares to other build systems, Microsoft's paper [Build Systems à la
 Carte](https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf),
 compares popular build systems._
 
-## Introduction to Bazel projects
+## Bazel projects
 
 The root of a Bazel project contains two human readable files:
 
@@ -59,7 +84,7 @@ put, external-to-the-repository dependencies are put here.
 _In the Xcode world, build configuration is governed by the Xcode GUI and
 stored in the machine readable `xcodeproj` files._
 
-## WORKSPACE configuration and setting up rules_apple
+### Setting up a WORKSPACE
 
 For building iOS applications, most iOS developers use the rule set
 `rules_apple`. `rules_apple` contains key [rules](### Rules) for iOS development which
@@ -94,7 +119,7 @@ The next line of code calls `git_repository` and defines the repository
 `build_bazel_rules_apple` from the git repository,
 `https://github.com/bazelbuild/rules_apple` for a given `commit`. 
 
-### BUILD files
+### Adding an iOS application with BUILD files
 
 `BUILD` files are where all the targets are defined. For Apple developers, this
 often includes apps, tests, app extensions, frameworks, and libraries.
@@ -133,7 +158,7 @@ would be represented in Xcode as:
 
 ![Docs](XcodeExampleOfiOSProject.png)
 	
-### Command line usage
+### Bazel command line
 
 In Xcode, command line builds are achieved through the command line interface
 `xcodebuild`.  to build the scheme `ios-app` from `MyProject.xcworkspace`,
@@ -187,7 +212,7 @@ bazel build ios-app --define app_store=true
 For more information about `select` and `config_setting`, please see the [Bazel
 documentation](https://docs.bazel.build/versions/master/be/common-definitions.html#configurable-attributes).
 
-### C++ compiler configuration
+### Compiler configuration
 
 In Xcode there is a plethora of flags that implicate different kinds of flags.
 In Bazel, `toolchains`, `objc_library`, `bazelrc` configure flags. The variable
@@ -198,6 +223,8 @@ Using `objc_library` to define compiler flags is useful for the per-rule level
 and many projects use macros and other layers of abstraction to [unify library
 level configuration](### Macros)
 
+
+## Extending Bazel
 
 ### Rules
 
@@ -223,10 +250,10 @@ contains a comprehensive overview.
 
 ### Macros
 
-Bazel provides the pythonic programming language Starlark to implement
-build system logic. Like rules and aspects, macros are defined in `.bzl` files.
-A macro is a convenient way to call a rule, and not recognized by Bazel in the
-same way a rule is.
+Bazel provides the pythonic programming language Starlark to implement build
+system logic. Like [rules](### Rules) and [aspects](### Aspects), macros are
+defined in `.bzl` files.  A macro is a convenient way to call a rule, and not
+recognized by Bazel in the same way a rule is.
 
 _Note: The main distinction between a `.bzl` and a `BUILD` file is `BUILD` files are
 used to create targets by calling macros and rules. `.bzl` files define the
@@ -288,7 +315,7 @@ actions on the way.
 were stories: aspects let you add features that require intimate knowledge of
 the build graph, but that that the rule maintainer would never want to add.
 
-Combined with Rules and the Bazel command line, they user to create robust
+Combined with Rules and the Bazel command line, the user to create robust
 architectures and powerful abstractions. Like rules, generally, defining custom
 rules isn't required but can improve and consolidate functionality. For more
 information about aspects, see [Aspects the fan-fic of build
@@ -362,6 +389,8 @@ play button -> shell script build phase -> bazel build ios-app
 
 _In the Xcode world, Xcode's internal build systems produce the application._
 
+## More information
+
 ### Gathering information with Bazel query
 
 Bazel query is command line interface that uses a DSL designed to query the
@@ -405,6 +434,19 @@ occurred and `BUILD` file that created the error in a call stack like fashion.
 
 To actually fix this error, simply remove the unsupported argument `copts`.
 
+### Installing Bazel
+
+Bazel is commonly invoked via a wrapper script to handle downloading and
+installing bazel binaries at the correct version. To implement reproducible
+builds, every dependency ( including ) Bazel should be pinned at a commit,
+including Bazel. BUILD files, rules, and protocol buffers, are often tied to a
+certain release of Bazel. An popular example of a wrapper script is
+[Bazelisk](https://github.com/bazelbuild/bazelisk/releases). Bazelisk allows the
+user to specify a `.bazelversion` file at the root of the project and easily
+update. To work across many Bazel projects, it's convenient to install
+`Bazelisk` onto the path, and invoke it as `bazel`. _Note: In order for Bazel's
+shell completion to work, the wrapper script must be named `bazel`._
+
 ### Building CocoaPods with Bazel
 
 `PodToBUILD` provides a WORKSPACE rule to make it easy to build CocoaPods with
@@ -413,7 +455,8 @@ BUILD file. Find out more information about [PodToBUILD on
 github](https://github.com/pinterest/PodToBUILD). 
 
 
-## More information
+
+## Conclusion
 
 This concludes the introduction. The Bazel documentation
 contains in depth tutorials, knowledge, and documentation.
