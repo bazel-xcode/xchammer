@@ -230,7 +230,7 @@ level configuration](### Macros)
 
 > A rule defines a series of actions that Bazel performs on inputs to produce a set of outputs.
 
-_ - the [bazel documentation](https://docs.bazel.build/versions/master/skylark/rules.html)_
+_- the [bazel documentation](https://docs.bazel.build/versions/master/skylark/rules.html)_
  
 
 Rules implement business logic for how the iOS application is built by creating
@@ -321,7 +321,7 @@ actions on the way.
 were stories: aspects let you add features that require intimate knowledge of
 the build graph, but that that the rule maintainer would never want to add.
 
-_ - [Kristina Chodorow, aspects the fan fic of build rules](https://kchodorow.com/2017/01/10/aspects-the-fan-fic-of-build-rules/) _
+_- [Kristina Chodorow, aspects the fan fic of build rules](https://kchodorow.com/2017/01/10/aspects-the-fan-fic-of-build-rules/)_
 
 Combined with Rules and the Bazel command line, the user to create robust
 architectures and powerful abstractions. Like rules, generally, defining custom
