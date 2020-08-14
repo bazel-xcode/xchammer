@@ -6,11 +6,7 @@ for a line engineer looking to get started. This document is geared towards an
 iOS developer coming from Xcode and intends to be a lightweight introduction to
 Bazel.
 
-The document supplements canonical Bazel resources:
-- [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
-- [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html) 
-- [Bazel Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
-- [Getting started with Bazel](https://docs.bazel.build/versions/master/getting-started.html) 
+The document supplements canonical Bazel resources, linked in the [conclusion](#conclusion).
 
 ## Table of contents
 
@@ -230,7 +226,7 @@ level configuration](### Macros)
 
 > A rule defines a series of actions that Bazel performs on inputs to produce a set of outputs.
 
-_- the [bazel documentation](https://docs.bazel.build/versions/master/skylark/rules.html)_
+_- [the bazel documentation](https://docs.bazel.build/versions/master/skylark/rules.html)_
  
 
 Rules implement business logic for how the iOS application is built by creating
@@ -321,7 +317,7 @@ actions on the way.
 were stories: aspects let you add features that require intimate knowledge of
 the build graph, but that that the rule maintainer would never want to add.
 
-_- [Kristina Chodorow, aspects the fan fic of build rules](https://kchodorow.com/2017/01/10/aspects-the-fan-fic-of-build-rules/)_
+_- [Kristina Chodorow, Aspects: the fan-fic of build rules](https://kchodorow.com/2017/01/10/aspects-the-fan-fic-of-build-rules/)_
 
 Combined with Rules and the Bazel command line, the user to create robust
 architectures and powerful abstractions. Like rules, generally, defining custom
@@ -463,15 +459,26 @@ BUILD file. Find out more information about [PodToBUILD on
 github](https://github.com/pinterest/PodToBUILD). 
 
 
-
 ## Conclusion
 
-This concludes the introduction. The Bazel documentation
-contains in depth tutorials, knowledge, and documentation.
+This concludes the iOS flavored introduction to Bazel. For more information,
+the Bazel documentation contains up-to-date tutorials, in-depth knowledge, and
+more.
 
+- [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
+- [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html) 
+- [Bazel Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
+- [Getting started with Bazel](https://docs.bazel.build/versions/master/getting-started.html) 
 - [Rules](https://docs.bazel.build/versions/master/rules.html)
 - [Encyclopedia](https://docs.bazel.build/versions/master/be/overview.html)
 - [Starlark](https://docs.bazel.build/versions/master/skylark/language.html)
 
-If there's additional bullet points useful for iOS developer onboarding, please
-send a pull request. 
+The community maintains repos and documentation
+- [Awesome Bazel](https://github.com/jin/awesome-bazel)
+- [ios-bazel-users](https://github.com/ios-bazel-users/ios-bazel-users)
+- [Useful Xcode Knowledge](https://github.com/ios-bazel-users/ios-bazel-users/blob/master/UsefulXcodeKnowledge.md)
+- [Line's Apple rules](https://github.com/line/rules_apple_line)
+- [iOS rules for Bazel - Square, Linkedin](https://github.com/bazel-ios/rules_ios)
+
+Finally, this document is meant to be updated. If there's additional bullet
+points useful for iOS developer onboarding, please send a pull request. 
