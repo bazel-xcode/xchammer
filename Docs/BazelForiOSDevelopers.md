@@ -20,6 +20,7 @@ The document supplements canonical Bazel resources, linked in the [conclusion](#
      * [Configurable build attributes](#configurable-build-attributes)
      * [Compiler configuration](#compiler-configuration)
   * [Extending Bazel](#extending-bazel)
+     * [Starlark](#starlark)
      * [Rules](#rules)
      * [Macros](#macros)
      * [Aspects](#aspects)
@@ -59,8 +60,10 @@ Xcode project](https://github.com/pinterest/xchammer), or [pushing a docker
 container](https://github.com/bazelbuild/rules_docker).  Starklark, a built in
 determinsitc python-like programming language allows developers to implement
 custom build logic. For developers this means better performance and pulling in
-ad-hoc build tasks into a directed build graph. _To learn about how Bazel
-compares to other build systems, Microsoft's paper [Build Systems à la
+ad-hoc build tasks into a directed build graph.
+
+_To learn about how Bazel compares to other build systems, Microsoft's paper
+[Build Systems à la
 Carte](https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf),
 compares popular build systems._
 
@@ -166,6 +169,7 @@ xcodebuild -workspace MyProject.xcworkspace -scheme ios-app
 
 Bazel exposes a command line which can also do builds. In Bazel, _every_ target
 is in the global WORKSPACE and there is no notion of schemes.
+
 ```
 bazel build ios-app
 ```
@@ -201,6 +205,7 @@ config_setting(
 ```
 
 This is can be set as a define and passed to Bazel on the command line
+
 ```
 bazel build ios-app --define app_store=true
 ```
@@ -211,33 +216,53 @@ documentation](https://docs.bazel.build/versions/master/be/common-definitions.ht
 ### Compiler configuration
 
 In Xcode there is a plethora of flags that implicate different kinds of flags.
-In Bazel, `toolchains`, `objc_library`, `bazelrc` configure flags. The variable
+In Bazel, `toolchains`, `objc_library`, `bazelrc` all configure flags. The variable
 `copts` in `objc_library` passes flags directly to the compiler. Please find
-canonical documentaiton on `copts` on the [Bazel
+canonical documentation on `copts` on the [Bazel
 docs](https://docs.bazel.build/versions/master/be/objective-c.html#objc_library.copts).
 Using `objc_library` to define compiler flags is useful for the per-rule level
 and many projects use macros and other layers of abstraction to [unify library
-level configuration](### Macros)
+level configuration](#Macros)
 
 
 ## Extending Bazel
 
+### Starlark
+
+On advantage of Bazel is that it's extensible without forking. In addition to
+being highly maintainable, this boundary helps the developer to focus on the
+business logic instead of the core of the build system. Bazel provides the
+pythonic programming language, Starlark to implement build system logic and
+abstractions all without needing to fork the core build system. For example,
+the Apple specific logic of bundling an `ios_application` is external to
+Bazel's core residing in the rule set, `rules_apple`.
+
+In addition to implementing build system logic, Starlark is useful to establish
+build system norms and unify configuration data. The coming segments
+[rules](#rules), [macros](#macros), and [aspects](#aspects) cover several
+example usage. With Starlark, the possibilities are endless. _technically they
+aren't endless as the language is not turing complete_.
+
+For more information, please see the [Starlark
+documentation](https://docs.bazel.build/versions/master/skylark/language.html).
+
 ### Rules
+
+Rules implement business logic for how the iOS application is built by creating
+actions. Actions represent invocations of external command line programs like
+`clang` or `bash`. Instances of rule are targets. Typical projects contain many
+rules, targets, and BUILD files.
 
 > A rule defines a series of actions that Bazel performs on inputs to produce a set of outputs.
 
 _- [the bazel documentation](https://docs.bazel.build/versions/master/skylark/rules.html)_
- 
 
-Rules implement business logic for how the iOS application is built by creating
-actions. actions represent invocations of external command line programs like
-`clang` or `bash`. A target is an instance of a rule. Typical projects contain
-many rules, targets, and BUILD files.
 
-In the previous segment, we created an iOS application with a single BUILD
-file. The `ios_application` rule is implemented by `rules_apple` and the
-`objc_library` is a native rule.
-
+In the previous segment, we created an iOS application with via a BUILD file.
+The `ios_application` rule is implemented by `rules_apple` and the
+`objc_library` is a native rule. Native rules are implemented in Java and have
+more power and capabilities needed to implement core functionality like remote
+execution and c++ compilation and are generally used as-is.
 
 ```
 BUILD file -> target -> rule -> action -> execution
@@ -252,8 +277,7 @@ contains a comprehensive overview.
 
 ### Macros
 
-Bazel provides the pythonic programming language Starlark to implement build
-system logic. Like [rules](#Rules) and [aspects](#Aspects), macros are
+Like [rules](#Rules) and [aspects](#Aspects), macros are
 defined in `.bzl` files.  A macro is a convenient way to call a rule, and not
 recognized by Bazel in the same way a rule is.
 
@@ -261,13 +285,11 @@ _Note: The main distinction between a `.bzl` and a `BUILD` file is `BUILD` files
 used to create targets by calling macros and rules. `.bzl` files define the
 implementation._
 
-For example, Macros allow you to Most users of Bazel implement a higher level
-system of macros to encapsulate defaults of building librarys and simplify
-configuration management. 
-
-To create a wrapper for `objc_library`, create the file `objc_library.bzl`. The
-following macro restricts the customization, and enforces defaults of the
-native `objc_library` rule.
+Most users of Bazel implement a higher level system of macros to encapsulate
+defaults of building librarys and simplify configuration management. To create
+a wrapper for `objc_library`, create the file `objc_library.bzl`. The following
+macro restricts the customization, and enforces defaults of the native
+`objc_library` rule.
 
 ```
 def objc_library(name, srcs=[], hdrs=[], deps=[], data=[]):
@@ -299,8 +321,7 @@ objc_library(name="some", copts=["-DSOME"])
 ```
 
 The same principals can be applied to many rules: wrapping macros with macros.
-With Starlark, the possibilities are endless! _technically they aren't endless as
-the language is not turing complete_. Please see the
+Please see the
 [`objc_library`](https://docs.bazel.build/versions/master/be/objective-c.html)
 documentation for all possible arguments. _Note: Unlike Starlark rules which
 are easily added on to Bazel, the `objc_library` is part of the internal java
@@ -423,15 +444,15 @@ check all files in the WORKSPACE on every build it's possible to have an error
 in 1 target, while other targets still work.
 
 ```
-ERROR: /Users/jerrymarino/Projects/xchammer-github/BUILD.bazel:4:13:
+ERROR: /path/to/myproject/BUILD:4:13:
 objc_library() got unexpected keyword argument: copts
 ```
 
 In the above code, a rule author defined a custom `objc_library` which only
-exposed the parameters name, srcs, hdrs, deps, and data. This is notated by the
-file path `/Users/jerrymarino/Projects/xchammer-github/BUILD.bazel` at the line
-`4:13` where the error occurred. _This is very similar to how clang and Swift
-errors look and feel inside of Xcode_ 
+exposed the parameters `name`, `srcs`, `hdrs`, `deps`, and `data`. This is
+notated by the file path `/path/to/myproject/BUILD` at the line `4:13` where
+the error occurred. _This is very similar to how clang and Swift errors look
+and feel inside of Xcode_ 
 
 If needed, Bazel generally will indicate the `.bzl` file where the issue
 occurred and `BUILD` file that created the error in a call stack like fashion.
