@@ -27,17 +27,19 @@ systems, IDEs, or compilers. When the project scales, developer experience
 drops off. Tasks like building, indexing, or merging a change that adds a new
 file can become painful. 
 
-Bazel makes it easy to manage build configuration in a way that results are
-functional and reproducible. In addition to producing an iOS application, Bazel
-makes it easy to automate many other kinds tasks for example, code generating a
-thrift schema, generating an Xcode project, and pushing a docker container.
-Having the ability to optimize the build system can significantly improve the
-developer experience.
-
-Compared to other mainstream build systems, Bazel is strict about inputs and
-outputs. This characteristic makes it reproducible and well suited for
-distributed cloud builds and caching. _To learn about how Bazel compares to
-other build systems, Microsoft's paper [Build Systems à la
+Bazel can fix many problems with iOS builds when done well. First, Bazel is
+strict about inputs and outputs - they must be declared. This property, known as
+"hermetic" builds, makes builds reproducible and well suited for distributed
+cloud builds and caching. For developers, this means better performance due to
+cache hitting and not constantly removing derived data. Clean builds become
+incremental, decades of CPU cycles saved.  Bazel also makes it easy to automate
+many kinds tasks for example, code generating a thrift schema, [generating an
+Xcode project](https://github.com/pinterest/xchammer), or [pushing a docker
+container](https://github.com/bazelbuild/rules_docker).  Starklark, a built in
+determinsitc python-like programming language allows developers to implement
+custom build logic. For developers this means better performance and pulling in
+ad-hoc build tasks into a directed build graph. _To learn about how Bazel
+compares to other build systems, Microsoft's paper [Build Systems à la
 Carte](https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf),
 compares popular build systems._
 
@@ -52,15 +54,15 @@ BUILD files.
 The `WORKSPACE` file - this file is about getting files and dependencies from
 [outside the world into
 Bazel](https://docs.bazel.build/versions/master/be/workspace.html).  Simply
-put, external-to-bazel dependencies are put here. 
+put, external-to-the-repository dependencies are put here. 
 
-_The closest notion to BUILD files in the Xcode world, is the machine readble
-`xcodeproj` files managed by Xcode._
+_In the Xcode world, build configuration is governed by the Xcode GUI and
+stored in the machine readable `xcodeproj` files._
 
 ## WORKSPACE configuration and setting up rules_apple
 
 For building iOS applications, most iOS developers use the rule set
-`rules_apple`. `rules_apple` contains key rules for iOS development which
+`rules_apple`. `rules_apple` contains key [rules](### Rules) for iOS development which
 includes rules to build applications, unit tests, and more.
 
 Head to [rules_apple](https://github.com/bazelbuild/rules_apple) and follow the
@@ -80,7 +82,7 @@ git_repository(
 ```
 
 The first line of code calls the function, `load`. The load function imports
-symbols from a `.bzl` file.  In Objective-C or swift, it's like importing a
+symbols from a `.bzl` file.  In Objective-C or Swift, it's like importing a
 header file.
 
 ```
@@ -88,21 +90,18 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 ```
 _load `git_repository` from the internal [bazel tools](https://github.com/bazelbuild/bazel/issues/4301) repository_
 
-The next line of code calls `git_repository` defines `build_bazel_rules_apple`
-from the git repository, `https://github.com/bazelbuild/rules_apple` for a
-given `commit`. 
-
-_`git_repository` documentation https://docs.bazel.build/versions/2.0.0/repo/git.html_
+The next line of code calls `git_repository` and defines the repository
+`build_bazel_rules_apple` from the git repository,
+`https://github.com/bazelbuild/rules_apple` for a given `commit`. 
 
 ### BUILD files
 
-`BUILD` files are where all the targets are defined.
+`BUILD` files are where all the targets are defined. For Apple developers, this
+often includes apps, tests, app extensions, frameworks, and libraries.
 
 First, let's walk through creating a basic iOS application. In the root of the
 project, let's create the `BUILD` file. First, a library for the iOS
 application sources. The following code defines an `objc_library`, `sources`.
-In Xcode this is similar to navigating in the GUI and hitting `File -> New
-Target` 
 
 ```
 # /path/to/myproject/BUILD
@@ -112,7 +111,7 @@ objc_library(
 )
 ```
 
-Next, create the application target with `rules_apple`'s `ios_applicaiton` rule.
+Next, create the application target with `rules_apple`'s `ios_application` rule.
 ```
 # /path/to/myproject/BUILD
 ...
@@ -128,31 +127,11 @@ ios_application(
 )
 ```
 
-The`ios_application` and `objc_library` targets together would be represented
-in Xcode as:
+In Xcode this is similar to navigating in the GUI and hitting `File -> New
+Target`. Together, the `ios_application` and `objc_library` targets together
+would be represented in Xcode as:
 
 ![Docs](XcodeExampleOfiOSProject.png)
-
-### Rules
-
-In the previous segment, we created an iOS application with a single BUILD
-file. The `ios_application` rule is implemented by `rules_apple` and the
-`objc_library` is a native rule.
-
-A target is an instance of a rule. Rules implement business logic for how the
-iOS application is built by creating actions. actions represent invocations of
-extenal command line programs like `clang` or `bash`. Typical projects contain
-many rules, targets, and BUILD files.
-
-```
-BUILD file -> target -> rule -> action -> execution
-```
-
-Bazel and open source rules should provide most functionality to build an iOS
-application. Generally, defining custom rules isn't required but can improve
-and consolidate functionality. To learn more about how to create custom rules,
-the document, [Bazel extensions](https://docs.bazel.build/versions/master/skylark/concepts.html)
-contains a comprehensive overview.
 	
 ### Command line usage
 
@@ -176,9 +155,11 @@ documentation](https://docs.bazel.build/versions/master/command-line-reference.h
 For iOS developers, a set of useful flags is available at
 [bazel-ios-users](https://github.com/ios-bazel-users/ios-bazel-users/blob/master/UsefulFlags.md).
 
-In addition to the default bazel options, it's common to create custom
-configuration settings to customize builds, so the possible Bazel command line
-permutations are endless.
+### Configurable build attributes
+
+In addition to the default Bazel options, it's common to create custom
+configuration settings to customize builds. Together, `select` and
+`config_setting` yield configurable build attributes.
 
 For example, the following build file has conditional `copts` on `:app_store`
 
@@ -198,20 +179,51 @@ config_setting(
 )
 ```
 
-This is passed in as a define to Bazel
+This is can be set as a define and passed to Bazel on the command line
 ```
 bazel build ios-app --define app_store=true
 ```
 
-For more information about `config_setting`, please see the [Bazel
+For more information about `select` and `config_setting`, please see the [Bazel
 documentation](https://docs.bazel.build/versions/master/be/common-definitions.html#configurable-attributes).
 
-### Configuration of libraries and flags via macros
+### C++ compiler configuration
 
-Most users of Bazel implement a higher level system of macros to encapsulate
-defaults of building librarys and simplify configuration management. 
+In Xcode there is a plethora of flags that implicate different kinds of flags.
+In Bazel, `toolchains`, `objc_library`, `bazelrc` configure flags. The variable
+`copts` in `objc_library` passes flags directly to the compiler. Please find
+canonical documentaiton on `copts` on the [Bazel
+docs](https://docs.bazel.build/versions/master/be/objective-c.html#objc_library.copts).
+Using `objc_library` to define compiler flags is useful for the per-rule level
+and many projects use macros and other layers of abstraction to [unify library
+level configuration](### Macros)
 
-Bazel provides the pythonic programming language Starlark to implement such
+
+### Rules
+
+In the previous segment, we created an iOS application with a single BUILD
+file. The `ios_application` rule is implemented by `rules_apple` and the
+`objc_library` is a native rule.
+
+A target is an instance of a rule. Rules implement business logic for how the
+iOS application is built by creating actions. actions represent invocations of
+external command line programs like `clang` or `bash`. Typical projects contain
+many rules, targets, and BUILD files.
+
+```
+BUILD file -> target -> rule -> action -> execution
+```
+
+Bazel and open source rules should provide most functionality to build an iOS
+application. Generally, defining custom rules isn't required but can improve and
+consolidate functionality. To learn more about how to create custom rules, the
+document, [Bazel
+extensions](https://docs.bazel.build/versions/master/skylark/concepts.html)
+contains a comprehensive overview.
+
+### Macros
+
+Bazel provides the pythonic programming language Starlark to implement
 build system logic. Like rules and aspects, macros are defined in `.bzl` files.
 A macro is a convenient way to call a rule, and not recognized by Bazel in the
 same way a rule is.
@@ -219,6 +231,10 @@ same way a rule is.
 _Note: The main distinction between a `.bzl` and a `BUILD` file is `BUILD` files are
 used to create targets by calling macros and rules. `.bzl` files define the
 implementation._
+
+For example, Macros allow you to Most users of Bazel implement a higher level
+system of macros to encapsulate defaults of building librarys and simplify
+configuration management. 
 
 To create a wrapper for `objc_library`, create the file `objc_library.bzl`. The
 following macro restricts the customization, and enforces defaults of the
@@ -254,7 +270,7 @@ objc_library(name="some", copts=["-DSOME"])
 ```
 
 The same principals can be applied to many rules: wrapping macros with macros.
-With Starlark, the possibilities are endless! _technically they are endless as
+With Starlark, the possibilities are endless! _technically they aren't endless as
 the language is not turing complete_. Please see the
 [`objc_library`](https://docs.bazel.build/versions/master/be/objective-c.html)
 documentation for all possible arguments. _Note: Unlike Starlark rules which
@@ -262,9 +278,25 @@ are easily added on to Bazel, the `objc_library` is part of the internal java
 rules shipped with the Bazel
 binary._ 
 
+### Aspects
+
+Aspects are another extension point in Bazel. Simply put, they allow the
+developer to traverse the build graph and collect information or generate
+actions on the way. 
+
+> Aspects are a feature of Bazel that are basically like fan-fic, if build rules
+were stories: aspects let you add features that require intimate knowledge of
+the build graph, but that that the rule maintainer would never want to add.
+
+Combined with Rules and the Bazel command line, they user to create robust
+architectures and powerful abstractions. Like rules, generally, defining custom
+rules isn't required but can improve and consolidate functionality. For more
+information about aspects, see [Aspects the fan-fic of build
+rules](https://kchodorow.com/2017/01/10/aspects-the-fan-fic-of-build-rules/)
+
 ### Toolchains
 
-In additional to configuring the build with rules, bazel provides a additional
+In addition to configuring the build with rules, Bazel provides an additional
 primitive, the toolchain. Toolchains provide default compilers and arguments
 for those compilers. For the native c++ rules, this is relied upon to configure
 the many flags required for cross compilation.
@@ -309,22 +341,46 @@ The rule definition for the `xcode_project` may be found in the [github
 repository](https://github.com/pinterest/xchammer/blob/master/BazelExtensions/xcodeproject.bzl).
 Simply put, the aspect traverses sources, and invokes the `xchammer` binary with
 a JSON file. Internally, XCHammer instantiates
-[`XcodeGen`](https://github.com/yonaskolb/XcodeGen) types and writes them out to
-disk with `xcodeproj`.
+[XcodeGen](https://github.com/yonaskolb/XcodeGen) types and writes them out to
+disk with [xcodeproj](https://github.com/tuist/XcodeProj).
 
-The workflow for generating an Xcode project with XCHammer is quite simple:
+Generating an Xcode project with XCHammer:
 ```
-command line -> bazel -> rule -> xchammer -> xcodegen -> xcodeproj
+command line -> bazel -> rule -> xchammer -> xcodegen -> project.xcodeproj
 ```
 
 Generators like XCHammer and Tulsi take care of integrating Bazel into the IDE.
 Bazel builds are invoked a shell script build phase from the IDE. Basically,
 Xcode shells out to Bazel to produce the application, and then Xcode picks up
 the product from the derived data path. Performing a Bazel build from Xcode.
+
 ```
 play button -> shell script build phase -> bazel build ios-app
 ```
 
+![Docs](XcodeBazelRunscript.png)
+
+_In the Xcode world, Xcode's internal build systems produce the application._
+
+### Gathering information with Bazel query
+
+Bazel query is command line interface that uses a DSL designed to query the
+build graph and extract information. This can be used for tooling purposes, or
+to simply questions about the build. Here's a few examples:
+
+What extensions does the target `pinterest` depend upon?
+```
+bazel query 'kind(ios_extension, deps(pinterest))'
+```
+
+What are the labels of source files in `app-lib`?
+```
+bazel query --noimplicit_deps 'labels(srcs, app-lib)'
+```
+
+Please see the [Bazel query
+documentation](https://docs.bazel.build/versions/master/query.html) for more
+information.
 
 ### Fixing common Bazel errors
 
@@ -341,7 +397,7 @@ objc_library() got unexpected keyword argument: copts
 In the above code, a rule author defined a custom `objc_library` which only
 exposed the parameters name, srcs, hdrs, deps, and data. This is notated by the
 file path `/Users/jerrymarino/Projects/xchammer-github/BUILD.bazel` at the line
-`4:13` where the error occurred. _This is very similar to how clang and swift
+`4:13` where the error occurred. _This is very similar to how clang and Swift
 errors look and feel inside of Xcode_ 
 
 If needed, Bazel generally will indicate the `.bzl` file where the issue
