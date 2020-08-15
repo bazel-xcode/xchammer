@@ -328,6 +328,10 @@ are easily added on to Bazel, the `objc_library` is part of the internal java
 rules shipped with the Bazel
 binary._ 
 
+_In the Xcode world, configuration is defined within Xcode projects and
+proprietary xcconfigs. In Bazel it's easy to establish norms, enforce
+consistency with abstractions like `objc_library`, and refactor_
+
 ### Aspects
 
 Aspects are another extension point in Bazel. Simply put, they allow the
@@ -438,37 +442,43 @@ information.
 
 ### Fixing common Bazel errors
 
-This segment indicates how to fix a basic Bazel error. Bazel has a few levels of
-validation which often occur at BUILD time. Note that since Bazel doesn't type
-check all files in the WORKSPACE on every build it's possible to have an error
-in 1 target, while other targets still work.
+This segment indicates how to fix a basic Bazel error.
+
+Bazel has a few levels of validation which often occur at BUILD time. Note that
+since Bazel doesn't type check all files in the WORKSPACE on every build it's
+possible to have an error in one target, while other targets still work.
 
 ```
 ERROR: /path/to/myproject/BUILD:4:13:
 objc_library() got unexpected keyword argument: copts
 ```
 
-In the above code, a rule author defined a custom `objc_library` which only
-exposed the parameters `name`, `srcs`, `hdrs`, `deps`, and `data`. This is
-notated by the file path `/path/to/myproject/BUILD` at the line `4:13` where
-the error occurred. _This is very similar to how clang and Swift errors look
-and feel inside of Xcode_ 
+In the hypothetical file `/path/to/myproject/BUILD`, at the line `4:13` got an
+unexpected keyword argument, `copts` to the macro `objc_library`. The erroneous
+code resides in the example in the [macros](#macros) segment, which calls a
+custom `objc_library` macro. The macro only exposes the parameters `name`,
+`srcs`, `hdrs`, `deps`, and `data`. By attempting to pass `copts` and deviate
+from the default `copts`, Bazel triggered an error.
 
 If needed, Bazel generally will indicate the `.bzl` file where the issue
 occurred and `BUILD` file that created the error in a call stack like fashion.
 
 To actually fix this error, simply remove the unsupported argument `copts`.
 
+ _note: Bazel's diagnostic
+convention is similar to how clang and Swift errors look and feel inside of
+Xcode_ 
+
 ### Installing Bazel
 
 Bazel is commonly invoked via a wrapper script to handle downloading and
-installing bazel binaries at the correct version. To implement reproducible
-builds, every dependency ( including ) Bazel should be pinned at a commit,
-including Bazel. BUILD files, rules, and protocol buffers, are often tied to a
-certain release of Bazel. An popular example of a wrapper script is
-[Bazelisk](https://github.com/bazelbuild/bazelisk/releases). Bazelisk allows the
-user to specify a `.bazelversion` file at the root of the project and easily
-update. To work across many Bazel projects, it's convenient to install
+installing Bazel binaries at the correct version. To implement reproducible
+builds, every dependency should be pinned at a commit, including Bazel. BUILD
+files, rules, and protocol buffers, are often tied to a certain release of
+Bazel. An popular example of a wrapper script is
+[Bazelisk](https://github.com/bazelbuild/bazelisk/releases). Bazelisk allows
+the user to specify a `.bazelversion` file at the root of the project and
+easily update. To work across many Bazel projects, it's convenient to install
 `Bazelisk` onto the path, and invoke it as `bazel`. _Note: In order for Bazel's
 shell completion to work, the wrapper script must be named `bazel`._
 
