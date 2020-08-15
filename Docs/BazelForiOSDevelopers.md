@@ -229,20 +229,12 @@ level configuration](#Macros)
 
 ### Starlark
 
-Bazel provides the pythonic programming language, Starlark. Starlark is used to
-implement build system logic and establish norms. The coming segments
-[rules](#rules), [macros](#macros), and [aspects](#aspects) cover several
-examples.
-
-
-
-Starlark calls into functionality that's implemented within Bazel. For example,
-the `glob` function, which gathers a list of files is provided in the global
-namespace.
-
-```
-glob(["*.c"]) # Returns all of the .c files within scope of the callsite's BUILD file
-```
+Bazel provides the
+[_pythonic_](https://stackoverflow.com/questions/25011078/what-does-pythonic-mean)
+programming language, Starlark. Starlark is used to implement build system
+logic and establish norms.  Generally, starlark calls into functionality that's
+implemented within Bazel. The coming segments [rules](#rules),
+[macros](#macros), and [aspects](#aspects) cover several examples.
 
 ```
 .bzl file -> starlark -> bazel functions
