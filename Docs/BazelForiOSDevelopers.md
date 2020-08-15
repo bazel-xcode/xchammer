@@ -229,22 +229,36 @@ level configuration](#Macros)
 
 ### Starlark
 
-On advantage of Bazel is that it's extensible without forking. In addition to
-being highly maintainable, this boundary helps the developer to focus on the
-business logic instead of the core of the build system. Bazel provides the
-pythonic programming language, Starlark to implement build system logic and
-abstractions all without needing to fork the core build system. For example,
-the Apple specific logic of bundling an `ios_application` is external to
-Bazel's core residing in the rule set, `rules_apple`.
-
-In addition to implementing build system logic, Starlark is useful to establish
-build system norms and unify configuration data. The coming segments
+Bazel provides the pythonic programming language, Starlark. Starlark is used to
+implement build system logic and establish norms. The coming segments
 [rules](#rules), [macros](#macros), and [aspects](#aspects) cover several
-example usage. With Starlark, the possibilities are endless. _technically they
-aren't endless as the language is not turing complete_.
+examples.
 
-For more information, please see the [Starlark
+
+
+Starlark calls into functionality that's implemented within Bazel. For example,
+the `glob` function, which gathers a list of files is provided in the global
+namespace.
+
+```
+glob(["*.c"]) # Returns all of the .c files within scope of the callsite's BUILD file
+```
+
+```
+.bzl file -> starlark -> bazel functions
+```
+
+Starlark enables extensibility without needing to fork the core build system.
+This boundary helps the developer to focus on their business logic instead of
+the core of the build system. For example, the Apple specific logic of bundling
+an `ios_application` is external to Bazel's core residing in the rule set,
+`rules_apple`.
+
+With Starlark, the possibilities are endless. _technically they aren't endless
+as the language is not turing complete_.For more information, please see the
+[Starlark
 documentation](https://docs.bazel.build/versions/master/skylark/language.html).
+
 
 ### Rules
 
