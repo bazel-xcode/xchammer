@@ -215,14 +215,15 @@ documentation](https://docs.bazel.build/versions/master/be/common-definitions.ht
 
 ### Compiler configuration
 
-In Xcode there is a plethora of flags that implicate different kinds of flags.
-In Bazel, `toolchains`, `objc_library`, `bazelrc` all configure flags. The variable
-`copts` in `objc_library` passes flags directly to the compiler. Please find
-canonical documentation on `copts` on the [Bazel
+In Xcode there is a plethora of configuration options known as xcconfig that
+implicate different compiler flags.  In Bazel, `toolchains`, `objc_library`,
+`bazelrc` all configure flags. The variable `copts` in `objc_library` passes
+flags directly to the compiler. Please find canonical documentation on `copts`
+on the [Bazel
 docs](https://docs.bazel.build/versions/master/be/objective-c.html#objc_library.copts).
 Using `objc_library` to define compiler flags is useful for the per-rule level
 and many projects use macros and other layers of abstraction to [unify library
-level configuration](#Macros)
+level configuration](#Macros).
 
 
 ## Extending Bazel
