@@ -129,7 +129,7 @@ The next line of code calls `git_repository` and defines the repository
 ### Adding an iOS application with BUILD files
 
 `BUILD` files are where all the targets are defined. For Apple developers, this
-often includes apps, tests, app extensions, frameworks, and libraries.
+often includes apps: [`ios_application`](https://github.com/bazelbuild/rules_apple/tree/master/doc)'s, tests: [`ios_unit_test`/`ios_ui_test`](https://github.com/bazelbuild/rules_apple/tree/master/doc), app extensions: [`ios_extension`](https://github.com/bazelbuild/rules_apple/tree/master/doc), frameworks: [`ios_framework`](https://github.com/bazelbuild/rules_apple/tree/master/doc), and libraries: [`objc_library`](https://docs.bazel.build/versions/master/be/objective-c.html), [`swift_library`](https://github.com/bazelbuild/rules_swift/tree/master/doc).
 
 First, let's walk through creating a basic iOS application. In the root of the
 project, let's create the `BUILD` file. First, a library for the iOS
