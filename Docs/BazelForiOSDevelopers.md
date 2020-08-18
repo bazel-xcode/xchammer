@@ -505,15 +505,15 @@ ERROR: /path/to/xchammer/BazelExtensions/xchammerconfig.bzl:22:9: Traceback (mos
 ```
 
 In this error condition, the user has incorrectly used a rule and Bazel is
-failing at runtime. Like python, there is no type checking at runtime.
+failing at runtime. Like python, type errors happen at runtime.
 
 In the following error, a user inadvertently made a change to XCHammer's BUILD
 file that passed the wrong data type to the rule, `gen_xchammer_config`:
 
 Bazel's stacktrace indicates it failed in the file
 `/path/to/xchammer/BazelExtensions/xchammerconfig.bzl` at `line 22`. The
-original callsite resides in the file `/path/to/xchammer/BUILD.bazel` at line
-`151`. To remediate this issue, generally refer to the rule documentation or
+original callsite resides in the file `/path/to/xchammer/BUILD.bazel` at `line
+151`. To remediate this issue, generally refer to the rule documentation or
 source code and do what the rule was expecting. There is no universal
 prescription to fix this error: there infinite possibilities of incorrect data
 type permutations.
