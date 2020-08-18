@@ -413,7 +413,9 @@ command line -> bazel -> rule -> xchammer -> xcodegen -> project.xcodeproj
 Generators like XCHammer and Tulsi take care of integrating Bazel into the IDE.
 Bazel builds are invoked a shell script build phase from the IDE. Basically,
 Xcode shells out to Bazel to produce the application, and then Xcode picks up
-the product from the derived data path. Performing a Bazel build from Xcode.
+the product from the derived data path. 
+
+Performing a Bazel build from Xcode:
 
 ```
 play button -> shell script build phase -> bazel build ios-app
