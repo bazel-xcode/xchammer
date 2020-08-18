@@ -75,7 +75,7 @@ The `BUILD` file - these files define what targets are inside of a project.
 Applications, extensions, static libraries, and frameworks are all declared in
 BUILD files.
 
-The `WORKSPACE` file - this file is about getting files and dependencies from
+The `WORKSPACE` file: references files and dependencies from
 [outside the world into
 Bazel](https://docs.bazel.build/versions/master/be/workspace.html).  Simply
 put, external-to-the-repository dependencies are put here. 
