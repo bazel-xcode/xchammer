@@ -3,10 +3,10 @@
 This document is an introduction to Bazel for iOS developers. While there's
 been many docs written about Bazel, the existing material can be overwhelming
 for a line engineer looking to get started. This document is geared towards an
-iOS developer coming from Xcode and intends to be a lightweight introduction to
-Bazel.
+iOS developer coming from Xcode and intends to be a lightweight and therefore
+incomplete introduction to Bazel.
 
-The document supplements canonical Bazel resources, linked in the [conclusion](#conclusion).
+It supplements canonical Bazel resources, linked in the [conclusion](#conclusion).
 
 ## Table of contents
 
@@ -30,8 +30,10 @@ The document supplements canonical Bazel resources, linked in the [conclusion](#
      * [Gathering information with Bazel query](#gathering-information-with-bazel-query)
      * [Fixing common Bazel errors](#fixing-common-bazel-errors)
      * [Installing Bazel](#installing-bazel)
-     * [Building CocoaPods with Bazel](#building-cocoapods-with-bazel)
+     * [BUILD file generators](#build-file-generators)
+     * [Putting it all together - build system architecture](#putting-it-all-together---build-system-architecture)
   * [Conclusion](#conclusion)
+  * [Acknowledgements](#Acknowledgements)
 
 
 ## Build systems for iOS developers
@@ -54,13 +56,16 @@ strict about inputs and outputs - they must be declared. This property, known as
 "hermetic" builds, makes builds reproducible and well-suited for distributed
 cloud builds and caching. For developers, this means better performance due to
 cache hitting and not constantly removing derived data. Clean builds become
-incremental, decades of CPU cycles saved.  Bazel also makes it easy to automate
-many kinds tasks for example, code generating a thrift schema, [generating an
-Xcode project](https://github.com/pinterest/xchammer), or [pushing a docker
-container](https://github.com/bazelbuild/rules_docker).  Starklark, a built in
-determinsitc python-like programming language allows developers to implement
+incremental, decades of CPU cycles saved. 
+
+Bazel also makes it easy to automate many kinds tasks for example, code
+generating a thrift schema, [generating an Xcode
+project](https://github.com/pinterest/xchammer), or [pushing a docker
+container](https://github.com/bazelbuild/rules_docker).  Starlark, a built in
+deterministic python-like programming language allows developers to implement
 custom build logic. For developers this means better performance and pulling in
-ad-hoc build tasks into a directed build graph.
+out-of-band ad-hoc build tasks into a directed build graph that builds as a
+unit.
 
 _To learn about how Bazel compares to other build systems, Microsoft's paper
 [Build Systems à la
@@ -107,7 +112,10 @@ git_repository(
 
 The first line of code calls the function, `load`. The load function imports
 symbols from a `.bzl` file.  It's like importing a header file
-in Objective-C or Swift.
+in Objective-C or Swift. _Note:
+[Bazel_tools](https://github.com/bazelbuild/bazel/issues/4301) is a repository
+shipped with Bazel and commonly used in the WORKSPACE_
+
 
 ```
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
@@ -230,12 +238,11 @@ level configuration](#Macros).
 
 ### Starlark
 
-Bazel provides the
-[_pythonic_](https://stackoverflow.com/questions/25011078/what-does-pythonic-mean)
-programming language, Starlark. Starlark is used to implement build system
-logic and establish norms.  Generally, Starlark calls into functionality that's
-implemented within Bazel. The coming segments [rules](#rules),
-[macros](#macros), and [aspects](#aspects) cover several examples.
+Bazel provides the python-like programming language, Starlark. Starlark is used
+to implement build system logic and establish norms.  Generally, Starlark calls
+into functionality that's implemented within Bazel. The coming segments
+[rules](#rules), [macros](#macros), and [aspects](#aspects) cover several
+examples.
 
 ```
 .bzl file -> starlark -> bazel functions
@@ -491,13 +498,42 @@ easily update. To work across many Bazel projects, it's convenient to install
 _Note: In order for Bazel's
 shell completion to work, the wrapper script must be named `bazel`._
 
-### Building CocoaPods with Bazel
+### BUILD file generators
 
-`PodToBUILD` provides a WORKSPACE rule to make it easy to build CocoaPods with
-Bazel. It loads in sources, and by reading in a Podspec file, it can generate a
-BUILD file. Find out more information about [PodToBUILD on
+Build file generators are common in Bazel projects. Like macros, BUILD file
+generators can be used to integrate dependencies and make it easier to upgrade
+and refactor rules. Like an Xcode project generator, BUILD file generators fits
+into the larger build system picture through Bazel's unified interface: they
+generates build files that Bazel reads when invoking the command line program
+`bazel`
+
+[PodToBUILD](https://github.com/pinterest/PodToBUILD) provides a WORKSPACE rule
+and binary to make it easy to build CocoaPods with Bazel. It loads in sources,
+and by reading in a Podspec file and generate a BUILD file for the input. In
+addition to generating build files for CocoaPods. PodTOBUILD provides a
+functional library to implement BUILD file generators in Swift. Find out more
+information about [PodToBUILD on
 github](https://github.com/pinterest/PodToBUILD). 
 
+[Gazelle](https://github.com/bazelbuild/bazel-gazelle) is another example of
+BUILD file generator and is written in go.
+
+### Putting it all together - build system architecture
+
+With all the topics covered in this document, Bazel can be used to create a
+robust and performant build system. Instead of having several out of band,
+ad-hoc, scripts,  Bazel provides a unified command like interface to govern all
+tools and build the application as a unit.
+
+The following example illustrates a full iOS application building with Bazel.
+
+![Docs](CommoniOSBazelArchitecture.png)
+
+In this example, Bazel runs a `BUILD file generator`, which produces `BUILD
+files`. [rules](#rules) and [aspects](#aspects) are defined in `.bzl` files and
+instantiated inside of BUILD files. [rules](#rules) and [aspects](#aspects)
+create actions which produces ouputs for a set of inputs and run programs like
+`bash`, `clang`, `swiftc` or xcode project generators.
 
 ## Conclusion
 
@@ -522,3 +558,8 @@ The community maintains repos and documentation
 
 Finally, this document is meant to be updated. If there are additional bullet
 points useful for iOS developer onboarding, please send a pull request. 
+
+## Acknowledgements
+
+This document was originally reviewed and revised by several people from across the industry. Many thanks owed to [@raul-malik](https://github.com/rahul-malik), [jszumski](https://github.com/jszumski), [BalestraPatrick](https://github.com/BalestraPatrick), and [garrettmoon](https://github.com/garrettmoon). Additional thanks to [Mattmlm](https://github.com/Mattmlm), [joemantey](https://github.com/joemantey) and [woshimaliang](https://github.com/woshimaliang).
+
