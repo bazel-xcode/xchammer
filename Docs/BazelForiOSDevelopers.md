@@ -363,8 +363,8 @@ primitive: the toolchain. Toolchains provide default compilers and arguments
 for those compilers. For the native C++ rules, toolchains configure
 the many flags required for cross compilation.
 
-For most iOS projects, configuring the c++ toolchain isn't required. Defining a
-custom toolchain is useful to gives full control over compiler invocations or
+For most iOS projects, configuring the C++ toolchain isn't required. Defining a
+custom toolchain gives full control over compiler invocations or
 to customize the compiler being invoked.  Please see the [toolchain
 documentation](https://docs.bazel.build/versions/master/tutorial/cc-toolchain-config.html)
 to learn more.
