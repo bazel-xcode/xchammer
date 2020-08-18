@@ -51,7 +51,7 @@ file can become painful.
 
 Bazel can fix many problems with iOS builds when done well. First, Bazel is
 strict about inputs and outputs - they must be declared. This property, known as
-"hermetic" builds, makes builds reproducible and well suited for distributed
+"hermetic" builds, makes builds reproducible and well-suited for distributed
 cloud builds and caching. For developers, this means better performance due to
 cache hitting and not constantly removing derived data. Clean builds become
 incremental, decades of CPU cycles saved.  Bazel also makes it easy to automate
