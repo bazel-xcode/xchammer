@@ -64,7 +64,7 @@ project](https://github.com/pinterest/xchammer), or [pushing a docker
 container](https://github.com/bazelbuild/rules_docker).  Starlark, a built in
 deterministic python-like programming language allows developers to implement
 custom build logic. For developers this means better performance and pulling in
-out-of-band ad-hoc build tasks into a directed build graph that builds as a
+out-of-band ad-hoc build scripts into a directed build graph that builds as a
 unit.
 
 _To learn about how Bazel compares to other build systems, Microsoft's paper
