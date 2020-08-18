@@ -194,7 +194,9 @@ In addition to the default Bazel options, it's common to create custom
 configuration settings to customize builds. Together, `select` and
 `config_setting` yield configurable build attributes.
 
-For example, the following build file has conditional `copts` on `:app_store`
+For example, unavoidable requirements could require an `objc_library` to
+be compiled differently when building for the appstore. The following build
+file has conditional `copts` on `:app_store`. 
 
 ```
 objc_library(
@@ -212,10 +214,41 @@ config_setting(
 )
 ```
 
-This can be set as a define and passed to Bazel on the command line
+This can be set as a define and passed to Bazel on the command line. Other variables in the build may also switch on `app_store`.
 
 ```
 bazel build ios-app --define app_store=true
+```
+
+`config_setting` may hinge on other settings as well. For example, in
+PodToBUILD, we set the `config_setting`,
+[`release`](https://github.com/pinterest/PodToBUILD/blob/master/IntegrationTests/GoldMaster/Bolts.podspec.json.goldmaster#L13).
+
+When the users passes `opt` to the compiler, it implicates that
+`DNS_BLOCK_ASSERTIONS=1` and `-POD_CONFIGURATION_RELEASE=1` are set.
+```
+config_setting(
+  name = "release",
+  values = {
+    "compilation_mode": "opt"
+  }
+)
+...
+objc_libray(
+...
+  copts = [...
+  ] + select(
+    {
+      "//conditions:default": [
+        "-DDEBUG=1",
+        "-DPOD_CONFIGURATION_DEBUG=1"
+      ],
+      ":release": [
+        "-DPOD_CONFIGURATION_RELEASE=1",
+        "-DNS_BLOCK_ASSERTIONS=1"
+      ]
+    }
+  )
 ```
 
 For more information about `select` and `config_setting`, please see the [Bazel
@@ -278,8 +311,10 @@ more power and capabilities needed to implement core functionality (like remote
 execution and C++ compilation), and are generally used as-is.
 
 ```
-BUILD file -> target -> rule -> action -> execution
+BUILD file -> rule -> action -> execution
 ```
+_A build file instantiates rules as targets which create actions that are
+executed by [Skyframe](https://bazel.build/designs/skyframe.html)_
 
 Bazel and open source rules should provide most functionality to build an iOS
 application. Generally, defining custom rules isn't required but can improve and
@@ -420,7 +455,9 @@ command line -> bazel -> rule -> xchammer -> xcodegen -> project.xcodeproj
 Generators like XCHammer and Tulsi take care of integrating Bazel into the IDE.
 Bazel builds are invoked a shell script build phase from the IDE. Basically,
 Xcode shells out to Bazel to produce the application, and then Xcode picks up
-the product from the derived data path. 
+the product from the derived data path. [Lyft's 2020 Bazel Con
+talk](https://www.youtube.com/watch?v=NAPeWoimGx8) covers how they generate an
+Xcode project with XcodeGen.
 
 Performing a Bazel build from Xcode:
 
@@ -525,7 +562,11 @@ type permutations.
 ERROR: /path/to/myproject/BUILD.bazel:47:1: in _xcode_project rule //:XcodeBazel_impl: target '//ios-app:ios-app' is not visible from target '//:XcodeBazel_impl'. Check the visibility declaration of the former target if you think the dependency is legitimate
 ```
 
-In this example, a target `$target` has added a dependecy on a private target, `$dep_target` and it failed in the implementation. The callsite for the erroneous rule resides in the file, `/path/to/myproject/BUILD.bazel` at `line 47`. This is caused by an improper application of [rule visibility](https://docs.bazel.build/versions/master/visibility.html).
+In this example, a target `$target` has added a dependecy on a private target,
+`$dep_target` and it failed in the implementation. The callsite for the
+erroneous rule resides in the file, `/path/to/myproject/BUILD.bazel` at `line
+47`. This is caused by an improper application of [rule
+visibility](https://docs.bazel.build/versions/master/visibility.html).
 
 To remediate, fix `visibiilty` of the rule at `line 47`:
 
@@ -576,12 +617,16 @@ BUILD file generator and is written in go.
 
 ### Putting it all together - build system architecture
 
-With all the topics covered in this document, Bazel can be used to create a
-robust and performant build system. Instead of having several out of band,
-ad-hoc, scripts,  Bazel provides a unified command like interface to govern all
-tools and build the application as a unit.
+This segment puts together covered in this document.
 
-The following example illustrates a full iOS application building with Bazel.
+Bazel can be used to create a robust and performant build. Instead of having
+several out-of-band, ad-hoc, scripts, Bazel provides a unified command like
+interface to govern all tools and build the application as a unit. The
+following diagram illustrates building a more involved iOS application with
+Bazel with [rules](#rules), [aspects](#aspects), [Generated Xcode
+projects](#generated-xcode-projects), and [BUILD file
+generators](#build-file-generators).
+
 
 ![Docs](CommoniOSBazelArchitecture.png)
 
@@ -611,6 +656,11 @@ The community maintains repos and documentation
 - [Useful Xcode Knowledge](https://github.com/ios-bazel-users/ios-bazel-users/blob/master/UsefulXcodeKnowledge.md)
 - [Line's Apple rules](https://github.com/line/rules_apple_line)
 - [iOS rules for Bazel - Square, Linkedin](https://github.com/bazel-ios/rules_ios)
+
+iOS Bazel con talks
+- [BazelCon 2019 Day 1: Migrating Lyft-iOS to Bazel](https://www.youtube.com/watch?v=NAPeWoimGx8)
+- [Faster iOS Builds with Bazel - Line](https://www.youtube.com/watch?v=xSZlNFwPIOE)
+- [Hacks and Tips for Incremental Adoption of Bazel for iOS - Pinterest](https://www.youtube.com/watch?v=wewAVF-DVhs)
 
 Finally, this document is meant to be updated. If there are additional bullet
 points useful for iOS developer onboarding, please send a pull request. 
