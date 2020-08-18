@@ -461,6 +461,10 @@ This segment indicates how to fix a basic Bazel error.
 Bazel has a few levels of validation which often occur at BUILD time. Note that
 since Bazel doesn't type check all files in the WORKSPACE on every build it's
 possible to have an error in one target, while other targets still work.
+Bazel's diagnostic convention is similar to how clang and Swift errors look and
+feel inside of Xcode.
+
+#### _got unexpected keyword argument_
 
 ```
 ERROR: /path/to/myproject/BUILD:4:13:
@@ -479,9 +483,56 @@ occurred and `BUILD` file that created the error in a call stack like fashion.
 
 To actually fix this error, simply remove the unsupported argument `copts`.
 
- _Note: Bazel's diagnostic
-convention is similar to how clang and Swift errors look and feel inside of
-Xcode._ 
+#### _incorrect use of `load` statements_
+
+In this error condition, a `BUILD` file change has been introduced that called
+a `load` statement prior to instantiating a rule. At one point, Bazel required
+that all load statements to be placed before rule instantiation. Simply move
+the `load` statement to the top. All symbols besides for the native ones must
+be imported. This notion is similar to importing a module in swift: e.g.
+`import UIKit`
+
+#### _passing the wrong type to a parameter_
+
+In this error condition, the user has incorrectly used a rule and Bazel is failing at runtime. Like python, there is no type checking at runtime.
+
+In the following error, a user inadvertently made a change to XCHammer's BUILD file that passed the wrong data type to the rule, `gen_xchammer_config`
+```
+ERROR: /Users/jerrymarino/Projects/xchammer-github/BazelExtensions/xchammerconfig.bzl:22:9: Traceback (most recent call last):
+        File "/path/to/xchammer/BUILD.bazel", line 151
+                gen_xchammer_config(<2 more arguments>)
+        File "/path/to/xchammer-github/BazelExtensions/xchammerconfig.bzl", line 26, in gen_xchammer_config
+                gen_dsl(name = name, <1 more arguments>)
+        File "/path/to/xchammer/BazelExtensions/xchammerconfig.bzl", line 22, in gen_dsl
+                ast.to_json
+```
+
+With Bazel's stacktrace, we can see that Bazel failed in the file
+`/path/to/xchammer/BazelExtensions/xchammerconfig.bzl` at `line 22`. The
+original callsite resides in the file `/path/to/xchammer/BUILD.bazel` at line
+`151`. To remediate this issue, generally refer to the rule documentation or
+source code and do what the rule was expecting. There is no general
+prescription to fix this error, as there are infinite possibilities of
+incorrect data type permutations.
+
+
+#### _target '$dep_target' is not visible from target '$target'_
+```
+ERROR: /path/to/myproject/BUILD.bazel:47:1: in _xcode_project rule //:XcodeBazel_impl: target '//ios-app:ios-app' is not visible from target '//:XcodeBazel_impl'. Check the visibility declaration of the former target if you think the dependency is legitimate
+```
+
+In this example, a target `$target` has added a dependecy on a private target, `$dep_target` and it failed in the implementation. The callsite for the erroneous rule resides in the file, `/path/to/myproject/BUILD.bazel` at `line 47`. This is caused by an improper application of [rule visibility](https://docs.bazel.build/versions/master/visibility.html).
+
+To remediate, fix `visibiilty` of the rule at `line 47`:
+```
+# All Bazel rules have this argument available.
+visibility = ["//visibility:public"],
+```
+
+Otherwise, consider making the entire package public if appropriate:
+```
+package(default_visibility = ["//visibility:public"])
+```
 
 ### Installing Bazel
 
