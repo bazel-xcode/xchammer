@@ -272,19 +272,47 @@ way that is unmodifiable by the user. Bazel doesn't have xcconfigs and puts the
 user in full control of the build through settings, rules, aspects, toolchains
 and open source code.
 
-In Bazel, `toolchains`, `objc_library`, `bazelrc` all configure flags. The
-variable `copts` in `objc_library` passes flags directly to the compiler.
-Please find canonical documentation on `copts` on the [Bazel
-docs](https://docs.bazel.build/versions/master/be/objective-c.html#objc_library.copts).
-Using `objc_library` to define compiler flags is useful for the per-rule level
-and many projects use macros and other layers of abstraction to [unify library
-level configuration](#Macros).
+In Bazel, `toolchains`, `objc_library`, `swift_library`, and `bazelrc` all configure flags.
 
-In the rule set, `rules_swift`, the argument `copts` also exists. Like `copts`
-used in other rules, it allows the user to pass flags directly to the compiler.
-For more information about `swift_library` please see the [`rules_swift`
+#### Library Level
+
+The parameter `copts` passes flags directly to the compiler. This parameter is
+useful for the per-rule configuration. Simply put, it's useful for when `copts`
+should apply to a single target but not all targets. Many projects use macros
+and other layers of abstraction to [unify library level configuration](#Macros)
+for subsets of targets.
+
+This parameter is prominit in the native C++ rules, for example the
+`objc_library` rule. Please find canonical documentation on `copts` on the
+[Bazel
+docs](https://docs.bazel.build/versions/master/be/objective-c.html#objc_library.copts).
+
+In the rule set, `rules_swift`, the parameter `copts` is also available. The
+behavior is similar to the native C++ rules `copts` parameter in that it passes
+the variables directly to `swiftc`  For more information about `swift_library`
+please see the [`rules_swift`
 documentation](https://github.com/bazelbuild/rules_swift).
 
+#### Bazelrc level
+
+Useful to set global defaults, The `bazelrc` file format allows setting
+compiler flags through the flags, `copt` for all c language compilation,
+`swiftcopt` for swift compilation, and `linkopt` for linker actions. Please see
+the [Bazel
+documentation](https://docs.bazel.build/versions/master/command-line-reference.html)
+for more information.
+
+#### Toolchain level
+
+The `local_config_cc` toolchain enables architecture specific and global flag
+setting. This is useful when flags should apply at a per-architecture level.
+Note: Bazel uses this to set default flags globally. Most iOS applications won't
+need a toolchain, but this is a way to achieve it.
+
+The `local_config_cc` is also a useful place to pass additonal files to the
+compiler like example clang plugins. This is ideal, as specifying the plugin
+argument in `.bazelrc` without adding the file as an input would result in an
+non-hermetic build.
 
 ## Extending Bazel
 
