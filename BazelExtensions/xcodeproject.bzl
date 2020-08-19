@@ -38,10 +38,14 @@ def _xcode_project_impl(ctx):
     for dep in ctx.attr.targets:
         if XcodeConfigurationAspectInfo in dep:
             for info in dep[XcodeConfigurationAspectInfo].values:
-                # For some targets, this is set on the apple binary target.
-                # Move this to the target level, so that XCHammer can easily
-                # read it
-                key = info.replace(".__internal__.apple_binary", "")
+                # For some targets, this is set on an internal target. We need
+                # to set this on the actual label. The convention is to name the
+                # target as ".__internal__.apple_binary" or
+                # ".__internal__.SOME"
+                if ".__internal__" in info:
+                    key = info.split(".__internal__")[0]
+                else:
+                    key = info
                 aggregate_target_config[key] = dep[XcodeConfigurationAspectInfo].values[info]
 
     xchammerconfig_json = ctx.actions.declare_file(ctx.attr.name + "_xchammer_config.json")
