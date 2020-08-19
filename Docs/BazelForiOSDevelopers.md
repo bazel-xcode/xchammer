@@ -26,12 +26,12 @@ It supplements canonical Bazel resources, linked in the [conclusion](#conclusion
      * [Aspects](#aspects)
      * [Toolchains](#toolchains)
      * [Generated Xcode projects](#generated-xcode-projects)
+     * [BUILD file generators](#build-file-generators)
+  * [Putting it all together - build system architecture](#putting-it-all-together---build-system-architecture)
   * [More information](#more-information)
      * [Gathering information with Bazel query](#gathering-information-with-bazel-query)
      * [Fixing common Bazel errors](#fixing-common-bazel-errors)
      * [Installing Bazel](#installing-bazel)
-     * [BUILD file generators](#build-file-generators)
-     * [Putting it all together - build system architecture](#putting-it-all-together---build-system-architecture)
   * [Conclusion](#conclusion)
   * [Acknowledgements](#Acknowledgements)
 
@@ -441,11 +441,17 @@ to learn more.
 
 ### Generated Xcode projects
 
-In an Xcode world, engineers check in a project file, which contains a listing of
-source files, build settings, and IDE state. As the codebase scales, the project file
-model breaks down, particularly when auditing and code reviewing config changes. With Bazel, human readable `BUILD` files are the
-source of truth for build and Xcode configuration. Tools like
-[XCHammer](https://github.com/pinterest/xchammer), and
+In an Xcode world, engineers check in a project file, which contains a listing
+of source files, build settings, and IDE state. As the codebase scales, the
+project file model breaks down, particularly when auditing and code reviewing
+config changes. With Bazel, Xcode projects are generated on the developer's
+machine. By generating transient projects locally, merge conflicts don't slow
+down development. Generated projects make it easier to review and reason about
+configuration changes in readable BUILD and .bzl files. With Bazel, human
+readable `BUILD` files are the source of truth for build and Xcode
+configuration.
+
+Tools like [XCHammer](https://github.com/pinterest/xchammer), and
 [Tulsi](https://github.com/bazelbuild/tulsi) use an aspect to traverse the
 build graph and extract metadata required to generate a project.  These tools
 make it easier to manage the project and generate on demand - not needing to
@@ -497,13 +503,60 @@ play button -> shell script build phase -> bazel build ios-app
 
 _In the Xcode world, Xcode's internal build systems produce the application._
 
+### BUILD file generators
+
+Build file generators are common in Bazel projects. Like macros, BUILD file
+generators can be used to integrate dependencies and make it easier to upgrade
+and refactor rules. Like an Xcode project generator, BUILD file generators fits
+into the larger build system picture through Bazel's unified interface: they
+generates build files that Bazel reads when invoking the command line program
+`bazel`
+
+```
+bazel -> BUILD file generator -> BUILD file
+```
+
+[PodToBUILD](https://github.com/pinterest/PodToBUILD) is a BUILD file generator
+that makes it easy to build CocoaPods with Bazel. It reads in a Podspec file,
+pulls source, and generates a BUILD file. In addition to generating build files
+for CocoaPods, PodTOBUILD provides a functional library to implement BUILD file
+generators in Swift. Find out more information about [PodToBUILD on
+github](https://github.com/pinterest/PodToBUILD). 
+
+[Gazelle](https://github.com/bazelbuild/bazel-gazelle) is another example of
+BUILD file generator and is written in go.
+
+## Putting it all together - build system architecture
+
+This segment puts together topics covered in this document to illustrate how
+`Bazel` integrates with a [`BUILD file generator`](#build-file-generators) like
+PodToBUILD, and an [`Xcode project generator`](#generated-xcode-projects) like
+XCHammer, to compile an iOS application with `clang` and `swift`.
+
+Bazel can be used to create a robust and performant build. Instead of having
+several out-of-band, ad-hoc, scripts, Bazel provides a unified command like
+interface to govern all tools and build the application as a unit. The
+following diagram illustrates building a more involved iOS application with
+Bazel with [rules](#rules), [aspects](#aspects), [Generated Xcode
+projects](#generated-xcode-projects), and [BUILD file
+generators](#build-file-generators).
+
+
+![Docs](CommoniOSBazelArchitecture.png)
+
+In this example, Bazel runs a `BUILD file generator`, which produces `BUILD
+files`. [rules](#rules) and [aspects](#aspects) are defined in `.bzl` files and
+instantiated inside of BUILD files. [rules](#rules) and [aspects](#aspects)
+create actions which produces ouputs for a set of inputs and run programs like
+`bash`, `clang`, `swiftc` or xcode project generators.
+
 ## More information
 
 ### Gathering information with Bazel query
 
 Bazel query is command line interface that uses a DSL designed to query the
 build graph and extract information. This can be used for tooling purposes, or
-to simply questions about the build. Here's a few examples:
+to simply answer questions about the build. Here's a few examples:
 
 What extensions does the target `pinterest` depend upon?
 ```
@@ -627,48 +680,7 @@ easily update. To work across many Bazel projects, it's convenient to install
 _Note: In order for Bazel's
 shell completion to work, the wrapper script must be named `bazel`._
 
-### BUILD file generators
 
-Build file generators are common in Bazel projects. Like macros, BUILD file
-generators can be used to integrate dependencies and make it easier to upgrade
-and refactor rules. Like an Xcode project generator, BUILD file generators fits
-into the larger build system picture through Bazel's unified interface: they
-generates build files that Bazel reads when invoking the command line program
-`bazel`
-
-[PodToBUILD](https://github.com/pinterest/PodToBUILD) is a BUILD file generator
-that makes it easy to build CocoaPods with Bazel. It reads in a Podspec file,
-pull source, and generates a BUILD file. In addition to generating build files
-for CocoaPods, PodTOBUILD provides a functional library to implement BUILD file
-generators in Swift. Find out more information about [PodToBUILD on
-github](https://github.com/pinterest/PodToBUILD). 
-
-[Gazelle](https://github.com/bazelbuild/bazel-gazelle) is another example of
-BUILD file generator and is written in go.
-
-### Putting it all together - build system architecture
-
-This segment puts together topics covered in this document to illustrate how
-`Bazel` integrates with a [`BUILD file generator`](#build-file-generators) like
-PodToBUILD, and an [`Xcode project generator`](#generated-xcode-projects) like
-XCHammer, to compile an iOS application with `clang` and `swift`.
-
-Bazel can be used to create a robust and performant build. Instead of having
-several out-of-band, ad-hoc, scripts, Bazel provides a unified command like
-interface to govern all tools and build the application as a unit. The
-following diagram illustrates building a more involved iOS application with
-Bazel with [rules](#rules), [aspects](#aspects), [Generated Xcode
-projects](#generated-xcode-projects), and [BUILD file
-generators](#build-file-generators).
-
-
-![Docs](CommoniOSBazelArchitecture.png)
-
-In this example, Bazel runs a `BUILD file generator`, which produces `BUILD
-files`. [rules](#rules) and [aspects](#aspects) are defined in `.bzl` files and
-instantiated inside of BUILD files. [rules](#rules) and [aspects](#aspects)
-create actions which produces ouputs for a set of inputs and run programs like
-`bash`, `clang`, `swiftc` or xcode project generators.
 
 ## Conclusion
 
