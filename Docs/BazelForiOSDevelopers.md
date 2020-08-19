@@ -645,7 +645,10 @@ BUILD file generator and is written in go.
 
 ### Putting it all together - build system architecture
 
-This segment puts together covered in this document.
+This segment puts together topics covered in this document to illustrate how
+`Bazel` integrates with a [`BUILD file generator`](#build-file-generators) like
+PodToBUILD, and an [`Xcode project generator`](#generated-xcode-projects) like
+XCHammer, to compile an iOS application with `clang` and `swift`.
 
 Bazel can be used to create a robust and performant build. Instead of having
 several out-of-band, ad-hoc, scripts, Bazel provides a unified command like
