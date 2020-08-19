@@ -587,7 +587,10 @@ type permutations.
 #### _target '$dep_target' is not visible from target '$target'_
 
 ```
-ERROR: /path/to/myproject/BUILD.bazel:47:1: in _xcode_project rule //:XcodeBazel_impl: target '//ios-app:ios-app' is not visible from target '//:XcodeBazel_impl'. Check the visibility declaration of the former target if you think the dependency is legitimate
+ERROR: /path/to/myproject/BUILD.bazel:47:1: in _xcode_project rule
+//:XcodeBazel_impl: target '//ios-app:ios-app' is not visible from target
+'//:XcodeBazel_impl'. Check the visibility declaration of the former target if
+you think the dependency is legitimate
 ```
 
 In this example, a target `$target` has added a dependecy on a private target,
