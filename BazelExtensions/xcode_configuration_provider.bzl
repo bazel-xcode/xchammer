@@ -134,7 +134,7 @@ def _install_action(ctx, infos, itarget):
         outputs=[output],
         execution_requirements = non_hermetic_execution_requirements
     )
-    return output
+    return [output]
 
 def _xcode_build_sources_aspect_impl(itarget, ctx):
     """ Install Xcode project dependencies into the source root.
