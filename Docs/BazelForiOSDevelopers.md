@@ -325,9 +325,13 @@ contains a comprehensive overview.
 
 ### Macros
 
-Like [rules](#Rules) and [aspects](#Aspects), macros are
-defined in `.bzl` files.  A macro is a convenient way to call a rule, and not
-recognized by Bazel in the same way a rule is.
+Like [rules](#Rules) and [aspects](#Aspects), macros are defined in `.bzl`
+files.  A macro is a convenient way to call a rule, and not recognized by Bazel
+in the same way a rule is. As Bazel builds targets, instantiated by rules, it can't
+"build" a macro. A macro is evaluated during the evaluation of a BUILD file and
+instantiates rules. Once the macro is translated into a rule, the macro is
+irrelevant to the build process. In C++ compilation, this behavior is similar
+to the pre-processor feature of the compiler. Please see the coming example.
 
 _Note: The main distinction between a `.bzl` and a `BUILD` file is `BUILD` files are
 used to create targets by calling macros and rules. `.bzl` files define the
@@ -338,6 +342,7 @@ defaults of building libraries and simplify configuration management. To create
 a wrapper for `objc_library`, create the file `objc_library.bzl`. The following
 macro restricts the customization, and enforces defaults of the native
 `objc_library` rule.
+
 
 ```
 def objc_library(name, srcs=[], hdrs=[], deps=[], data=[]):
@@ -359,7 +364,11 @@ def objc_library(name, srcs=[], hdrs=[], deps=[], data=[]):
 ```
 
 By loading our `objc_library` into a `BUILD` file, it will override the native
-`objc_library` rule, which is automatically imported.
+`objc_library` rule, which is automatically imported. This is ideal because it
+prevents users from accidentally using `native.objc_library` when they should
+be using the one that prevents overriding `copts`. This pattern is also used in
+[`rules_python`](https://github.com/bazelbuild/rules_python).
+
 ```
 load(":objc_library.bzl", "objc_library")
 
