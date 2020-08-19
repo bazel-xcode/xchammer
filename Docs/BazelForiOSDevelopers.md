@@ -58,10 +58,19 @@ cloud builds and caching. For developers, this means better performance due to
 cache hitting and not constantly removing derived data. Clean builds become
 incremental, decades of CPU cycles saved. 
 
-Bazel also makes it easy to automate many kinds tasks for example, code
+Bazel puts the user in full control over the build. First, it's extensibility
+model allows the user to implement build system logic: for example the business
+logic of bundling an iOS application [external to the
+core](https://github.com/bazelbuild/rules_apple). Bazel is also on github and
+open source.  For developers, this means full control over the build,
+visibility into changes, visibility into how it works, and empowerment to fix
+issues and report bugs. These notions are contrary to the Xcode model which
+works as Apple intended and optimized for.
+
+Bazel also makes it easy to automate _other_ kinds tasks: for example, code
 generating a thrift schema, [generating an Xcode
 project](https://github.com/pinterest/xchammer), or [pushing a docker
-container](https://github.com/bazelbuild/rules_docker).  Starlark, a built in
+container](https://github.com/bazelbuild/rules_docker). Starlark, the built in
 deterministic python-like programming language allows developers to implement
 custom build logic. For developers this means better performance and pulling in
 out-of-band ad-hoc build scripts into a directed build graph that builds as a
@@ -256,15 +265,25 @@ documentation](https://docs.bazel.build/versions/master/be/common-definitions.ht
 
 ### Compiler configuration
 
-In Xcode there is a plethora of configuration options known as xcconfig that
-implicate different compiler flags.  In Bazel, `toolchains`, `objc_library`,
-`bazelrc` all configure flags. The variable `copts` in `objc_library` passes
-flags directly to the compiler. Please find canonical documentation on `copts`
-on the [Bazel
+In Xcode there are a plethora of configuration options, known as xcconfig, that
+implicate different compiler flags. xcconfigs are a makefile like syntax to
+configure Xcode build behavior. Xcode evalutes xcconfigs to peform actions in a
+way that is unmodifiable by the user. Bazel doesn't have xcconfigs and puts the
+user in full control of the build through settings, rules, aspects, toolchains
+and open source code.
+
+In Bazel, `toolchains`, `objc_library`, `bazelrc` all configure flags. The
+variable `copts` in `objc_library` passes flags directly to the compiler.
+Please find canonical documentation on `copts` on the [Bazel
 docs](https://docs.bazel.build/versions/master/be/objective-c.html#objc_library.copts).
 Using `objc_library` to define compiler flags is useful for the per-rule level
 and many projects use macros and other layers of abstraction to [unify library
 level configuration](#Macros).
+
+In the rule set, `rules_swift`, the argument `copts` also exists. Like `copts`
+used in other rules, it allows the user to pass flags directly to the compiler.
+For more information about `swift_library` please see the [`rules_swift`
+documentation](https://github.com/bazelbuild/rules_swift).
 
 
 ## Extending Bazel
@@ -385,9 +404,9 @@ are easily added on to Bazel, the `objc_library` is part of the internal Java
 rules shipped with the Bazel
 binary._ 
 
-_In the Xcode world, configuration is defined within Xcode projects and
-proprietary xcconfigs. In Bazel it's easy to establish norms, enforce
-consistency with abstractions like `objc_library`, and refactor_
+_In the Xcode world, configuration is defined by Xcode projects and proprietary
+xcconfig. In Bazel it's easy to establish conventions and enforce consistency
+with abstractions like `objc_library`, and refactor_
 
 ### Aspects
 
