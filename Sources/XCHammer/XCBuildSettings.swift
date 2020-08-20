@@ -46,9 +46,9 @@ protocol XCSettingStringEncodeable {
 extension First: XCSettingStringEncodeable {
     func XCSettingString() -> String {
         if let encVal = v as? XCSettingStringEncodeable {
-	    return encVal.XCSettingString()
-	}
-	return ""
+            return encVal.XCSettingString()
+        }
+        return ""
     }
 }
 
