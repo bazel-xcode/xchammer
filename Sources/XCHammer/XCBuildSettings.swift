@@ -230,7 +230,7 @@ struct XCBuildSettings: Encodable {
 
     func encode(to encoder: Encoder) throws {
         var XCContainer = encoder.container(keyedBy: XCSettingKey.self)
-        try ldFlags.encode(to: &XCContainer, forKey: XCSettingCodingKey.ldFlags)
+        try ldFlags.encode(to: &XCContainer, forKey: .ldFlags)
 
         // Require this for the simulator platform, which intermittently
         // requires this on Catalina, Xcode 11, and XCBuild
@@ -238,7 +238,7 @@ struct XCBuildSettings: Encodable {
             try Setting(base: codeSigningAllowedValue,
                 SDKiPhoneSimulator: "YES",
                 SDKiPhone: codeSigningAllowedValue)
-                .encode(to: &XCContainer, forKey: XCSettingCodingKey.codeSigningAllowed)
+                .encode(to: &XCContainer, forKey: .codeSigningAllowed)
         }
 
         var container = encoder.container(keyedBy: XCSettingCodingKey.self)
