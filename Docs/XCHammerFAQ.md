@@ -9,6 +9,50 @@ design goal, it supports all of these features by default.
 _XCHammer generates an Xcode project from Bazel rules, which we've found to be a
 great way to describe an Xcode project and corresponding apps!_
 
+Since Xcode relies on the project configuration for semantic IDE features, like
+code completion and diagnostics, correctly setting up the Xcode configuration is
+a requirement. From the developers perspective, the Xcode build is functionally
+equivalent to the Bazel one: optimizations, files, errors, and warnings are
+identical.
+
+## What is XCHammer?
+
+Please see the document, [XCHammer Overview](Docs/XCHammerOverview.md)
+
+## How is XCHammer different than Tulsi?
+
+Despite Tulsi being a core _dependenecy_ of XCHammer, they produce very
+different results.
+
+#### Generated Projects
+
+Both Tulsi and XCHammer produce Xcode projects. Tulsi produces a project which
+contains a minimimal set of sources. When Pinterest first migrated, developers
+we suprised to see missing types that used to be in the original project.
+
+In addition to generating an Xcode project that calls `bazel build`, XCHammer
+can also generate a _pure_ Xcode project. This output project builds primarily
+with Xcode. This makes it beneficial for building beta features before Bazel has
+supported a feature. Because XCHammer projects build with Xcode or Bazel, the
+project should contains _all_ of the sources types, images, localization files,
+and assets. While this is slower to generate many developers would wait for the
+full result.
+
+Additioaly developers were spending a lot of time generating Xcode with
+projects. In later iterations XCHammer was made incremental by allowing the
+project to be split into many projects, focused Xcode projects, and nooping of
+geeneration.
+
+#### Interface
+
+XCHammer also provides Bazel rule to build Xcode projects and Tulsi is a
+primairly a command line program. There's a couple silly hacks that make this
+possible, but the authors have found this interface to integrate well with the
+XCHammer DSL.
+
+_The XCHammer authors appreciate and stand on the shoulders of contributions from
+the Tulsi team!_
+
 ## How is XCHammer versioned?
 
 XCHammer aims to be compatible with the latest official version of Bazel,

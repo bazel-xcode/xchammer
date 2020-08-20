@@ -13,6 +13,7 @@ XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace
     - [x] Renders Bazel's progress in Xcode's progress bar
     - [x] Optionally import index's via [index-import](https://github.com/lyft/index-import) with [Run Scripts](sample/UrlGet/BUILD.bazel#L39)
     - [x] Customize Bazel invocations for Xcode
+- [x] Incremental project generation
 - [x] [Focused](Docs/PinterestFocusedXcodeProjects.md#xcfocus-aka-focused-projects) Xcode projects
 - [x] Xcode build Bazel targets _without Bazel_
 - [x] Optionally Bazel build Xcode projects
@@ -22,7 +23,14 @@ XCHammer generates Xcode projects from a [Bazel](https://bazel.build/) Workspace
 
 ## Usage
 
-_Note: this README is intended to be a minimal, quick start guide. For a comprehensive explanation of XCHammer, see [Introducing XCHammer](Docs/FastAndReproducibleBuildsWithXCHammer.md) and [The XCHammer FAQ](Docs/XCHammerFAQ.md)_
+_Note: this README is intended to be a minimal, quick start guide to XCHammer.
+To learn more about XCHammer see [Introducing
+XCHammer](Docs/FastAndReproducibleBuildsWithXCHammer.md) and [The XCHammer
+FAQ](Docs/XCHammerFAQ.md). To learn more about Bazel, see [Bazel for iOS
+developers](Docs/BazelForiOSDevelopers.md). To learn about how Pinterest uses
+XCHammer see [Introducing
+XCHammer](Docs/FastAndReproducibleBuildsWithXCHammer.md) and [Pinterest Focused
+Xcode Projects](PinterestFocusedXcodeProjects.md)_
 
 ### Installation
 
