@@ -43,6 +43,15 @@ protocol XCSettingStringEncodeable {
     func XCSettingString() -> String
 }
 
+extension First: XCSettingStringEncodeable {
+    func XCSettingString() -> String {
+        if let encVal = v as? XCSettingStringEncodeable {
+	    return encVal.XCSettingString()
+	}
+	return ""
+    }
+}
+
 extension XCSettingStringEncodeable {
     func XCSettingString() -> String {
         return ""
@@ -111,12 +120,12 @@ extension KeyedEncodingContainer where K == XCSettingKey {
             try encode(encVal, forKey: baseKey)
         }
 
-        if let encVal = value.SDKiPhoneSimulator?.XCSettingString(), envVal != "" {
+        if let encVal = value.SDKiPhoneSimulator?.XCSettingString(), encVal != "" {
 	    try encode(encVal, forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
         }
 
-        if let envVal = value.SDKiPhone?.XCSettingString(), encVal.isEmpty == false  {
-	    try encode(envVal, forKey: baseKey.vary(on: "sdk=iphoneos*"))
+        if let encVal = value.SDKiPhone?.XCSettingString(), encVal.isEmpty == false  {
+	    try encode(encVal, forKey: baseKey.vary(on: "sdk=iphoneos*"))
         }
     }
 }
@@ -232,10 +241,10 @@ struct XCBuildSettings: Encodable {
 
         // Require this for the simulator platform, which intermittently
         // requires this on Catalina, Xcode 11, and XCBuild
-        if let codeSigningAllowedValue = self.codeSigningAllowed?.v {
-            let setting = Setting(base: codeSigningAllowedValue,
-                SDKiPhoneSimulator: "YES",
-                SDKiPhone: codeSigningAllowedValue)
+        if let codeSigningAllowed = self.codeSigningAllowed {
+            let setting = Setting(base: codeSigningAllowed,
+                SDKiPhoneSimulator: First("YES"),
+                SDKiPhone: codeSigningAllowed)
             try variableContainer.encode(setting, forKey: .codeSigningAllowed)
         }
 
