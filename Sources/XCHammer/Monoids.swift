@@ -101,6 +101,16 @@ struct First<T>: Semigroup {
     }
 }
 
+extension String: Monoid {
+    static var empty: String {
+        return ""
+    }
+    
+    static func <>(lhs: String, rhs: String) -> String {
+        return lhs + rhs
+    }
+}
+
 extension Array: Monoid {
     static var empty: Array {
         return []

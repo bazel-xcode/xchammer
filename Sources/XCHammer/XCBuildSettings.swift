@@ -39,10 +39,6 @@ struct XCSettingKey: CodingKey {
     }
 }
 
-enum XCCodingKey: String {
-    case ldFlags = "OTHER_LDFLAGS"
-}
-
 protocol XCSettingStringEncodeable {
     func XCSettingString() -> String
 }
@@ -102,32 +98,87 @@ struct Setting<T: XCSettingStringEncodeable & Semigroup>: Semigroup {
     }
 
     // Take a data container, and write values to it
-    func encode(to container: inout KeyedEncodingContainer<XCSettingKey>, forKey strKey: XCCodingKey) {
+    func encode(to container: inout KeyedEncodingContainer<XCSettingKey>, forKey strKey: XCSettingCodingKey) throws {
         let baseKey = XCSettingKey(stringValue: strKey.rawValue)!
 
         // Try encoding each setting for a key
         if let base = base {
             let c = base.XCSettingString()
             if c != "" {
-                try? container.encode(base.XCSettingString(), forKey: baseKey)
+                try container.encode(base.XCSettingString(), forKey: baseKey)
             }
         }
 
         if let SDKiPhoneSimulator = SDKiPhoneSimulator {
             let c = SDKiPhoneSimulator.XCSettingString()
             if c != "" {
-                try? container.encode(SDKiPhoneSimulator.XCSettingString(), forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
+                try container.encode(SDKiPhoneSimulator.XCSettingString(), forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
             }
         }
 
         if let SDKiPhone = SDKiPhone {
             let c = SDKiPhone.XCSettingString()
             if c.isEmpty == false {
-                try? container.encode(c, forKey: baseKey.vary(on: "sdk=iphoneos*"))
+                try container.encode(c, forKey: baseKey.vary(on: "sdk=iphoneos*"))
             }
         }
     }
 }
+
+enum XCSettingCodingKey: String, CodingKey {
+    // Add to this list the known XCConfig keys
+    case cc = "CC"
+    case swiftc = "SWIFT_EXEC"
+    case ld = "LD"
+    case libtool = "LIBTOOL"
+    case copts = "OTHER_CFLAGS"
+    case ldFlags = "OTHER_LDFLAGS"
+    case productName = "PRODUCT_NAME"
+    case moduleName = "PRODUCT_MODULE_NAME"
+    case enableModules = "CLANG_ENABLE_MODULES"
+    case headerSearchPaths = "HEADER_SEARCH_PATHS"
+    case frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
+    case librarySearchPaths = "LIBRARY_SEARCH_PATHS"
+    case archs = "ARCHS"
+    case validArchs = "VALID_ARCHS"
+    case pch = "GCC_PREFIX_HEADER"
+    case productBundleId = "PRODUCT_BUNDLE_IDENTIFIER"
+    case codeSigningRequired = "CODE_SIGNING_REQUIRED"
+    case codeSigningAllowed = "CODE_SIGNING_ALLOWED"
+    case debugInformationFormat = "DEBUG_INFORMATION_FORMAT"
+    case onlyActiveArch = "ONLY_ACTIVE_ARCH"
+    case enableTestability = "ENABLE_TESTABILITY"
+    case enableObjcArc = "CLANG_ENABLE_OBJC_ARC"
+    case iOSDeploymentTarget = "IPHONEOS_DEPLOYMENT_TARGET"
+    case macOSDeploymentTarget = "MACOSX_DEPLOYMENT_TARGET"
+    case tvOSDeploymentTarget = "TVOS_DEPLOYMENT_TARGET"
+    case watchOSDeploymentTarget = "WATCHOS_DEPLOYMENT_TARGET"
+    case infoPlistFile = "INFOPLIST_FILE"
+    case testHost = "TEST_HOST"
+    case bundleLoader = "BUNDLE_LOADER"
+    case appIconName = "ASSETCATALOG_COMPILER_APPICON_NAME"
+    case enableBitcode = "ENABLE_BITCODE"
+    case codeSigningIdentity = "CODE_SIGN_IDENTITY[sdk=iphoneos*]"
+    case codeSigningStyle = "CODE_SIGN_STYLE"
+    case moduleMapFile = "MODULEMAP_FILE"
+    case testTargetName = "TEST_TARGET_NAME"
+    case useHeaderMap = "USE_HEADERMAP"
+    case swiftVersion = "SWIFT_VERSION"
+    case swiftCopts = "OTHER_SWIFT_FLAGS"
+
+    case pythonPath = "PYTHONPATH"
+
+    // Hammer Rules
+    case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
+    case mobileProvisionProfileFile = "HAMMER_PROFILE_FILE"
+    case diagnosticFlags = "HAMMER_DIAGNOSTIC_FLAGS"
+    case isBazel = "HAMMER_IS_BAZEL"
+    case tulsiWR = "TULSI_WR"
+    case sdkRoot = "SDKROOT"
+    case targetedDeviceFamily = "TARGETED_DEVICE_FAMILY"
+    
+}
+
 
 struct XCBuildSettings: Encodable {
     var cc: First<String>?
@@ -176,66 +227,21 @@ struct XCBuildSettings: Encodable {
     var isBazel: First<String> = First("NO")
     var diagnosticFlags: [String] = []
 
-    enum CodingKeys: String, CodingKey {
-        // Add to this list the known XCConfig keys
-        case cc = "CC"
-        case swiftc = "SWIFT_EXEC"
-        case ld = "LD"
-        case libtool = "LIBTOOL"
-        case copts = "OTHER_CFLAGS"
-        case productName = "PRODUCT_NAME"
-        case moduleName = "PRODUCT_MODULE_NAME"
-        case enableModules = "CLANG_ENABLE_MODULES"
-        case headerSearchPaths = "HEADER_SEARCH_PATHS"
-        case frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
-        case librarySearchPaths = "LIBRARY_SEARCH_PATHS"
-        case archs = "ARCHS"
-        case validArchs = "VALID_ARCHS"
-        case pch = "GCC_PREFIX_HEADER"
-        case productBundleId = "PRODUCT_BUNDLE_IDENTIFIER"
-        case codeSigningRequired = "CODE_SIGNING_REQUIRED"
-        case codeSigningAllowed = "CODE_SIGNING_ALLOWED"
-        case debugInformationFormat = "DEBUG_INFORMATION_FORMAT"
-        case onlyActiveArch = "ONLY_ACTIVE_ARCH"
-        case enableTestability = "ENABLE_TESTABILITY"
-        case enableObjcArc = "CLANG_ENABLE_OBJC_ARC"
-        case iOSDeploymentTarget = "IPHONEOS_DEPLOYMENT_TARGET"
-        case macOSDeploymentTarget = "MACOSX_DEPLOYMENT_TARGET"
-        case tvOSDeploymentTarget = "TVOS_DEPLOYMENT_TARGET"
-        case watchOSDeploymentTarget = "WATCHOS_DEPLOYMENT_TARGET"
-        case infoPlistFile = "INFOPLIST_FILE"
-        case testHost = "TEST_HOST"
-        case bundleLoader = "BUNDLE_LOADER"
-        case appIconName = "ASSETCATALOG_COMPILER_APPICON_NAME"
-        case enableBitcode = "ENABLE_BITCODE"
-        case codeSigningIdentity = "CODE_SIGN_IDENTITY[sdk=iphoneos*]"
-        case codeSigningStyle = "CODE_SIGN_STYLE"
-        case moduleMapFile = "MODULEMAP_FILE"
-        case testTargetName = "TEST_TARGET_NAME"
-        case useHeaderMap = "USE_HEADERMAP"
-        case swiftVersion = "SWIFT_VERSION"
-        case swiftCopts = "OTHER_SWIFT_FLAGS"
-
-        case pythonPath = "PYTHONPATH"
-
-        // Hammer Rules
-        case codeSignEntitlementsFile = "HAMMER_ENTITLEMENTS_FILE"
-        case mobileProvisionProfileFile = "HAMMER_PROFILE_FILE"
-        case diagnosticFlags = "HAMMER_DIAGNOSTIC_FLAGS"
-        case isBazel = "HAMMER_IS_BAZEL"
-        case tulsiWR = "TULSI_WR"
-        case sdkRoot = "SDKROOT"
-        case targetedDeviceFamily = "TARGETED_DEVICE_FAMILY"
-        
-    }
 
     func encode(to encoder: Encoder) throws {
         var XCContainer = encoder.container(keyedBy: XCSettingKey.self)
-        ldFlags.encode(to: &XCContainer, forKey: XCCodingKey.ldFlags)
+        try ldFlags.encode(to: &XCContainer, forKey: XCSettingCodingKey.ldFlags)
 
-        // TODO: port all of these to XCCodingKey
-        var container = encoder.container(keyedBy: CodingKeys.self)
+        // Require this for the simulator platform, which intermittently
+        // requires this on Catalina, Xcode 11, and XCBuild
+        if let codeSigningAllowedValue = self.codeSigningAllowed?.v {
+            try Setting(base: codeSigningAllowedValue,
+                SDKiPhoneSimulator: "YES",
+                SDKiPhone: codeSigningAllowedValue)
+                .encode(to: &XCContainer, forKey: XCSettingCodingKey.codeSigningAllowed)
+        }
 
+        var container = encoder.container(keyedBy: XCSettingCodingKey.self)
         try cc.map { try container.encode($0.v, forKey: .cc) }
         try swiftc.map { try container.encode($0.v, forKey: .swiftc) }
         try ld.map { try container.encode($0.v, forKey: .ld) }
@@ -255,7 +261,6 @@ struct XCBuildSettings: Encodable {
         try debugInformationFormat.map { try container.encode($0.v, forKey: .debugInformationFormat) }
         try productBundleId.map { try container.encode($0.v, forKey: .productBundleId) }
         try codeSigningRequired.map { try container.encode($0.v, forKey: .codeSigningRequired) }
-        try codeSigningAllowed.map { try container.encode($0.v, forKey: .codeSigningAllowed) }
         try codeSigningIdentity.map { try container.encode($0.v, forKey: .codeSigningIdentity) }
         try onlyActiveArch.map { try container.encode($0.v, forKey: .onlyActiveArch) }
         try enableTestability.map { try container.encode($0.v, forKey: .enableTestability) }

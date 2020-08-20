@@ -1346,7 +1346,8 @@ public class XcodeTarget: Hashable, Equatable {
 
         settings.isBazel = First("YES")
         settings.onlyActiveArch = First("YES")
-        settings.codeSigningRequired <>= First("NO")
+        settings.codeSigningRequired = First("NO")
+        settings.codeSigningAllowed = First("NO")
         settings.productName <>= First("$(TARGET_NAME)")
         // A custom XCHammerAsset bazel_build_settings.py is loaded by bazel_build.py
         settings.pythonPath =
