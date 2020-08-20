@@ -107,25 +107,16 @@ extension KeyedEncodingContainer where K == XCSettingKey {
         }
 
         // Try encoding each setting for a key
-        if let base = value.base {
-            let c = base.XCSettingString()
-            if c != "" {
-                try encode(base.XCSettingString(), forKey: baseKey)
-            }
+        if let encVal = value.base?.XCSettingString(), encVal != ""  {
+            try encode(encVal, forKey: baseKey)
         }
 
-        if let SDKiPhoneSimulator = value.SDKiPhoneSimulator {
-            let c = SDKiPhoneSimulator.XCSettingString()
-            if c != "" {
-                try encode(SDKiPhoneSimulator.XCSettingString(), forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
-            }
+        if let encVal = value.SDKiPhoneSimulator?.XCSettingString(), envVal != "" {
+	    try encode(encVal, forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
         }
 
-        if let SDKiPhone = value.SDKiPhone {
-            let c = SDKiPhone.XCSettingString()
-            if c.isEmpty == false {
-                try encode(c, forKey: baseKey.vary(on: "sdk=iphoneos*"))
-            }
+        if let envVal = value.SDKiPhone?.XCSettingString(), encVal.isEmpty == false  {
+	    try encode(envVal, forKey: baseKey.vary(on: "sdk=iphoneos*"))
         }
     }
 }
