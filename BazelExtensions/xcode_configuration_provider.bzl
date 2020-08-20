@@ -134,7 +134,7 @@ def _install_action(ctx, infos, itarget):
         outputs=[output],
         execution_requirements = non_hermetic_execution_requirements
     )
-    return output
+    return [output]
 
 def _xcode_build_sources_aspect_impl(itarget, ctx):
     """ Install Xcode project dependencies into the source root.
@@ -142,21 +142,27 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
     genfiles which are passed to the Bazel command line.
     """
 
+    # Note: we need to collect the transitive files seperately from our own
     infos = []
+    trans = []
     infos.extend(_extract_generated_sources(itarget, ctx))
     if hasattr(ctx.rule.attr, "deps"):
         for target in ctx.rule.attr.deps:
             if XcodeBuildSourceInfo in target:
-                trans = _extract_generated_sources(target, ctx)
-                infos.extend(trans)
-
+                infos.extend(_extract_generated_sources(target, ctx))
+                trans.extend(target[XcodeBuildSourceInfo].values)
 
     return [
         OutputGroupInfo(
-            xcode_project_deps=[_install_action(ctx, infos, itarget)],
+            xcode_project_deps = _install_action(
+                ctx,
+                depset(infos + trans).to_list(),
+                itarget,
+            ),
         ),
-        XcodeBuildSourceInfo(values=infos)
+        XcodeBuildSourceInfo(values = infos),
     ]
+
 
 # Note, that for "pure" Xcode builds we build swiftmodules with Xcode, so we
 # don't need to pre-compile them with Bazel
