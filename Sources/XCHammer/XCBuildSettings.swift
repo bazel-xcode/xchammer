@@ -73,7 +73,8 @@ extension OrderedArray: XCSettingStringEncodeable {
     }
 }
 
-struct Setting<T: XCSettingStringEncodeable & Semigroup>: Semigroup {
+typealias SettingValue = XCSettingStringEncodeable & Semigroup
+struct Setting<T: SettingValue>: Semigroup {
     let base: T?
     let SDKiPhoneSimulator: T?
     let SDKiPhone: T?
@@ -96,30 +97,34 @@ struct Setting<T: XCSettingStringEncodeable & Semigroup>: Semigroup {
         self.SDKiPhoneSimulator = SDKiPhoneSimulator
         self.SDKiPhone = SDKiPhone
     }
+}
 
-    // Take a data container, and write values to it
-    func encode(to container: inout KeyedEncodingContainer<XCSettingKey>, forKey strKey: XCSettingCodingKey) throws {
-        let baseKey = XCSettingKey(stringValue: strKey.rawValue)!
+extension KeyedEncodingContainer where K == XCSettingKey {
+
+    mutating func encode<T: SettingValue>(_ value: Setting<T>, forKey strKey: XCSettingCodingKey) throws {
+        guard let baseKey = XCSettingKey(stringValue: strKey.rawValue) else {
+           fatalError("Invalid key \(String(describing: strKey))")
+        }
 
         // Try encoding each setting for a key
-        if let base = base {
+        if let base = value.base {
             let c = base.XCSettingString()
             if c != "" {
-                try container.encode(base.XCSettingString(), forKey: baseKey)
+                try encode(base.XCSettingString(), forKey: baseKey)
             }
         }
 
-        if let SDKiPhoneSimulator = SDKiPhoneSimulator {
+        if let SDKiPhoneSimulator = value.SDKiPhoneSimulator {
             let c = SDKiPhoneSimulator.XCSettingString()
             if c != "" {
-                try container.encode(SDKiPhoneSimulator.XCSettingString(), forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
+                try encode(SDKiPhoneSimulator.XCSettingString(), forKey: baseKey.vary(on: "sdk=iphonesimulator*"))
             }
         }
 
-        if let SDKiPhone = SDKiPhone {
+        if let SDKiPhone = value.SDKiPhone {
             let c = SDKiPhone.XCSettingString()
             if c.isEmpty == false {
-                try container.encode(c, forKey: baseKey.vary(on: "sdk=iphoneos*"))
+                try encode(c, forKey: baseKey.vary(on: "sdk=iphoneos*"))
             }
         }
     }
@@ -229,18 +234,22 @@ struct XCBuildSettings: Encodable {
 
 
     func encode(to encoder: Encoder) throws {
-        var XCContainer = encoder.container(keyedBy: XCSettingKey.self)
-        try ldFlags.encode(to: &XCContainer, forKey: .ldFlags)
+        // `variableContainer` is an encoding container for `XCSettingKey`
+        // First encode keys which can vary on platform
+        var variableContainer = encoder.container(keyedBy: XCSettingKey.self)
+        try variableContainer.encode(ldFlags, forKey: .ldFlags)
 
         // Require this for the simulator platform, which intermittently
         // requires this on Catalina, Xcode 11, and XCBuild
         if let codeSigningAllowedValue = self.codeSigningAllowed?.v {
-            try Setting(base: codeSigningAllowedValue,
+            let setting = Setting(base: codeSigningAllowedValue,
                 SDKiPhoneSimulator: "YES",
                 SDKiPhone: codeSigningAllowedValue)
-                .encode(to: &XCContainer, forKey: .codeSigningAllowed)
+            try variableContainer.encode(setting, forKey: .codeSigningAllowed)
         }
 
+        // `container` is an encoding container for `XCSettingKey`
+        // next, encode all other kinds of keys
         var container = encoder.container(keyedBy: XCSettingCodingKey.self)
         try cc.map { try container.encode($0.v, forKey: .cc) }
         try swiftc.map { try container.encode($0.v, forKey: .swiftc) }
