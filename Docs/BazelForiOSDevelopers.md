@@ -70,11 +70,11 @@ works as Apple intended and optimized for.
 Bazel also makes it easy to automate _other_ kinds tasks: for example, code
 generating a thrift schema, [generating an Xcode
 project](https://github.com/pinterest/xchammer), or [pushing a docker
-container](https://github.com/bazelbuild/rules_docker). Starlark, the built in
-deterministic python-like programming language allows developers to implement
-custom build logic. For developers this means better performance and pulling in
-out-of-band ad-hoc build scripts into a directed build graph that builds as a
-unit.
+container](https://github.com/bazelbuild/rules_docker). [Starlark](#Starkark)
+(Bazel's built-in, deterministic, Python-like programming language) allows
+developers to implement custom build logic. For developers this means better
+performance and pulling in out-of-band ad-hoc build scripts into a directed
+build graph that builds as a unit.
 
 _To learn about how Bazel compares to other build systems, Microsoft's paper
 [Build Systems à la
@@ -552,7 +552,7 @@ generators in Swift. Find out more information about [PodToBUILD on
 github](https://github.com/pinterest/PodToBUILD). 
 
 [Gazelle](https://github.com/bazelbuild/bazel-gazelle) is another example of
-BUILD file generator and is written in go.
+BUILD file generator and is written in Go.
 
 ## Putting it all together - build system architecture
 
