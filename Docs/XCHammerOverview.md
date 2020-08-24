@@ -106,7 +106,7 @@ JSONSerializaton parsing system.
 
 ## Project Configuration Aspect
 
-In addition to colelcting metadata about each rule, it collects ad-hoc Xcode
+In addition to collecting metadata about each rule, it collects ad-hoc Xcode
 configuration data that each target needs. For basic usage, the `xcode_project`
 rule in instantiated quite simply, for example:
 ```
@@ -125,7 +125,7 @@ environment variables in the scheme and vary on each target. Another example,
 is [bolting on xcode project
 instrumentation](Docs/PinterestFocusedXcodeProjects.md) in order to track local
 build times in Xcode with statsd. At one point, the `XCHammerConfig` was too
-complex and unmaintainble. This aspect was created to setup Xcode target
+complex and unmaintainable. This aspect was created to setup Xcode target
 metadata adjacent to the rules.
 
 For example, snapshot tests need an un-hermtic environment variable while
@@ -172,6 +172,12 @@ ios_unit_test(
 
 ```
 
+The aspect traverses the build graph and looks for rules which which have
+associated configuration metadata `declare_target_config`, and
+then it merges them into a single JSON file which is read by XCHammer and used
+during generation. Overall, the result is cleaner configuration adjacent to
+target definition.
+
 ## Sources Aspect
 
 In addition to the other aspects, a third aspect exists. The
@@ -207,7 +213,7 @@ segment contains a mix of both problems and solutions.
 
 ### Xcode: establishing configuration norms - problem and solution
 
-In traditionl Xcode usage, developers are able to change Xcode projects and
+In traditional Xcode usage, developers are able to change Xcode projects and
 Xcode configuration files and there is no defaults enforced. 
 
 In vanilla Bazel usage, a similar problem exists  when the user is allowed to
@@ -215,7 +221,8 @@ specificy `copts`. Therefore, a simple system of macros is implemented in order
 to prevent users from configuring `copts` in an unexpected way. See the segment
 [marcos](Docs/BazelForiOSDevelopers.md#macros) for a complete listing.
 Recently, there has been work on Bazel to extract the native rules. Note, that
-the Bazel toolchain and are orthogonal to using macros to wrap rules [rules_cc](https://github.com/bazelbuild/rules_cc).
+the Bazel toolchain is orthogonal to using macros to wrap rules
+[rules_cc](https://github.com/bazelbuild/rules_cc).
 
 
 ### Xcode: Xcode project generation - problem and solution
@@ -231,7 +238,7 @@ The XCHammer tool one the solution to project generation. Additionally, it
 solves the problem of being able to build the app with Xcode.
 
 
-### Xcode: ooo many files in Xcode and indexer performance - problem and solution
+### Xcode: too many files in Xcode and indexer performance - problem and solution
 
 When Xcode projects grown in size and scope, the IDE experience starts to
 degrade. By default Xcode ends up indexing the entire source tree which hogs CPU

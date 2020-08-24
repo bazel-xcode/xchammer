@@ -27,26 +27,26 @@ different results.
 #### Generated Projects
 
 Both Tulsi and XCHammer produce Xcode projects. Tulsi produces a project which
-contains a minimimal set of sources. When Pinterest first migrated, developers
-we suprised to see missing types that used to be in the original project.
+contains a minimal set of sources. When Pinterest first migrated, developers
+were surprised to see missing types that used to be in the original project.
 
 In addition to generating an Xcode project that calls `bazel build`, XCHammer
 can also generate a _pure_ Xcode project. This output project builds primarily
 with Xcode. This makes it beneficial for building beta features before Bazel has
 supported a feature. Because XCHammer projects build with Xcode or Bazel, the
 project should contains _all_ of the sources types, images, localization files,
-and assets. While this is slower to generate many developers would wait for the
-full result.
+and assets.  While this is slower to generate, many developers are willing to
+wait for the full result.
 
-Additioaly developers were spending a lot of time generating Xcode with
+Additionally developers were spending a lot of time generating Xcode with
 projects. In later iterations XCHammer was made incremental by allowing the
 project to be split into many projects, focused Xcode projects, and nooping of
-geeneration.
+generation.
 
 #### Interface
 
-XCHammer also provides Bazel rule to build Xcode projects and Tulsi is a
-primairly a command line program. There's a couple silly hacks that make this
+XCHammer provides both a Bazel rule and CLI to build Xcode projects and Tulsi is a
+primarily a GUI and CLI application. There's a couple silly hacks that make this
 possible, but the authors have found this interface to integrate well with the
 XCHammer DSL.
 
