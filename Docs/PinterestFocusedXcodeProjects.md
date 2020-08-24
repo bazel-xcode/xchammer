@@ -5,9 +5,13 @@ document outlines how Pinterest uses XCHammer.
 
 ### Bazel building Xcode projects
 
-Originally the API for XCHammer included an yaml file and a program that read the yaml file and generated a project. This was a nice and simple system, but had several limitations and tradeoffs.
+Originally the API for XCHammer included an yaml file and a program that read
+the yaml file and generated a project. This was a nice and simple system, but
+had several limitations and tradeoffs.
 
-Recently, `xcode_project` rules were introduced which allows Bazel to build Xcode projects. Bazel  makes it easy both describe Xcode projects via a skylark DSL and to cache large Xcode projects via local cache and remote cache.
+Recently, `xcode_project` rules were introduced which allows Bazel to build
+Xcode projects. Bazel  makes it easy both describe Xcode projects via a skylark
+DSL and to cache large Xcode projects via local cache and remote cache.
 
 When changes land into master, Xcode projects are built, and developer can
 cache hit the project. This helps make large Xcode projects generate
