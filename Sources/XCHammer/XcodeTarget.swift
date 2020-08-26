@@ -529,7 +529,7 @@ public class XcodeTarget: Hashable, Equatable {
             return xcTargetName + ".app"
             case .UnitTest, .UIUnitTest:
             return xcTargetName + ".xctest"
-            case .AppExtension, .XPCService, .Watch1App, .Watch2App, .Watch1Extension, .Watch2Extension, .TVAppExtension:
+            case .AppExtension, .XPCService, .Watch1App, .Watch2App, .Watch1Extension, .Watch2Extension, .TVAppExtension, .IMessageExtension:
             return xcTargetName + ".appex"
             case .StaticLibrary:
             return xcTargetName
@@ -660,7 +660,7 @@ public class XcodeTarget: Hashable, Equatable {
             if let version = self.attributes[.swift_language_version] as? String {
                 return version
             }
-            
+
             // Second look through the swiftcopts to see if `-swift-version <version>` has been specified
             if let coptsArray = self.attributes[.swiftc_opts] as? [String] {
                 let versionOpt = coptsArray.filter { $0.hasPrefix("-swift-version") }.first
@@ -858,7 +858,7 @@ public class XcodeTarget: Hashable, Equatable {
         let libraryDeps = self.extractLibraryDeps(map: targetMap)
         settings.librarySearchPaths <>= OrderedArray(libraryDeps.map(dirname))
 
-        
+
         // Add defines as copts
         settings.copts <>= processDefines(defines: self.extractDefines(map: targetMap))
 
@@ -963,6 +963,7 @@ public class XcodeTarget: Hashable, Equatable {
         case Watch1Extension = "com.apple.product-type.watchkit-extension"
         case Watch2Extension = "com.apple.product-type.watchkit2-extension"
         case TVAppExtension = "com.apple.product-type.tv-app-extension"
+        case IMessageExtension = "com.apple.product-type.app-extension.messages"
     }
 
     lazy var isTopLevelTestTarget: Bool = {
@@ -1181,10 +1182,10 @@ public class XcodeTarget: Hashable, Equatable {
                 label -> XcodeTarget? in
                 guard let target = targetMap.xcodeTarget(buildLabel: label,
                         depender: self) else {
-                    return nil 
+                    return nil
                 }
                 guard targetMap.includedProjectTargets.contains(target) else {
-                    return nil  
+                    return nil
                 }
                 return target
             }.map {
@@ -1238,6 +1239,7 @@ public class XcodeTarget: Hashable, Equatable {
             "tvos_extension": ProductType.TVAppExtension,
             "watchos_application": ProductType.Watch2App,
             "watchos_extension": ProductType.Watch2Extension,
+            "ios_imessage_extension": ProductType.IMessageExtension,
             // A Tulsi-internal generic "test host", used to generate build targets that act as hosts for
             // XCTest test rules.
             "_test_host_": ProductType.Application,
