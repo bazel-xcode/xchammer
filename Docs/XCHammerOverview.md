@@ -9,7 +9,7 @@ minimal getting started reference.
 
    * [XCHammer Overview](#xchammer-overview)
       * [Table of Contents](#table-of-contents)
-         * [Introduction](#introduction)
+      * [Introduction](#introduction)
       * [Xcode project rule](#xcode-project-rule)
       * [Comand line interface](#comand-line-interface)
       * [Sources Aspect](#sources-aspect)
@@ -22,7 +22,7 @@ minimal getting started reference.
          * [Too many files in Xcode and indexer performance](#too-many-files-in-xcode-and-indexer-performance)
 
 
-### Introduction
+## Introduction
 
 XCHammer is a Bazel
 [rule](https://docs.bazel.build/versions/master/skylark/rules.html) and command
