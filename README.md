@@ -140,8 +140,7 @@ for more info.
 Starting with Xcode 10.2, Swift provides debug info remapping via the
 `-debug-prefix-map` flag.  `rules_swift` supports the ability to [pass the debug
 remapping](https://github.com/bazelbuild/rules_swift/commit/43900104d279fcdffbca2d02dbc550492bf33353).
-Simply add `--swiftcopt=-Xwrapped-swift=-debug-prefix-pwd-is-dot` to remap debug
-info in Swift.
+Simply add `--features=swift.debug_prefix_map` to remap debug info in Swift.
 
 XCHammer will automatically write a compatible remapping in the `.lldbinit`. Set
 `HAMMER_USE_DEBUG_INFO_REMAPPING=YES` via an `xcconfig`. See [XCHammer's BUILD
