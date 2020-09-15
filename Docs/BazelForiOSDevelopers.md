@@ -177,7 +177,7 @@ would be represented in Xcode as:
 ### Bazel command line
 
 In Xcode, command line builds are achieved through the command line interface
-`xcodebuild`.  to build the scheme `ios-app` from `MyProject.xcworkspace`,
+`xcodebuild`. To build the scheme `ios-app` from `MyProject.xcworkspace`,
 `xcodebuild`, would be invoked as:
 
 ```
