@@ -87,7 +87,7 @@ The root of a Bazel project contains two human-readable files:
 
 The `BUILD` file: defines what targets are inside of a project.
 Applications, extensions, static libraries, and frameworks are all declared in
-BUILD files.
+`BUILD` files.
 
 The `WORKSPACE` file: references files and dependencies from
 [outside the world into
