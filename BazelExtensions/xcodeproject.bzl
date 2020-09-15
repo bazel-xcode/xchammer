@@ -127,7 +127,7 @@ def _xcode_project_impl(ctx):
             else "\$SRCROOT/" + ctx.attr.bazel,
             "--xcode_project_rule_info",
             xchammer_info_json.path,
-            "; ditto " + project_name + " " + ctx.bin_dir.path + "/" + project_name,
+            "; ditto " + project_name + " " + ctx.outputs.out.path,
         ]
     )
 
