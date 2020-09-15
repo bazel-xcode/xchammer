@@ -49,19 +49,19 @@ both the IDE _and build system_. For many developers, Xcode just works. To have
 a good experience, most developers don't need to worry about implementing build
 systems, IDEs, or compilers. When the project scales, developer experience
 drops off. Tasks like building, indexing, or merging a change that adds a new
-file can become painful. 
+file can become painful.
 
 Bazel can fix many problems with iOS builds when done well. First, Bazel is
 strict about inputs and outputs - they must be declared. This property, known as
 "hermetic" builds, makes builds reproducible and well-suited for distributed
 cloud builds and caching. For developers, this means better performance due to
 cache hitting and not constantly removing derived data. Clean builds become
-incremental, decades of CPU cycles saved. 
+incremental, decades of CPU cycles saved.
 
 Bazel puts the user in full control over the build. First, it's extensibility
 model allows the user to implement build system logic: for example the business
 logic of bundling an iOS application [external to the
-core](https://github.com/bazelbuild/rules_apple). Bazel is also on github and
+core](https://github.com/bazelbuild/rules_apple). Bazel is also [on GitHub](https://github.com/bazelbuild) and
 open source.  For developers, this means full control over the build,
 visibility into changes, visibility into how it works, and empowerment to fix
 issues and report bugs. These notions are contrary to the Xcode model which
@@ -92,7 +92,7 @@ BUILD files.
 The `WORKSPACE` file: references files and dependencies from
 [outside the world into
 Bazel](https://docs.bazel.build/versions/master/be/workspace.html).  Simply
-put, external-to-the-repository dependencies are put here. 
+put, external-to-the-repository dependencies are put here.
 
 _In the Xcode world, build configuration is governed by the Xcode GUI and
 stored in the machine readable `xcodeproj` files._
@@ -133,7 +133,7 @@ _load `git_repository` from the internal [bazel tools](https://github.com/bazelb
 
 The next line of code calls `git_repository` and defines the repository
 `build_bazel_rules_apple` from the git repository,
-`https://github.com/bazelbuild/rules_apple` for a given `commit`. 
+`https://github.com/bazelbuild/rules_apple` for a given `commit`.
 
 ### Adding an iOS application with BUILD files
 
@@ -173,7 +173,7 @@ Target`. Together, the `ios_application` and `objc_library` targets together
 would be represented in Xcode as:
 
 ![Docs](XcodeExampleOfiOSProject.png)
-	
+
 ### Bazel command line
 
 In Xcode, command line builds are achieved through the command line interface
@@ -205,7 +205,7 @@ configuration settings to customize builds. Together, `select` and
 
 For example, unavoidable requirements could require an `objc_library` to
 be compiled differently when building for the appstore. The following build
-file has conditional `copts` on `:app_store`. 
+file has conditional `copts` on `:app_store`.
 
 ```
 objc_library(
@@ -430,7 +430,7 @@ Please see the
 documentation for all possible arguments. _Note: Unlike Starlark rules which
 are easily added on to Bazel, the `objc_library` is part of the internal Java
 rules shipped with the Bazel
-binary._ 
+binary._
 
 _In the Xcode world, configuration is defined by Xcode projects and proprietary
 xcconfig. In Bazel it's easy to establish conventions and enforce consistency
@@ -440,7 +440,7 @@ with abstractions like `objc_library`, and refactor_
 
 Aspects are another extension point in Bazel. Simply put, they allow the
 developer to traverse the build graph and collect information or generate
-actions on the way. 
+actions on the way.
 
 > Aspects are a feature of Bazel that are basically like fan-fic, if build rules
 were stories: aspects let you add features that require intimate knowledge of
@@ -549,7 +549,7 @@ that makes it easy to build CocoaPods with Bazel. It reads in a Podspec file,
 pulls source, and generates a BUILD file. In addition to generating build files
 for CocoaPods, PodTOBUILD provides a functional library to implement BUILD file
 generators in Swift. Find out more information about [PodToBUILD on
-github](https://github.com/pinterest/PodToBUILD). 
+github](https://github.com/pinterest/PodToBUILD).
 
 [Gazelle](https://github.com/bazelbuild/bazel-gazelle) is another example of
 BUILD file generator and is written in Go.
@@ -703,7 +703,7 @@ Bazel. An popular example of a wrapper script is
 [Bazelisk](https://github.com/bazelbuild/bazelisk/releases). Bazelisk allows
 the user to specify a `.bazelversion` file at the root of the project and
 easily update. To work across many Bazel projects, it's convenient to install
-`Bazelisk` onto the path, and invoke it as `bazel`. 
+`Bazelisk` onto the path, and invoke it as `bazel`.
 
 _Note: In order for Bazel's
 shell completion to work, the wrapper script must be named `bazel`._
@@ -717,9 +717,9 @@ the Bazel documentation contains up-to-date tutorials, in-depth knowledge, and
 more.
 
 - [Bazel overview](https://docs.bazel.build/versions/master/bazel-overview.html)
-- [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html) 
+- [A tutorial for iOS apps](https://docs.bazel.build/versions/master/tutorial/ios-app.html)
 - [Bazel Concepts and terminology](https://docs.bazel.build/versions/master/build-ref.html)
-- [Getting started with Bazel](https://docs.bazel.build/versions/master/getting-started.html) 
+- [Getting started with Bazel](https://docs.bazel.build/versions/master/getting-started.html)
 - [Rules](https://docs.bazel.build/versions/master/rules.html)
 - [Encyclopedia](https://docs.bazel.build/versions/master/be/overview.html)
 - [Starlark](https://docs.bazel.build/versions/master/skylark/language.html)
@@ -737,7 +737,7 @@ iOS Bazel con talks
 - [Hacks and Tips for Incremental Adoption of Bazel for iOS - Pinterest](https://www.youtube.com/watch?v=wewAVF-DVhs)
 
 Finally, this document is meant to be updated. If there are additional bullet
-points useful for iOS developer onboarding, please send a pull request. 
+points useful for iOS developer onboarding, please send a pull request.
 
 ## Acknowledgements
 
