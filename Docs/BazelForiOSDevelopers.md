@@ -90,7 +90,7 @@ Applications, extensions, static libraries, and frameworks are all declared in
 `BUILD` files.
 
 The `WORKSPACE` file: references files and dependencies from
-[outside the world into
+[the outside world into
 Bazel](https://docs.bazel.build/versions/master/be/workspace.html).  Simply
 put, external-to-the-repository dependencies are put here.
 
