@@ -69,7 +69,7 @@ works as Apple intended and optimized for.
 
 Bazel also makes it easy to automate _other_ kinds tasks: for example, code
 generating a thrift schema, [generating an Xcode
-project](https://github.com/pinterest/xchammer), or [pushing a docker
+project](https://github.com/pinterest/xchammer), or [pushing a Docker
 container](https://github.com/bazelbuild/rules_docker). [Starlark](#Starkark)
 (Bazel's built-in, deterministic, Python-like programming language) allows
 developers to implement custom build logic. For developers this means better
