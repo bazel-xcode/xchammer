@@ -204,7 +204,7 @@ configuration settings to customize builds. Together, `select` and
 `config_setting` yield configurable build attributes.
 
 For example, unavoidable requirements could require an `objc_library` to
-be compiled differently when building for the appstore. The following build
+be compiled differently when building for the App Store. The following build
 file has conditional `copts` on `:app_store`.
 
 ```
