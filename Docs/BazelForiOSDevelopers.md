@@ -185,7 +185,7 @@ xcodebuild -workspace MyProject.xcworkspace -scheme ios-app
 ```
 
 Bazel exposes a command line which can also do builds. In Bazel, _every_ target
-is in the global WORKSPACE and there is no notion of schemes.
+is in the global `WORKSPACE` and there is no notion of schemes.
 
 ```
 bazel build ios-app
