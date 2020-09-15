@@ -103,7 +103,7 @@ For building iOS applications, most iOS developers use the rule set
 `rules_apple`. `rules_apple` contains key [rules](#rules) for iOS development which
 include rules to build applications, unit tests, and more.
 
-Head to [rules_apple](https://github.com/bazelbuild/rules_apple) and follow the
+Head to [`rules_apple`](https://github.com/bazelbuild/rules_apple) and follow the
 latest instructions to get setup. `rules_apple` provides instructions to add
 dependencies into the `WORKSPACE` file. Simply paste the lines from
 `rules_apple`'s README into the `WORKSPACE` file
