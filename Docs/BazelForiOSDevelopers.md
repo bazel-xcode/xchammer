@@ -169,7 +169,7 @@ ios_application(
 ```
 
 In Xcode this is similar to navigating in the GUI and hitting `File -> New
-Target`. Together, the `ios_application` and `objc_library` targets together
+Target`. Together, the `ios_application` and `objc_library` targets
 would be represented in Xcode as:
 
 ![Docs](XcodeExampleOfiOSProject.png)
