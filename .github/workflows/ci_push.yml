@@ -7,6 +7,8 @@ on:
       - master         # Push events on master branch
       - 'releases/*'   # Push events to branches matching refs/heads/releases/*
 
+# Consider finding a way to unify this with `ci.yml`. Per the github actions
+# docs, I'm not sure about how to do that.
 jobs:
   make_test:
     name: make_test
