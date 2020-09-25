@@ -1,5 +1,5 @@
 load(
-    "@xchammer_resources//:tulsi/tulsi_aspects_paths.bzl",
+    ":tulsi.bzl",
     "SwiftInfo",
 )
 

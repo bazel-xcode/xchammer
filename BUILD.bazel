@@ -161,9 +161,8 @@ load(
 
 xcode_project(
     name="workspace_v2",
-    targets=["//:xchammer",  "//tools/XCConfigExporter:xcconfig-exporter"],
     bazel="tools/bazelwrapper",
-    xchammer="xchammer.app",
+    targets=["//:xchammer",  "//tools/XCConfigExporter:xcconfig-exporter"],
     project_config=project_config(
         paths = ["**"],
         generate_xcode_schemes=False,
@@ -175,3 +174,83 @@ xcode_project(
     )
 )
 
+# Development / Distribution
+genrule(
+    name = "xchammer_unzip",
+    srcs = [ ":xchammer" ],
+    cmd = "unzip -q $(SRCS) -d $(OUTS)",
+    outs = [ "xchammer_unzip" ]
+)
+
+# This produces the same interface as the XCHammer repository, so a person
+# could use a distribution artifact or a source build without changing thier
+# build files
+# Building XCHammer ( or any decently complex tool using external deps ) from
+# source isn't suggested as it will involve making sure your iOS env has the
+# same bazel, Xcode version installed, and all transitive deps in the
+# WORKSPACE. Outside of being difficulto update/manage, it's also very
+# cumbersome in Bazel
+# https://github.com/bazelbuild/bazel/issues/1550
+# The current API is
+# :xchammer ( excutable binary )
+# BazelExtensions/*.bzl ( related bazel API )
+# Usage:
+# http_archive(
+#   name = "xchammer",
+#   urls = ["file:////path/to/xchammer/bazel-bin/xchammer_dist.zip"]
+# )
+gen_workspace_cmd = """
+    mkdir BazelExtensions
+    cd BazelExtensions
+    touch BUILD
+    RESOURCES=../xchammer.app/Contents/Resources
+    ln -s $$RESOURCES/xcode_configuration_provider.bzl xcode_configuration_provider.bzl
+    ln -s $$RESOURCES/xchammerconfig.bzl xchammerconfig.bzl
+    ln -s $$RESOURCES/xcodeproject.bzl xcodeproject.bzl
+    ln -s $$RESOURCES/tulsi tulsi
+    sed  's,@xchammer_tulsi_aspects//,,g' $$RESOURCES/tulsi.bzl > tulsi.bzl
+    cd ..
+    touch WORKSPACE
+    touch BUILD
+    echo 'sh_binary(name="xchammer", srcs=["xchammer.app/Contents/MacOS/xchammer"], visibility=["//visibility:public"])' > BUILD
+"""
+genrule(
+    name = "xchammer_dist",
+    srcs = [ ":xchammer_unzip" ],
+    cmd = """
+    mkdir zipdir/
+    cp -r $(SRCS)/xchammer.app zipdir/xchammer.app
+    cd zipdir
+    {gen_workspace_cmd}
+    zip -q ../$(OUTS) -r .
+    """.format(gen_workspace_cmd=gen_workspace_cmd),
+    outs = [ "xchammer_dist_repo.zip" ]
+)
+
+# Builds an xchammer WORKSPACE use for local development. By creating a symlink
+# to the build artifact to ensure the upstream repository is using the latest
+# artifacts.
+# 
+# If we were to just use `xchammer_dist` Bazel will not check a `.zip` of an
+# http_archive, so this symlinks the files instead.
+#
+# TODO: migrate to tree artifacts and load the `.app` directly
+#  ( --define "apple.experimental.tree_artifact_outputs=True" )
+#
+# local_repository(
+#   name = "xchammer",
+#   path =  "/path/to/xchammer/bazel-bin/xchammer_dev_repo/"
+# )
+# --override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo/
+genrule(
+    name = "xchammer_dev",
+    srcs = [ ":xchammer" ],
+    cmd = """
+    set -x
+    mkdir $(OUTS)
+    ln -s $$(dirname $$PWD/$(SRCS))/xchammer_archive-root/xchammer.app $(OUTS)/xchammer.app
+    cd $(OUTS)
+    {gen_workspace_cmd}
+    """.format(gen_workspace_cmd=gen_workspace_cmd),
+    outs = [ "xchammer_dev_repo" ],
+)

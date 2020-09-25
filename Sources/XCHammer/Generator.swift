@@ -64,17 +64,31 @@ enum Generator {
 
     // Mark - Xcode helper targets
 
+    static func getRepositoryOverrides(genOptions: XCHammerGenerateOptions) -> [String] {
+        let overrideRepository = getAspectRepoOverride(genOptions: genOptions)
+        // Consider removing the `tulsi` aspect usage here.
+        if genOptions.xcodeProjectRuleInfo != nil{
+            return [
+                "--override_repository=tulsi=" + overrideRepository,
+            ]
+        }
+        return [
+            "--override_repository=tulsi=" + overrideRepository,
+            "--override_repository=xchammer=" + overrideRepository,
+            "--override_repository=xchammer_tulsi_aspects=" + overrideRepository,
+        ]
+    }
+
     private static func makeBazelPreBuildTarget(labels: [BuildLabel], genOptions:
             XCHammerGenerateOptions) -> ProjectSpec.Target {
         let bazel = genOptions.bazelPath.string
         let retrySh = XCHammerAsset.retry.getPath(underProj: "$PROJECT_FILE_PATH")
-        let xchammerResources = getAspectRepoOverride(genOptions: genOptions)
         // Build xcode_project_deps for the targets in question
-        let bazelArgs = [
-            "--override_repository=xchammer_resources=" + xchammerResources,
-            "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%pure_xcode_build_sources_aspect",
+        let overrides = getRepositoryOverrides(genOptions: genOptions)
+        let bazelArgs: [String] = [
+            "--aspects \(getAspectPath(genOptions: genOptions)):xcode_configuration_provider.bzl%pure_xcode_build_sources_aspect",
             "--output_groups=xcode_project_deps"
-        ] + labels.map { $0.value }
+        ] + overrides + labels.map { $0.value }
 
         // We retry.sh the bazel command so if Xcode updates, the build still works
         let argStr = "-c '[[ \"$(ACTION)\" == \"clean\" ]] && (\(bazel) clean) || (\(retrySh) \(bazel) build \(bazelArgs.joined(separator: " ")))'"
@@ -400,7 +414,7 @@ enum Generator {
 
             let targetConfig = XcodeTarget.getTargetConfig(for:
                     xcodeTarget)
-            let aspectRepoOverride = getAspectRepoOverride(genOptions: genOptions)
+            let overrides = getRepositoryOverrides(genOptions: genOptions)
             let baseBuildOptions = [
                 // This is a hack for BEP output not being updated as much as it
                 // should be. By publishing all actions, it flushes the buffer
@@ -408,12 +422,9 @@ enum Generator {
                 // The underlying issue fixed in HEAD
                 // https://github.com/bazelbuild/bazel/commit/de3d8bf821dba97471ab4ccfc1f1b1559f0a1cac
                 "--build_event_publish_all_actions=true"
-            ] + [
-                "--override_repository=tulsi=" + aspectRepoOverride,
-            ] + [
+            ] + overrides + [
                 // Build xcode_project_deps for targets in question.
-                "--override_repository=xchammer_resources=" + aspectRepoOverride,
-                "--aspects @xchammer_resources//:xcode_configuration_provider.bzl%xcode_build_sources_aspect",
+                "--aspects \(getAspectPath(genOptions: genOptions)):xcode_configuration_provider.bzl%xcode_build_sources_aspect",
                 "--output_groups=+xcode_project_deps"
             ]
 
@@ -849,7 +860,7 @@ enum Generator {
         return CommandLine.arguments[0]
     }
 
-    static func getAspectRepoOverride(genOptions: XCHammerGenerateOptions) -> String {
+    private static func getAspectRepoOverride(genOptions: XCHammerGenerateOptions) -> String {
         // In V2 we assume that the aspect is propagated by xchammer in the
         // WORKSPACE. We need to use execRoot to make this reproducible
         if let path = genOptions.xcodeProjectRuleInfo?.xchammerPath {
@@ -859,6 +870,17 @@ enum Generator {
         // Use `override_repository` in Bazel to resolve the Tulsi
         // workspace adjacent to the Binary.
         return getAssetBase()
+    }
+
+    /// When it's used as a Bazel package we need to load aspects from
+    /// BazelExtensions
+    private static func getAspectPath(genOptions: XCHammerGenerateOptions) -> String {
+        if genOptions.xcodeProjectRuleInfo != nil {
+            return "@xchammer//BazelExtensions"
+        }
+        // In the case of using xchammer.app w/o a Bazel rule BazelExtensions
+        // are packed into the app
+        return "@xchammer//"
     }
 
     private static func getDepsHashSettingValue(projectPath: Path) throws ->

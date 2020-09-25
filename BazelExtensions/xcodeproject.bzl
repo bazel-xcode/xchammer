@@ -1,10 +1,16 @@
 # Load the sources aspect from Tulsi
 load(
-    "@xchammer_resources//:tulsi/tulsi_aspects.bzl",
+    ":tulsi.bzl",
     "tulsi_sources_aspect",
     "TulsiSourcesAspectInfo",
 )
-load(":xchammerconfig.bzl", "xchammer_config", "gen_xchammer_config", "project_config")
+
+load(
+    ":xchammerconfig.bzl",
+    "xchammer_config",
+    "gen_xchammer_config",
+    "project_config"
+)
 
 load(
     ":xcode_configuration_provider.bzl",
@@ -78,37 +84,38 @@ def _xcode_project_impl(ctx):
             artifacts.append(a)
 
     xchammer_info_json = ctx.actions.declare_file(ctx.attr.name + "_xchammer_info.json")
+
+    xchammer_files = ctx.attr.xchammer.files.to_list()
+    xchammer = xchammer_files[0]
+    if xchammer.extension == "zip":
+        if xchammer.basename != "xchammer.zip":
+            fail("Unexpected app name: " + xchammer.path)
+        # Assume that if we're dealing with a zip, then it's adjacent to the
+        # archive root.
+        ar_root_bin = "/xchammer_archive-root/xchammer.app/Contents/MacOS/xchammer"
+        xchammer_bin = xchammer.dirname + ar_root_bin
+    else:
+        # Perhaps we always want to have this:
+        xchammer_bin = xchammer.path
+
+    # Drop off Contents/MacOS/Resources
+    xchammer_app = "/".join(xchammer_bin.split("/")[:-3])
     xchammer_info = struct(
         tulsiinfos=[a.path for a in artifacts],
         # This is used by bazel_build_settings.py and replaced by
         # install_xcode_project.
         execRoot="__BAZEL_EXEC_ROOT__",
-        # This rule is for the actual _imp. We want XCHammer to run the install
-        # target.
-        # TODO(V2): for workspace mode, we need a way to invoke this to include all
-        # targets
         bazelTargets=[str(ctx.label)[:-5]],
-        xchammerPath=ctx.attr.xchammer
-        if ctx.attr.xchammer[0] == "/"
-        else "$SRCROOT/" + ctx.attr.xchammer,
+        xchammerPath=xchammer_app
+        if xchammer_app[0] == "/"
+        else "$SRCROOT/" + xchammer_app,
     )
     ctx.actions.write(content=xchammer_info.to_json(), output=xchammer_info_json)
 
-    # If we're doing a source build of XCHammer then do so
-    # this is intended for development of XCHammer only
-    xchammer_command = ["set -e;"]
-    if ctx.attr.xchammer_bazel_build_target:
-        xchammer_files = ctx.attr.xchammer_bazel_build_target.files.to_list()
-        xchammer_zip = xchammer_files[0].path
-        xchammer_command.append(
-            "unzip -o " + xchammer_zip + " -d $(dirname $(readlink $PWD/WORKSPACE))/;"
-        )
-    else:
-        xchammer_files = []
-
-    # TODO(V2): handle absolute paths here
-    xchammer_command.append(ctx.attr.xchammer + "/Contents/MacOS/xchammer")
-
+    xchammer_command = [
+        "set -e;",
+        xchammer_bin
+    ]
     project_name = ctx.attr.project_name + ".xcodeproj"
     xchammer_command.extend(
         [
@@ -149,9 +156,7 @@ _xcode_project = rule(
         "bazel": attr.string(default="bazel"),
         "target_config": attr.string(default="{}"),
         "project_config": attr.string(),
-        "xchammer": attr.string(mandatory=True),
-        # This is used as a development option only
-        "xchammer_bazel_build_target": attr.label(mandatory=False),
+        "xchammer": attr.label(mandatory=False,default="@xchammer//:xchammer"),
     },
     outputs={"out": "%{project_name}.xcodeproj"},
 )
@@ -219,12 +224,6 @@ def xcode_project(**kwargs):
 
     # Build an XCHammer config Based on inputs
     targets_json = [str(t) for t in kwargs.get("targets")]
-
-    # XCHammer development only
-    xchammer_target = "//:xchammer"
-    if xchammer_target in targets_json:
-        proj_args["xchammer_bazel_build_target"] = xchammer_target
-
     if "target_config" in  proj_args:
         str_dict = {}
         for k in proj_args["target_config"]:
