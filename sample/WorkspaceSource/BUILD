@@ -24,11 +24,11 @@ objc_library(
 )
 
 load(
-    "@xchammer_resources//:xchammerconfig.bzl",
+    "@xchammer//:BazelExtensions/xchammerconfig.bzl",
     "project_config",
 )
 
-load("@xchammer_resources//:xcodeproject.bzl", "xcode_project")
+load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
 
 xcode_project(
     name = "XcodeBazel",

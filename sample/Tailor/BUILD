@@ -38,11 +38,11 @@ swift_library(
 
 # This is basically the same Xcode project as the Xcode project rule
 load(
-    "@xchammer_resources//:xchammerconfig.bzl",
+    "@xchammer//:BazelExtensions/xchammerconfig.bzl",
     "project_config",
 )
 
-load("@xchammer_resources//:xcodeproject.bzl", "xcode_project")
+load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
 
 xcode_project(
     name = "XcodeBazel",
