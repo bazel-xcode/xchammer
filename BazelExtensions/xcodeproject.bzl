@@ -1,19 +1,19 @@
 # Load the sources aspect from Tulsi
 load(
-    ":tulsi.bzl",
+    "@xchammer//:BazelExtensions/tulsi.bzl",
     "tulsi_sources_aspect",
     "TulsiSourcesAspectInfo",
 )
 
 load(
-    ":xchammerconfig.bzl",
+    "@xchammer//:BazelExtensions/xchammerconfig.bzl",
     "xchammer_config",
     "gen_xchammer_config",
     "project_config"
 )
 
 load(
-    ":xcode_configuration_provider.bzl",
+    "@xchammer//:BazelExtensions/xcode_configuration_provider.bzl",
     "XcodeProjectTargetInfo",
     "XcodeConfigurationAspectInfo",
     "target_config_aspect",

@@ -75,7 +75,6 @@ enum Generator {
         return [
             "--override_repository=tulsi=" + overrideRepository,
             "--override_repository=xchammer=" + overrideRepository,
-            "--override_repository=xchammer_tulsi_aspects=" + overrideRepository,
         ]
     }
 
@@ -86,7 +85,7 @@ enum Generator {
         // Build xcode_project_deps for the targets in question
         let overrides = getRepositoryOverrides(genOptions: genOptions)
         let bazelArgs: [String] = [
-            "--aspects \(getAspectPath(genOptions: genOptions)):xcode_configuration_provider.bzl%pure_xcode_build_sources_aspect",
+            "--aspects @xchammer//:BazelExtensions/xcode_configuration_provider.bzl%pure_xcode_build_sources_aspect",
             "--output_groups=xcode_project_deps"
         ] + overrides + labels.map { $0.value }
 
@@ -424,7 +423,7 @@ enum Generator {
                 "--build_event_publish_all_actions=true"
             ] + overrides + [
                 // Build xcode_project_deps for targets in question.
-                "--aspects \(getAspectPath(genOptions: genOptions)):xcode_configuration_provider.bzl%xcode_build_sources_aspect",
+                "--aspects @xchammer//:BazelExtensions/xcode_configuration_provider.bzl%xcode_build_sources_aspect",
                 "--output_groups=+xcode_project_deps"
             ]
 
@@ -870,17 +869,6 @@ enum Generator {
         // Use `override_repository` in Bazel to resolve the Tulsi
         // workspace adjacent to the Binary.
         return getAssetBase()
-    }
-
-    /// When it's used as a Bazel package we need to load aspects from
-    /// BazelExtensions
-    private static func getAspectPath(genOptions: XCHammerGenerateOptions) -> String {
-        if genOptions.xcodeProjectRuleInfo != nil {
-            return "@xchammer//BazelExtensions"
-        }
-        // In the case of using xchammer.app w/o a Bazel rule BazelExtensions
-        // are packed into the app
-        return "@xchammer//"
     }
 
     private static func getDepsHashSettingValue(projectPath: Path) throws ->

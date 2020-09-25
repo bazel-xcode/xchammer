@@ -21,14 +21,14 @@ filegroup(
 )
 
 load(
-    "@xchammer//BazelExtensions:xchammerconfig.bzl",
+    "@xchammer//:BazelExtensions/xchammerconfig.bzl",
     "execution_action",
     "project_config",
     "scheme_action_config",
     "target_config",
 )
 
-load("@xchammer//BazelExtensions:xcodeproject.bzl", "xcode_project")
+load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
 
 # Spawn the index import action as a background process
 app_scheme_config = {

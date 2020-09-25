@@ -28,7 +28,7 @@ load(
     "namespaced_name",
 )
 load(
-    "//BazelExtensions:xchammerconfig.bzl",
+    "//:BazelExtensions/xchammerconfig.bzl",
     "execution_action",
     "gen_xchammer_config",
     "project_config",
@@ -59,19 +59,34 @@ apple_resource_bundle(
 )
 
 load(
-    "//BazelExtensions:xcode_configuration_provider.bzl",
+    "//:BazelExtensions/xcode_configuration_provider.bzl",
     "declare_target_config",
+)
+
+load(
+    "@build_bazel_rules_apple//apple:resources.bzl",
+    "apple_resource_group",
 )
 
 # This is an example of declaring a target config.
 declare_target_config(name="XCHammerSourcesXcodeConfig", config=target_config())
+
+# This BUILD file is not actually imported into XCHammer
+# There is already a BUILD file placed in there by another dep.
+apple_resource_group(
+    name = "BazelExtensions",
+    structured_resources=glob([
+        "BazelExtensions/*.bzl",
+    ]),
+)
+
 
 swift_library(
     name = "XCHammerSources",
     srcs = glob(["Sources/**/*.swift"]),
     data = [
         ":XCHammerAssets",
-        "//BazelExtensions:BazelExtensions",
+        ":BazelExtensions",
     ] + [
         ":XCBuildKit",
         
@@ -155,7 +170,7 @@ gen_xchammer_config(
 
 # Experimental xcode_project rule
 load(
-    "//BazelExtensions:xcodeproject.bzl",
+    "//:BazelExtensions/xcodeproject.bzl",
     "xcode_project"
 )
 
@@ -200,18 +215,12 @@ genrule(
 #   urls = ["file:////path/to/xchammer/bazel-bin/xchammer_dist.zip"]
 # )
 gen_workspace_cmd = """
-    mkdir BazelExtensions
-    cd BazelExtensions
     touch BUILD
-    RESOURCES=../xchammer.app/Contents/Resources
-    ln -s $$RESOURCES/xcode_configuration_provider.bzl xcode_configuration_provider.bzl
-    ln -s $$RESOURCES/xchammerconfig.bzl xchammerconfig.bzl
-    ln -s $$RESOURCES/xcodeproject.bzl xcodeproject.bzl
+    RESOURCES=xchammer.app/Contents/Resources
+    ln -s $$RESOURCES/BazelExtensions BazelExtensions
+    sed -i ''  's,@xchammer_tulsi_aspects//,,g' BazelExtensions/tulsi.bzl
     ln -s $$RESOURCES/tulsi tulsi
-    sed  's,@xchammer_tulsi_aspects//,,g' $$RESOURCES/tulsi.bzl > tulsi.bzl
-    cd ..
     touch WORKSPACE
-    touch BUILD
     echo 'sh_binary(name="xchammer", srcs=["xchammer.app/Contents/MacOS/xchammer"], visibility=["//visibility:public"])' > BUILD
 """
 genrule(
