@@ -36,7 +36,6 @@ xcode_project(
 	"//:ios-app",
     ],
     bazel = "tools/bazelwrapper",
-    xchammer = "tools/xchammer.app",
     project_config = project_config(
 	build_bazel_platform_options = {
             "ios_x86_64": ["--config=ios_x86_64"],
