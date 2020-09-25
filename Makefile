@@ -168,7 +168,7 @@ run_force_bazel: build
 	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone
 
 # On the CI we always load the deps
-run_perf_ci:
+run_perf_ci: build
 	rm -rf sample/Frankenstein/Vendor/rules_pods
 	$(MAKE) -C sample/Frankenstein
 	$(MAKE) run_perf

@@ -3,13 +3,70 @@ name: Main workflow
 on: [pull_request]
 
 jobs:
-  Lint:
-    name: Run Unit and Integration Tests (macOS)
+  make_test:
+    name: make_test
     runs-on: macOS-latest
     steps:
-    - name: Checkout the Git repository
+    - name: checkout_repo
       uses: actions/checkout@v1
-    - name: Setup dependencies 
+    - name: cocoapods
       run: sudo gem install cocoapods 
-    - name: Run Tests
-      run: make ci
+    - name: make_test
+      run: make test
+
+  run_perf_ci:
+    name: run_perf_ci
+    runs-on: macOS-latest
+    steps:
+    - name: checkout_repo
+      uses: actions/checkout@v1
+    - name: cocoapods
+      run: sudo gem install cocoapods 
+    - name: run_perf_ci
+      run: make run_perf_ci
+
+  run_swift:
+    name: run_swift
+    runs-on: macOS-latest
+    steps:
+    - name: checkout_repo
+      uses: actions/checkout@v1
+    - name: run_swift
+      run: make run_swift
+
+  run_force_bazel:
+    name: run_force_bazel
+    runs-on: macOS-latest
+    steps:
+    - name: checkout_repo
+      uses: actions/checkout@v1
+    - name: run_force_bazel
+      run: make run_force_bazel
+
+  goldmaster:
+    name: goldmaster
+    runs-on: macOS-latest
+    steps:
+    - name: checkout_repo
+      uses: actions/checkout@v1
+    - name: goldmaster
+      run: make goldmaster
+
+  workspace:
+    name: workspace
+    runs-on: macOS-latest
+    steps:
+    - name: checkout_repo
+      uses: actions/checkout@v1
+    - name: workspace
+      run: make workspace
+
+  workspace_v2:
+    name: workspace_v2
+    runs-on: macOS-latest
+    steps:
+    - name: checkout_repo
+      uses: actions/checkout@v1
+    - name: workspace_v2
+      run: make workspace_v2
+
