@@ -69,10 +69,12 @@ enum Generator {
         // Consider removing the `tulsi` aspect usage here.
         if genOptions.xcodeProjectRuleInfo != nil{
             return [
+                "--override_repository=xchammer_tulsi_aspects=" + overrideRepository,
                 "--override_repository=tulsi=" + overrideRepository,
             ]
         }
         return [
+            "--override_repository=xchammer_tulsi_aspects=" + overrideRepository,
             "--override_repository=tulsi=" + overrideRepository,
             "--override_repository=xchammer=" + overrideRepository,
         ]
