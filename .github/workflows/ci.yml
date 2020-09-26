@@ -2,15 +2,48 @@ name: Main workflow
 
 on: [pull_request]
 
+# **THE FOLLOWING SEGMENT SHOULD BE KEPT IDENTICAL BETWEEN `CI.YML` UNTIL A BETTER IDEA COMES UP**
+# Consider finding a way to unify this with `ci.yml`. Per the github actions
+# docs, I'm not sure about how to do that.
+# Github actions seems to want to run the jobs 2x when there is multiple `on` keywords
+# e.g.  on: [pull_request, push]
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 jobs:
+  # Note: currently we share the Bazel cache to speed up parallel jobs.
+  # Ideally, we can update these jobs to use the a release artifact of XCHammer
+  # once https://github.com/pinterest/xchammer/pull/258 is landed.
+  # Ideally, it also can create a github release of XCHammer as well.
+  make_build:
+    name: make_build
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+    - name: make_build
+      run: make build
+
   make_test:
     name: make_test
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
-    - name: cocoapods
-      run: sudo gem install cocoapods 
+    - uses: actions/checkout@v2
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: make_test
       run: make test
 
@@ -18,10 +51,30 @@ jobs:
     name: run_perf_ci
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+    # Consider pulling this out to use the WORKSPACE rule
+    - name: pod_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: pod-cache
+      with:
+        path: ~/.bazel_pod_store
+        key: ${{ runner.os }}-pods-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-pods-${{ env.cache-name }}-
+
     - name: cocoapods
       run: sudo gem install cocoapods 
+
     - name: run_perf_ci
       run: make run_perf_ci
 
@@ -29,8 +82,17 @@ jobs:
     name: run_swift
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: run_swift
       run: make run_swift
 
@@ -38,26 +100,35 @@ jobs:
     name: run_force_bazel
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: run_force_bazel
       run: make run_force_bazel
-
-  goldmaster:
-    name: goldmaster
-    runs-on: macOS-latest
-    steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
-    - name: goldmaster
-      run: make goldmaster
 
   workspace:
     name: workspace
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: workspace
       run: make workspace
 
@@ -65,8 +136,17 @@ jobs:
     name: workspace_v2
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: workspace_v2
       run: make workspace_v2
 

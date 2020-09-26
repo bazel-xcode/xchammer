@@ -17,10 +17,9 @@ workspace: build
 	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
 	    --force
 
-# Experimental Xcode project generator based on Bazel
-# FIXME: remove `build` this is an unrelated internal bug
+# FIXME remove `build` this is an unrelated internal bug
 workspace_v2: build
-	tools/bazelwrapper build -s :workspace_v2
+	tools/bazelwrapper build -s :workspace_v2 $(BAZEL_CACHE_OPTS)
 
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean
@@ -37,19 +36,21 @@ uninstall:
 	unlink $(PREFIX)/bin/xchammer
 	rm -rf $(PREFIX)/bin/$(PRODUCT)
 
-
-build-debug: BAZELFLAGS = --announce_rc \
+# Note: this is used here to have a dynamic `home` variable, as its idomatic
+# to put the cache here with macOS.
+BAZEL_CACHE_OPTS=--repository_cache=$(HOME)/Library/Caches/Bazel \
 	--disk_cache=$(HOME)/Library/Caches/Bazel
+
+build-debug: BAZEL_OPTS=$(BAZEL_CACHE_OPTS)
 build-debug: build-impl
 
-build-release: BAZELFLAGS = --announce_rc \
-	--compilation_mode opt \
-	--disk_cache=$(HOME)/Library/Caches/Bazel
+build-release: BAZEL_OPTS=$(BAZEL_CACHE_OPTS)  \
+	--compilation_mode opt
 build-release: build-impl
 
 build-impl:
 	$(ROOT_DIR)/tools/bazelwrapper build \
-		 $(BAZELFLAGS) xchammer
+		 $(BAZEL_OPTS) xchammer
 	@rm -rf $(ROOT_DIR)/xchammer.app
 	@unzip -q $(ROOT_DIR)/bazel-bin/xchammer.zip
 
@@ -111,46 +112,6 @@ run_perf: build-release
 	    --bazel $(ROOT_DIR)/sample/Frankenstein/tools/bazelwrapper \
 	    --force
 
-# Create golden files from samples.
-# Expectations:
-# - output is stable. i.e. things don't move around
-# - output is reproducible across machines
-# TODO: Port Frankenstein to external PodToBUILD before adding it as a
-# goldmaster
-clean_goldmaster:
-	@rm -rf IntegrationTests/Goldmaster
-	@mkdir -p IntegrationTests/Goldmaster
-
-goldmaster_cli:
-	@for S in $$(ls sample); do \
-		[[ $$S != "Frankenstein" ]] || continue; \
-		[[ $$S != "SnapshotMe" ]] || continue; \
-		SAMPLE=$$S make run_force || exit 1; \
-		echo "Making goldmaster for $$S"; \
-		MASTER=IntegrationTests/Goldmaster/$$S/$$S.xcodeproj; \
-		mkdir -p $$MASTER; \
-		ditto sample/$$S/$$S.xcodeproj/project.pbxproj $$MASTER/project.pbxproj; \
-		sed -i '' 's,$(PWD),__PWD__,g' $$MASTER/project.pbxproj; \
-		sed -i '' 's,XCHAMMER.*,,g' $$MASTER/project.pbxproj; \
-		ditto sample/$$S/$$S.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
-		find IntegrationTests/Goldmaster/$$S/ -name *.xcscheme -exec sed -i '' 's,TEMP.*,",g' {} \; ; \
-	done
-
-goldmaster_bazel:
-	@for S in $$(ls sample); do \
-		[[ $$S != "Frankenstein" ]] || continue; \
-		SAMPLE=$$S make run_force_bazel || exit 1; \
-		echo "Making goldmaster for $$S"; \
-		MASTER=IntegrationTests/Goldmaster/$$S/XcodeBazel.xcodeproj; \
-		mkdir -p $$MASTER; \
-		ditto sample/$$S/XcodeBazel.xcodeproj/project.pbxproj $$MASTER/project.pbxproj; \
-		sed -i '' 's,$(PWD),__PWD__,g' $$MASTER/project.pbxproj; \
-		sed -i '' 's,XCHAMMER.*,,g' $$MASTER/project.pbxproj; \
-		ditto sample/$$S/XcodeBazel.xcodeproj/xcshareddata/xcschemes $$MASTER/xcshareddata/xcschemes; \
-	done
-
-goldmaster: clean_goldmaster goldmaster_bazel goldmaster_cli
-
 run_swift: build
 	$(XCHAMMER_BIN) generate \
 	    $(ROOT_DIR)/sample/Tailor/XCHammer.yaml \
@@ -166,7 +127,7 @@ run_swift: build
 run_force_bazel: build
 	cd sample/$(SAMPLE)/ && \
 	 tools/bazelwrapper clean  && \
-	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone
+	    tools/bazelwrapper build -s :XcodeBazel $(BAZEL_CACHE_OPTS)
 
 # On the CI we always load the deps
 run_perf_ci: build
@@ -177,7 +138,7 @@ run_perf_ci: build
 # On the CI - we stick a .bazelrc into the home directory to control
 # how every single bazel build works. ( Any sample get's this )
 bazelrc_home:
-	echo "build --disk_cache=$(HOME)/Library/Caches/Bazel \\" > ~/.bazelrc
+	echo "build $(BAZEL_CACHE_OPTS) \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
 
 ci: bazelrc_home test run_perf_ci run_swift run_force_bazel goldmaster workspace
@@ -185,7 +146,6 @@ ci: bazelrc_home test run_perf_ci run_swift run_force_bazel goldmaster workspace
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
 
-.PHONY:
 xchammer_config:
 	tools/bazelwrapper build xchammer_config
 
