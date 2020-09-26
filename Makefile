@@ -39,11 +39,13 @@ uninstall:
 
 
 build-debug: BAZELFLAGS = --announce_rc \
+    	--repository_cache=$(HOME)/Library/Caches/Bazel \
 	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-debug: build-impl
 
 build-release: BAZELFLAGS = --announce_rc \
 	--compilation_mode opt \
+    	--repository_cache=$(HOME)/Library/Caches/Bazel \
 	--disk_cache=$(HOME)/Library/Caches/Bazel
 build-release: build-impl
 

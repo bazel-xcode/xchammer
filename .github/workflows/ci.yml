@@ -42,8 +42,29 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+    # Consider pulling this out to use the WORKSPACE rule
+    - name: pod_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: pod-cache
+      with:
+        path: ~/.bazel_pod_store
+        key: ${{ runner.os }}-pods-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-pods-${{ env.cache-name }}-
+
     - name: cocoapods
       run: sudo gem install cocoapods 
+
     - name: run_perf_ci
       run: make run_perf_ci
 
@@ -52,6 +73,16 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: run_swift
       run: make run_swift
 
@@ -60,14 +91,37 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: run_force_bazel
       run: make run_force_bazel
 
+  # I'm not sure if this is used anymore. It'd be nice if there was a better way
+  # to handle this
   goldmaster:
     name: goldmaster
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+
     - name: goldmaster
       run: make goldmaster
 
@@ -76,6 +130,16 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: workspace
       run: make workspace
 
@@ -84,6 +148,16 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: workspace_v2
       run: make workspace_v2
 
