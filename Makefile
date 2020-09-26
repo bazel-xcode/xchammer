@@ -18,7 +18,8 @@ workspace: build
 	    --force
 
 # Experimental Xcode project generator based on Bazel
-workspace_v2:
+# FIXME: remove `build` this is an unrelated internal bug
+workspace_v2: build
 	tools/bazelwrapper build -s :workspace_v2
 
 clean:
@@ -168,7 +169,7 @@ run_force_bazel: build
 	    tools/bazelwrapper build -s :XcodeBazel --spawn_strategy=standalone
 
 # On the CI we always load the deps
-run_perf_ci:
+run_perf_ci: build
 	rm -rf sample/Frankenstein/Vendor/rules_pods
 	$(MAKE) -C sample/Frankenstein
 	$(MAKE) run_perf
