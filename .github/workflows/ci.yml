@@ -9,10 +9,10 @@ on: [pull_request]
 # e.g.  on: [pull_request, push]
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 jobs:
-  # TODO: currently we share the Bazel cache to speed up parallel jobs.
+  # Note: currently we share the Bazel cache to speed up parallel jobs.
   # Ideally, we can update these jobs to use the a release artifact of XCHammer
   # once https://github.com/pinterest/xchammer/pull/258 is landed.
-  # Once this 
+  # Ideally, it also can create a github release of XCHammer as well.
   make_build:
     name: make_build
     runs-on: macOS-latest
