@@ -7,10 +7,16 @@ jobs:
     name: make_test
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
-    - name: cocoapods
-      run: sudo gem install cocoapods 
+    - uses: actions/checkout@v2
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
     - name: make_test
       run: make test
 
