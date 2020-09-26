@@ -3,6 +3,23 @@ name: Main workflow
 on: [pull_request]
 
 jobs:
+  make_build:
+    name: make_build
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: bazel_cache
+      uses: actions/cache@v2
+      env:
+        cache-name: bazel-cache
+      with:
+        path: ~/Library/Caches/Bazel
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+    - name: make_build
+      run: make build
+
   make_test:
     name: make_test
     runs-on: macOS-latest
@@ -24,8 +41,7 @@ jobs:
     name: run_perf_ci
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: cocoapods
       run: sudo gem install cocoapods 
     - name: run_perf_ci
@@ -35,8 +51,7 @@ jobs:
     name: run_swift
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: run_swift
       run: make run_swift
 
@@ -44,8 +59,7 @@ jobs:
     name: run_force_bazel
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: run_force_bazel
       run: make run_force_bazel
 
@@ -53,8 +67,7 @@ jobs:
     name: goldmaster
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: goldmaster
       run: make goldmaster
 
@@ -62,8 +75,7 @@ jobs:
     name: workspace
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: workspace
       run: make workspace
 
@@ -71,8 +83,7 @@ jobs:
     name: workspace_v2
     runs-on: macOS-latest
     steps:
-    - name: checkout_repo
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: workspace_v2
       run: make workspace_v2
 
