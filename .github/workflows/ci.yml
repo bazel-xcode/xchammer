@@ -1,10 +1,18 @@
 name: Main workflow 
 
-# Note: github actions seems to want to run the actions 2x is this intentional
-# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
-on: [pull_request, push]
+on: [pull_request]
 
+# **THE FOLLOWING SEGMENT SHOULD BE KEPT IDENTICAL BETWEEN `CI.YML` UNTIL A BETTER IDEA COMES UP**
+# Consider finding a way to unify this with `ci.yml`. Per the github actions
+# docs, I'm not sure about how to do that.
+# Github actions seems to want to run the jobs 2x when there is multiple `on` keywords
+# e.g.  on: [pull_request, push]
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 jobs:
+  # TODO: currently we share the Bazel cache to speed up parallel jobs.
+  # Ideally, we can update these jobs to use the a release artifact of XCHammer
+  # once https://github.com/pinterest/xchammer/pull/258 is landed.
+  # Once this 
   make_build:
     name: make_build
     runs-on: macOS-latest
@@ -105,27 +113,6 @@ jobs:
 
     - name: run_force_bazel
       run: make run_force_bazel
-
-  # I'm not sure if this is used anymore. It'd be nice if there was a better way
-  # to handle this
-  goldmaster:
-    name: goldmaster
-    runs-on: macOS-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: bazel_cache
-      uses: actions/cache@v2
-      env:
-        cache-name: bazel-cache
-      with:
-        path: ~/Library/Caches/Bazel
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
-        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
-
-    - name: goldmaster
-      run: make goldmaster
 
   workspace:
     name: workspace
