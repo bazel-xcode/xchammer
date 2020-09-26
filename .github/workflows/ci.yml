@@ -1,6 +1,8 @@
 name: Main workflow 
 
-on: [pull_request]
+# Note: github actions seems to want to run the actions 2x is this intentional
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+on: [pull_request, push]
 
 jobs:
   make_build:
