@@ -1,8 +1,16 @@
 name: Main workflow 
 
-on: [pull_request]
+on:
+  # Trigger the workflow on push, pull request, release
+  push:
+  pull_request:
+  release:
+    types:
+      - created
 
 jobs:
+  # Note: we currently run a source build on each of the shards.
+  # Ideally we could 
   make_build:
     name: make_build
     runs-on: macOS-latest
