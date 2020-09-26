@@ -18,7 +18,8 @@ workspace: build
 	    --force
 
 # Experimental Xcode project generator based on Bazel
-workspace_v2:
+# FIXME: remove `build` this is an unrelated internal bug
+workspace_v2: build
 	tools/bazelwrapper build -s :workspace_v2
 
 clean:
