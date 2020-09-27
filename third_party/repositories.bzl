@@ -244,7 +244,7 @@ def xchammer_dependencies():
     namespaced_new_git_repository(
         name = "SwiftShell",
         remote = "https://github.com/kareman/SwiftShell",
-        commit = "fb7fc2c9ad8811caf324431a508fb79e3fb74f99",
+        commit = "99680b2efc7c7dbcace1da0b3979d266f02e213c",
         build_file_content = namespaced_build_file([
             namespaced_swift_library(
                 name = "SwiftShell",
