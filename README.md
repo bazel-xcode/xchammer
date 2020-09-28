@@ -85,9 +85,11 @@ remote caching and other features. This feature is experimental.
 
 ```py
 # WORKSPACE
+# TODO: binary releases will soon be created by the CI see
+# https://github.com/pinterest/xchammer/pull/258 for more details.
 http_archive(
     name = "xchammer",
-    urls = [ "https://github.com/pinterest/xchammer/releases/download/${RELEASE}/xchammer_dist_repo.zip" ],
+    urls = [ "https://github.com/pinterest/xchammer/releases/download/${RELEASE}/TBD.zip" ],
 )
 
 # BUILD.Bazel
