@@ -255,7 +255,6 @@ genrule(
     name = "xchammer_dev",
     srcs = [ ":xchammer" ],
     cmd = """
-    set -x
     mkdir $(OUTS)
     ln -s $$(dirname $$PWD/$(SRCS))/xchammer_archive-root/xchammer.app $(OUTS)/xchammer.app
     cd $(OUTS)
