@@ -1,3 +1,5 @@
+workspace(name = "xchammer")
+
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -90,10 +92,3 @@ http_archive(
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 
 buildifier_dependencies()
-
-# For a binary check-in, this should be declared as so
-#local_repository(
-#    name="xchammer_resources",
-#    path="xchammer.app/Contents/Resources/",
-#)
-

@@ -3,7 +3,8 @@
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 PRODUCT := xchammer.app
-XCHAMMER_BIN := $(ROOT_DIR)/$(PRODUCT)/Contents/MacOS/XCHammer
+XCHAMMER_APP := $(ROOT_DIR)/bazel-bin/xchammer_archive-root/xchammer.app
+XCHAMMER_BIN := $(XCHAMMER_APP)/Contents/MacOS/XCHammer
 
 PREFIX := /usr/local
 
@@ -17,9 +18,8 @@ workspace: build
 	    --bazel $(ROOT_DIR)/tools/bazelwrapper \
 	    --force
 
-# FIXME remove `build` this is an unrelated internal bug
-workspace_v2: build
-	tools/bazelwrapper build -s :workspace_v2 $(BAZEL_CACHE_OPTS)
+workspace_v2:
+	tools/bazelwrapper build $(BAZEL_OPTS) :workspace_v2 :xchammer_dev
 
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean
@@ -29,7 +29,7 @@ archive: build-release
 # Brew support
 install: archive
 	mkdir -p $(PREFIX)/bin
-	ditto $(PRODUCT) $(PREFIX)/bin/$(PRODUCT)
+	ditto $(XCHAMMER_APP) $(PREFIX)/bin/$(PRODUCT)
 	ln -s $(PREFIX)/bin/$(PRODUCT)/Contents/MacOS/xchammer $(PREFIX)/bin/xchammer
 
 uninstall:
@@ -44,15 +44,12 @@ BAZEL_CACHE_OPTS=--repository_cache=$(HOME)/Library/Caches/Bazel \
 build-debug: BAZEL_OPTS=$(BAZEL_CACHE_OPTS)
 build-debug: build-impl
 
-build-release: BAZEL_OPTS=$(BAZEL_CACHE_OPTS)  \
+build-release: BAZEL_OPTS=$(BAZEL_CACHE_OPTS) \
 	--compilation_mode opt
 build-release: build-impl
 
 build-impl:
-	$(ROOT_DIR)/tools/bazelwrapper build \
-		 $(BAZEL_OPTS) xchammer
-	@rm -rf $(ROOT_DIR)/xchammer.app
-	@unzip -q $(ROOT_DIR)/bazel-bin/xchammer.zip
+	$(ROOT_DIR)/tools/bazelwrapper build $(BAZEL_OPTS) :xchammer :xchammer_dist :xchammer_dev
 
 build: build-debug
 

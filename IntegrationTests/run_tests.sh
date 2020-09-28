@@ -89,7 +89,7 @@ function preflightEnv() {
     ditto $ROOT_DIR/sample/$SAMPLE $SANDBOX/$SAMPLE
 
     mkdir -p $SANDBOX/$SAMPLE/tools
-    ln -sf $ROOT_DIR/xchammer.app $SANDBOX/$SAMPLE/tools/xchammer.app
+    ln -sf $ROOT_DIR/bazel-bin/xchammer_dev_repo $SANDBOX/$SAMPLE/tools/xchammer
 
     rm -rf $SANDBOX/$SAMPLE/*.xcodeproj
 

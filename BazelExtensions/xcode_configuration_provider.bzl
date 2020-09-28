@@ -1,8 +1,7 @@
 load(
-    "@xchammer_resources//:tulsi/tulsi_aspects_paths.bzl",
+    "@xchammer//:BazelExtensions/tulsi.bzl",
     "SwiftInfo",
 )
-
 
 XcodeProjectTargetInfo = provider(
     fields={

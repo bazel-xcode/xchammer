@@ -85,13 +85,15 @@ remote caching and other features. This feature is experimental.
 
 ```py
 # WORKSPACE
-local_repository(
-    name = "xchammer_resources",
-    path = "/Path/To/xchammer.app/Contents/Resources",
+# TODO: binary releases will soon be created by the CI see
+# https://github.com/pinterest/xchammer/pull/258 for more details.
+http_archive(
+    name = "xchammer",
+    urls = [ "https://github.com/pinterest/xchammer/releases/download/${RELEASE}/TBD.zip" ],
 )
 
 # BUILD.Bazel
-load("@xchammer_resources//:xcodeproject.bzl", "xcode_project")
+load("@xchammer//:xcodeproject.bzl", "xcode_project")
 xcode_project(
     name = "MyProject",
     targets = [ "//ios-app:ios-app" ],
