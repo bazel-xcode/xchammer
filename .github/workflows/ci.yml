@@ -150,3 +150,19 @@ jobs:
     - name: workspace_v2
       run: make workspace_v2
 
+  # This uploads `xchammer.zip` as an artifact that can be pulled in via the `WORKSPACE`
+  # 1. Open github.com/your-org/xchammer
+  # 2. Navigate to Actions
+  # 3. Navigate to `Artifacts`
+  # 4. Put `xchammer.zip` into the WORKSPACE
+  make_release:
+    name: make_release
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: make_release
+        run: make release
+      - uses: actions/upload-artifact@v2
+        with:	
+          name: xchammer.zip
+          path: ${{ github.workspace }}/bazel-bin/xchammer_dist_repo.zip

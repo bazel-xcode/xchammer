@@ -1,4 +1,4 @@
-.PHONY : test workspace archive install compile_commands debug run run_force test build build build-release
+.PHONY : test workspace release install compile_commands debug run run_force test build build build-release
 
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -24,10 +24,10 @@ workspace_v2:
 clean:
 	$(ROOT_DIR)/tools/bazelwrapper clean
 
-archive: build-release
+release: build-release
 
 # Brew support
-install: archive
+install: release
 	mkdir -p $(PREFIX)/bin
 	ditto $(XCHAMMER_APP) $(PREFIX)/bin/$(PRODUCT)
 	ln -s $(PREFIX)/bin/$(PRODUCT)/Contents/MacOS/xchammer $(PREFIX)/bin/xchammer
