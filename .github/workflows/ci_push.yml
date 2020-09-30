@@ -170,4 +170,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:	
           name: xchammer.zip
-          path: ${{ github.workspace }}/bazel-bin/xchammer_dist_repo.zip
+          path: bazel-bin/xchammer_dist_repo.zip
