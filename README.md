@@ -39,7 +39,7 @@ First, pull XCHammer into the `WORKSPACE` file:
 _Ideally, pull in a release optimized binary build to keep XCHammer's
 dependencies, Swift version, Xcode version, compiler flags, Bazel version, and
 build time outside of the main iOS/macOS application's WORKSPACE. To easily
-achieve this, github CI creates a binary release artifact on receiving a new
+achieve this, GitHub CI creates a binary release artifact on receiving a new
 tag._
 
 ```py
@@ -52,8 +52,12 @@ http_archive(
     urls = [ "https://github.com/pinterest/xchammer/releases/download/v3.4.1.0/xchammer.zip" ],
 )
 
-# Vendor a binary release of xchammer e.g. from a github action `artifact` on a PR
-#  https://github.com/pinterest/xchammer/pull/262/checks?check_run_id=1195532626
+# Download, unzip, and vendor a binary release of XCHammer from a GitHub
+# action `artifact` on a PR
+# https://github.com/pinterest/xchammer/pull/262/checks?check_run_id=1195532626
+# 
+# Note: the URL of these artifacts is directly consumeable with http_archive due
+# to https://github.com/actions/upload-artifact/issues/50
 # local_repository(
 #    name = "xchammer",
 #    path = "tools/xchammer"
