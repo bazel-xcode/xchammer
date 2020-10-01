@@ -155,11 +155,17 @@ jobs:
     - name: workspace_v2
       run: make workspace_v2
 
-  # This uploads `xchammer.zip` as an artifact that can be pulled in via the `WORKSPACE`
-  # 1. Open github.com/your-org/xchammer
-  # 2. Navigate to Actions
-  # 3. Navigate to `Artifacts`
-  # 4. Put `xchammer.zip` into the WORKSPACE
+  # This uploads `xchammer.zip` as an artifact to github actions
+  # For issues mentioned here
+  # https://github.com/actions/upload-artifact/issues/50
+  # The Github URL can't be used with Bazel directly in an `http_archive`
+  # At the time of writing the only way to consume it is to:
+  # - get the release URL with the github actions API which is valid for 1 minute
+  # - pull the zip from that URL and re-host it: or somehow use it locally.
+  # - it'd probably be possible to impalement as a github actions repository
+  #   and that's a lot of unwarranted complexity to integrate XCHammer.
+  #
+  # See README.md of how to use the artifact with Bazel
   make_release:
     name: make_release
     runs-on: macOS-latest
@@ -183,5 +189,5 @@ jobs:
             echo ::set-env name=BAZEL_BIN::$(readlink bazel-bin)
       - uses: actions/upload-artifact@v2
         with:	
-          name: xchammer.zip
+          name: xchammer
           path: ${{ env.BAZEL_BIN }}/xchammer_dist_repo.zip

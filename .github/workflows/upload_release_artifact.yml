@@ -1,0 +1,46 @@
+# This workflow cuts a per commit binary release of XCHammer and uploads
+# the binary release WORKSPACE for later consumption.
+#
+# Basically push a tag to github for the commit and this will append the
+# release artifact
+#
+# Ideally we'd create a Bazel consumeable artifact per commit but using github
+# actions w/o any other systems it's not so possible
+# https://github.com/actions/upload-artifact/issues/50
+on:
+  push:
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Upload Release Artifact
+
+jobs:
+  build:
+    name: create_release
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: make_release
+        run: make release
+      - name: create_release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: upload_release_asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: bazel-bin/xchammer_dist_repo.zip
+          asset_name: xchammer.zip
+          asset_content_type: application/zip
+
+

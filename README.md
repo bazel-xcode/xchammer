@@ -39,24 +39,39 @@ First, pull XCHammer into the `WORKSPACE` file:
 _Ideally, pull in a release optimized binary build to keep XCHammer's
 dependencies, Swift version, Xcode version, compiler flags, Bazel version, and
 build time outside of the main iOS/macOS application's WORKSPACE. To easily
-achieve this, main github CI worfklows create a binary release artifact for
-each commit:_
+achieve this, github CI creates a binary release artifact on receiving a new
+tag._
 
 ```py
 # WORKSPACE
-# To get the artifact URL per commit: 
-# - Navigate to the Actions tab on https://github.com/your-org/xchammer
-# - Get the URL of `xchammer.zip` e.g.
-#   https://github.com/pinterest/xchammer/suites/{suite_number}/artifacts/{artifact_number}
+# Recommended approach - the CI auto releases when you push a tag matching `v*`
+# The release prefix is the _tested_ bazel version, and XCHammer is often
+# forwards and backwards compatible
 http_archive(
     name = "xchammer",
-    urls = [ "https://github.com/pinterest/xchammer/suites/{suite_number}/artifacts/{artifact_number}" ],
+    urls = [ "https://github.com/pinterest/xchammer/releases/download/v3.4.1.0/xchammer.zip" ],
 )
+
+# Vendor a binary release of xchammer e.g. from a github action `artifact` on a PR
+#  https://github.com/pinterest/xchammer/pull/262/checks?check_run_id=1195532626
+# local_repository(
+#    name = "xchammer",
+#    path = "tools/xchammer"
+# )
+
+# Pull from source
+# git_repository(
+#    name = "xchammer",
+#    remote = "https://github.com/pinterest/xchammer.git",
+#    commit = "[COMMIT_SHA]"
+# )
 ```
 _note: for development, `make build` and the `xchammer_dev_repo` target allow a
 WORKSPACE to consume XCHammer built out of tree but point to the latest build,
-symlinked in `bazel-bin`. It's also possible to use `local_repository` and
-override it using `--override_repository=xchammer=/path/to/xchammer`_
+symlinked in `bazel-bin`:
+`--override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo`.
+It's also possible to use `local_repository` and override it using
+`--override_repository=xchammer=/path/to/xchammer`_
 
 Next, create an `xcode_project` target including targets:
 ```
