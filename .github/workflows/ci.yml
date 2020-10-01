@@ -160,6 +160,15 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
+      - name: bazel_cache_release
+        uses: actions/cache@v2
+        env:
+          cache-name: bazel-cache-release
+        with:
+          path: ~/Library/Caches/Bazel
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       - name: make_release
         run: make release
       - uses: actions/upload-artifact@v2
