@@ -170,8 +170,13 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: make_release
-        run: make release
+        run: |
+            make release
+            # Set the BAZEL_BIN env var to the realpath
+            # Note: actions/upload-artifact@v2 at time of writing is falling
+            # apart when we give it a symlink base path
+            echo ::set-env name=BAZEL_BIN::$(readlink bazel-bin)
       - uses: actions/upload-artifact@v2
         with:	
           name: xchammer.zip
-          path: bazel-bin/xchammer_dist_repo.zip
+          path: ${{ env.BAZEL_BIN }}/xchammer_dist_repo.zip
