@@ -32,20 +32,77 @@ XCHammer see [Introducing
 XCHammer](Docs/FastAndReproducibleBuildsWithXCHammer.md) and [Pinterest Focused
 Xcode Projects](PinterestFocusedXcodeProjects.md)_
 
-### Installation
+### Bazel build Xcode projects
 
-Build and install to `/usr/local/bin/`
+First, pull XCHammer into the `WORKSPACE` file:
 
-```bash
-make install
+_Ideally, pull in a release optimized binary build to keep XCHammer's
+dependencies, Swift version, Xcode version, compiler flags, Bazel version, and
+build time outside of the main iOS/macOS application's WORKSPACE. To easily
+achieve this, GitHub CI creates a binary release artifact on receiving a new
+tag._
+
+```py
+# WORKSPACE
+# Recommended approach - the CI auto releases when you push a tag matching `v*`
+# The release prefix is the _tested_ bazel version, and XCHammer is often
+# forwards and backwards compatible
+http_archive(
+    name = "xchammer",
+    urls = [ "https://github.com/pinterest/xchammer/releases/download/v3.4.1.0/xchammer.zip" ],
+)
+
+# Download, unzip, and vendor a binary release of XCHammer from a GitHub
+# action `artifact` on a PR
+# https://github.com/pinterest/xchammer/pull/262/checks?check_run_id=1195532626
+# 
+# Note: the URL of these artifacts is directly consumeable with http_archive due
+# to https://github.com/actions/upload-artifact/issues/50
+# local_repository(
+#    name = "xchammer",
+#    path = "tools/xchammer"
+# )
+
+# Pull from source
+# git_repository(
+#    name = "xchammer",
+#    remote = "https://github.com/pinterest/xchammer.git",
+#    commit = "[COMMIT_SHA]"
+# )
+```
+_note: for development, `make build` and the `xchammer_dev_repo` target allow a
+WORKSPACE to consume XCHammer built out of tree but point to the latest build,
+symlinked in `bazel-bin`:
+`--override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo`.
+It's also possible to use `local_repository` and override it using
+`--override_repository=xchammer=/path/to/xchammer`_
+
+Next, create an `xcode_project` target including targets:
+```
+# BUILD.Bazel
+load("@xchammer//:xcodeproject.bzl", "xcode_project")
+xcode_project(
+    name = "MyProject",
+    targets = [ "//ios-app:ios-app" ],
+    paths = [ "**" ],
+)
 ```
 
-_Pinterest vendors XCHammer.app for reproducibility and simplicity._
+Finally, build the project with Bazel
+```bash
+bazel build MyProject
+```
 
+### CLI Usage ( Non Bazel built projects )
 
-### Configuration
+XCHammer also works as a standalone project generator. kirst build XCHammer and
+install to the path:
 
-Generate using a [XCHammerConfig](Sources/XCHammer/XCHammerConfig.swift).
+```bash
+# Installs to `/usr/local/bin/`
+make install
+```
+Then, generate using a [XCHammerConfig](Sources/XCHammer/XCHammerConfig.swift).
 
 ```bash
 xchammer generate <configPath>
@@ -78,28 +135,6 @@ _To learn about how Pinterest uses XCHammer with Bazel locally check out [Pinter
 - [a Swift iOS app](sample/Tailor) 
 - [a Swift macOS app](BUILD.bazel)
 
-## Bazel build Xcode projects
-
-XCHammer additionally supports Bazel building Xcode projects, which enables
-remote caching and other features. This feature is experimental.
-
-```py
-# WORKSPACE
-# TODO: binary releases will soon be created by the CI see
-# https://github.com/pinterest/xchammer/pull/258 for more details.
-http_archive(
-    name = "xchammer",
-    urls = [ "https://github.com/pinterest/xchammer/releases/download/${RELEASE}/TBD.zip" ],
-)
-
-# BUILD.Bazel
-load("@xchammer//:xcodeproject.bzl", "xcode_project")
-xcode_project(
-    name = "MyProject",
-    targets = [ "//ios-app:ios-app" ],
-    paths = [ "**" ],
-)
-```
 
 ### Xcode progress bar integration
 
