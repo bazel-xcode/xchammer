@@ -52,30 +52,7 @@ http_archive(
     urls = [ "https://github.com/pinterest/xchammer/releases/download/v3.4.1.0/xchammer.zip" ],
 )
 
-# Download, unzip, and vendor a binary release of XCHammer from a GitHub
-# action `artifact` on a PR
-# https://github.com/pinterest/xchammer/pull/262/checks?check_run_id=1195532626
-# 
-# Note: the URL of these artifacts is directly consumeable with http_archive due
-# to https://github.com/actions/upload-artifact/issues/50
-# local_repository(
-#    name = "xchammer",
-#    path = "tools/xchammer"
-# )
-
-# Pull from source
-# git_repository(
-#    name = "xchammer",
-#    remote = "https://github.com/pinterest/xchammer.git",
-#    commit = "[COMMIT_SHA]"
-# )
 ```
-_note: for development, `make build` and the `xchammer_dev_repo` target allow a
-WORKSPACE to consume XCHammer built out of tree but point to the latest build,
-symlinked in `bazel-bin`:
-`--override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo`.
-It's also possible to use `local_repository` and override it using
-`--override_repository=xchammer=/path/to/xchammer`_
 
 Next, create an `xcode_project` target including targets:
 ```

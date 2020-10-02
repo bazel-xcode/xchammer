@@ -81,6 +81,56 @@ populated after the first Bazel build.._
 
 ## Development
 
+### How can I develop and debug XCHammer?
+
+The `Makefile` contains commands for development and distribution. `make run` and
+`make run_force_bazel` both run the sample app with a debug build.
+
+*The sample is a great way to do development on, and the authors recommend
+adding examples of edge cases and bugs here :). Pull requests welcome!*
+
+
+### XCHammer local repository integration
+
+When pulling in XCHammer with `git_repository` and building it in tree, simply
+override it with a local repository in the iOS repo's build or `.bazelrc`
+
+```
+build --override_repository=xchammer=/path/to/xchammer/
+```
+
+### XCHammer binary WORKSPACE integration for development
+
+For binary integration / out of tree builds, `make xchammer_dev_repo` allows a
+`WORKSPACE` to consume XCHammer built out of tree but point to the latest build,
+symlinked in `bazel-bin`. Add to the repository in question:
+```
+build --override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo
+```
+
+This makes it easy and pain free to build XCHammer outside of the repo but pull
+it into the `WORKSPACE`
+
+### Debugging XCHammer Bazel rules in Xcode
+
+1. It the iOS repository, override `xchammer` in the .bazelrc to point to the
+artifact or local source repository in question, for using the dev repo as
+mentioned above:
+```
+build \
+    --override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo/
+```
+
+2. In XCHammer repo, run `make workspace_v2 && open workspace_v2.xcodeproj`
+
+3. Change XCHammer Scheme to `wait for executable to launch`
+
+4. Hit the play button
+
+5. Trigger project gen in the iOS repository via bazel ( e.g. `bazlisk build
+:MyProject`, `make xcode_focus`, or whatever way you build the Xcode project) 
+
+
 ### How should I contribute to XCHammer?
 
 Pull requests are always welcome! Please submit a PR to [XCHammer's Github](https://github.com/pinterest/xchammer).
@@ -99,21 +149,11 @@ _Note: Pinterest runs on the `HEAD` of XCHammer. We require all XCHammer edge
 cases in the Pinterest Xcode projects to be exemplified on Github. In short,
 just `make test`._
 
-### How can I develop XCHammer?
+### How can debug the CLI of XCHammer in Xcode?
 
-The `Makefile` contains commands for development and distribution. `make run` and
-`make run_force` both run the sample app with a debug build.
+1. Generate the Xcode project in XCHammer repo locally: run `make workspace_v2 && open workspace_v2.xcodeproj`
 
-*The sample is a great way to do development on, and the authors recommend
-adding examples of edge cases and bugs here :). Pull requests welcome!*
-
-### How can I develop XCHammer with Xcode?
-
-_note: Swift XCHammer Xcode projects are currently under development._
-
-To generate an Xcode project, use the make command, `make workspace`. 
-
-*Running*
+2. *Running*
 To run XCHammer from Xcode for a given workspace, correctly setup the scheme for
 running. Set absolute paths to the `WORKSPACE` via `--workspace_root`,
 `XCHammerConfig` ( the first argument ), and `--bazel`. All 3 of these arguments
