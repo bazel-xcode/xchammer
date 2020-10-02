@@ -113,7 +113,7 @@ it into the `WORKSPACE`
 
 ### Debugging XCHammer Bazel rules in Xcode
 
-1. It the iOS repository, override `xchammer` in the .bazelrc to point to the
+1. In the iOS repository, override `xchammer` in the `.bazelrc` to point to the
 artifact or local source repository in question, for using the dev repo as
 mentioned above:
 ```
@@ -194,4 +194,3 @@ debug version.
 
 For release builds, build with compiler optimizations including setting
 `--compilation_mode=opt`.
-
