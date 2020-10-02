@@ -180,7 +180,11 @@ def _install_xcode_project_impl(ctx):
         "sed -i '' \"s,\$SRCROOT,$SRCROOT,g\" "
         + output_proj
         + "/XCHammerAssets/bazel_build_settings.py",
-        "ln -sf $PWD/external $SRCROOT/external",
+        # If the external symlink exists already remove it and symlink to the
+        # bazel install root symlink. The execroot external directory might not
+        # have all material at one point
+        "test -h $SRCROOT/external && rm -rf $SRCROOT/external",
+        "ln -sf $PWD/../../external $SRCROOT/external",
         'echo "' + output_proj + '" > ' + ctx.outputs.out.path,
     ]
     ctx.actions.run_shell(
