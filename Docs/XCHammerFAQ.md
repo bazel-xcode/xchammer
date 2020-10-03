@@ -131,11 +131,12 @@ build \
 5. Trigger project gen in the iOS repository via bazel ( e.g. `bazlisk build
 :MyProject`, `make xcode_focus`, or whatever way you build the Xcode project) 
 
-Note: The rule `xcode_project` is cache invalidated with Xcode so that means if
-you want to constantaly re-run the binary you'll need to remove the outputs each
-time. For example, if your project was named `Focus.xcodeproj`:
+Note: The rule `xcode_project` is cache invalidated so the binary doesn't run
+everytime you build with Bazel. This means if you want to constantaly re-run the
+binary you'll need to remove the outputs each time. For example, for the Bazel
+target `//:FocusXcodeProj` and project `Focus.xcodeproj`
 ```
-rm -rf bazel-bin/Focus.xcodeproj
+rm -rf bazel-bin/Focus.xcodeproj && bazel build :FocusXcodeProj
 ```
 
 ### How should I contribute to XCHammer?
