@@ -113,9 +113,9 @@ Projects](https://github.com/pinterest/xchammer/blob/master/Docs/PinterestFocuse
 ### Practical configuration examples
 
 By default, XCHammer doesn't provide or enforce any build configuration
-defaults.  It does exposes APIs to make it possible to configure Bazel options
-Xcode dynamically, on a target level, on a project level, and on an
-architecture level.
+defaults in Bazel or Xcode. It exposes APIs to make it possible to configure
+Bazel options Xcode dynamically, on a target level, on a project level, and per
+architecture.
 
 _When using the CLI the
 [XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift)
