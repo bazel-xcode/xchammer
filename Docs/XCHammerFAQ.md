@@ -103,9 +103,10 @@ build --override_repository=xchammer=/path/to/xchammer/
 
 For binary integration / out of tree builds, `make xchammer_dev_repo` allows a
 `WORKSPACE` to consume XCHammer built out of tree but point to the latest build,
-symlinked in `bazel-bin`. Add to the repository in question:
+symlinked in `bazel-out`. Add to the repository in question:
 ```
-build --override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo
+build \
+    --override_repository=xchammer=/path/to/xchammer/bazel-out/darwin_x86_64-dbg/bin/xchammer_dev_repo
 ```
 
 This makes it easy and pain free to build XCHammer outside of the repo but pull
@@ -118,7 +119,7 @@ artifact or local source repository in question, for using the dev repo as
 mentioned above:
 ```
 build \
-    --override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo/
+    --override_repository=xchammer=/path/to/xchammer/bazel-out/darwin_x86_64-dbg/bin/xchammer_dev_repo
 ```
 
 2. In XCHammer repo, run `make workspace_v2 && open workspace_v2.xcodeproj`
@@ -130,6 +131,12 @@ build \
 5. Trigger project gen in the iOS repository via bazel ( e.g. `bazlisk build
 :MyProject`, `make xcode_focus`, or whatever way you build the Xcode project) 
 
+Note: The rule `xcode_project` is cache invalidated with Xcode so that means if
+you want to constantaly re-run the binary you'll need to remove the outputs each
+time. For example, if your project was named `Focus.xcodeproj`:
+```
+rm -rf bazel-bin/Focus.xcodeproj
+```
 
 ### How should I contribute to XCHammer?
 
