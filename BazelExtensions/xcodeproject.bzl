@@ -180,7 +180,9 @@ def _install_xcode_project_impl(ctx):
         "sed -i '' \"s,\$SRCROOT,$SRCROOT,g\" "
         + output_proj
         + "/XCHammerAssets/bazel_build_settings.py",
-        "ln -sf $PWD/external $SRCROOT/external",
+        # Ensure the `external` symlink points to output_base/external
+        "test $SRCROOT/external -ef $PWD/../../external || " +
+        "(rm -f $SRCROOT/external && ln -sf $PWD/../../external $SRCROOT/external)",
         'echo "' + output_proj + '" > ' + ctx.outputs.out.path,
     ]
     ctx.actions.run_shell(
