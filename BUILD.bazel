@@ -68,8 +68,17 @@ load(
     "apple_resource_group",
 )
 
+# Note:
+# - $(SPAWN_OPTS) is determined at build time by tools/XCHammerXcodeRunscript.sh
+# XCHammer's `bazel`, tools/bazelwrapper subs out make variable
+xchammer_xcode_target_config = target_config(
+    build_bazel_template="tools/XCHammerXcodeRunscript.sh",
+    build_bazel_options="$(SPAWN_OPTS)"
+)
+
 # This is an example of declaring a target config.
-declare_target_config(name="XCHammerSourcesXcodeConfig", config=target_config())
+declare_target_config(name="XCHammerSourcesXcodeConfig",
+     config=xchammer_xcode_target_config)
 
 # This BUILD file is not actually imported into XCHammer
 # There is already a BUILD file placed in there by another dep.
@@ -123,7 +132,7 @@ macos_application(
     infoplists = ["Info.plist"],
     minimum_os_version = "10.14",
     version = ":XCHammerVersion",
-    deps = [":XCHammerSources"],
+    deps = [":XCHammerSources", ":XCHammerSourcesXcodeConfig"],
 )
 
 buildifier(
@@ -149,35 +158,35 @@ scheme_config = {
     ),
 }
 
-xchammer_config = xchammer_config(
-    projects = {
-        "xchammer": project_config(paths = ["**"]),
-    },
-    target_config = {
-        "//:xchammer": target_config(
-            # Metrics are disabled by default
-            # scheme_config=scheme_config
-        ),
-        "//tools/XCConfigExporter:xcconfig-exporter": target_config(),
-    },
-    targets = ["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
-)
-
+# XCHammer config for the CLI build project
+# For large projects, we'd want to use the xcode_project rule
+# and let the `xcode_project` rule aggregate the config options.
 gen_xchammer_config(
     name = "xchammer_config",
-    config = xchammer_config,
+    config = xchammer_config(
+        projects = {
+            "xchammer": project_config(paths = ["**"]),
+        },
+        target_config = {
+            "//:xchammer": xchammer_xcode_target_config,
+            "//tools/XCConfigExporter:xcconfig-exporter": xchammer_xcode_target_config
+        },
+        targets = ["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
+    ),
 )
 
-# Experimental xcode_project rule
+# Xcode project for Bazel built project
 load(
     "//:BazelExtensions/xcodeproject.bzl",
     "xcode_project"
 )
 
+# The xcode_project for Bazel built Xcode project
+# Note: the target_config is declared in :XCHammerSourcesXcodeConfig
 xcode_project(
     name="workspace_v2",
     bazel="tools/bazelwrapper",
-    targets=["//:xchammer",  "//tools/XCConfigExporter:xcconfig-exporter"],
+    targets=["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
     project_config=project_config(
         paths = ["**"],
         generate_xcode_schemes=False,
