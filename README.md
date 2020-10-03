@@ -102,9 +102,64 @@ projects:
             - "**"
 ```
 
-_See [XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift) for detailed documentation of the format._
+_See
+[XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift)
+for detailed documentation of the format._
 
-_To learn about how Pinterest uses XCHammer with Bazel locally check out [Pinterest Xcode Focused Projects](https://github.com/pinterest/xchammer/blob/master/Docs/PinterestFocusedXcodeProjects.md)._
+_To learn about how Pinterest uses XCHammer with Bazel locally check out
+[Pinterest Xcode Focused
+Projects](https://github.com/pinterest/xchammer/blob/master/Docs/PinterestFocusedXcodeProjects.md)._
+
+### Practical configuration examples
+
+By default, XCHammer doesn't provide or enforce any build configuration
+defaults in Bazel or Xcode. It exposes APIs to make it possible to configure
+Bazel options Xcode dynamically, on a target level, on a project level, and per
+architecture.
+
+_When using the CLI the
+[XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift)
+is passed via an `.yml` file, and when using the `xcode_project` rule, the
+`XCHammerConfig` is passed into the rule._
+
+#### Project level
+
+The parameter `bazel` makes it possible to select a wrapper command for Bazel.
+In practice, this might be `bazelisk` or a wrapper script. In the case of
+XCHammer's own Xcode project, it's [tools/bazelwrapper](tools/bazelwrapper) to
+handle make variable substitution at build time.
+
+The [configuration](BazelExtensions/BazelExtensions/xchammerconfig.bzl) option,
+`build_bazel_platform_options` make it possible to configure architecture
+specific settings for each target. Checkout
+[sample/UrlGet/BUILD.bazel](sample/UrlGet/BUILD.bazel) passes a `config` per
+architecture in an iOS app.
+
+#### Target Level
+
+The [configuration](BazelExtensions/BazelExtensions/xchammerconfig.bzl) option,
+`build_bazel_options` makes it possible, to set extra options on bazel target.
+
+Finally, the `build_bazel_template` makes it possible to run a script _inside_
+of Xcode before and after building. This also allows the user to pass in Bazel
+arguments at build time.
+
+Checkout the [BUILD](BUILD.bazel) file and samples for examples.
+
+#### Build Time - debugging and static analysis
+
+At the time of writing, there should be a way to build in "debug mode" in order
+for LLDB to work. One possibility is to set this as a default and override when
+releasing. By default, it's possible to pass variables to Bazel. For example,
+in XCHammer's own Xcode project,
+[tools/XCHammerXcodeRunscript.sh](tools/XCHammerXcodeRunscript.sh) it set's the
+`compilation_mode` based on Xcode's `CONFIGURATION` variable.
+
+For the purpose of running static analysis, linters, and enabling other
+options, it's possible to pass in extra bazel arguments at build time. For
+example you might hinge running static analyzer on the analysis action in Xcode
+which sets `RUN_CLANG_STATIC_ANALYZER`. Bazel doesn't have a way to run linters
+or static analysis so it's totally up to the user how to run this.
 
 ## Samples
 
