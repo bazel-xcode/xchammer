@@ -102,9 +102,13 @@ projects:
             - "**"
 ```
 
-_See [XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift) for detailed documentation of the format._
+_See
+[XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift)
+for detailed documentation of the format._
 
-_To learn about how Pinterest uses XCHammer with Bazel locally check out [Pinterest Xcode Focused Projects](https://github.com/pinterest/xchammer/blob/master/Docs/PinterestFocusedXcodeProjects.md)._
+_To learn about how Pinterest uses XCHammer with Bazel locally check out
+[Pinterest Xcode Focused
+Projects](https://github.com/pinterest/xchammer/blob/master/Docs/PinterestFocusedXcodeProjects.md)._
 
 ### Practical configuration examples
 
@@ -114,7 +118,7 @@ Xcode dynamically, on a target level, on a project level, and on an
 architecture level.
 
 _When using the CLI the
-XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift)
+[XCHammerConfig.swift](https://github.com/pinterest/xchammer/blob/master/Sources/XCHammer/XCHammerConfig.swift)
 is passed via an `.yml` file, and when using the `xcode_project` rule, the
 `XCHammerConfig` is passed into the rule._
 
@@ -133,8 +137,8 @@ architecture in an iOS app.
 
 #### Target Level
 
-The [configuration](BazelExtensions/BazelExtensions/xchammerconfig.bzl) option, `build_bazel_options` makes it possible, to
-set extra options on bazel target.
+The [configuration](BazelExtensions/BazelExtensions/xchammerconfig.bzl) option,
+`build_bazel_options` makes it possible, to set extra options on bazel target.
 
 Finally, the `build_bazel_template` makes it possible to run a script _inside_
 of Xcode before and after building. This also allows the user to pass in Bazel
@@ -145,7 +149,7 @@ Checkout the [BUILD](BUILD.bazel) file and samples for examples.
 #### Build Time - debugging and static analysis
 
 At the time of writing, there should be a way to build in "debug mode" in order
-for LLDB to work. One possibility is to set this a default and override when
+for LLDB to work. One possibility is to set this as a default and override when
 releasing. By default, it's possible to pass variables to Bazel. For example,
 in XCHammer's own Xcode project,
 [tools/XCHammerXcodeRunscript.sh](tools/XCHammerXcodeRunscript.sh) it set's the
