@@ -1,8 +1,14 @@
 # A few settings for XCHammer's .bazelrc
+# Notes:
 # Debugging: Use the remapping feature of rules_swift.
+# cpu: This needs to be set to align with what Xcode is using
+# compilation_mode: This is overriden for release in Xcode
 build \
+ --compilation_mode dbg \
  --announce_rc \
  --spawn_strategy=standalone \
  --strategy=SwiftCompile=worker \
  --swiftcopt=-Xwrapped-swift=-debug-prefix-pwd-is-dot \
- --experimental_strict_action_env=true
+ --experimental_strict_action_env=true \
+ --cpu darwin_x86_64 \
+ --experimental_show_artifacts
