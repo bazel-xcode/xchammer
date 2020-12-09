@@ -3,7 +3,7 @@
 set -e
 
 # Make sure we're in the project root directory.
-SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+SCRIPTPATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
 pushd "$SCRIPTPATH/.." > /dev/null
 
 function exit_trap() {
