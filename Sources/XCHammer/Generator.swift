@@ -1113,7 +1113,7 @@ enum Generator {
             try FileManager.default.createSymbolicLink(atPath: linkTo,
                     withDestinationPath: canonicalExternalDir)
         } catch {
-            fatalError("Cant link external symlink(\(linkTo)): \(error)")
+            fatalError("Can't link external symlink (\(linkTo)): \(error)")
         }
 
         return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in
