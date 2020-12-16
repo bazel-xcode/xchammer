@@ -133,7 +133,7 @@ enum Generator {
     private static func makeUpdateXcodeProjectTarget(genOptions:
             XCHammerGenerateOptions, projectPath: Path, depsHash: String) -> ProjectSpec.Target {
         let generateCommand: [String]
-        if let xcodeProjectRuleInfo = genOptions.xcodeProjectRuleInfo { 
+        if let xcodeProjectRuleInfo = genOptions.xcodeProjectRuleInfo {
             generateCommand = [genOptions.bazelPath.string, "build" ] +
                 xcodeProjectRuleInfo.bazelTargets
         } else {
@@ -178,7 +178,7 @@ enum Generator {
         guard FileManager.default.createFile(atPath: updateScriptTempPath,
                 contents: updateScript.data(using: .utf8), attributes:
                 scriptAttrs) else {
-             fatalError("Can't write update script")
+             fatalError("Can't write update script:" + updateScriptTempPath)
         }
         let updateScriptPath = XCHammerAsset.updateScript.getPath(underProj:
                 "$PROJECT_FILE_PATH")
@@ -217,7 +217,7 @@ enum Generator {
             let allApps = targetMap.includedProjectTargets.filter {
                 $0.type == "ios_application"
             }
-            
+
             allApps.forEach { result[$0.xcTargetName] = projectName  }
         }
     }
@@ -320,7 +320,7 @@ enum Generator {
                         test: testPhase, profile: profilePhase)
             }
     }
-    
+
     /// Generate schemes for Bazel targets
     /// These schemes simply run `bazel build`.
     private static func makeBazelTargetSchemes(for targets: [XcodeTarget], targetMap:
@@ -502,7 +502,7 @@ enum Generator {
                 genOptions.outputProjectPath)
         guard FileManager.default.createFile(atPath: stubPath,
                 contents: "".data(using: .utf8), attributes: nil) else {
-             fatalError("Can't write temp objc stub")
+             fatalError("Can't write temp objc stub:" + stubPath)
         }
 
 
@@ -510,7 +510,7 @@ enum Generator {
             genOptions.outputProjectPath)
         guard FileManager.default.createFile(atPath: stubPathSwift,
                                              contents: "".data(using: .utf8), attributes: nil) else {
-                                                fatalError("Can't write temp swift stub")
+                                                fatalError("Can't write temp swift stub:" + stubPathSwift)
         }
 
         let targetsByName: [String: XcodeTarget] = getIncludedTargets(targetMap:
@@ -524,7 +524,7 @@ enum Generator {
                 "/bazel_build_settings.py.template"
         guard let settingsTemplate = try? String(contentsOf: URL(fileURLWithPath:
             settingsTemplatePath)) else {
-            fatalError("Missing template:" + settingsTemplatePath) 
+            fatalError("Missing template:" + settingsTemplatePath)
         }
         let settingsFile = settingsTemplate.replacingOccurrences(of: "# <template>",
                 with: "BUILD_SETTINGS = \(bazelBuildSettings.toPython(""))")
@@ -533,7 +533,7 @@ enum Generator {
 
         guard FileManager.default.createFile(atPath: settingsFilePath,
                 contents: settingsFile.data(using: .utf8), attributes: nil) else {
-             fatalError("Can't write settings file")
+            fatalError("Can't write settings file:" + settingsFilePath)
         }
 
         // Code gen entitlement rules and write a build file
@@ -564,7 +564,7 @@ enum Generator {
                 tempProjectPath)
         guard FileManager.default.createFile(atPath: buildFilePath,
                 contents: buildFile.data(using: .utf8), attributes: nil) else {
-             fatalError("Can't write BUILD file")
+             fatalError("Can't write BUILD file:" + buildFilePath)
         }
 
         // During Bazel builds, we write the BEP log into this dir
@@ -577,7 +577,7 @@ enum Generator {
                 tempProjectPath)
         guard FileManager.default.createFile(atPath: genStatusPath,
                 contents: "".data(using: .utf8), attributes: nil) else {
-             fatalError("Can't write genStatus")
+             fatalError("Can't write genStatus:" + genStatusPath)
         }
 
         let bazelPreBuildTarget = makeBazelPreBuildTarget(labels: genfileLabels,
@@ -585,7 +585,7 @@ enum Generator {
 
         let updateXcodeProjectTarget = makeUpdateXcodeProjectTarget(genOptions:
                 genOptions, projectPath: tempProjectPath, depsHash: depsHash)
-        
+
         let clearSourceMapTarget = makeClearSourceMapTarget(labels: genfileLabels,
                 genOptions: genOptions)
 
@@ -712,7 +712,7 @@ enum Generator {
 
     private static func hashEntryIncludingTimestamp(for url: URL) -> String {
         let resourceValues = try? url.resourceValues(forKeys:
-                Set([.contentModificationDateKey])) 
+                Set([.contentModificationDateKey]))
         return "\(url.relativeString.djb2hash)-\(Int(resourceValues?.contentModificationDate?.timeIntervalSince1970 ?? 0))"
     }
 
@@ -728,7 +728,7 @@ enum Generator {
             }
             let lastPathComponent = url.lastPathComponent
             // Skip checking directory children for these types
-            if lastPathComponent == "h" || 
+            if lastPathComponent == "h" ||
                 lastPathComponent == "m" ||
                 lastPathComponent == "mm" ||
                 lastPathComponent == "hpp" ||
@@ -744,7 +744,7 @@ enum Generator {
             }
         })
 
-        let dirHashEntries = hashCandidates.compactMap { url -> String? in 
+        let dirHashEntries = hashCandidates.compactMap { url -> String? in
             // We need a different hash when these files change.
             // Use a timestamp for efficiency
             if url.pathExtension == "bzl" ||
@@ -763,7 +763,7 @@ enum Generator {
     /// as it uses timestamps, and may include stray files that are not
     /// part of the build.
     ///
-    /// This is preferred over any techniques combining Bazel query 
+    /// This is preferred over any techniques combining Bazel query
     /// and aspects for speed and parallelism.
     private static func getHash(workspaceRootPath: Path, genOptions:
             XCHammerGenerateOptions) -> String {
@@ -776,7 +776,7 @@ enum Generator {
         let explicitHashEntries: [String] = genOptions.pathsSet
             .sorted()
             .flatMap {
-                filterValue -> [String] in 
+                filterValue -> [String] in
                 if filterValue.hasSuffix("**") {
                     let component = filterValue.replacingOccurrences(of: "/**",
                             with: "")
@@ -822,7 +822,7 @@ enum Generator {
           let r = try bl()
           return .success(r)
         } catch {
-           return .failure(.some(error)) 
+           return .failure(.some(error))
         }
     }
 
@@ -886,7 +886,7 @@ enum Generator {
         let beginning = proj.index(hashRange.lowerBound, offsetBy:
                 DepsHashSettingName.utf8.count + 4)
         let end = proj.index(hashRange.upperBound, offsetBy: -3)
-        guard beginning < end else { return nil } 
+        guard beginning < end else { return nil }
             return String(proj[beginning...end])
     }
 
@@ -904,7 +904,7 @@ enum Generator {
                                         XCHammerConfig, xcworkspacePath: Path?,
                                         xcodeProjectRuleInfo: XcodeProjectRuleInfo) -> Result<(),
                 GenerateError> {
-       
+
         let logger = XCHammerLogger.shared()
         logger.logInfo("Reading Bazel configurations")
         let workspaceInfoResult = doResult {
@@ -972,7 +972,7 @@ enum Generator {
                     xcworkspacePath)
             guard FileManager.default.createFile(atPath: genStatusPath,
                     contents: "".data(using: .utf8), attributes: nil) else {
-                 fatalError("Can't write genStatus")
+                 fatalError("Can't write genStatus:" + genStatusPath)
             }
         }
 
@@ -1100,7 +1100,7 @@ enum Generator {
                     xcworkspacePath)
             guard FileManager.default.createFile(atPath: genStatusPath,
                     contents: "".data(using: .utf8), attributes: nil) else {
-                 fatalError("Can't write genStatus")
+                 fatalError("Can't write genStatus:" + genStatusPath)
             }
         }
 
@@ -1113,7 +1113,7 @@ enum Generator {
             try FileManager.default.createSymbolicLink(atPath: linkTo,
                     withDestinationPath: canonicalExternalDir)
         } catch {
-            fatalError("Cant link external symlink \(error)")
+            fatalError("Cant link external symlink(\(linkTo)): \(error)")
         }
 
         return results.reduce(Result<(),GenerateError>.success(())) { (result: Result<(), GenerateError>, element: Result<(), GenerateError>) in
