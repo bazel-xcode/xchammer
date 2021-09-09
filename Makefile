@@ -138,8 +138,6 @@ bazelrc_home:
 	echo "build $(BAZEL_CACHE_OPTS) \\" > ~/.bazelrc
 	echo "     --spawn_strategy=standalone" >> ~/.bazelrc
 
-ci: bazelrc_home test run_perf_ci run_swift run_force_bazel goldmaster workspace
-
 format:
 	$(ROOT_DIR)/tools/bazelwrapper run buildifier
 
