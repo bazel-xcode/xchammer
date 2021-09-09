@@ -77,7 +77,7 @@ XcodeBuildSourceInfo = provider(
 )
 
 def _extract_generated_sources(target, ctx):
-    """ Collects all of the generated source files"""
+    """Collects all of the generated source files"""
 
     files = []
     if ctx.rule.kind == "entitlements_writer":
@@ -91,10 +91,16 @@ def _extract_generated_sources(target, ctx):
         if include_swift_outputs and hasattr(module_info, "transitive_swiftmodules"):
             files.append(module_info.transitive_swiftmodules)
 
+    if CcInfo in target:
+        cc_info = target[CcInfo]
+        files.append(cc_info.compilation_context.headers)
+    elif hasattr(target, "objc"):
+        objc = target.objc
+        files.append(objc.header)
+
     if hasattr(target, "objc"):
         objc = target.objc
         files.append(objc.source)
-        files.append(objc.header)
         files.append(objc.module_map)
 
     trans_files = depset(transitive = files)
