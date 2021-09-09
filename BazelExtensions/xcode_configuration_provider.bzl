@@ -94,9 +94,8 @@ def _extract_generated_sources(target, ctx):
     if CcInfo in target:
         cc_info = target[CcInfo]
         files.append(cc_info.compilation_context.headers)
-    elif hasattr(target, "objc"):
-        objc = target.objc
-        files.append(objc.header)
+    elif hasattr(target, "objc") and hasattr(target.objc, "header"):
+        files.append(target.objc.header)
 
     if hasattr(target, "objc"):
         objc = target.objc
