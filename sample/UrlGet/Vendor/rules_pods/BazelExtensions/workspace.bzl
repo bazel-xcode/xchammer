@@ -13,7 +13,7 @@ def _exec(repository_ctx, command):
 # Compiler Options
 
 GLOBAL_COPTS = [
-    '-Wnon-modular-include-in-framework-module',
+    "-Wnon-modular-include-in-framework-module",
     "-g",
     "-stdlib=libc++",
     "-DCOCOAPODS=1",
@@ -24,7 +24,7 @@ GLOBAL_COPTS = [
     "-fmessage-length=0",
     "-fpascal-strings",
     "-fstrict-aliasing",
-    "-Wno-error=nonportable-include-path"
+    "-Wno-error=nonportable-include-path",
 ]
 
 INHIBIT_WARNINGS_GLOBAL_COPTS = [
@@ -41,7 +41,7 @@ def _fetch_remote_repo(repository_ctx, repo_tool_bin, target_name, url):
         "--sub_dir",
         repository_ctx.attr.strip_prefix,
         "--trace",
-        "true" if repository_ctx.attr.trace else "false"
+        "true" if repository_ctx.attr.trace else "false",
     ]
 
     fetch_output = _exec(repository_ctx, fetch_cmd)
@@ -50,12 +50,12 @@ def _fetch_remote_repo(repository_ctx, repo_tool_bin, target_name, url):
 
 # Link a local repository into external/__TARGET_NAME__
 
-
 def _link_local_repo(repository_ctx, target_name, url):
     cd = _exec(repository_ctx, ["pwd"]).stdout.split("\n")[0]
     from_dir = url + "/"
     to_dir = cd + "/"
     all_files = _exec(repository_ctx, ["ls", url]).stdout.split("\n")
+
     # Link all of the files at the root directly
     # ln -s url/* doesn't work.
     for repo_file in all_files:
@@ -65,7 +65,7 @@ def _link_local_repo(repository_ctx, target_name, url):
             "ln",
             "-sf",
             from_dir + repo_file,
-            to_dir + repo_file
+            to_dir + repo_file,
         ]
         _exec(repository_ctx, link_cmd)
 
@@ -86,6 +86,7 @@ def _impl(repository_ctx):
 
     if repository_ctx.attr.trace:
         print("__RUN with repository_ctx", repository_ctx.attr)
+
     # Note: the root directory that these commands execute is external/name
     # after the source code has been fetched
     target_name = repository_ctx.attr.target_name
@@ -102,7 +103,11 @@ def _impl(repository_ctx):
 
     if url.startswith("http") or url.startswith("https"):
         _fetch_remote_repo(
-            repository_ctx, tool_bin_by_name[REPO_TOOL_NAME], target_name, url)
+            repository_ctx,
+            tool_bin_by_name[REPO_TOOL_NAME],
+            target_name,
+            url,
+        )
     else:
         _link_local_repo(repository_ctx, target_name, url)
 
@@ -168,43 +173,42 @@ def _impl(repository_ctx):
 
     _exec(repository_ctx, ["/bin/bash", "-c", script])
 
-
 pod_repo_ = repository_rule(
-    implementation=_impl,
-    local=False,
-    attrs={
-        "target_name": attr.string(mandatory=True),
-        "url": attr.string(mandatory=True),
+    implementation = _impl,
+    local = False,
+    attrs = {
+        "target_name": attr.string(mandatory = True),
+        "url": attr.string(mandatory = True),
         "podspec_url": attr.string(),
         "strip_prefix": attr.string(),
         "user_options": attr.string_list(),
         "repo_tools_labels": attr.label_list(),
         "repo_tool_dict": attr.string_dict(),
         "install_script_tpl": attr.string(),
-        "inhibit_warnings": attr.bool(default=False, mandatory=True),
-        "trace": attr.bool(default=False, mandatory=True),
-        "enable_modules": attr.bool(default=True, mandatory=True),
-        "generate_module_map": attr.bool(default=True, mandatory=True),
+        "inhibit_warnings": attr.bool(default = False, mandatory = True),
+        "trace": attr.bool(default = False, mandatory = True),
+        "enable_modules": attr.bool(default = True, mandatory = True),
+        "generate_module_map": attr.bool(default = True, mandatory = True),
         "header_visibility": attr.string(),
-    }
+    },
 )
 
-def new_pod_repository(name,
-                       url,
-                       owner="",
-                       podspec_url=None,
-                       strip_prefix="",
-                       user_options=[],
-                       install_script=None,
-                       repo_tools={
-                           "@rules_pods//bin:RepoTools": REPO_TOOL_NAME
-                       },
-                       inhibit_warnings=False,
-                       trace=False,
-                       enable_modules=True,
-                       generate_module_map=None,
-                       header_visibility="pod_support",
-                       ):
+def new_pod_repository(
+        name,
+        url,
+        owner = "",
+        podspec_url = None,
+        strip_prefix = "",
+        user_options = [],
+        install_script = None,
+        repo_tools = {
+            "@rules_pods//bin:RepoTools": REPO_TOOL_NAME,
+        },
+        inhibit_warnings = False,
+        trace = False,
+        enable_modules = True,
+        generate_module_map = None,
+        header_visibility = "pod_support"):
     """Declare a repository for a Pod
     Args:
          name: the name of this repo
@@ -272,18 +276,18 @@ def new_pod_repository(name,
     for tool in repo_tools:
         tool_labels.append(tool)
     pod_repo_(
-        name=name,
-        target_name=name,
-        url=url,
-        podspec_url=podspec_url,
-        user_options=user_options,
-        strip_prefix=strip_prefix,
-        install_script_tpl=install_script,
-        repo_tools_labels=tool_labels,
-        repo_tool_dict=repo_tools,
-        inhibit_warnings=inhibit_warnings,
-        trace=trace,
-        enable_modules=enable_modules,
-        generate_module_map=generate_module_map,
-        header_visibility=header_visibility
+        name = name,
+        target_name = name,
+        url = url,
+        podspec_url = podspec_url,
+        user_options = user_options,
+        strip_prefix = strip_prefix,
+        install_script_tpl = install_script,
+        repo_tools_labels = tool_labels,
+        repo_tool_dict = repo_tools,
+        inhibit_warnings = inhibit_warnings,
+        trace = trace,
+        enable_modules = enable_modules,
+        generate_module_map = generate_module_map,
+        header_visibility = header_visibility,
     )

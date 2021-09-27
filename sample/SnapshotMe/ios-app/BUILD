@@ -10,9 +10,9 @@ ios_application(
     bundle_id = "com.sample.snapshotme",
     families = ["iphone"],
     infoplists = ["Info.plist"],
+    minimum_os_version = "12.0",
     visibility = ["//visibility:public"],
     deps = [":ios-app-main"],
-    minimum_os_version = "12.0"
 )
 
 objc_library(

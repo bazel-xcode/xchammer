@@ -5,11 +5,10 @@ load(
     "@xchammer_tulsi_aspects//:tulsi/tulsi_aspects_paths.bzl",
     _SwiftInfo = "SwiftInfo",
 )
-
 load(
     "@xchammer_tulsi_aspects//:tulsi/tulsi_aspects.bzl",
-    _tulsi_sources_aspect = "tulsi_sources_aspect",
     _TulsiSourcesAspectInfo = "TulsiSourcesAspectInfo",
+    _tulsi_sources_aspect = "tulsi_sources_aspect",
 )
 
 SwiftInfo = _SwiftInfo
