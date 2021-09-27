@@ -61,20 +61,22 @@ xchammer_dependencies()
 # https://github.com/bazelbuild/bazel/issues/1550
 git_repository(
     name = "xcbuildkit",
-    remote = "https://github.com/jerrymarino/xcbuildkit.git",
     commit = "b619d25f65cf7195c57e2dbc26d488e5606e763a",
+    remote = "https://github.com/jerrymarino/xcbuildkit.git",
 )
 
-load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies="dependencies")
+load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies = "dependencies")
 
 xcbuildkit_dependencies()
-
 
 ## Buildifier deps (Bazel file formatting)
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "3743a20704efc319070957c45e24ae4626a05ba4b1d6a8961e87520296f1b676",
-    url = "https://github.com/bazelbuild/rules_go/releases/download/0.18.4/rules_go-0.18.4.tar.gz",
+    sha256 = "d1ffd055969c8f8d431e2d439813e42326961d0942bdf734d2c95dc30c369566",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.24.5/rules_go-v0.24.5.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.24.5/rules_go-v0.24.5.tar.gz",
+    ],
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
@@ -85,8 +87,8 @@ go_register_toolchains()
 
 http_archive(
     name = "com_github_bazelbuild_buildtools",
-    strip_prefix = "buildtools-0.25.0",
-    url = "https://github.com/bazelbuild/buildtools/archive/0.25.0.zip",
+    strip_prefix = "buildtools-4.2.0",
+    url = "https://github.com/bazelbuild/buildtools/archive/4.2.0.zip",
 )
 
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")

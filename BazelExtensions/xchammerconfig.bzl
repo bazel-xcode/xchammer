@@ -1,6 +1,5 @@
 # Experimental XCHammer DSL.
 
-
 def _gen_dsl_impl(ctx):
     ctx.actions.write(
         content = ctx.attr.ast,

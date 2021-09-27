@@ -23,8 +23,8 @@ load(
 
 git_repository(
     name = "build_bazel_rules_swift",
-    remote = "https://github.com/bazelbuild/rules_swift.git",
     commit = "0192f16b82b2998d846c45187545e38548a6671a",
+    remote = "https://github.com/bazelbuild/rules_swift.git",
 )
 
 load(
@@ -49,6 +49,7 @@ load(
 )
 
 apple_support_dependencies()
+
 http_file(
     name = "xctestrunner",
     executable = 1,
@@ -69,4 +70,3 @@ local_repository(
     name = "xchammer_resources",
     path = "tools/xchammer.app/Contents/Resources",
 )
-

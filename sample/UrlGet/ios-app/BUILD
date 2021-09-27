@@ -1,22 +1,24 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_extension")
-load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_group", "apple_bundle_import")
+load("@build_bazel_rules_apple//apple:resources.bzl", "apple_bundle_import", "apple_resource_group")
 
 # This is needed for implicit entitlement rules created for
 # files.
 package(default_visibility = ["//visibility:public"])
 
-
-index_store_copts = ["-index-store-path", "$(GENDIR)/index-store"]
+index_store_copts = [
+    "-index-store-path",
+    "$(GENDIR)/index-store",
+]
 
 ios_extension(
     name = "share-extension",
     bundle_id = "Google.UrlGet.ShareExtension",
     families = ["iphone"],
     infoplists = ["ShareExtension/ShareExtension-Info.plist"],
+    minimum_os_version = "10.0",
     visibility = ["//visibility:public"],
     deps = ["ios-ext-bin"],
-    minimum_os_version = "10.0"
 )
 
 objc_library(
@@ -29,9 +31,9 @@ ios_extension(
     bundle_id = "Google.UrlGet.SiriExtension",
     families = ["iphone"],
     infoplists = ["SiriExtension/Resources/SiriExtension-Info.plist"],
+    minimum_os_version = "9.3",
     visibility = ["//visibility:public"],
     deps = ["siri-ext-bin"],
-    minimum_os_version = "9.3"
 )
 
 filegroup(
@@ -40,15 +42,14 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-
 apple_resource_group(
     name = "StructuredResources",
-    structured_resources = glob(["StructuredResources/**"])
+    structured_resources = glob(["StructuredResources/**"]),
 )
 
 apple_bundle_import(
     name = "ImportedResources",
-    bundle_imports = glob(["ImportedResources.bundle/**"])
+    bundle_imports = glob(["ImportedResources.bundle/**"]),
 )
 
 objc_library(
@@ -65,9 +66,9 @@ ios_extension(
     bundle_id = "Google.UrlGet.StringsExtension",
     families = ["iphone"],
     infoplists = ["StringsExtension/Resources/StringsExtension-Info.plist"],
+    minimum_os_version = "9.3",
     visibility = ["//visibility:public"],
     deps = ["strings-ext-bin"],
-    minimum_os_version = "9.3"
 )
 
 filegroup(
@@ -88,16 +89,16 @@ objc_library(
 ios_application(
     name = "ios-app",
     bundle_id = "Google.UrlGet",
+    entitlements = "Example.entitlements",
     extensions = [
         ":share-extension",
         ":siri-extension",
     ],
     families = ["iphone"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
+    minimum_os_version = "9.3",
     visibility = ["//visibility:public"],
     deps = ["ios-app-bin"],
-    minimum_os_version = "9.3",
-    entitlements = "Example.entitlements"
 )
 
 objc_library(
@@ -106,16 +107,16 @@ objc_library(
         "UrlGet/main.m",
         #":GeneratedSource",
     ],
+    data = [
+        ":ImportedResources",
+        ":StructuredResources",
+    ],
     defines = [
         "EXAMPLE_DEF=1",
     ],
     deps = [
         ":UrlGetClasses",
     ],
-    data = [
-        ":StructuredResources",
-        ":ImportedResources",
-    ]
 )
 
 genrule(
@@ -137,12 +138,12 @@ objc_library(
     name = "TestsLib",
     srcs = glob(["UnitTests/**/*.m"]),
     hdrs = glob(["UnitTests/**/*.h"]),
+    copts = index_store_copts,
     sdk_frameworks = [
         "XCTest",
         "CoreGraphics",
     ],
     visibility = ["//visibility:public"],
-    copts = index_store_copts,
     deps = [
         ":UrlGetClasses",
     ],
@@ -188,6 +189,13 @@ objc_library(
         "UrlGet/*.h",
         "UrlGet/*.hpp",
     ]),
+    copts = index_store_copts,
+
+    # Not added
+    data = [
+        "UrlGet/UrlGetViewController.xib",
+        ":StructuredResources",
+    ],
     non_arc_srcs = [
         "UrlGet/NoArc.m",
     ],
@@ -204,13 +212,6 @@ objc_library(
         "CoreImage",
         "Intents",
     ],
-
-    # Not added
-    data = [
-        "UrlGet/UrlGetViewController.xib",
-        ":StructuredResources"
-    ],
-    copts = index_store_copts,
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",

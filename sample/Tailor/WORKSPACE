@@ -13,8 +13,8 @@ load(
 
 git_repository(
     name = "build_bazel_rules_swift",
-    remote = "https://github.com/bazelbuild/rules_swift.git",
     commit = "0192f16b82b2998d846c45187545e38548a6671a",
+    remote = "https://github.com/bazelbuild/rules_swift.git",
 )
 
 load(

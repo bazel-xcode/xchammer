@@ -13,7 +13,6 @@ load(
     "apple_rules_dependencies",
 )
 
-
 http_archive(
     name = "build_bazel_rules_swift",
     urls = [
@@ -43,6 +42,7 @@ load(
 )
 
 apple_support_dependencies()
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_file(
@@ -62,4 +62,3 @@ local_repository(
 )
 
 gen_repo(name = "Some")
-

@@ -27,7 +27,6 @@ load(
     "scheme_action_config",
     "target_config",
 )
-
 load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
 
 # Spawn the index import action as a background process
@@ -37,7 +36,8 @@ app_scheme_config = {
             execution_action(
                 name = "Import global index",
                 script = "$SRCROOT/tools/XCHammerIndexImportAction.sh &",
-            )],
+            ),
+        ],
         pre_actions = [],
     ),
 }
@@ -46,28 +46,28 @@ app_scheme_config = {
 # and strip out Vendor sources
 xcode_project(
     name = "XcodeBazel",
-    targets = [
-	"//ios-app:ios-app",
-	"//ios-app:UrlGetClasses",
-	"//ios-app:UnitTests",
-	"//ios-app:UnitTestsWithHost",
-    ],
+    testonly = True,
     bazel = "tools/bazelwrapper",
     project_config = project_config(
-	build_bazel_platform_options = {
+        build_bazel_platform_options = {
             "ios_x86_64": ["--config=ios_x86_64"],
             "ios_i386": ["--config=ios_i386"],
             "ios_arm64": ["--config=ios_arm64"],
             "ios_armv7": ["--config=ios_armv7"],
         },
-	paths = ["ios-app/**"],
-	generate_xcode_schemes = False,
-	generate_transitive_xcode_targets = True,
+        generate_transitive_xcode_targets = True,
+        generate_xcode_schemes = False,
+        paths = ["ios-app/**"],
     ),
     target_config = {
-        "//ios-app:ios-app" : target_config(
-            scheme_config = app_scheme_config )
+        "//ios-app:ios-app": target_config(
+            scheme_config = app_scheme_config,
+        ),
     },
-    testonly=True
+    targets = [
+        "//ios-app:ios-app",
+        "//ios-app:UrlGetClasses",
+        "//ios-app:UnitTests",
+        "//ios-app:UnitTestsWithHost",
+    ],
 )
-
