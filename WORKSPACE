@@ -6,8 +6,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_archive(
     name = "build_bazel_rules_apple",
-    sha256 = "55f4dc1c9bf21bb87442665f4618cff1f1343537a2bd89252078b987dcd9c382",
-    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.20.0/rules_apple.0.20.0.tar.gz",
+    sha256 = "a41a75c291c69676b9974458ceee09aea60cee0e1ee282e27cdc90b679dfd30f",
+    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.21.2/rules_apple.0.21.2.tar.gz",
 )
 
 load(
@@ -19,8 +19,8 @@ apple_rules_dependencies()
 
 http_archive(
     name = "build_bazel_rules_swift",
-    sha256 = "cea22c0616d797e494d7844a9b604520c87f53c81de49613a7e679ec5b821620",
-    url = "https://github.com/bazelbuild/rules_swift/releases/download/0.14.0/rules_swift.0.14.0.tar.gz",
+    sha256 = "d0e5f888b2ccce42c92e6d4686b5507b4230462627f965f9d39862e11ae9fb35",
+    url = "https://github.com/bazelbuild/rules_swift/releases/download/0.18.0/rules_swift.0.18.0.tar.gz",
 )
 
 load(
@@ -47,7 +47,7 @@ protobuf_deps()
 http_file(
     name = "xctestrunner",
     executable = 1,
-    urls = ["https://github.com/google/xctestrunner/releases/download/0.2.6/ios_test_runner.par"],
+    urls = ["https://github.com/google/xctestrunner/releases/download/0.2.14/ios_test_runner.par"],
 )
 
 ## SPM Dependencies
