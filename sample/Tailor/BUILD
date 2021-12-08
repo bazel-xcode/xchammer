@@ -10,9 +10,9 @@ ios_application(
     bundle_id = "com.Sample",
     families = ["iphone"],
     infoplists = ["Info.plist"],
+    minimum_os_version = "9.0",
     visibility = ["//visibility:public"],
     deps = [":ios-app-main"],
-    minimum_os_version = "9.0",
 )
 
 swift_library(
@@ -41,25 +41,23 @@ load(
     "@xchammer//:BazelExtensions/xchammerconfig.bzl",
     "project_config",
 )
-
 load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
 
 xcode_project(
     name = "XcodeBazel",
-    targets = [
-	"//:ios-app",
-    ],
     bazel = "tools/bazelwrapper",
     project_config = project_config(
-	build_bazel_platform_options = {
+        build_bazel_platform_options = {
             "ios_x86_64": ["--config=ios_x86_64"],
             "ios_i386": ["--config=ios_i386"],
             "ios_arm64": ["--config=ios_arm64"],
             "ios_armv7": ["--config=ios_armv7"],
         },
-	paths = ["**"],
-	generate_xcode_schemes = True,
-	generate_transitive_xcode_targets = True,
+        generate_transitive_xcode_targets = True,
+        generate_xcode_schemes = True,
+        paths = ["**"],
     ),
+    targets = [
+        "//:ios-app",
+    ],
 )
-

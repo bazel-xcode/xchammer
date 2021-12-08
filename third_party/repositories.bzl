@@ -64,7 +64,7 @@ swift_c_module(
         module_map = module_map,
     ))
 
-def namespaced_swift_library(name, srcs, deps = None, defines = None, copts=[]):
+def namespaced_swift_library(name, srcs, deps = None, defines = None, copts = []):
     deps = [] if deps == None else deps
     defines = [] if defines == None else defines
     return """
@@ -151,7 +151,7 @@ def xchammer_dependencies():
                 srcs = ["Sources/**/*.swift"],
                 copts = [
                     "-swift-version",
-                    "4.2"
+                    "4.2",
                 ],
             ),
         ]),
@@ -255,29 +255,28 @@ def xchammer_dependencies():
         ]),
     )
 
-
     namespaced_git_repository(
         name = "Tulsi",
         remote = "https://github.com/pinterest/tulsi.git",
-        commit = "feba74a99096757bd719e9361caaaf3f2bd5387c",
+        commit = "1ded53d04174e96dd92f0aee009e2896115e45a2",
         patch_cmds = [
             """
-         sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
+         sed -i '' 's/\\:__subpackages__/visibility\\:public/g' src/TulsiGenerator/BUILD
          """,
             """
-         sed -i '' 's/RunLoopMode\.defaultRunLoopMode/RunLoop\.Mode\.`default`/g' src/TulsiGenerator/ProcessRunner.swift
+         sed -i '' 's/RunLoopMode\\.defaultRunLoopMode/RunLoop\\.Mode\\.`default`/g' src/TulsiGenerator/ProcessRunner.swift
          """,
         ],
     )
 
-    # This is a hack for XCHammer development, but is how XCHammer is imported 
+    # This is a hack for XCHammer development, but is how XCHammer is imported
     # into a workspace as a binary build
     new_git_repository(
         name = "xchammer_tulsi_aspects",
         remote = "https://github.com/pinterest/tulsi.git",
-        commit = "6302ee15a49a93fcaaff75e1fcd235fc87ac2ec8",
-        strip_prefix="src/TulsiGenerator/Bazel",
-        build_file_content="exports_files(['tulsi'])"
+        commit = "c180639af0a20779610b4cbedd47f69849479366",
+        strip_prefix = "src/TulsiGenerator/Bazel",
+        build_file_content = "exports_files(['tulsi'])",
     )
 
     namespaced_new_git_repository(
@@ -334,7 +333,7 @@ def xchammer_dependencies():
                 ],
                 copts = [
                     "-swift-version",
-                    "5"
+                    "5",
                 ],
             ),
         ]),
@@ -348,28 +347,28 @@ def xchammer_dependencies():
             namespaced_swift_library(
                 name = "DOT",
                 srcs = ["Sources/DOT/**/*.swift"],
-                deps = [ ":GraphViz" ],
+                deps = [":GraphViz"],
                 copts = [
                     "-swift-version",
-                    "5"
+                    "5",
                 ],
             ),
             namespaced_swift_library(
                 name = "GraphVizBuilder",
                 srcs = ["Sources/GraphVizBuilder/**/*.swift"],
-                deps = [ ":GraphViz" ],
+                deps = [":GraphViz"],
                 copts = [
                     "-swift-version",
-                    "5"
+                    "5",
                 ],
             ),
             namespaced_swift_library(
                 name = "GraphViz",
-                srcs = [ "Sources/GraphViz/**/*.swift" ],
-                deps = [ ],
+                srcs = ["Sources/GraphViz/**/*.swift"],
+                deps = [],
                 copts = [
                     "-swift-version",
-                    "5"
+                    "5",
                 ],
             ),
         ]),
@@ -383,10 +382,10 @@ def xchammer_dependencies():
             namespaced_swift_library(
                 name = "Version",
                 srcs = ["Sources/**/*.swift"],
-                deps = [ ],
+                deps = [],
                 copts = [
                     "-swift-version",
-                    "5"
+                    "5",
                 ],
             ),
         ]),
@@ -406,7 +405,7 @@ objc_library(
     hdrs = glob(["Sources/**/*.h"]),
     includes = ["Sources/XcodeProjCExt/include"],
 )
-        """
+        """,
     )
 
     namespaced_new_git_repository(

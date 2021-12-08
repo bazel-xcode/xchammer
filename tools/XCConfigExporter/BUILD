@@ -31,15 +31,15 @@ apple_bundle_import(
 swift_library(
     name = "Sources",
     srcs = glob(["**/*.swift"]),
+    copts = [
+        "-swift-version",
+        "4.2",
+    ],
     data = [":Fixtures"],
     deps = ["@" + namespaced_name(x) for x in [
         "XcodeCompilationDatabase//:XcodeCompilationDatabaseCore",
         "ShellOut//:ShellOut",
     ]],
-    copts = [
-        "-swift-version",
-        "4.2"
-    ],
 )
 
 apple_bundle_version(
@@ -55,4 +55,3 @@ macos_application(
     version = ":XCConfigExporterVersion",
     deps = [":Sources"],
 )
-

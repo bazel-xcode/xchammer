@@ -9,9 +9,9 @@ ios_application(
     bundle_id = "com.Frankenstein",
     families = ["iphone"],
     infoplists = ["Info.plist"],
+    minimum_os_version = "9.0",
     visibility = ["//visibility:public"],
     deps = ["ios-app-bin"],
-    minimum_os_version = "9.0",
 )
 
 objc_library(

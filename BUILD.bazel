@@ -8,8 +8,8 @@ load(
 )
 load(
     "@build_bazel_rules_apple//apple:resources.bzl",
-    "apple_resource_group",
     "apple_resource_bundle",
+    "apple_resource_group",
 )
 load(
     "@build_bazel_rules_swift//swift:swift.bzl",
@@ -44,7 +44,6 @@ apple_resource_group(
     ]),
 )
 
-
 # Build system support. Currently, we use the example xcbuildkit
 # to simply show the progress bar.
 # Stick this into a bundle to group files together
@@ -54,15 +53,14 @@ apple_resource_bundle(
         "@xcbuildkit//:BazelBuildServiceInstaller",
         "@xcbuildkit//:BuildInfo",
         # We use this to check if it's installed into each Xcode
-        "@bazel_tools//tools/osx:xcode-locator-genrule"
-    ]
+        "@bazel_tools//tools/osx:xcode-locator-genrule",
+    ],
 )
 
 load(
     "//:BazelExtensions/xcode_configuration_provider.bzl",
     "declare_target_config",
 )
-
 load(
     "@build_bazel_rules_apple//apple:resources.bzl",
     "apple_resource_group",
@@ -72,33 +70,37 @@ load(
 # - $(SPAWN_OPTS) is determined at build time by tools/XCHammerXcodeRunscript.sh
 # XCHammer's `bazel`, tools/bazelwrapper subs out make variable
 xchammer_xcode_target_config = target_config(
-    build_bazel_template="tools/XCHammerXcodeRunscript.sh",
-    build_bazel_options="$(SPAWN_OPTS)"
+    build_bazel_options = "$(SPAWN_OPTS)",
+    build_bazel_template = "tools/XCHammerXcodeRunscript.sh",
 )
 
 # This is an example of declaring a target config.
-declare_target_config(name="XCHammerSourcesXcodeConfig",
-     config=xchammer_xcode_target_config)
+declare_target_config(
+    name = "XCHammerSourcesXcodeConfig",
+    config = xchammer_xcode_target_config,
+)
 
 # This BUILD file is not actually imported into XCHammer
 # There is already a BUILD file placed in there by another dep.
 apple_resource_group(
     name = "BazelExtensions",
-    structured_resources=glob([
+    structured_resources = glob([
         "BazelExtensions/*.bzl",
     ]),
 )
 
-
 swift_library(
     name = "XCHammerSources",
     srcs = glob(["Sources/**/*.swift"]),
+    copts = [
+        "-swift-version",
+        "4.2",
+    ],
     data = [
         ":XCHammerAssets",
         ":BazelExtensions",
     ] + [
         ":XCBuildKit",
-        
     ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",
@@ -114,11 +116,7 @@ swift_library(
         "XcodeGen//:ProjectSpec",
         "XcodeProj//:XcodeProj",
         "Yams//:Yams",
-    ]] + [":XCHammerSourcesXcodeConfig" ],
-    copts = [
-        "-swift-version",
-        "4.2"
-    ],
+    ]] + [":XCHammerSourcesXcodeConfig"],
 )
 
 apple_bundle_version(
@@ -132,7 +130,10 @@ macos_application(
     infoplists = ["Info.plist"],
     minimum_os_version = "10.14",
     version = ":XCHammerVersion",
-    deps = [":XCHammerSources", ":XCHammerSourcesXcodeConfig"],
+    deps = [
+        ":XCHammerSources",
+        ":XCHammerSourcesXcodeConfig",
+    ],
 )
 
 buildifier(
@@ -169,41 +170,47 @@ gen_xchammer_config(
         },
         target_config = {
             "//:xchammer": xchammer_xcode_target_config,
-            "//tools/XCConfigExporter:xcconfig-exporter": xchammer_xcode_target_config
+            "//tools/XCConfigExporter:xcconfig-exporter": xchammer_xcode_target_config,
         },
-        targets = ["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
+        targets = [
+            "//:xchammer",
+            "//tools/XCConfigExporter:xcconfig-exporter",
+        ],
     ),
 )
 
 # Xcode project for Bazel built project
 load(
     "//:BazelExtensions/xcodeproject.bzl",
-    "xcode_project"
+    "xcode_project",
 )
 
 # The xcode_project for Bazel built Xcode project
 # Note: the target_config is declared in :XCHammerSourcesXcodeConfig
 xcode_project(
-    name="workspace_v2",
-    bazel="tools/bazelwrapper",
-    targets=["//:xchammer", "//tools/XCConfigExporter:xcconfig-exporter"],
-    project_config=project_config(
+    name = "workspace_v2",
+    bazel = "tools/bazelwrapper",
+    project_config = project_config(
+        generate_xcode_schemes = False,
         paths = ["**"],
-        generate_xcode_schemes=False,
         xcconfig_overrides = {
             "Release": "tools/BazelToolchain.xcconfig",
             "Debug": "tools/BazelToolchain.xcconfig",
             "Profile": "tools/BazelToolchain.xcconfig",
-        }
-    )
+        },
+    ),
+    targets = [
+        "//:xchammer",
+        "//tools/XCConfigExporter:xcconfig-exporter",
+    ],
 )
 
 # Development / Distribution
 genrule(
     name = "xchammer_unzip",
-    srcs = [ ":xchammer" ],
+    srcs = [":xchammer"],
+    outs = ["xchammer_unzip"],
     cmd = "unzip -q $(SRCS) -d $(OUTS)",
-    outs = [ "xchammer_unzip" ]
 )
 
 # This produces the same interface as the XCHammer repository, so a person
@@ -232,23 +239,24 @@ gen_workspace_cmd = """
     touch WORKSPACE
     echo 'sh_binary(name="xchammer", srcs=["xchammer.app/Contents/MacOS/xchammer"], visibility=["//visibility:public"])' > BUILD
 """
+
 genrule(
     name = "xchammer_dist",
-    srcs = [ ":xchammer_unzip" ],
+    srcs = [":xchammer_unzip"],
+    outs = ["xchammer_dist_repo.zip"],
     cmd = """
     mkdir zipdir/
     cp -r $(SRCS)/xchammer.app zipdir/xchammer.app
     cd zipdir
     {gen_workspace_cmd}
     zip -q ../$(OUTS) -r .
-    """.format(gen_workspace_cmd=gen_workspace_cmd),
-    outs = [ "xchammer_dist_repo.zip" ]
+    """.format(gen_workspace_cmd = gen_workspace_cmd),
 )
 
 # Builds an xchammer WORKSPACE use for local development. By creating a symlink
 # to the build artifact to ensure the upstream repository is using the latest
 # artifacts.
-# 
+#
 # If we were to just use `xchammer_dist` Bazel will not check a `.zip` of an
 # http_archive, so this symlinks the files instead.
 #
@@ -262,12 +270,12 @@ genrule(
 # --override_repository=xchammer=/path/to/xchammer/bazel-bin/xchammer_dev_repo/
 genrule(
     name = "xchammer_dev",
-    srcs = [ ":xchammer" ],
+    srcs = [":xchammer"],
+    outs = ["xchammer_dev_repo"],
     cmd = """
     mkdir $(OUTS)
     ln -s $$(dirname $$PWD/$(SRCS))/xchammer_archive-root/xchammer.app $(OUTS)/xchammer.app
     cd $(OUTS)
     {gen_workspace_cmd}
-    """.format(gen_workspace_cmd=gen_workspace_cmd),
-    outs = [ "xchammer_dev_repo" ],
+    """.format(gen_workspace_cmd = gen_workspace_cmd),
 )

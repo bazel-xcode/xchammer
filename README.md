@@ -70,7 +70,7 @@ bazel build MyProject
 
 ### CLI Usage ( Non Bazel built projects )
 
-XCHammer also works as a standalone project generator. kirst build XCHammer and
+XCHammer also works as a standalone project generator. First build XCHammer and
 install to the path:
 
 ```bash

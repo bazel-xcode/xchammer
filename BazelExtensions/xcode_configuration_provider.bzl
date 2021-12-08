@@ -4,44 +4,39 @@ load(
 )
 
 XcodeProjectTargetInfo = provider(
-    fields={
+    fields = {
         "target_config_json_str": """
 JSON string of target_config
 Note: this must be a string as it's a rule input
-"""
-    }
+""",
+    },
 )
-
 
 def _declare_target_config_impl(ctx):
     return struct(
-        providers=[XcodeProjectTargetInfo(target_config_json_str=ctx.attr.json)],
-        objc=apple_common.new_objc_provider(),
+        providers = [XcodeProjectTargetInfo(target_config_json_str = ctx.attr.json)],
+        objc = apple_common.new_objc_provider(),
     )
 
-
 _declare_target_config = rule(
-    implementation=_declare_target_config_impl,
-    output_to_genfiles=True,
-    attrs={"json": attr.string(mandatory=True)},
+    implementation = _declare_target_config_impl,
+    output_to_genfiles = True,
+    attrs = {"json": attr.string(mandatory = True)},
 )
-
 
 def declare_target_config(name, config, **kwargs):
     """ Declare a target configuration for an Xcode project
     This rule takes a `target_config` from XCHammerConfig
     and aggregates it onto the depgraph
     """
-    _declare_target_config(name=name, json=config.to_json().replace("\\", ""), **kwargs)
-
+    _declare_target_config(name = name, json = config.to_json().replace("\\", ""), **kwargs)
 
 XcodeConfigurationAspectInfo = provider(
-    fields={
+    fields = {
         "values": """This is the value of the JSON
-"""
-    }
+""",
+    },
 )
-
 
 def _target_config_aspect_impl(itarget, ctx):
     infos = []
@@ -61,23 +56,22 @@ def _target_config_aspect_impl(itarget, ctx):
             elif XcodeProjectTargetInfo in target:
                 info_map[str(itarget.label)] = target[XcodeProjectTargetInfo].target_config_json_str
 
-    return XcodeConfigurationAspectInfo(values=info_map)
-
+    return XcodeConfigurationAspectInfo(values = info_map)
 
 target_config_aspect = aspect(
-    implementation=_target_config_aspect_impl, attr_aspects=["*"]
+    implementation = _target_config_aspect_impl,
+    attr_aspects = ["*"],
 )
 
-
 XcodeBuildSourceInfo = provider(
-    fields={
+    fields = {
         "values": """The values of source files
-"""
-    }
+""",
+    },
 )
 
 def _extract_generated_sources(target, ctx):
-    """ Collects all of the generated source files"""
+    """Collects all of the generated source files"""
 
     files = []
     if ctx.rule.kind == "entitlements_writer":
@@ -91,17 +85,22 @@ def _extract_generated_sources(target, ctx):
         if include_swift_outputs and hasattr(module_info, "transitive_swiftmodules"):
             files.append(module_info.transitive_swiftmodules)
 
+    if CcInfo in target:
+        cc_info = target[CcInfo]
+        files.append(cc_info.compilation_context.headers)
+    elif hasattr(target, "objc") and hasattr(target.objc, "header"):
+        files.append(target.objc.header)
+
     if hasattr(target, "objc"):
         objc = target.objc
         files.append(objc.source)
-        files.append(objc.header)
         files.append(objc.module_map)
 
     trans_files = depset(transitive = files)
-    return [f for f in trans_files.to_list()  if not f.is_source]
+    return [f for f in trans_files.to_list() if not f.is_source]
 
 get_srcroot = "\"$(cat ../../DO_NOT_BUILD_HERE)/\""
-non_hermetic_execution_requirements = { "no-cache": "1", "no-remote": "1", "local": "1", "no-sandbox": "1" }
+non_hermetic_execution_requirements = {"no-cache": "1", "no-remote": "1", "local": "1", "no-sandbox": "1"}
 
 def _install_action(ctx, infos, itarget):
     inputs = []
@@ -119,7 +118,7 @@ def _install_action(ctx, infos, itarget):
             inputs.append(info)
             last = parts[len(parts) - 1]
             cmd.append(
-                "target_dir=\"$SRCROOT/xchammer-includes/x/x/" + target_dir + "\""
+                "target_dir=\"$SRCROOT/xchammer-includes/x/x/" + target_dir + "\"",
             )
             cmd.append("mkdir -p \"$target_dir\"")
             cmd.append("ditto " + info.path + " \"$target_dir\"")
@@ -127,11 +126,11 @@ def _install_action(ctx, infos, itarget):
     output = ctx.actions.declare_file(itarget.label.name + "_outputs.dummy")
     cmd.append("touch " + output.path)
     ctx.actions.run_shell(
-        inputs=inputs,
-        command="\n".join(cmd),
-        use_default_shell_env=True,
-        outputs=[output],
-        execution_requirements = non_hermetic_execution_requirements
+        inputs = inputs,
+        command = "\n".join(cmd),
+        use_default_shell_env = True,
+        outputs = [output],
+        execution_requirements = non_hermetic_execution_requirements,
     )
     return [output]
 
@@ -162,16 +161,16 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
         XcodeBuildSourceInfo(values = infos),
     ]
 
-
 # Note, that for "pure" Xcode builds we build swiftmodules with Xcode, so we
 # don't need to pre-compile them with Bazel
 pure_xcode_build_sources_aspect = aspect(
-    implementation=_xcode_build_sources_aspect_impl, attr_aspects=["*"],
-    attrs = { "include_swift_outputs": attr.string(values=["false","true"], default="false") }
+    implementation = _xcode_build_sources_aspect_impl,
+    attr_aspects = ["*"],
+    attrs = {"include_swift_outputs": attr.string(values = ["false", "true"], default = "false")},
 )
 
 xcode_build_sources_aspect = aspect(
-    implementation=_xcode_build_sources_aspect_impl, attr_aspects=["*"],
-    attrs = { "include_swift_outputs": attr.string(values=["false", "true"], default="true") }
+    implementation = _xcode_build_sources_aspect_impl,
+    attr_aspects = ["*"],
+    attrs = {"include_swift_outputs": attr.string(values = ["false", "true"], default = "true")},
 )
-
