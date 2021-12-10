@@ -109,7 +109,6 @@ objc_library(
         "//visibility:public",
     ],
     deps = [
-        ":GoogleAppIndexing_Bundle_GoogleAppIndexingResources",
         ":GoogleAppIndexing_VendoredFrameworks",
         ":GoogleAppIndexing_includes",
     ],

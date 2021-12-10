@@ -91,8 +91,8 @@ ios_application(
     bundle_id = "Google.UrlGet",
     entitlements = "Example.entitlements",
     extensions = [
-        ":share-extension",
-        ":siri-extension",
+        #":share-extension",
+        #":siri-extension",
     ],
     families = ["iphone"],
     infoplists = ["UrlGet/UrlGet-Info.plist"],
@@ -215,7 +215,7 @@ objc_library(
     deps = [
         "//Vendor/GoogleAppIndexing",
         "//Vendor/GoogleAuthUtilities",
-        "//Vendor/PINCache",
+        #"//Vendor/PINCache",
         "//Vendor/PINOperation",
         "//ios-app/HeaderLib",
     ],
