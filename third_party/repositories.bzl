@@ -257,8 +257,8 @@ def xchammer_dependencies():
 
     namespaced_git_repository(
         name = "Tulsi",
-        remote = "https://github.com/pinterest/tulsi.git",
-        commit = "370460774377d0f931c41eb2562c0b79caf94b40",
+        remote = "https://github.com/flarebuild/tulsi.git",
+        commit = "98fc1242e67dfafa6bf71745cbc55f37afd13319",
         patch_cmds = [
             """
          sed -i '' 's/\\:__subpackages__/visibility\\:public/g' src/TulsiGenerator/BUILD
@@ -270,8 +270,8 @@ def xchammer_dependencies():
     # into a workspace as a binary build
     new_git_repository(
         name = "xchammer_tulsi_aspects",
-        remote = "https://github.com/pinterest/tulsi.git",
-        commit = "c180639af0a20779610b4cbedd47f69849479366",
+        remote = "https://github.com/flarebuild/tulsi.git",
+        commit = "98fc1242e67dfafa6bf71745cbc55f37afd13319",
         strip_prefix = "src/TulsiGenerator/Bazel",
         build_file_content = "exports_files(['tulsi'])",
     )
