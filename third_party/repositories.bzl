@@ -255,7 +255,7 @@ def xchammer_dependencies():
         ]),
     )
 
-    PINTEREST_TULSI_COMMIT = "67304232fda8222e3be7f9bf81504cf33f1618fe"
+    PINTEREST_TULSI_COMMIT = "c9b533f4612444e0a5e0fa639d4cb508399d9e08"
 
     namespaced_git_repository(
         name = "Tulsi",
