@@ -19,10 +19,11 @@ load(
     "@build_bazel_rules_apple//apple:versioning.bzl",
     "apple_bundle_version",
 )
-load(
-    "@com_github_bazelbuild_buildtools//buildifier:def.bzl",
-    "buildifier",
-)
+# FIX-ME: Bring this back after resolving issues with loading from rules_ios
+# load(
+#     "@com_github_bazelbuild_buildtools//buildifier:def.bzl",
+#     "buildifier",
+# )
 load(
     "//third_party:repositories.bzl",
     "namespaced_name",
@@ -135,9 +136,10 @@ macos_application(
     deps = [":XCHammerSources", ":XCHammerSourcesXcodeConfig"],
 )
 
-buildifier(
-    name = "buildifier",
-)
+# FIX-ME: Bring this back after resolving issues with loading from rules_ios
+# buildifier(
+#     name = "buildifier",
+# )
 
 script_base = "$SRCROOT/tools/instrumentation_helpers"
 

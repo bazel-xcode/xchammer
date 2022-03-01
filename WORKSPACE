@@ -83,12 +83,14 @@ go_rules_dependencies()
 
 go_register_toolchains()
 
-http_archive(
-    name = "com_github_bazelbuild_buildtools",
-    strip_prefix = "buildtools-0.25.0",
-    url = "https://github.com/bazelbuild/buildtools/archive/0.25.0.zip",
-)
+# FIX-ME: Conflicts with how rules_ios loads buidlifier, bring this back or remote it after
+# finding the root cause
+# http_archive(
+#     name = "com_github_bazelbuild_buildtools",
+#     strip_prefix = "buildtools-0.25.0",
+#     url = "https://github.com/bazelbuild/buildtools/archive/0.25.0.zip",
+# )
 
-load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
+# load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 
-buildifier_dependencies()
+# buildifier_dependencies()
