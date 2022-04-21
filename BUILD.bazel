@@ -232,6 +232,10 @@ gen_workspace_cmd = """
     sed -i ''  's,@xchammer_tulsi_aspects//,,g' BazelExtensions/tulsi.bzl
     ln -s $$RESOURCES/tulsi tulsi
     touch WORKSPACE
+    ls -latr
+    echo $$PWD
+    ditto ../../../../third_party/ third_party
+
     echo 'sh_binary(name="xchammer", srcs=["xchammer.app/Contents/MacOS/xchammer"], visibility=["//visibility:public"])' > BUILD
 """
 genrule(

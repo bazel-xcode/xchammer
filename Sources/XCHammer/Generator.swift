@@ -633,6 +633,9 @@ enum Generator {
                 clearSourceMapTarget
             ]
 
+
+        // You can set anything you want in an xcconfig conditionally, like
+        // swift_version - Debug.xcconfig
         let project = ProjectSpec.Project(
             basePath: genOptions.workspaceRootPath,
             name: name,

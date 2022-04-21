@@ -10,5 +10,4 @@ build \
  --strategy=SwiftCompile=worker \
  --swiftcopt=-Xwrapped-swift=-debug-prefix-pwd-is-dot \
  --experimental_strict_action_env=true \
- --cpu darwin_x86_64 \
  --experimental_show_artifacts

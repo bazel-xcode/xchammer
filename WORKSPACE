@@ -14,6 +14,7 @@ load(
     "apple_rules_dependencies",
 )
 
+# TODO: align these with rules_ios
 git_repository(
     name = "build_bazel_rules_swift",
     remote = "https://github.com/bazelbuild/rules_swift.git",
@@ -27,14 +28,14 @@ load(
 
 swift_rules_dependencies()
 
-apple_rules_dependencies()
-
 load(
-    "@com_google_protobuf//:protobuf_deps.bzl",
-    "protobuf_deps",
+    "@build_bazel_rules_swift//swift:extras.bzl",
+    "swift_rules_extra_dependencies",
 )
 
-protobuf_deps()
+swift_rules_extra_dependencies()
+
+apple_rules_dependencies()
 
 load(
     "@build_bazel_apple_support//lib:repositories.bzl",
@@ -69,28 +70,3 @@ load("@xcbuildkit//third_party:repositories.bzl", xcbuildkit_dependencies="depen
 
 xcbuildkit_dependencies()
 
-
-## Buildifier deps (Bazel file formatting)
-http_archive(
-    name = "io_bazel_rules_go",
-    sha256 = "3743a20704efc319070957c45e24ae4626a05ba4b1d6a8961e87520296f1b676",
-    url = "https://github.com/bazelbuild/rules_go/releases/download/0.18.4/rules_go-0.18.4.tar.gz",
-)
-
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
-go_rules_dependencies()
-
-go_register_toolchains()
-
-# FIX-ME: Conflicts with how rules_ios loads buidlifier, bring this back or remote it after
-# finding the root cause
-# http_archive(
-#     name = "com_github_bazelbuild_buildtools",
-#     strip_prefix = "buildtools-0.25.0",
-#     url = "https://github.com/bazelbuild/buildtools/archive/0.25.0.zip",
-# )
-
-# load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
-
-# buildifier_dependencies()
