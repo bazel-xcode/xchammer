@@ -72,6 +72,9 @@ target_config_aspect = aspect(
 XcodeBuildSourceInfo = provider(
     fields={
         "values": """The values of source files
+""",
+
+        "trans": """The trans values of source files
 """
     }
 )
@@ -82,6 +85,8 @@ def _extract_generated_sources(target, ctx):
     """ Collects all of the generated source files"""
 
     files = []
+    # @thiago - this needs to provide entilements up-front.
+    # the IDE will require these entitlements
     if ctx.rule.kind == "entitlements_writer":
         files.append(target.files)
 
@@ -93,15 +98,14 @@ def _extract_generated_sources(target, ctx):
         if include_swift_outputs and hasattr(module_info, "transitive_swiftmodules"):
             files.append(module_info.transitive_swiftmodules)
 
+    # Handles both
     if CcInfo in target:
         files.append(depset(target[CcInfo].compilation_context.direct_public_headers))
-
     if ObjcInfo in target:
         objc = target[ObjcInfo]
+        # Needed anymore?
         #files.append(objc.sources)
         files.append(depset(objc.direct_headers))
-        #files.append(objc.module_map)
-
     trans_files = depset(transitive = files)
     return [f for f in trans_files.to_list()  if not f.is_source]
 
@@ -110,7 +114,7 @@ non_hermetic_execution_requirements = { "no-cache": "1", "no-remote": "1", "loca
 
 def _install_action(ctx, infos, itarget):
     inputs = []
-    cmd = []
+    cmd = ["set -ex"]
     cmd.append("SRCROOT=" + get_srcroot)
     for info in infos:
         parts = info.path.split("/bin/")
@@ -130,8 +134,8 @@ def _install_action(ctx, infos, itarget):
             cmd.append("ditto " + info.path + " \"$target_dir\"")
 
     output = ctx.actions.declare_file(itarget.label.name + "_outputs.dummy")
-    cmd.append("touch " + output.path)
-    #fail("CMD", cmd)
+    cmd.append("touch  " + output.path)
+    cmd.append("echo $0 && echo 'MADE " + output.path + "'")
     ctx.actions.run_shell(
         inputs=inputs,
         command="\n".join(cmd),
@@ -151,20 +155,26 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
     infos = []
     trans = []
     infos.extend(_extract_generated_sources(itarget, ctx))
+    if XcodeBuildSourceInfo in itarget:
+       trans.extend(itarget[XcodeBuildSourceInfo].values)
+       trans.extend(itarget[XcodeBuildSourceInfo].trans)
+
     if hasattr(ctx.rule.attr, "deps"):
         for target in ctx.rule.attr.deps:
             infos.extend(_extract_generated_sources(target, ctx))
             if XcodeBuildSourceInfo in target:
                 trans.extend(target[XcodeBuildSourceInfo].values)
+                trans.extend(target[XcodeBuildSourceInfo].trans)
 
     if hasattr(ctx.rule.attr, "transitive_deps"):
         for target in ctx.rule.attr.transitive_deps:
             infos.extend(_extract_generated_sources(target, ctx))
             if XcodeBuildSourceInfo in target:
                 trans.extend(target[XcodeBuildSourceInfo].values)
+                trans.extend(target[XcodeBuildSourceInfo].trans)
 
-    print("INFOS", itarget)
-    print("INFOS", depset(infos + trans).to_list())
+    #print("INFOS", itarget)
+    #print("INFOS", depset(infos + trans).to_list())
     return [
         OutputGroupInfo(
             xcode_project_deps = _install_action(
@@ -173,7 +183,7 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
                 itarget,
             ),
         ),
-        XcodeBuildSourceInfo(values = infos),
+        XcodeBuildSourceInfo(values = infos, trans=trans),
     ]
 
 

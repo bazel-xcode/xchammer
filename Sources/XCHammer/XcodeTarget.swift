@@ -830,10 +830,11 @@ public class XcodeTarget: Hashable, Equatable {
             return "-I " + xchammerIncludeDir
         }
         settings.swiftCopts <>= swiftModuleIncs
+        /*
         settings.swiftCopts <>= self.ruleEntry.objCModuleMaps.map {
             "-Xcc -fmodule-map-file=" + subBazelMakeVariables(getRelativePath(for: $0,
                 useTulsiPath: true))
-        }
+        }*/
 
         if let headerMap =  self.extractHeaderMap() {
             settings.swiftCopts <>= ["-Xcc -iquote -Xcc " + headerMap]
