@@ -99,7 +99,6 @@ swift_library(
         ":BazelExtensions",
     ] + [
         ":XCBuildKit",
-        
     ],
     deps = ["@" + namespaced_name(x) for x in [
         "AEXML//:AEXML",

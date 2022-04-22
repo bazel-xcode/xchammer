@@ -76,6 +76,8 @@ XcodeBuildSourceInfo = provider(
     }
 )
 
+ObjcInfo = apple_common.Objc
+
 def _extract_generated_sources(target, ctx):
     """ Collects all of the generated source files"""
 
@@ -91,11 +93,14 @@ def _extract_generated_sources(target, ctx):
         if include_swift_outputs and hasattr(module_info, "transitive_swiftmodules"):
             files.append(module_info.transitive_swiftmodules)
 
-    if hasattr(target, "objc"):
-        objc = target.objc
-        files.append(objc.source)
-        files.append(objc.header)
-        files.append(objc.module_map)
+    if CcInfo in target:
+        files.append(depset(target[CcInfo].compilation_context.direct_public_headers))
+
+    if ObjcInfo in target:
+        objc = target[ObjcInfo]
+        #files.append(objc.sources)
+        files.append(depset(objc.direct_headers))
+        #files.append(objc.module_map)
 
     trans_files = depset(transitive = files)
     return [f for f in trans_files.to_list()  if not f.is_source]
@@ -126,6 +131,7 @@ def _install_action(ctx, infos, itarget):
 
     output = ctx.actions.declare_file(itarget.label.name + "_outputs.dummy")
     cmd.append("touch " + output.path)
+    #fail("CMD", cmd)
     ctx.actions.run_shell(
         inputs=inputs,
         command="\n".join(cmd),
@@ -147,10 +153,18 @@ def _xcode_build_sources_aspect_impl(itarget, ctx):
     infos.extend(_extract_generated_sources(itarget, ctx))
     if hasattr(ctx.rule.attr, "deps"):
         for target in ctx.rule.attr.deps:
+            infos.extend(_extract_generated_sources(target, ctx))
             if XcodeBuildSourceInfo in target:
-                infos.extend(_extract_generated_sources(target, ctx))
                 trans.extend(target[XcodeBuildSourceInfo].values)
 
+    if hasattr(ctx.rule.attr, "transitive_deps"):
+        for target in ctx.rule.attr.transitive_deps:
+            infos.extend(_extract_generated_sources(target, ctx))
+            if XcodeBuildSourceInfo in target:
+                trans.extend(target[XcodeBuildSourceInfo].values)
+
+    print("INFOS", itarget)
+    print("INFOS", depset(infos + trans).to_list())
     return [
         OutputGroupInfo(
             xcode_project_deps = _install_action(

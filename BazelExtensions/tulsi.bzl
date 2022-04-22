@@ -2,12 +2,12 @@
 # In the distribution artifact we need to:
 # Include a binary build of XCHammer
 load(
-    "@xchammer_tulsi_aspects//:tulsi/tulsi_aspects_paths.bzl",
+    "@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects_paths.bzl",
     _SwiftInfo = "SwiftInfo",
 )
 
 load(
-    "@xchammer_tulsi_aspects//:tulsi/tulsi_aspects.bzl",
+    "@xchammer-Tulsi//src/TulsiGenerator/Bazel:tulsi/tulsi_aspects.bzl",
     _tulsi_sources_aspect = "tulsi_sources_aspect",
     _TulsiSourcesAspectInfo = "TulsiSourcesAspectInfo",
 )
