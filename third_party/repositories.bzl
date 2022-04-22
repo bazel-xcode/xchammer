@@ -255,27 +255,25 @@ def xchammer_dependencies():
         ]),
     )
 
-
     namespaced_git_repository(
         name = "Tulsi",
-        remote = "https://github.com/pinterest/tulsi.git",
-        commit = "feba74a99096757bd719e9361caaaf3f2bd5387c",
+        remote = "https://github.com/bazel-ios/tulsi.git",
+        tag = "rules_ios-0.0.1",
         patch_cmds = [
             """
-         sed -i '' 's/\:__subpackages__/visibility\:public/g' src/TulsiGenerator/BUILD
+         sed -i '' 's/\\:__subpackages__/visibility\\:public/g' src/TulsiGenerator/BUILD
          """,
             """
-         sed -i '' 's/RunLoopMode\.defaultRunLoopMode/RunLoop\.Mode\.`default`/g' src/TulsiGenerator/ProcessRunner.swift
+         sed -i '' 's/RunLoopMode\\.defaultRunLoopMode/RunLoop\\.Mode\\.`default`/g' src/TulsiGenerator/ProcessRunner.swift
          """,
         ],
     )
 
-    # This is a hack for XCHammer development, but is how XCHammer is imported 
-    # into a workspace as a binary build
+    # FIX-ME: Point to 'master' instead of 'thiago/rules-ios-xchammer-1' after resolving issues
     new_git_repository(
         name = "xchammer_tulsi_aspects",
-        remote = "https://github.com/pinterest/tulsi.git",
-        commit = "6302ee15a49a93fcaaff75e1fcd235fc87ac2ec8",
+        remote = "https://github.com/bazel-ios/tulsi.git",
+        tag = "rules_ios-0.0.1",
         strip_prefix="src/TulsiGenerator/Bazel",
         build_file_content="exports_files(['tulsi'])"
     )

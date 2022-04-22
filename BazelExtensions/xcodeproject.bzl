@@ -131,7 +131,7 @@ def _xcode_project_impl(ctx):
             "--bazel",
             ctx.attr.bazel
             if ctx.attr.bazel[0] == "/"
-            else "\$SRCROOT/" + ctx.attr.bazel,
+            else "\\$SRCROOT/" + ctx.attr.bazel,
             "--xcode_project_rule_info",
             xchammer_info_json.path,
             "; ditto " + project_name + " " + ctx.outputs.out.path,
@@ -177,7 +177,7 @@ def _install_xcode_project_impl(ctx):
         # This is kind of a hack for reference bazel relative to the source
         # directory, as bazel_build_settings.py doesn't sub Xcode build
         # settings.
-        "sed -i '' \"s,\$SRCROOT,$SRCROOT,g\" "
+        "sed -i '' \"s,\\$SRCROOT,$SRCROOT,g\" "
         + output_proj
         + "/XCHammerAssets/bazel_build_settings.py",
         # Ensure the `external` symlink points to output_base/external
