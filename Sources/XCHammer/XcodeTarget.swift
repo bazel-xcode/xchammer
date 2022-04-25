@@ -994,6 +994,12 @@ public class XcodeTarget: Hashable, Equatable {
         type.contains("application")
     }()
 
+    lazy var isTopLevelTestTarget: Bool = {
+        //return self.xcType?.contains("-test") ?? false
+        guard let type = self.xcType else { return false }
+        return type.contains("-test")
+    }()
+
     lazy var xcDependencies: [ProjectSpec.Dependency] = {
         /* FIXME: this needs better logic added to it
         guard self.frameworkImports.count > 0 else {

@@ -238,7 +238,7 @@ enum Generator {
 
 
         func getSchemeDeps(xcodeTarget: XcodeTarget) -> [XcodeScheme.BuildTarget] {
-            if xcodeTarget.shouldFuseDirectDeps,
+            if xcodeTarget.isTopLevelTestTarget,
                 let testHostSetting = xcodeTarget.settings.testHost?.v {
                 let testHostName = testHostSetting.components(separatedBy: "/")[2]
                 return [XcodeScheme.BuildTarget(target: testHostName,
@@ -297,7 +297,7 @@ enum Generator {
                 // For tests, grab all of the tests:
                 // TODO: Add this to XCHammerConfig
                 // https://github.com/pinterest/xchammer/issues/141
-                let testTargets: [String] = xcodeTarget.shouldFuseDirectDeps ?
+                let testTargets: [String] = xcodeTarget.isTopLevelTestTarget ?
                         allTests(for: xcodeTarget, map: targetMap) : []
                 let testPhase = XcodeScheme.Test(config: "Debug",
                         commandLineArguments: testConfig?.commandLineArguments
@@ -328,7 +328,7 @@ enum Generator {
             genOptions: XCHammerGenerateOptions) ->
         [XcodeScheme] {
         func getSchemeDeps(xcodeTarget: XcodeTarget) -> [XcodeScheme.BuildTarget] {
-            if xcodeTarget.shouldFuseDirectDeps,
+            if xcodeTarget.isTopLevelTestTarget,
                 let testHostSetting = xcodeTarget.settings.testHost?.v {
                 let testHostName = testHostSetting.components(separatedBy: "/")[2]
                 return [XcodeScheme.BuildTarget(target: testHostName,
@@ -380,7 +380,7 @@ enum Generator {
             // For tests, grab all of the tests:
             // TODO: Add this to XCHammerConfig
             // https://github.com/pinterest/xchammer/issues/141
-            let testTargets: [String] = xcodeTarget.shouldFuseDirectDeps ?
+            let testTargets: [String] = xcodeTarget.isTopLevelTestTarget ?
                     [name] : []
             let testPhase = XcodeScheme.Test(config: "Debug",
                     commandLineArguments: testConfig?.commandLineArguments
