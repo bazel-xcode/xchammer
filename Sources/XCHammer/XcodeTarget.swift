@@ -82,6 +82,14 @@ func includeTarget(_ xcodeTarget: XcodeTarget, pathPredicate: (String) -> Bool) 
     if xcodeTarget.type == "swift_runtime_linkopts" {
         return false
     }
+    if xcodeTarget.type == "apple_framework_packaging" {
+        return true
+    }
+    /*
+    if xcodeTarget.label.value.hasSuffix("_swift") ||
+    xcodeTarget.label.value.hasSuffix("_objc") {
+        return false
+    }*/
     if shouldPropagateDeps(forTarget: xcodeTarget) {
         return true
     }
@@ -260,7 +268,7 @@ public class XcodeTarget: Hashable, Equatable {
             "apple_ui_test",
             "ios_ui_test"
         ]
-        let value = self.isTopLevelTestTarget || (
+        let value = self.shouldFuseDirectDeps || (
             type.map { needsRecursiveTypes.contains($0) } ?? false
         )
         return value
@@ -320,6 +328,9 @@ public class XcodeTarget: Hashable, Equatable {
             ".apple_binary",
             "_test_bundle",
             "_test_binary",
+            //"_objc",
+            //"_swift",
+            "middleman",
         ]
 
         return self.dependencies
@@ -533,6 +544,8 @@ public class XcodeTarget: Hashable, Equatable {
             return xcTargetName + ".appex"
             case .StaticLibrary:
             return xcTargetName
+            case .Framework:
+            return xcTargetName
             default:
             return "$(TARGET_NAME)"
         }
@@ -563,6 +576,9 @@ public class XcodeTarget: Hashable, Equatable {
         let linkablePredicate: TraversalTransitionPredicate<XcodeTarget> = TraversalTransitionPredicate {
             xcodeTarget -> Transition in
             guard xcodeTarget.type != "_headermap" else {
+                return Transition.stop
+            }
+            if xcodeTarget.extractProductType() == nil {
                 return Transition.stop
             }
             return xcodeTarget.needsRecursiveExtraction ? Transition.justOnceMore : Transition.keepGoing
@@ -967,14 +983,22 @@ public class XcodeTarget: Hashable, Equatable {
         case IMessageExtension = "com.apple.product-type.app-extension.messages"
     }
 
-    lazy var isTopLevelTestTarget: Bool = {
-        return self.xcType?.contains("-test") ?? false
+    lazy var shouldFuseDirectDeps: Bool = {
+        //return self.xcType?.contains("-test") ?? false
+        guard let type = self.xcType else { return false }
+        // FIXME: this is used to determine fusing - need to make sure properly
+        // fuse rules_ios: because of mixed-module output types. e.g.
+        // $NAME_swift and $NAME_objc cannot both declare a .swiftmodule output
+        // Could test for that, or even test for a tag
+        return type.contains("-test") || type.contains("framework") ||
+        type.contains("application")
     }()
 
     lazy var xcDependencies: [ProjectSpec.Dependency] = {
+        /* FIXME: this needs better logic added to it
         guard self.frameworkImports.count > 0 else {
             return []
-        }
+        }*/
 
         // TODO: Move this to xcLinkableTransitiveDeps
         let xcodeTargetDeps: [XcodeTarget] = self.dependencies.compactMap {
@@ -988,7 +1012,27 @@ public class XcodeTarget: Hashable, Equatable {
                 return nil
             }
 
-            if depName.hasSuffix(".apple_binary") {
+            if target.extractProductType()  != nil {
+                return nil
+            }
+            // FIXME: this should be an attribute in bazel build graph and or
+            // convention to hide a target in Xcode, or align with fusing
+            // predicate
+            if depName.hasSuffix("linkopts")  {
+                return nil
+            }
+            if depName.hasSuffix("_objc")  {
+                return nil
+            }
+            if depName.hasSuffix("_swift")  {
+                return nil
+            }
+            if depName.hasSuffix("_private_headers")  {
+                return nil
+            }
+
+            //if depName.hasSuffix(".apple_binary")  {
+            if false {
                 let unwrappedDeps = target.dependencies
                 for depEntry in unwrappedDeps {
                     // If it's an iOS app, strip out entitlements
@@ -997,7 +1041,7 @@ public class XcodeTarget: Hashable, Equatable {
                     }
 
                     if let foundTarget = self.targetMap.xcodeTarget(buildLabel:
-                            depEntry, depender: self) {
+                            depEntry, depender: self), foundTarget.extractProductType() != nil {
                         return foundTarget
                     }
                 }
@@ -1224,17 +1268,18 @@ public class XcodeTarget: Hashable, Equatable {
             "ios_application": ProductType.Application,
             "ios_extension": ProductType.AppExtension,
             "ios_framework": ProductType.Framework,
+            "apple_framework_packaging": ProductType.Framework,
             "ios_test": ProductType.UnitTest,
             "macos_application": ProductType.Application,
             "macos_command_line_application": ProductType.Tool,
             "macos_extension": ProductType.AppExtension,
             "objc_binary": ProductType.Application,
-            "objc_library": ProductType.StaticLibrary,
+            //"objc_library": ProductType.StaticLibrary,
             "objc_bundle_library": ProductType.Bundle, // TODO: Remove deprecated rule
             "apple_resource_bundle": ProductType.Bundle,
             "objc_framework": ProductType.Framework,
             "apple_static_framework_import": ProductType.Framework,
-            "swift_library": ProductType.StaticLibrary,
+            //"swift_library": ProductType.StaticLibrary,
             "swift_c_module": ProductType.StaticLibrary,
             "tvos_application": ProductType.Application,
             "tvos_extension": ProductType.TVAppExtension,
@@ -1308,13 +1353,14 @@ public class XcodeTarget: Hashable, Equatable {
         /// We need to include the sources into the target
         let sources: [ProjectSpec.TargetSource]
         let xcodeBuildableTargetSettings: XCBuildSettings
-        if isTopLevelTestTarget {
+        if shouldFuseDirectDeps {
             let flattened = Set(flattenedInner(targetMap: targetMap))
             // Determine deps to fuse into the rule.
             let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
             let fusableDeps = self.unfilteredDependencies
                 .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
                         pathsPredicate) }
+            //print("FusbableDeps", fusableDeps.map { $0.label })
             xcodeBuildableTargetSettings = self.settings
                             <> fusableDeps.foldMap { $0.settings }
             // Use settings, sources, and deps from the fusable deps
@@ -1382,9 +1428,10 @@ public class XcodeTarget: Hashable, Equatable {
         }
         //TODO: (jerry) move this into `includedTargets`
         let flattened = Set(flattenedInner(targetMap: targetMap))
-        guard flattened.contains(xcodeTarget) == false else {
+        /*
+        guard flattened.contains(xcodeTarget) == false, xcodeTarget.type == "apple_framework_packaging" else {
             return nil
-        }
+        }*/
 
         let pathsPredicate = makePathFiltersPredicate(genOptions.pathsSet)
         guard includeTarget(xcodeTarget, pathPredicate: pathsPredicate) == true
@@ -1409,11 +1456,17 @@ public class XcodeTarget: Hashable, Equatable {
         // 1) High level "Fusing" of a target from multiple targets
         // 2) A simple conversion of the target: taking it "as is"
         if shouldFlatten(xcodeTarget: xcodeTarget) {
+            /*
+            print("UFD", xcodeTarget.label, xcodeTarget.unfilteredDependencies
+                  .filter { flattened.contains($0) }
+                  .map { $0.label.value }.debugDescription)
+            */
             // Determine deps to fuse into the rule.
             let fusableDeps = xcodeTarget.unfilteredDependencies
                 .filter { flattened.contains($0) && includeTarget($0, pathPredicate:
                         pathsPredicate) }
 
+            //print("FD", xcodeTarget.label, fusableDeps.map { $0.label.value }.debugDescription)
             // Use settings, sources, and deps from the fusable deps
             sources = fusableDeps.flatMap { $0.xcSources }
             settings = xcodeTarget.settings
@@ -1467,6 +1520,10 @@ public class XcodeTarget: Hashable, Equatable {
             }
         }(xcodeTarget)
 
+       // print("LD", linkedDeps, "D", deps)
+        let d = Array(Set(deps))
+            .sorted(by:{ $0.reference  < $1.reference })
+
         return ProjectSpec.Target(
             name: xcodeTarget.xcTargetName,
             type: PBXProductType(rawValue: productType.rawValue)!,
@@ -1474,8 +1531,10 @@ public class XcodeTarget: Hashable, Equatable {
             settings: makeXcodeGenSettings(from: getComposedSettings()),
             configFiles: getXCConfigFiles(for: xcodeTarget),
             sources: sources,
-            dependencies: Array(Set(deps + linkedDeps))
-                 .sorted(by:{ $0.reference  < $1.reference }),
+            dependencies:  d,
+            //dependencies:  
+            //Array(Set(deps + linkedDeps))
+            //     .sorted(by:{ $0.reference  < $1.reference }),
             preBuildScripts: prebuildScripts,
             postBuildScripts: postbuildScripts
         )
@@ -1505,7 +1564,7 @@ public func ==(lhs: XcodeTarget, rhs: XcodeTarget) -> Bool {
 
 /// Return true when flatten flat
 func shouldFlatten(xcodeTarget: XcodeTarget) -> Bool {
-    return xcodeTarget.isTopLevelTestTarget
+    return xcodeTarget.shouldFuseDirectDeps
 }
 
 /// Mark - XcodeGen support
