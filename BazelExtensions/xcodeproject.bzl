@@ -171,9 +171,8 @@ def _install_xcode_project_impl(ctx):
     command = [
         "SRCROOT=" + get_srcroot,
         "ditto " + xcodeproj.path + " " + output_proj,
-        "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" "
-        + output_proj
-        + "/XCHammerAssets/bazel_build_settings.py",
+        "sed -i '' \"s,__BAZEL_EXEC_ROOT__,$PWD,g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
+        "sed -i '' \"s,__BAZEL_OUTPUT_BASE__,$(dirname $(dirname $PWD)),g\" " + output_proj + "/XCHammerAssets/bazel_build_settings.py",
         # This is kind of a hack for reference bazel relative to the source
         # directory, as bazel_build_settings.py doesn't sub Xcode build
         # settings.

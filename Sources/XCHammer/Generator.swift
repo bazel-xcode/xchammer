@@ -439,9 +439,9 @@ enum Generator {
 
         let platformOptions = genOptions.config
                 .projects[genOptions.projectName]?.buildBazelPlatformOptions
-
         return BazelBuildSettings(bazel: genOptions.bazelPath.string,
                 bazelExecRoot: bazelExecRoot,
+                bazelOutputBase: "__BAZEL_OUTPUT_BASE__",
                 defaultPlatformConfigIdentifier: "iphone",
                 platformConfigurationFlags: platformOptions,
                 swiftTargets: Set(),
