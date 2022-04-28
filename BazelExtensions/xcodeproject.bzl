@@ -143,6 +143,7 @@ def _xcode_project_impl(ctx):
         inputs=artifacts + [xchammerconfig_json, xchammer_info_json] + xchammer_files,
         command=" ".join(xchammer_command),
         outputs=[ctx.outputs.out],
+        execution_requirements = { "local": "1" }
     )
 
 
