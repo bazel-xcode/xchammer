@@ -55,11 +55,11 @@ http_archive(
 Next, create an `xcode_project` target including targets:
 ```
 # BUILD.Bazel
-load("@xchammer//:xcodeproject.bzl", "xcode_project")
+load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
+
 xcode_project(
     name = "MyProject",
     targets = [ "//ios-app:ios-app" ],
-    paths = [ "**" ],
 )
 ```
 
