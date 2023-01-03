@@ -1,6 +1,6 @@
 # Code of Conduct
 
-At Pinterest, we work hard to ensure that our work environment is welcoming
+At bazel-xcode, we work hard to ensure that our work environment is welcoming
 and inclusive to as many people as possible. We are committed to creating this
 environment for everyone involved in our open source projects as well. We
 welcome all participants regardless of ability, age, ethnicity, identified
@@ -32,9 +32,8 @@ list):
 ## Recourse
 
 If you are witness to or the target of unacceptable behavior, it should be
-reported to Pinterest at opensource-policy@pinterest.com. All reporters will
-be kept confidential and an appropriate response for each incident will be
-evaluated.
+reported to bazelxcode.help@gmail.com. All reporters will be kept confidential
+and an appropriate response for each incident will be evaluated.
 
-If the maintainers do not uphold and enforce this code of conduct in
-good faith, community leadership will hold them accountable.
+If the maintainers do not uphold and enforce this code of conduct in good
+faith, community leadership will hold them accountable.
